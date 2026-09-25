@@ -21,6 +21,9 @@ const METAL_TOKENS = {
     ringAlt:[[0, "#A87A29"], [0.2, "#F0DCAE"], [0.45, "#CE9C3E"], [0.72, "#8E6720"], [1, "#DCB771"]],
     glow:   [[0, "#FBF1D9", 0.95], [0.55, "#F3E2BC", 0.42], [1, "#F3E2BC", 0]],
     shadow: [[0, "#8E6720", 0.3], [1, "#8E6720", 0]],
+    /* denser ramp for small 48px thumbnails, where the sheen stops wash out */
+    swatch: [[0, "#E3C07C"], [0.22, "#C79736"], [0.5, "#9A6B1F"], [0.76, "#C08E36"], [1, "#8E6118"]],
+    swatchBg: [[0, "#FDF8EC"], [0.55, "#F8EDD6"], [1, "#F0E2C4"]],
     spark:  "#EBD59A",
     rim:    "#B98A32",
   },
@@ -31,6 +34,8 @@ const METAL_TOKENS = {
     ringAlt:[[0, "#8C9AA5"], [0.22, "#EFF4F7"], [0.5, "#BCC7CF"], [0.75, "#7E8C97"], [1, "#D6DEE4"]],
     glow:   [[0, "#EFF4F7", 0.95], [0.55, "#DCE6EC", 0.42], [1, "#DCE6EC", 0]],
     shadow: [[0, "#6E7C87", 0.28], [1, "#6E7C87", 0]],
+    swatch: [[0, "#D3DDE4"], [0.22, "#A7B4BE"], [0.5, "#7E8C97"], [0.76, "#9BAAB4"], [1, "#6E7C87"]],
+    swatchBg: [[0, "#FBFDFE"], [0.55, "#EDF3F6"], [1, "#DCE6EC"]],
     spark:  "#DCE6EC",
     rim:    "#8C9AA5",
   },
@@ -281,6 +286,248 @@ export function BullionArt({ metal = "gold", className = "" }) {
         <Sparkle x={146} y={36} size={9} color={tokensFor(metal).spark} opacity={0.9} />
         <Sparkle x={18} y={70} size={6} color={tokensFor(metal).spark} opacity={0.7} />
       </g>
+    </svg>
+  );
+}
+
+/* ── Wide page banner: flowing chain + bangle + ring ───────────────────────── */
+
+/** Shared gradient/mask defs for the gold-only banner pieces. */
+function GoldDefs({ ids, w, h, maskX = true }) {
+  const t = tokensFor("gold");
+  return (
+    <defs>
+      <linearGradient id={ids.ring} x1="0" y1="0" x2="1" y2="0.7"><Stops list={t.ring} /></linearGradient>
+      <linearGradient id={ids.ringAlt} x1="0.1" y1="0" x2="0.9" y2="0.8"><Stops list={t.ringAlt} /></linearGradient>
+      <linearGradient id={ids.gem} x1="0" y1="0" x2="0.6" y2="1"><Stops list={GEM_STOPS} /></linearGradient>
+      <radialGradient id={ids.glow} cx="0.5" cy="0.5" r="0.5"><Stops list={t.glow} /></radialGradient>
+      <radialGradient id={ids.shadow} cx="0.5" cy="0.5" r="0.5"><Stops list={t.shadow} /></radialGradient>
+      <filter id={ids.blur} x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5" /></filter>
+      {maskX && (
+        <>
+          <linearGradient id={ids.fadeX} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#3A3A3A" />
+            <stop offset="0.22" stopColor="#FFFFFF" />
+            <stop offset="0.86" stopColor="#FFFFFF" />
+            <stop offset="1" stopColor="#C4C4C4" />
+          </linearGradient>
+          <mask id={ids.mask}>
+            <rect x="0" y="0" width={w} height={h} fill={`url(#${ids.fadeX})`} />
+          </mask>
+        </>
+      )}
+    </defs>
+  );
+}
+
+/**
+ * Wide, subtle jewellery banner for a page header. A flowing gold chain with a
+ * bangle and a solitaire ring in a soft cream atmosphere — decorative only.
+ */
+export function JewelleryBannerArt({ className = "" }) {
+  const ids = useArtIds();
+  return (
+    <svg
+      viewBox="0 0 520 170"
+      className={className}
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <GoldDefs ids={ids} w={520} h={170} />
+      <g mask={`url(#${ids.mask})`}>
+        <ellipse cx="330" cy="84" rx="196" ry="82" fill={`url(#${ids.glow})`} />
+        <ellipse cx="330" cy="152" rx="150" ry="14" fill={`url(#${ids.shadow})`} opacity="0.45" filter={`url(#${ids.blur})`} />
+
+        {/* flowing chain */}
+        <path
+          d="M 8 128 C 96 44, 196 152, 300 74 S 452 30, 516 92"
+          fill="none" stroke={`url(#${ids.ring})`} strokeWidth="3.6"
+          strokeLinecap="round" strokeDasharray="0.5 7" opacity="0.95"
+        />
+        <path
+          d="M 8 138 C 96 54, 196 162, 300 84 S 452 40, 516 102"
+          fill="none" stroke={`url(#${ids.ringAlt})`} strokeWidth="2.4"
+          strokeLinecap="round" strokeDasharray="0.5 8" opacity="0.7"
+        />
+
+        {/* solitaire ring */}
+        <g>
+          <circle cx="150" cy="86" r="27" fill="none" stroke={`url(#${ids.ring})`} strokeWidth="5" />
+          <circle cx="150" cy="86" r="27" fill="none" stroke="#8E6720" strokeOpacity="0.16" strokeWidth="2" />
+          <rect x="143" y="44" width="14" height="14" transform="rotate(45 150 51)" fill={`url(#${ids.gem})`} stroke="#B98A32" strokeWidth="0.9" strokeOpacity="0.7" />
+        </g>
+
+        {/* bangle */}
+        <g transform="rotate(-8 404 78)">
+          <ellipse cx="404" cy="78" rx="58" ry="40" fill="none" stroke={`url(#${ids.ringAlt})`} strokeWidth="7" />
+          <ellipse cx="404" cy="78" rx="53" ry="35" fill="none" stroke="#FFFDF3" strokeOpacity="0.45" strokeWidth="1.2" />
+        </g>
+
+        <Sparkle x={268} y={40} size={9} color="#EBD59A" opacity={0.85} />
+        <Sparkle x={470} y={132} size={7} color="#F2E3BE" opacity={0.7} />
+      </g>
+    </svg>
+  );
+}
+
+/* ── Barcode tag on a chain (Barcode Manager banner) ────────────────────────── */
+
+/** Decorative bar pattern for the illustrated tag — not a scannable barcode. */
+const TAG_BARS = [3, 1.5, 2.5, 1.5, 4, 1.5, 2, 3.5, 1.5, 2.5, 1.5, 3, 2, 1.5, 2.5];
+
+function TagBars({ x, y, height }) {
+  let cursor = x;
+  return (
+    <g fill="#2A2E2B">
+      {TAG_BARS.map((w, i) => {
+        const el = <rect key={i} x={cursor} y={y} width={w} height={height} rx={0.4} />;
+        cursor += w + 1.5;
+        return el;
+      })}
+    </g>
+  );
+}
+
+/**
+ * Illustrative jewellery tag hanging from a gold chain — the Barcode Manager
+ * header banner. Purely decorative: it is not a real barcode and carries no data.
+ */
+export function BarcodeTagArt({ className = "" }) {
+  const ids = useArtIds();
+  return (
+    <svg
+      viewBox="0 0 300 170"
+      className={className}
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <GoldDefs ids={ids} w={300} h={170} />
+      <g mask={`url(#${ids.mask})`}>
+        <ellipse cx="150" cy="86" rx="128" ry="72" fill={`url(#${ids.glow})`} />
+        <ellipse cx="150" cy="150" rx="92" ry="11" fill={`url(#${ids.shadow})`} opacity="0.4" filter={`url(#${ids.blur})`} />
+
+        {/* chain draping into the tag */}
+        <path
+          d="M 6 26 C 84 18, 150 66, 196 92"
+          fill="none" stroke={`url(#${ids.ring})`} strokeWidth="3.2"
+          strokeLinecap="round" strokeDasharray="0.5 6.5" opacity="0.95"
+        />
+        <path
+          d="M 6 44 C 84 34, 150 80, 192 104"
+          fill="none" stroke={`url(#${ids.ringAlt})`} strokeWidth="2"
+          strokeLinecap="round" strokeDasharray="0.5 7" opacity="0.6"
+        />
+
+        {/* the tag itself */}
+        <g transform="rotate(-7 150 104)">
+          <path
+            d="M 118 46 h 64 a 10 10 0 0 1 10 10 v 66 a 10 10 0 0 1 -10 10 h -64 a 10 10 0 0 1 -10 -10 v -66 a 10 10 0 0 1 10 -10 Z"
+            fill="#FFFDF9" stroke="#E2E7E2" strokeWidth="1.2"
+          />
+          <path
+            d="M 118 46 h 64 a 10 10 0 0 1 10 10 v 66 a 10 10 0 0 1 -10 10 h -64 a 10 10 0 0 1 -10 -10 v -66 a 10 10 0 0 1 10 -10 Z"
+            fill="none" stroke={`url(#${ids.ring})`} strokeOpacity="0.28" strokeWidth="2.5"
+          />
+          {/* eyelet + jump ring */}
+          <circle cx="150" cy="56" r="4.2" fill="#FFFDF9" stroke="#D3DCD5" strokeWidth="1.2" />
+          <circle cx="150" cy="50" r="5" fill="none" stroke={`url(#${ids.ring})`} strokeWidth="2.2" />
+          <TagBars x={122} y={72} height={30} />
+          <rect x="122" y="110" width="26" height="3" rx="1.5" fill="#CBDED2" />
+          <rect x="152" y="110" width="26" height="3" rx="1.5" fill="#F1F4F0" />
+        </g>
+
+        <Sparkle x={232} y={44} size={9} color="#EBD59A" opacity={0.85} />
+        <Sparkle x={72} y={132} size={7} color="#F2E3BE" opacity={0.7} />
+      </g>
+    </svg>
+  );
+}
+
+/* ── Small jewellery thumbnails for list rows ──────────────────────────────── */
+
+/** 48×48 jewellery thumbnail used in category rows and the barcode table. */
+export function JewellerySwatch({ variant = "chain", metal = "gold", className = "" }) {
+  const ids = useArtIds();
+  const t = tokensFor(metal);
+  const ring = ids.ring;
+  return (
+    <svg
+      viewBox="0 0 48 48"
+      className={className}
+      preserveAspectRatio="xMidYMid meet"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <linearGradient id={ids.ring} x1="0" y1="0" x2="1" y2="0.8"><Stops list={t.swatch} /></linearGradient>
+        <linearGradient id={ids.ringAlt} x1="0.1" y1="0" x2="0.9" y2="0.9"><Stops list={t.swatch} /></linearGradient>
+        <linearGradient id={ids.gem} x1="0" y1="0" x2="0.6" y2="1"><Stops list={GEM_STOPS} /></linearGradient>
+        <linearGradient id={ids.glow} x1="0" y1="0" x2="0.7" y2="1"><Stops list={t.swatchBg} /></linearGradient>
+        <radialGradient id={ids.shadow} cx="0.34" cy="0.26" r="0.62">
+          <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      <rect x="0" y="0" width="48" height="48" rx="12" fill={`url(#${ids.glow})`} />
+      <rect x="0" y="0" width="48" height="48" rx="12" fill={`url(#${ids.shadow})`} />
+
+      {variant === "chain" && (
+        <g fill="none" stroke={`url(#${ring})`} strokeWidth="3.4" strokeLinecap="round">
+          <ellipse cx="19" cy="24" rx="9" ry="6.5" transform="rotate(-28 19 24)" />
+          <ellipse cx="30" cy="24" rx="9" ry="6.5" transform="rotate(28 30 24)" />
+        </g>
+      )}
+
+      {variant === "bangle" && (
+        <g>
+          <ellipse cx="24" cy="25" rx="13" ry="10.5" fill="none" stroke={`url(#${ring})`} strokeWidth="3.8" />
+          <ellipse cx="24" cy="25" rx="9.5" ry="7" fill="none" stroke="#FFFDF3" strokeOpacity="0.42" strokeWidth="1" />
+          <rect x="21" y="9" width="6" height="6" transform="rotate(45 24 12)" fill={`url(#${ids.gem})`} stroke={t.rim} strokeWidth="0.7" />
+        </g>
+      )}
+
+      {variant === "bracelet" && (
+        <g>
+          <ellipse cx="24" cy="26" rx="14" ry="9.5" fill="none" stroke={`url(#${ids.ring})`} strokeWidth="3.4" />
+          {[0, 60, 120, 180, 240, 300].map((a) => {
+            const r = (a * Math.PI) / 180;
+            return (
+              <circle key={a} cx={24 + 14 * Math.cos(r)} cy={26 + 9.5 * Math.sin(r)} r="2" fill={`url(#${ids.gem})`} stroke={t.rim} strokeWidth="0.5" />
+            );
+          })}
+        </g>
+      )}
+
+      {variant === "ring" && (
+        <g>
+          <circle cx="24" cy="27" r="9.5" fill="none" stroke={`url(#${ring})`} strokeWidth="3.4" />
+          <path d="M 24 17 L 20 9 L 28 9 Z" fill="none" stroke={`url(#${ring})`} strokeWidth="2.2" />
+          <rect x="18" y="5" width="12" height="12" transform="rotate(45 24 11)" fill={`url(#${ids.gem})`} stroke={t.rim} strokeWidth="0.8" />
+        </g>
+      )}
+
+      {variant === "coin" && (
+        <g>
+          <circle cx="24" cy="24" r="13" fill={`url(#${ids.ring})`} />
+          <circle cx="24" cy="24" r="9" fill="none" stroke={t.rim} strokeOpacity="0.45" strokeWidth="1.1" />
+          <path d="M 19 20 h 10 M 19 24 h 10 M 19 28 h 6" stroke={t.rim} strokeOpacity="0.5" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M 14 17 a 13 13 0 0 1 10 -4" stroke="#FFFDF3" strokeOpacity="0.6" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        </g>
+      )}
+
+      {variant === "pendant" && (
+        <g>
+          <path d="M 24 6 a 4 4 0 1 1 0 8 a 4 4 0 0 1 0 -8 Z" fill="none" stroke={`url(#${ring})`} strokeWidth="2.2" />
+          <path d="M 24 15 c 8 11 11 17 11 21 a 11 11 0 0 1 -22 0 c 0 -4 3 -10 11 -21 Z" fill={`url(#${ring})`} stroke={t.rim} strokeWidth="1" strokeOpacity="0.55" />
+          <circle cx="20" cy="32" r="3" fill="#FFFFFF" fillOpacity="0.55" />
+        </g>
+      )}
     </svg>
   );
 }

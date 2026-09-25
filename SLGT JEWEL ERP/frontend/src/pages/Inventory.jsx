@@ -14,6 +14,13 @@ import {
   Layers,
   Package,
   Scale,
+  Box,
+  Feather,
+  AlertTriangle,
+  CheckCircle2,
+  LayoutGrid,
+  Trash2,
+  Ban,
 } from "lucide-react";
 import { toast } from "sonner";
 import api, { formatApiError } from "@/lib/api";
@@ -28,12 +35,33 @@ import { FilterMultiSelect } from "@/pages/reports/FilterBar";
 import ImportProgressModal from "@/components/inventory/ImportProgressModal";
 import { productStatusLabel, isOutOfStockProduct } from "@/lib/productStatus";
 import {
+  JewelleryBannerArt,
+  BullionArt,
+  JewellerySwatch,
+} from "@/components/dashboard/JewelleryArt";
+import { swatchVariantFor } from "@/components/dashboard/swatchVariant";
+import {
   INVENTORY_CSV_COLUMNS,
   csvEscape,
   emptyImportProgress,
   formatImportSummary,
   importProductsFromCsv,
 } from "@/lib/productCsvImport";
+
+/* ── decorative stat motifs (no data — pure presentation) ──────────────────── */
+const MINI_BAR_HEIGHTS = [38, 62, 48, 82, 58, 94, 70];
+
+/** Small static bar motif used as a card accent. Carries no values. */
+function MiniBars({ className = "" }) {
+  return (
+    <svg viewBox="0 0 44 30" className={className} aria-hidden="true" focusable="false" role="presentation">
+      {MINI_BAR_HEIGHTS.map((h, i) => (
+        <rect key={i} x={i * 6.4} y={30 - h} width="3.6" height={h} rx="1.6" fill="currentColor" />
+      ))}
+    </svg>
+  );
+}
+
 
 /* ── product status metadata ─────────────────────────────────────────── */
 const STATUS_META = {
@@ -203,31 +231,52 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
   const overallStats = catStats(products);
   const isOutTab = stockTab === "out_of_stock";
 
+  /* Compact summary tiles. `tone` only drives the surface/icon treatment —
+   * every number below is the existing computed stat. */
+  const SUMMARY_TONES = {
+    neutral: { card: "border-[#E2E7E2] bg-[linear-gradient(150deg,#FFFDF9_0%,#F7F5F0_100%)]", icon: "border-[#E2E7E2] bg-[#F4F6F3]", iconFg: "text-[#4E5A53]" },
+    gold:    { card: "border-[#EADFC4] bg-[linear-gradient(150deg,#FFFCF5_0%,#FAF3E4_100%)]", icon: "border-[#E6D3A6] bg-[linear-gradient(140deg,#FAF0D6,#EFDDB2)]", iconFg: "text-[#9A6C25]" },
+    green:   { card: "border-[#D8E7DA] bg-[linear-gradient(150deg,#F9FCF9_0%,#EDF5EE_100%)]", icon: "border-[#CFE2D5] bg-[linear-gradient(140deg,#E9F3EB,#D6E8DC)]", iconFg: "text-[#2F6B4F]" },
+    warn:    { card: "border-[#F0DFC2] bg-[linear-gradient(150deg,#FFFCF6_0%,#FBF3E2_100%)]", icon: "border-[#EBD9B0] bg-[linear-gradient(140deg,#FAF0DC,#F2E2BC)]", iconFg: "text-[#B07C1E]" },
+    danger:  { card: "border-[#EFD9D6] bg-[linear-gradient(150deg,#FFFCFB_0%,#FAF0EE_100%)]", icon: "border-[#EBCBC7] bg-[linear-gradient(140deg,#FAE9E7,#F2D8D5)]", iconFg: "text-[#9D4B47]" },
+  };
+
+  const summaryTiles = isOutTab
+    ? [
+        { label: "Out of Stock", val: overallStats.total, color: "text-[#9D4B47]", tone: "danger", Icon: Ban },
+        { label: "Sold out", val: overallStats.sold, color: "text-[#17201C]", tone: "neutral", Icon: Package },
+        { label: "Deleted P", val: overallStats.deletedP, color: "text-[#6F7772]", tone: "neutral", Icon: Trash2 },
+        { label: "Zero Qty", val: overallStats.outOfStock, color: "text-[#9D4B47]", tone: "danger", Icon: AlertTriangle },
+        { label: "Damaged", val: overallStats.damaged, color: "text-[#B07C1E]", tone: "warn", Icon: AlertTriangle },
+      ]
+    : [
+        { label: "Categories", val: topCats.length, color: "text-[#17201C]", tone: "neutral", Icon: LayoutGrid },
+        { label: "In Stock Products", val: overallStats.total, color: "text-[#17201C]", tone: "gold", Icon: Box },
+        { label: "Pieces", val: overallStats.totalQty, color: "text-[#2F6B4F]", tone: "green", Icon: Layers },
+        { label: "Low Stock", val: overallStats.lowStock, color: "text-[#B07C1E]", tone: "warn", Icon: AlertTriangle },
+        { label: "Available", val: overallStats.available, color: "text-[#2F6B4F]", tone: "green", Icon: CheckCircle2 },
+      ];
+
   return (
     <div>
       {/* Overall summary bar */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-        {(isOutTab
-          ? [
-              { label: "Out of Stock", val: overallStats.total, color: "text-red-600" },
-              { label: "Sold out", val: overallStats.sold, color: "text-[#17201C]" },
-              { label: "Deleted P", val: overallStats.deletedP, color: "text-[#6F7772]" },
-              { label: "Zero Qty", val: overallStats.outOfStock, color: "text-red-600" },
-              { label: "Damaged", val: overallStats.damaged, color: "text-amber-600" },
-            ]
-          : [
-              { label: "Categories", val: topCats.length, color: "text-[#17201C]" },
-              { label: "In Stock Products", val: overallStats.total, color: "text-[#17201C]" },
-              { label: "Pieces", val: overallStats.totalQty, color: "text-green-700" },
-              { label: "Low Stock", val: overallStats.lowStock, color: "text-amber-600" },
-              { label: "Available", val: overallStats.available, color: "text-green-700" },
-            ]
-        ).map((s) => (
-          <div key={s.label} className="card !p-3 text-center">
-            <div className={`font-display text-[22px] font-bold tabular-nums ${s.color}`}>{s.val}</div>
-            <div className="text-[11px] text-[#6F7772] mt-0.5">{s.label}</div>
-          </div>
-        ))}
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+        {summaryTiles.map((s) => {
+          const t = SUMMARY_TONES[s.tone];
+          return (
+            <div key={s.label} className={`relative overflow-hidden rounded-[14px] border p-3.5 shadow-[0_8px_22px_-18px_rgba(32,43,38,0.5)] transition-[border-color,box-shadow] duration-200 hover:shadow-[0_10px_26px_-18px_rgba(32,43,38,0.55)] ${t.card}`}>
+              <div className="flex items-center gap-2.5">
+                <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[10px] border ${t.icon}`}>
+                  <s.Icon size={14} strokeWidth={1.6} className={t.iconFg} />
+                </span>
+                <div className="min-w-0">
+                  <div className={`font-display text-[18px] font-semibold leading-none tabular-nums ${s.color}`}>{s.val}</div>
+                  <div className="mt-1 truncate text-[10.5px] text-[#6F7772]">{s.label}</div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Category cards */}
@@ -240,32 +289,33 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
           const isOpen = expanded[cat.id];
 
           return (
-            <div key={cat.id} className="bg-[#FFFDF9] border border-[#E2E7E2] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
+            <div key={cat.id} className="overflow-hidden rounded-[14px] border border-[#E2E7E2] bg-white shadow-[0_1px_2px_rgba(23,56,42,0.04)] transition-colors duration-200 hover:border-[#CBDED2]">
               {/* Category header */}
               <button onClick={() => toggle(cat.id)}
-                className="w-full flex items-center gap-4 p-5 hover:bg-[#FBF9F4] transition-colors text-left">
-                <div className="h-10 w-10 rounded-lg bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
-                  <Layers size={18} className="text-[#79591F]" strokeWidth={1.5} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[15px] text-[#17201C]">{cat.name}</span>
-                    <span className="text-[11px] text-[#6F7772] bg-[#F1F4F0] border border-[#D3DCD5] px-2 py-0.5 rounded-full">{s.total} items</span>
-                    {!isOutTab && s.lowStock > 0 && <span className="text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">{s.lowStock} low</span>}
-                    {isOutTab && s.sold > 0 && <span className="text-[11px] text-red-700 bg-red-50 px-2 py-0.5 rounded-full">{s.sold} sold</span>}
+                className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-[#FBFAF5]">
+                <JewellerySwatch
+                  variant={swatchVariantFor(cat.name)}
+                  className="h-11 w-11 flex-shrink-0 rounded-[12px] border border-[#EFE6D2]"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="text-[14px] font-semibold tracking-[-0.01em] text-[#17201C]">{cat.name}</span>
+                    <span className="rounded-full border border-[#D3DCD5] bg-[#F1F4F0] px-2 py-0.5 text-[11px] tabular-nums text-[#6F7772]">{s.total} items</span>
+                    {!isOutTab && s.lowStock > 0 && <span className="rounded-full border border-[#F0DFC2] bg-[#FBF4E3] px-2 py-0.5 text-[11px] tabular-nums text-[#B07C1E]">{s.lowStock} low</span>}
+                    {isOutTab && s.sold > 0 && <span className="rounded-full border border-[#E8C9C5] bg-[#F9ECEA] px-2 py-0.5 text-[11px] tabular-nums text-[#9D4B47]">{s.sold} sold</span>}
                   </div>
 
                   {/* Stock distribution bar */}
-                  <div className="mt-2 flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-[#F1F4F0] rounded-full overflow-hidden flex">
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-[#F1F4F0]">
                       {s.total > 0 && <>
-                        <div className="bg-green-500 h-full" style={{ width: `${(s.available / s.total) * 100}%` }} />
-                        <div className="bg-[#D9A441] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
-                        <div className="bg-amber-400 h-full" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
-                        <div className="bg-red-400 h-full" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
+                        <div className="h-full bg-green-500" style={{ width: `${(s.available / s.total) * 100}%` }} />
+                        <div className="h-full bg-[#D9A441]" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
+                        <div className="h-full bg-amber-400" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
+                        <div className="h-full bg-red-400" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
                       </>}
                     </div>
-                    <div className="flex items-center gap-3 text-[11px] text-[#6F7772] flex-shrink-0">
+                    <div className="flex flex-shrink-0 items-center gap-3 text-[11px] text-[#6F7772]">
                       <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-500" />{s.available} avail</span>
                       <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#D9A441]" />{s.onDisplay} display</span>
                       {s.reserved > 0 && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-400" />{s.reserved} reserved</span>}
@@ -274,18 +324,20 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
                 </div>
 
                 {/* Stats */}
-                <div className="hidden md:flex items-center gap-6 flex-shrink-0 text-right">
+                <div className="hidden flex-shrink-0 items-center gap-6 text-right md:flex">
                   <div>
                     <div className="text-[11px] text-[#6F7772]">Net Weight</div>
-                    <div className="text-[14px] font-semibold text-[#17201C] tabular-nums">{fmtWeight(s.netWt)}</div>
+                    <div className="text-[14px] font-semibold tabular-nums text-[#17201C]">{fmtWeight(s.netWt)}</div>
                   </div>
                   <div>
                     <div className="text-[11px] text-[#6F7772]">In Stock</div>
-                    <div className="text-[14px] font-semibold text-green-700 tabular-nums">{s.totalQty}</div>
+                    <div className="text-[14px] font-semibold tabular-nums text-[#2F6B4F]">{s.totalQty}</div>
                   </div>
                 </div>
 
-                {isOpen ? <ChevronDown size={16} className="text-[#6F7772] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#6F7772] flex-shrink-0" />}
+                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[9px] border border-[#E2E7E2] bg-[#FBFAF5] text-[#6F7772]">
+                  {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </span>
               </button>
 
               {/* Expanded content — one summary card per sub-category (qty + purities); click to reveal tags */}
@@ -312,36 +364,39 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
           const s = catStats(uncat);
           const isOpen = expanded["__uncat__"];
           return (
-            <div className="bg-[#FFFDF9] border border-[#E2E7E2] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
+            <div className="overflow-hidden rounded-[14px] border border-[#E2E7E2] bg-white shadow-[0_1px_2px_rgba(23,56,42,0.04)] transition-colors duration-200 hover:border-[#CBDED2]">
               <button onClick={() => toggle("__uncat__")}
-                className="w-full flex items-center gap-4 p-5 hover:bg-[#FBF9F4] transition-colors text-left">
-                <div className="h-10 w-10 rounded-lg bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
-                  <Layers size={18} className="text-[#79591F]" strokeWidth={1.5} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[15px] text-[#17201C]">Uncategorized</span>
-                    <span className="text-[11px] text-[#6F7772] bg-[#F1F4F0] border border-[#D3DCD5] px-2 py-0.5 rounded-full">{s.total} items</span>
+                className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-[#FBFAF5]">
+                <JewellerySwatch
+                  variant="coin"
+                  className="h-11 w-11 flex-shrink-0 rounded-[12px] border border-[#EFE6D2]"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="text-[14px] font-semibold tracking-[-0.01em] text-[#17201C]">Uncategorized</span>
+                    <span className="rounded-full border border-[#D3DCD5] bg-[#F1F4F0] px-2 py-0.5 text-[11px] tabular-nums text-[#6F7772]">{s.total} items</span>
                   </div>
-                  <div className="mt-2 flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-[#F1F4F0] rounded-full overflow-hidden flex">
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-[#F1F4F0]">
                       {s.total > 0 && <>
-                        <div className="bg-green-500 h-full" style={{ width: `${(s.available / s.total) * 100}%` }} />
-                        <div className="bg-[#D9A441] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
-                        <div className="bg-amber-400 h-full" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
-                        <div className="bg-red-400 h-full" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
+                        <div className="h-full bg-green-500" style={{ width: `${(s.available / s.total) * 100}%` }} />
+                        <div className="h-full bg-[#D9A441]" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
+                        <div className="h-full bg-amber-400" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
+                        <div className="h-full bg-red-400" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
                       </>}
                     </div>
-                    <div className="flex items-center gap-3 text-[11px] text-[#6F7772] flex-shrink-0">
+                    <div className="flex flex-shrink-0 items-center gap-3 text-[11px] text-[#6F7772]">
                       <span>{s.totalQty} in stock</span>
                     </div>
                   </div>
                 </div>
-                <div className="hidden md:flex items-center gap-6 flex-shrink-0 text-right">
-                  <div><div className="text-[11px] text-[#6F7772]">Net Weight</div><div className="text-[14px] font-semibold text-[#17201C] tabular-nums">{fmtWeight(s.netWt)}</div></div>
-                  <div><div className="text-[11px] text-[#6F7772]">In Stock</div><div className="text-[14px] font-semibold text-green-700 tabular-nums">{s.totalQty}</div></div>
+                <div className="hidden flex-shrink-0 items-center gap-6 text-right md:flex">
+                  <div><div className="text-[11px] text-[#6F7772]">Net Weight</div><div className="text-[14px] font-semibold tabular-nums text-[#17201C]">{fmtWeight(s.netWt)}</div></div>
+                  <div><div className="text-[11px] text-[#6F7772]">In Stock</div><div className="text-[14px] font-semibold tabular-nums text-[#2F6B4F]">{s.totalQty}</div></div>
                 </div>
-                {isOpen ? <ChevronDown size={16} className="text-[#6F7772] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#6F7772] flex-shrink-0" />}
+                <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-[9px] border border-[#E2E7E2] bg-[#FBFAF5] text-[#6F7772]">
+                  {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </span>
               </button>
               {isOpen && (
                 <div className="border-t border-[#E2E7E2]">
@@ -565,111 +620,166 @@ export default function Inventory() {
 
   return (
     <div className="max-w-[1400px] [&>div:first-child]:mb-5">
-      <PageHeader
-        title="Inventory"
-        subtitle="Every piece in your showroom — catalogued, weighed and hallmarked."
-        actions={
-          <>
-            {!isPureTab && canImport && (
+      {/* ── Hero: subtle jewellery banner behind the header, buttons untouched ── */}
+      <section className="relative mb-5 overflow-hidden rounded-[18px] border border-[#E9E2D2] bg-[linear-gradient(115deg,#FDFCF8_0%,#FAF6EC_52%,#F3EBDC_100%)] px-5 py-5 shadow-[0_16px_40px_-32px_rgba(88,70,38,0.5)] sm:px-7 sm:py-6 [&>div:first-child]:mb-0">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_130%_at_100%_50%,rgba(222,192,128,0.26),transparent_62%)]" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-60 [background-image:repeating-linear-gradient(100deg,rgba(178,139,72,0.04)_0px,rgba(178,139,72,0.04)_1px,transparent_1px,transparent_9px)]" />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-[-1%] hidden w-[42%] lg:block xl:w-[38%]">
+          <JewelleryBannerArt className="h-full w-full" />
+        </div>
+        <div className="relative z-10 lg:max-w-[58%]">
+          <PageHeader
+            title="Inventory"
+            subtitle="Every piece in your showroom — catalogued, weighed and hallmarked."
+            actions={
               <>
-                <input
-                  ref={importFileRef}
-                  type="file"
-                  accept=".csv,text/csv,application/vnd.ms-excel"
-                  className="hidden"
-                  onChange={handleImportCsvFile}
-                />
-                <button className="btn-secondary" onClick={triggerImportCsv} disabled={importBusy}>
-                  {importBusy ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} strokeWidth={1.5} />}
-                  {importBusy
-                    ? `Importing ${importProgress?.percent ?? 0}%`
-                    : "Import"}
-                </button>
+                {!isPureTab && canImport && (
+                  <>
+                    <input
+                      ref={importFileRef}
+                      type="file"
+                      accept=".csv,text/csv,application/vnd.ms-excel"
+                      className="hidden"
+                      onChange={handleImportCsvFile}
+                    />
+                    <button className="btn-secondary" onClick={triggerImportCsv} disabled={importBusy}>
+                      {importBusy ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} strokeWidth={1.5} />}
+                      {importBusy
+                        ? `Importing ${importProgress?.percent ?? 0}%`
+                        : "Import"}
+                    </button>
+                  </>
+                )}
+                {!isPureTab && (
+                  <button className="btn-secondary" onClick={exportCsv}>
+                    <Download size={14} strokeWidth={1.5} /> Export
+                  </button>
+                )}
+                {can("inventory", "create") && (
+                  isPureTab ? (
+                    <button
+                      type="button"
+                      data-testid={T.inventoryAddBtn}
+                      className="btn-primary"
+                      onClick={() => pureAddRef.current?.()}
+                    >
+                      <Plus size={14} strokeWidth={1.5} /> Add Product
+                    </button>
+                  ) : (
+                    <Link
+                      to="/inventory/new"
+                      data-testid={T.inventoryAddBtn}
+                      className="btn-primary"
+                    >
+                      <Plus size={14} strokeWidth={1.5} /> Add Product
+                    </Link>
+                  )
+                )}
               </>
-            )}
-            {!isPureTab && (
-              <button className="btn-secondary" onClick={exportCsv}>
-                <Download size={14} strokeWidth={1.5} /> Export
-              </button>
-            )}
-            {can("inventory", "create") && (
-              isPureTab ? (
-                <button
-                  type="button"
-                  data-testid={T.inventoryAddBtn}
-                  className="btn-primary"
-                  onClick={() => pureAddRef.current?.()}
-                >
-                  <Plus size={14} strokeWidth={1.5} /> Add Product
-                </button>
-              ) : (
-                <Link
-                  to="/inventory/new"
-                  data-testid={T.inventoryAddBtn}
-                  className="btn-primary"
-                >
-                  <Plus size={14} strokeWidth={1.5} /> Add Product
-                </Link>
-              )
-            )}
-          </>
-        }
-      />
+            }
+          />
+        </div>
+      </section>
 
       {/* ── Stats bar (jewellery tabs only) ── */}
       {!isPureTab && (
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
-            Total Products
+        {/* Total Products */}
+        <div className="relative overflow-hidden rounded-[16px] border border-[#EADFC4] bg-[linear-gradient(150deg,#FFFCF5_0%,#FBF4E4_55%,#F6EBD6_100%)] p-4 shadow-[0_12px_28px_-22px_rgba(88,70,38,0.55)]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(110%_130%_at_92%_4%,rgba(217,164,65,0.14),transparent_62%)]" />
+          <div className="relative z-10 flex items-start justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[11px] border border-[#E6D3A6] bg-[linear-gradient(140deg,#FAF0D6,#EFDDB2)]">
+                <Box size={15} strokeWidth={1.6} className="text-[#9A6C25]" />
+              </span>
+              <div className="min-w-0">
+                <div className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9A855A]">Total Products</div>
+                <div className="mt-1.5 font-display text-[24px] font-semibold leading-none tabular-nums text-[#2C2A24]">
+                  {stats.total}
+                </div>
+              </div>
+            </div>
+            <MiniBars className="mt-1 h-7 w-9 flex-shrink-0 text-[#D9A441]/45" />
           </div>
-          <div className="font-display text-[24px] font-semibold text-[#17201C] mt-2 tabular-nums">
-            {stats.total}
-          </div>
+          <div className="relative z-10 mt-2.5 text-[11px] text-[#8A8172]">All catalogued products</div>
         </div>
-        <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
-            Total Items in Stock
+
+        {/* Total Items in Stock */}
+        <div className="relative overflow-hidden rounded-[16px] border border-[#D8E7DA] bg-[linear-gradient(150deg,#F9FCF9_0%,#EFF6EF_55%,#E6F1E9_100%)] p-4 shadow-[0_12px_28px_-22px_rgba(40,72,58,0.5)]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(110%_130%_at_92%_4%,rgba(47,107,79,0.12),transparent_62%)]" />
+          <div className="relative z-10 flex items-start justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[11px] border border-[#CFE2D5] bg-[linear-gradient(140deg,#E9F3EB,#D6E8DC)]">
+                <Layers size={15} strokeWidth={1.6} className="text-[#2F6B4F]" />
+              </span>
+              <div className="min-w-0">
+                <div className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[#5E7A68]">Total Items in Stock</div>
+                <div className="mt-1.5 font-display text-[24px] font-semibold leading-none tabular-nums text-[#1E2A23]">
+                  {stats.totalItems}
+                </div>
+              </div>
+            </div>
+            <MiniBars className="mt-1 h-7 w-9 flex-shrink-0 text-[#2F6B4F]/40" />
           </div>
-          <div className="font-display text-[24px] font-semibold text-[#17201C] mt-2 tabular-nums">
-            {stats.totalItems}
-          </div>
+          <div className="relative z-10 mt-2.5 text-[11px] text-[#75857B]">Available stock items</div>
         </div>
-        <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
-            Total Gross Weight
+
+        {/* Total Gross Weight — gold bullion artwork */}
+        <div className="relative overflow-hidden rounded-[16px] border border-[#E7D5AA] bg-[linear-gradient(150deg,#FEFBF4_0%,#FAF4E6_55%,#F3E7CF_100%)] p-4 shadow-[0_12px_28px_-22px_rgba(88,70,38,0.55)]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_55%,rgba(214,168,74,0.2),transparent_64%)]" />
+          <div className="relative z-10 flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[11px] border border-[#E6D3A6] bg-[linear-gradient(140deg,#FAF0D6,#EFDDB2)]">
+              <Scale size={15} strokeWidth={1.6} className="text-[#9A6C25]" />
+            </span>
+            <div className="min-w-0">
+              <div className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9A855A]">Total Gross Weight</div>
+            </div>
           </div>
-          <div className="mt-2 space-y-1">
+          <div className="relative z-10 mt-2.5 space-y-1 pr-[40%]">
             {weightByMetal.map((m) => (
               <div key={m.name} className="flex items-baseline justify-between gap-2">
-                <span className="text-[11.5px] text-[#6F7772]">{m.name}</span>
-                <span className="font-display text-[16px] font-semibold text-[#17201C] tabular-nums">
+                <span className="text-[11.5px] text-[#6F7671]">{m.name}</span>
+                <span className="font-display text-[15px] font-semibold text-[#76581D] tabular-nums">
                   {fmtWeight(m.gross)}
                 </span>
               </div>
             ))}
           </div>
+          <span aria-hidden="true" className="pointer-events-none absolute -right-7 top-1/2 h-[168%] w-[37%] -translate-y-1/2">
+            <BullionArt metal="gold" className="h-full w-full" />
+          </span>
         </div>
-        <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
-            Total Net Weight
+
+        {/* Total Net Weight — silver bullion artwork */}
+        <div className="relative overflow-hidden rounded-[16px] border border-[#D6E2EB] bg-[linear-gradient(150deg,#F9FCFD_0%,#EFF5F9_55%,#E7EFF5_100%)] p-4 shadow-[0_12px_28px_-22px_rgba(44,66,80,0.5)]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_130%_at_100%_55%,rgba(126,158,175,0.18),transparent_64%)]" />
+          <div className="relative z-10 flex items-center gap-2.5">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[11px] border border-[#CFDFEA] bg-[linear-gradient(140deg,#E8F0F7,#D6E4EE)]">
+              <Feather size={15} strokeWidth={1.6} className="text-[#3E6474]" />
+            </span>
+            <div className="min-w-0">
+              <div className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-[#5D7787]">Total Net Weight</div>
+            </div>
           </div>
-          <div className="mt-2 space-y-1">
+          <div className="relative z-10 mt-2.5 space-y-1 pr-[40%]">
             {weightByMetal.map((m) => (
               <div key={m.name} className="flex items-baseline justify-between gap-2">
-                <span className="text-[11.5px] text-[#6F7772]">{m.name}</span>
-                <span className="font-display text-[16px] font-semibold text-[#17201C] tabular-nums">
+                <span className="text-[11.5px] text-[#6F7671]">{m.name}</span>
+                <span className="font-display text-[15px] font-semibold text-[#49636E] tabular-nums">
                   {fmtWeight(m.net)}
                 </span>
               </div>
             ))}
           </div>
+          <span aria-hidden="true" className="pointer-events-none absolute -right-7 top-1/2 h-[168%] w-[37%] -translate-y-1/2">
+            <BullionArt metal="silver" className="h-full w-full" />
+          </span>
         </div>
       </div>
       )}
 
       {/* ── In Stock / Out of Stock / Pure tabs ── */}
-      <div className="flex items-center gap-1 mb-4 border-b border-[#E2E7E2]">
+      <div className="mb-4 flex items-center gap-1.5 border-b border-[#E2E7E2]">
         {[
           { key: "in_stock", label: "In Stock", count: stats.total, icon: Package },
           { key: "out_of_stock", label: "Out of Stock", count: stats.outCount, icon: Package },
@@ -685,21 +795,21 @@ export default function Inventory() {
                 setStatus("all");
               }
             }}
-            className={`flex items-center gap-1.5 px-4 py-2.5 text-[12.5px] font-medium whitespace-nowrap border-b-2 transition-colors ${
+            className={`relative -mb-px flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3.5 pb-2.5 pt-2 text-[12.5px] font-medium transition-colors ${
               stockTab === key
-                ? "border-[#214F3A] text-[#214F3A] bg-[#FAF7EF]"
-                : "border-transparent text-[#6F7772] hover:text-[#214F3A] hover:bg-[#FAF7EF]"
+                ? "border-[#214F3A] text-[#17382A]"
+                : "border-transparent text-[#6F7772] hover:border-[#D3DCD5] hover:text-[#214F3A]"
             }`}
             data-testid={key === "pure" ? "inventory-pure-tab" : undefined}
           >
-            <Icon size={13} strokeWidth={1.5} />
+            <Icon size={13} strokeWidth={1.5} className={stockTab === key ? "text-[#214F3A]" : "text-[#89928C]"} />
             {label}
             {count != null && (
               <span
-                className={`ml-1 rounded-full px-1.5 py-0.5 text-[10px] tabular-nums ${
+                className={`ml-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-semibold tabular-nums ${
                   stockTab === key
                     ? key === "out_of_stock"
-                      ? "bg-red-50 text-red-700"
+                      ? "bg-[#F9ECEA] text-[#9D4B47]"
                       : "bg-[#EAF2ED] text-[#214F3A]"
                     : "bg-[#F1F4F0] text-[#6F7772]"
                 }`}
@@ -716,9 +826,9 @@ export default function Inventory() {
       ) : (
       <>
       {/* ── Filter bar ── */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         {/* Search */}
-        <div className="relative flex-1 min-w-[200px] max-w-md">
+        <div className="relative min-w-[220px] max-w-md flex-1">
           <Search
             size={14}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-[#89928C]"
