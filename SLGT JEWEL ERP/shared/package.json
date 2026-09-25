@@ -1,0 +1,17 @@
+{
+  "name": "@crm/domain",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared jewellery CRM domain logic (billing, money, inventory constants) — DB-agnostic",
+  "exports": {
+    ".": "./domain/index.js",
+    "./money": "./domain/money.js",
+    "./billing": "./domain/billingCalc.js",
+    "./inventory": "./domain/inventory.js",
+    "./csv": "./domain/csvParse.js"
+  },
+  "dependencies": {
+    "decimal.js": "^10.6.0"
+  }
+}

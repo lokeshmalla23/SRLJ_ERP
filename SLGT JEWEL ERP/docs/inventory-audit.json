@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-07-28T05:33:44.610Z",
+  "products_checked": 42,
+  "balanced": 42,
+  "mismatched": 0,
+  "mismatches": [],
+  "unique_tag_violations": 0,
+  "unique_violations": [],
+  "missing_barcodes_unique_tag": 0,
+  "missing_barcodes": [],
+  "quantity_mode_count": 42,
+  "unique_tag_count": 0
+}

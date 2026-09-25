@@ -1,0 +1,423 @@
+{
+  "generated_at": "2026-09-23T05:37:39.980Z",
+  "cogs_account_ids": [
+    "47a0fa23-94f8-46ff-868e-f393a6cff58e"
+  ],
+  "sale_cogs_entries_found": 11,
+  "invoices_checked": 11,
+  "invoices_missing": 0,
+  "total_posted_cogs": 8352957.92,
+  "total_recomputed_cogs": 1045148.4,
+  "total_overstatement": 7307809.52,
+  "total_cogs_reversed_via_returns": 0,
+  "affected_invoice_count": 11,
+  "affected_invoices": [
+    {
+      "invoice_id": "f2d927a9-1595-45e8-adf2-1720691f625d",
+      "invoice_no": "SSJ-1/0009",
+      "journal_entry_id": "c558d976-7a68-4c9a-85f2-0cabac319485",
+      "entry_date": "2026-09-21",
+      "posted_cogs": 3090023.36,
+      "recomputed_cogs": 41060.94,
+      "overstatement": 3048962.42,
+      "lines": [
+        {
+          "product_id": "f0825bb1-341b-43db-9c2c-9279172278de",
+          "product_name": "Silver PAYAL SALEM",
+          "metal": "Silver",
+          "purity": "pyl",
+          "net_weight": 146,
+          "line_rate": 196.2,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 26523.33
+        },
+        {
+          "product_id": "298a7524-7bbc-43a7-8df7-dc5cb9e8cd72",
+          "product_name": "Silver PAYAL AGRA",
+          "metal": "Silver",
+          "purity": "pyl",
+          "net_weight": 23.4,
+          "line_rate": 196.2,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 4251
+        },
+        {
+          "product_id": "298a7524-7bbc-43a7-8df7-dc5cb9e8cd72",
+          "product_name": "Silver PAYAL AGRA",
+          "metal": "Silver",
+          "purity": "pyl",
+          "net_weight": 19.2,
+          "line_rate": 196.2,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 3488
+        },
+        {
+          "product_id": "a5c9953f-6c8d-4b96-a204-2d27dd67bd1e",
+          "product_name": "Silver SIL CHAINS",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 30,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 6798.61
+        }
+      ]
+    },
+    {
+      "invoice_id": "55eb403c-fbcf-4fc5-b691-5b49a08f2d82",
+      "invoice_no": "SSJ-1/0007",
+      "journal_entry_id": "3870b14e-4df7-461c-a28f-d59fa8ffe4ae",
+      "entry_date": "2026-09-21",
+      "posted_cogs": 1659678.97,
+      "recomputed_cogs": 324664.57,
+      "overstatement": 1335014.4,
+      "lines": [
+        {
+          "product_id": "16b6a202-8733-41cb-858f-2ddac6f5a65e",
+          "product_name": "Gold THADU FANCY ",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 23.412,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 303362.27
+        },
+        {
+          "product_id": "2d2881cb-cc5b-4ef6-8f73-bb5801bbce68",
+          "product_name": "Silver BHARANI",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 34,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 7705.09
+        },
+        {
+          "product_id": "0fb6497a-8ad8-4b10-8139-5f469eeae09c",
+          "product_name": "Silver BHARANI",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 34,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 7705.09
+        },
+        {
+          "product_id": "0ac3daee-a814-44bd-a8d7-f40752ddacc7",
+          "product_name": "Silver SIL B CHUTTU",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 10,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 2266.2
+        },
+        {
+          "product_id": "028daf35-e0bf-42da-ba9c-98667ddff66e",
+          "product_name": "Silver SIL METLU ",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 10,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 2266.2
+        },
+        {
+          "product_id": "69f5dea2-3ce5-45bd-a96e-de79d7e9c88e",
+          "product_name": "Silver SIL PILLALU",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 6,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 1359.72
+        }
+      ]
+    },
+    {
+      "invoice_id": "fa522d17-bfa0-4179-a018-1ffcfbc409e6",
+      "invoice_no": "SSJ-1/0008",
+      "journal_entry_id": "7d1a89ed-5da2-4b7e-95f0-be25f371b883",
+      "entry_date": "2026-09-21",
+      "posted_cogs": 1659678.97,
+      "recomputed_cogs": 324664.57,
+      "overstatement": 1335014.4,
+      "lines": [
+        {
+          "product_id": "0ac3daee-a814-44bd-a8d7-f40752ddacc7",
+          "product_name": "Silver SIL B CHUTTU",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 10,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 2266.2
+        },
+        {
+          "product_id": "028daf35-e0bf-42da-ba9c-98667ddff66e",
+          "product_name": "Silver SIL METLU ",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 10,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 2266.2
+        },
+        {
+          "product_id": "69f5dea2-3ce5-45bd-a96e-de79d7e9c88e",
+          "product_name": "Silver SIL PILLALU",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 6,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 1359.72
+        },
+        {
+          "product_id": "2d2881cb-cc5b-4ef6-8f73-bb5801bbce68",
+          "product_name": "Silver BHARANI",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 34,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 7705.09
+        },
+        {
+          "product_id": "0fb6497a-8ad8-4b10-8139-5f469eeae09c",
+          "product_name": "Silver BHARANI",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 34,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 7705.09
+        },
+        {
+          "product_id": "16b6a202-8733-41cb-858f-2ddac6f5a65e",
+          "product_name": "Gold THADU FANCY ",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 23.412,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 303362.27
+        }
+      ]
+    },
+    {
+      "invoice_id": "d80eac14-5575-4e22-a021-51ef8de1ea69",
+      "invoice_no": "SSJ-1/0006",
+      "journal_entry_id": "022fb36d-4996-4993-9eda-910312870660",
+      "entry_date": "2026-09-20",
+      "posted_cogs": 650233.64,
+      "recomputed_cogs": 10424.53,
+      "overstatement": 639809.11,
+      "lines": [
+        {
+          "product_id": "98f2cd56-0ca1-41f0-b0ed-993cce72c497",
+          "product_name": "Silver CUPS",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 35,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 7931.71
+        },
+        {
+          "product_id": "8f5b6745-6e18-4981-8c8a-52413b9143dd",
+          "product_name": "Silver spoons",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 11,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 2492.82
+        }
+      ]
+    },
+    {
+      "invoice_id": "3c6b6b90-0b87-4e3a-89d6-e51d4f3ef3f7",
+      "invoice_no": "SSJ-1/0005",
+      "journal_entry_id": "6ab4997b-5476-4713-8136-62f34a127f84",
+      "entry_date": "2026-09-20",
+      "posted_cogs": 325116.82,
+      "recomputed_cogs": 5212.27,
+      "overstatement": 319904.55,
+      "lines": [
+        {
+          "product_id": "a5c9953f-6c8d-4b96-a204-2d27dd67bd1e",
+          "product_name": "Silver SIL CHAINS",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 23,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 5212.27
+        }
+      ]
+    },
+    {
+      "invoice_id": "d380112a-254b-41c3-900f-4f9d7e841976",
+      "invoice_no": "SSJ-1/0004",
+      "journal_entry_id": "766c1c28-f458-4439-bb9e-6dadd143b786",
+      "entry_date": "2026-09-20",
+      "posted_cogs": 310981.31,
+      "recomputed_cogs": 3996.67,
+      "overstatement": 306984.64,
+      "lines": [
+        {
+          "product_id": "9e273e75-cddd-4904-815a-2e739f63c287",
+          "product_name": "Silver kadiyalu",
+          "metal": "Silver",
+          "purity": "pyl",
+          "net_weight": 22,
+          "line_rate": 196.2,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 3996.67
+        }
+      ]
+    },
+    {
+      "invoice_id": "f3988143-532a-46b3-b69b-e377f5de941a",
+      "invoice_no": "SSJ-1/0003",
+      "journal_entry_id": "b3f4a19a-714b-46a8-9cef-a5dafaf22739",
+      "entry_date": "2026-09-19",
+      "posted_cogs": 296845.79,
+      "recomputed_cogs": 4759.03,
+      "overstatement": 292086.76,
+      "lines": [
+        {
+          "product_id": "028daf35-e0bf-42da-ba9c-98667ddff66e",
+          "product_name": "Silver SIL METLU ",
+          "metal": "Silver",
+          "purity": "artl",
+          "net_weight": 21,
+          "line_rate": 244.75,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 4759.03
+        }
+      ]
+    },
+    {
+      "invoice_id": "005071a7-86c3-4fa0-8cee-ebc045bcda4d",
+      "invoice_no": "SSJ-1/0011",
+      "journal_entry_id": "467c7e48-6a6d-45ea-92bd-2759a5b91f3a",
+      "entry_date": "2026-09-21",
+      "posted_cogs": 177824.77,
+      "recomputed_cogs": 163006.04,
+      "overstatement": 14818.73,
+      "lines": [
+        {
+          "product_id": "2ae5ea34-0fb5-48e9-b2c1-363edd375995",
+          "product_name": "Gold NECKLACE ANTIQUE",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 12.58,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 163006.04
+        }
+      ]
+    },
+    {
+      "invoice_id": "c23e355a-b47a-46d9-9303-2e70b3162640",
+      "invoice_no": "SSJ-1/0010",
+      "journal_entry_id": "ee220a92-6f7d-48d7-afb5-b530f2315653",
+      "entry_date": "2026-09-21",
+      "posted_cogs": 114780.37,
+      "recomputed_cogs": 105215.34,
+      "overstatement": 9565.03,
+      "lines": [
+        {
+          "product_id": "ae93f2c1-37b2-4c32-899a-3469d2c93944",
+          "product_name": "Gold CHAMPASWARALU",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 8.12,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 105215.34
+        }
+      ]
+    },
+    {
+      "invoice_id": "4253cf63-4971-4112-a2d2-d51b4a2f0092",
+      "invoice_no": "SSJ-1/0002",
+      "journal_entry_id": "6370398d-cb36-48de-af9f-8919df9a047a",
+      "entry_date": "2026-09-19",
+      "posted_cogs": 42039.02,
+      "recomputed_cogs": 38535.77,
+      "overstatement": 3503.25,
+      "lines": [
+        {
+          "product_id": "26dd8759-8338-49b7-ae3b-feb2d5d68b3f",
+          "product_name": "Gold CHAMPASWARALU",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 2.974,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 38535.77
+        }
+      ]
+    },
+    {
+      "invoice_id": "5f67c51e-cb21-49be-b10f-23d9d5c5730b",
+      "invoice_no": "SSJ-1/0001",
+      "journal_entry_id": "e386cba0-c9da-4796-a92d-88e7b42e862d",
+      "entry_date": "2026-09-19",
+      "posted_cogs": 25754.9,
+      "recomputed_cogs": 23608.67,
+      "overstatement": 2146.23,
+      "lines": [
+        {
+          "product_id": "89c70f25-7091-42a9-af95-6857a6013f58",
+          "product_name": "Gold LOCKETS SMALL",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 0.733,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 9497.89
+        },
+        {
+          "product_id": "c46a9869-f190-45b9-aae3-06f8a606c88b",
+          "product_name": "Gold KUTTUKADALU",
+          "metal": "Gold",
+          "purity": "22K",
+          "net_weight": 1.089,
+          "line_rate": 14135,
+          "line_gold_rate": 15420,
+          "cogs_source": "metal_estimate",
+          "recomputed_line_cogs": 14110.78
+        }
+      ]
+    }
+  ]
+}

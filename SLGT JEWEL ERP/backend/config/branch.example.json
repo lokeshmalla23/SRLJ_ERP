@@ -1,0 +1,10 @@
+{
+  "shop_id": null,
+  "device_name": "Branch Host PC1",
+  "role": "active_host",
+  "listen_host": "0.0.0.0",
+  "listen_port": 8080,
+  "cloud_endpoint": null,
+  "local_api_port": 8080,
+  "_comment": "device_id is auto-generated on first branch start if missing. Never put DATABASE_URL or passwords in this file — use environment variables / .env.branch"
+}

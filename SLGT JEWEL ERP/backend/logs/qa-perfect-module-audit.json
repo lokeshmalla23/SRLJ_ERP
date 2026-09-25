@@ -1,0 +1,581 @@
+{
+  "generated_at": "2026-08-11T05:25:54.124Z",
+  "base": "http://127.0.0.1:8000",
+  "stamp": 1786425940848,
+  "summary": {
+    "pass": 81,
+    "fail": 0,
+    "warn": 0,
+    "total": 81
+  },
+  "findings": [],
+  "results": [
+    {
+      "module": "System",
+      "check": "Health ready",
+      "status": "PASS",
+      "detail": "mode=branch db=local-sqlite",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Reject bad password",
+      "status": "PASS",
+      "detail": "status=401",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Owner login",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Session /me",
+      "status": "PASS",
+      "detail": "[redacted]",
+      "severity": "info"
+    },
+    {
+      "module": "Settings",
+      "check": "Gold rate map",
+      "status": "PASS",
+      "detail": "24K=14000 22K=12000",
+      "severity": "info"
+    },
+    {
+      "module": "Dashboard",
+      "check": "GET /api/dashboard/summary",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "GET /api/customers",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Products",
+      "check": "GET /api/products",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "GET /api/categories",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "GET /api/catalog/metal-types",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "GET /api/catalog/purities",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Invoices",
+      "check": "GET /api/invoices",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Quotations",
+      "check": "GET /api/quotations",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Orders",
+      "check": "GET /api/orders",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Vendors",
+      "check": "GET /api/vendors",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Purchases",
+      "check": "GET /api/purchases",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "GET /api/schemes",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "SchemePlans",
+      "check": "GET /api/scheme-plans",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Employees",
+      "check": "GET /api/employees",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Promotions",
+      "check": "GET /api/promotions/campaigns",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Settings",
+      "check": "GET /api/settings",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Notifications",
+      "check": "GET /api/notifications",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Search",
+      "check": "GET /api/search",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Barcodes",
+      "check": "GET /api/barcodes/stats",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Stock",
+      "check": "GET /api/stock/history",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Reports",
+      "check": "GET /api/reports/sales",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/dashboard",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/receivables",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/payables",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/trial-balance",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/cash-book",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/day-book",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/expenses",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/gst",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/integrity",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/sales",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/metal",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/schemes",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/bank-book",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/pnl",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/balance-sheet",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/receipts",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/payments-register",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/employee-sales",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/pure-metal-daily",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/daily-closings",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Advances",
+      "check": "GET /api/advances",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Create customer",
+      "status": "PASS",
+      "detail": "7350206a-d623-46bf-bfac-a1074982db64",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Read customer",
+      "status": "PASS",
+      "detail": "QA Perfect 1786425940848",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Customer 360",
+      "status": "PASS",
+      "detail": "status=200",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Reject duplicate mobile",
+      "status": "PASS",
+      "detail": "status=409",
+      "severity": "info"
+    },
+    {
+      "module": "Vendors",
+      "check": "Create vendor",
+      "status": "PASS",
+      "detail": "46ebfdd9-1fcb-4037-86e3-751000857f34",
+      "severity": "info"
+    },
+    {
+      "module": "Employees",
+      "check": "Create employee",
+      "status": "PASS",
+      "detail": "792e3003-0d40-4cfe-af23-b599ef1669c9",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Create product",
+      "status": "PASS",
+      "detail": "id=b942e1c0-aa47-4aad-88e9-d20e8654b33e stock=5 barcode=10026",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Barcode search",
+      "status": "PASS",
+      "detail": "10026",
+      "severity": "info"
+    },
+    {
+      "module": "Purchases",
+      "check": "Create purchase",
+      "status": "PASS",
+      "detail": "041fa794-6858-427a-94ca-5c762e485d49",
+      "severity": "info"
+    },
+    {
+      "module": "Quotations",
+      "check": "Create quotation",
+      "status": "PASS",
+      "detail": "QT-2026-013",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "Create scheme plan",
+      "status": "PASS",
+      "detail": "26be7287-3922-4cff-8af8-7198c4cd4737",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "Enroll customer",
+      "status": "PASS",
+      "detail": "3e68ffba-94dc-4fc7-b8dd-b24f3bc728fe",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "Installment payment",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Orders",
+      "check": "Create order",
+      "status": "PASS",
+      "detail": "30cda50e-d8a4-4e1d-91d3-cee72e1ed2f1",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Create expense",
+      "status": "PASS",
+      "detail": "1836410d-091a-4a69-bbe4-3a1d941d689b",
+      "severity": "info"
+    },
+    {
+      "module": "Promotions",
+      "check": "Create campaign",
+      "status": "PASS",
+      "detail": "5a406140-5865-41a4-8e18-98a0fd49b848",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Reject empty cart",
+      "status": "PASS",
+      "detail": "status=400",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Create paid invoice",
+      "status": "PASS",
+      "detail": "SSJ-1/0034 total=56135",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Server totals match rateMap calc",
+      "status": "PASS",
+      "detail": "₹56135",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Idempotent retry",
+      "status": "PASS",
+      "detail": "SSJ-1/0034",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Stock after sale",
+      "status": "PASS",
+      "detail": "5 → 4",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Oversell rejected with 4xx",
+      "status": "PASS",
+      "detail": "status=409 code=INSUFFICIENT_STOCK",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "360 links invoice",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Customer ledger",
+      "status": "PASS",
+      "detail": "status=200",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Sales register has invoice",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Cash book loads",
+      "status": "PASS",
+      "detail": "status=200",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Integrity / TB balanced",
+      "status": "PASS",
+      "detail": "D=6382492.4 C=6382492.4",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Trial balance balanced",
+      "status": "PASS",
+      "detail": "D=6382492.4 C=6382492.4",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Supplier ledger",
+      "status": "PASS",
+      "detail": "status=200",
+      "severity": "info"
+    },
+    {
+      "module": "Reports",
+      "check": "Sales report includes invoice",
+      "status": "PASS",
+      "detail": "SSJ-1/0034",
+      "severity": "info"
+    },
+    {
+      "module": "Search",
+      "check": "Finds QA customer",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Dashboard",
+      "check": "Summary after activity",
+      "status": "PASS",
+      "detail": "status=200",
+      "severity": "info"
+    },
+    {
+      "module": "Quotations",
+      "check": "Convert → invoice",
+      "status": "PASS",
+      "detail": "SSJ-1/0035",
+      "severity": "info"
+    },
+    {
+      "module": "Quotations",
+      "check": "Reject double convert",
+      "status": "PASS",
+      "detail": "status=400",
+      "severity": "info"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{"ts":"2026-08-05T07:50:53.465Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-05T07:50:54.585Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-05T07:50:54.586Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-05T07:50:54.588Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-05T07:51:03.192Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-05T07:51:38.329Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-05T07:51:38.334Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}

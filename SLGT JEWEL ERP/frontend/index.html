@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="description" content="SLGT Marketing — Jewellery ERP" />
+    <link rel="icon" type="image/png" href="/slgt-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <title>SLGT Marketing .Jewellery ERP</title>
+    <style>
+      /* Critical, inline — must render before any JS/CSS bundle loads. */
+      html.app-preloading,
+      html.app-preloading body {
+        overflow: hidden !important;
+        height: 100%;
+      }
+      #app-preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        background: #ffffff;
+        transition: opacity 0.35s ease;
+      }
+      #app-preloader.app-preloader-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #app-preloader .app-preloader-mark {
+        height: 80px;
+        width: 80px;
+        border-radius: 14px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        animation: app-preloader-pulse 2s ease-in-out infinite;
+      }
+      #app-preloader .app-preloader-mark img {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+        padding: 4px;
+      }
+      @keyframes app-preloader-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+      }
+      #app-preloader .app-preloader-name {
+        font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: #0a0a0a;
+        text-align: center;
+        line-height: 1.25;
+      }
+      #app-preloader .app-preloader-sub {
+        font-family: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #525252;
+        text-align: center;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!--
+      Initial preloader — plain HTML/CSS/SVG, rendered before React (or any JS)
+      initializes, so there is no blank/white flash. Removed by
+      window.__hideAppPreloader(), called from src/context/AuthContext.jsx
+      once the app has mounted and the initial session check has resolved.
+      A hard fallback timeout below guarantees it can never get stuck.
+    -->
+    <div id="app-preloader" role="alert" aria-busy="true" aria-live="polite">
+      <div class="app-preloader-mark">
+        <img src="./slgt-logo.png" alt="SLGT" />
+      </div>
+      <div>
+        <div class="app-preloader-name">SLGT Marketing</div>
+        <div class="app-preloader-sub">.Jewellery ERP</div>
+      </div>
+      <!-- Same markup react-loader-spinner's <ThreeDots color="#B49042" height={28} width={36} />
+           renders, inlined as static SVG so it matches pixel-for-pixel and animates via native SMIL
+           (no JS required) before React itself has loaded. -->
+      <svg width="36" height="28" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#B49042" aria-label="Loading" role="progressbar" aria-busy="true">
+        <circle cx="15" cy="15" r="15">
+          <animate attributeName="r" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+          <animate attributeName="fill-opacity" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+        </circle>
+        <circle cx="60" cy="15" r="9" fill-opacity="0.5">
+          <animate attributeName="r" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" />
+          <animate attributeName="fill-opacity" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" />
+        </circle>
+        <circle cx="105" cy="15" r="15">
+          <animate attributeName="r" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+          <animate attributeName="fill-opacity" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+        </circle>
+      </svg>
+    </div>
+
+    <div id="root"></div>
+
+    <script>
+      (function () {
+        document.documentElement.classList.add("app-preloading");
+
+        var hidden = false;
+        function hideAppPreloader() {
+          if (hidden) return;
+          hidden = true;
+          if (window.__appPreloaderFallback) {
+            clearTimeout(window.__appPreloaderFallback);
+            window.__appPreloaderFallback = null;
+          }
+          document.documentElement.classList.remove("app-preloading");
+          var el = document.getElementById("app-preloader");
+          if (!el) return;
+          el.classList.add("app-preloader-hide");
+          setTimeout(function () {
+            el.remove();
+          }, 400); // matches the CSS opacity transition duration
+        }
+
+        window.__hideAppPreloader = hideAppPreloader;
+        // Hard safety net only — normal removal happens once React mounts and
+        // the initial session check resolves (see AuthContext.jsx). This just
+        // guarantees the preloader can never get stuck if that never happens.
+        window.__appPreloaderFallback = setTimeout(hideAppPreloader, 2000);
+      })();
+    </script>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+{
+  "theme": "ARCHETYPE 5: LUXURY & ARCHETYPE 4: SWISS",
+  "design_philosophy": "Premium enterprise-grade Jewellery ERP SaaS platform. The UI must feel like Stripe, Shopify, Notion, and Linear. Minimal, modern, desktop-first. High-performance tables, white background, luxury jewellery theme without being tacky.",
+  "colors": {
+    "background": {
+      "primary": "#FFFFFF",
+      "secondary": "#F9FAFB",
+      "surface": "#FFFFFF"
+    },
+    "text": {
+      "primary": "#0A0A0A",
+      "secondary": "#525252",
+      "muted": "#737373"
+    },
+    "brand": {
+      "primary": "#0A0A0A",
+      "primary_hover": "#1A1A1A",
+      "accent": "#B49042",
+      "accent_hover": "#9B7B36",
+      "accent_light": "#FDFBF7"
+    },
+    "border": {
+      "default": "#E5E7EB",
+      "focus": "#B49042"
+    },
+    "status": {
+      "success": "#166534",
+      "success_bg": "#F0FDF4",
+      "warning": "#9A3412",
+      "warning_bg": "#FFF7ED",
+      "error": "#991B1B",
+      "error_bg": "#FEF2F2"
+    },
+    "glassmorphism": {
+      "header": "bg-white/80 backdrop-blur-xl border-b border-[#E5E7EB]"
+    },
+    "forbidden_colors": [
+      "purple",
+      "violet gradients",
+      "#1B93A4",
+      "teal green"
+    ]
+  },
+  "typography": {
+    "font_strategy": "The 'Old Money Tech' variant adapted for ERP.",
+    "fonts": {
+      "headings": "Cabinet Grotesk",
+      "body": "Manrope",
+      "mono": "JetBrains Mono"
+    },
+    "scales": {
+      "h1": "text-4xl font-semibold tracking-tight",
+      "h2": "text-2xl font-medium tracking-tight",
+      "h3": "text-xl font-medium",
+      "body": "text-sm text-[#525252] leading-relaxed",
+      "label": "text-xs font-semibold tracking-wider uppercase text-[#737373]",
+      "table_data": "text-sm font-medium text-[#0A0A0A]",
+      "table_mono": "font-mono text-sm tracking-tight"
+    },
+    "forbidden_fonts": [
+      "Inter",
+      "Roboto",
+      "Space Grotesk"
+    ]
+  },
+  "spacing_and_layout": {
+    "philosophy": "Generous Spacing for app frame, High Density Data inside modules. MODE B Grid for dashboards.",
+    "sidebar": "w-64 border-r border-[#E5E7EB] bg-[#F9FAFB] flex flex-col fixed h-screen top-0 left-0. Desktop-first.",
+    "main_content": "ml-64 p-8 min-h-screen bg-[#FFFFFF]",
+    "pos_layout": "Grid split: grid-cols-12. Left 8 cols: Barcode input + Products Grid. Right 4 cols: Sticky cart summary, split payments, checkout CTA.",
+    "dashboard_grid": "grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+    "table_layout": "High density, strict grid. `border-collapse`, 1px borders, right-aligned monetary values, sticky header."
+  },
+  "visual_enhancers": {
+    "shadows": {
+      "card": "shadow-sm",
+      "dropdown": "shadow-lg shadow-black/5",
+      "modal": "shadow-2xl shadow-black/10"
+    },
+    "radius": {
+      "card": "rounded-md",
+      "button": "rounded-md",
+      "chip": "rounded-full"
+    },
+    "borders": "Crisp 1px solid #E5E7EB. Active states use 1px solid #0A0A0A or #B49042.",
+    "textures": "Minimal. Mostly flat solid white with subtle borders to structure hierarchy."
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#0A0A0A] text-white hover:bg-[#1A1A1A] rounded-md px-4 py-2 text-sm font-medium transition-colors",
+      "secondary": "bg-white border border-[#E5E7EB] text-[#0A0A0A] hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-medium transition-colors",
+      "accent": "bg-[#B49042] text-white hover:bg-[#9B7B36] rounded-md px-4 py-2 text-sm font-medium"
+    },
+    "cards": "bg-white border border-[#E5E7EB] rounded-md p-6 shadow-sm",
+    "tables": "shadcn Table customized. border-collapse. th: text-xs uppercase tracking-wider text-[#737373] bg-[#F9FAFB] border-b border-[#E5E7EB] py-3. td: text-sm font-medium border-b border-[#E5E7EB] py-3. Hover: bg-[#F9FAFB].",
+    "inputs": "shadcn Input. border-[#E5E7EB] rounded-md focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A] bg-white.",
+    "chips": "px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F0FDF4] text-[#166534] (for stock/status) or bg-[#FDFBF7] text-[#B49042] (gold status).",
+    "modals": "shadcn Dialog. bg-white border border-[#E5E7EB] rounded-lg shadow-2xl shadow-black/10 p-6."
+  },
+  "modules": {
+    "dashboard": "KPI cards with mini sparklines (Today's Sales, Monthly Revenue, Total Customers, Gold Rate Widget). Recent Transactions table. Sales Analytics chart using Shadcn charts / Recharts.",
+    "pos_billing": "Left: Barcode input + product grid (images). Right: Customer picker, Cart items, GST calc, Split payments. Big Checkout button. Very Stripe-terminal like.",
+    "inventory": "Advanced high-density table. Product image thumbnails in first column. Chips for metal type/purity. Filters on top.",
+    "customer_management": "Profile view with purchase history timeline and outstanding balance.",
+    "settings": "Tabs structure (Company, GST, Invoice, Users). Permission matrix grid (checkboxes).",
+    "login": "Split screen. Left: Modern retail architecture/jewelry image. Right: Minimal auth form, JWT login."
+  },
+  "image_urls": [
+    {
+      "category": "login_background",
+      "url": "https://images.pexels.com/photos/13865606/pexels-photo-13865606.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Modern interior with minimalist white shelves"
+    },
+    {
+      "category": "product_thumbnail_1",
+      "url": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODd8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBqZXdlbHJ5JTIwZGlhbW9uZCUyMHJpbmd8ZW58MHx8fHwxNzg0NzQwMjAwfDA&ixlib=rb-4.1.0&q=85",
+      "description": "Silver diamond ring on black box"
+    },
+    {
+      "category": "product_thumbnail_2",
+      "url": "https://images.pexels.com/photos/2849742/pexels-photo-2849742.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Sparkling diamond engagement ring"
+    },
+    {
+      "category": "product_thumbnail_3",
+      "url": "https://images.pexels.com/photos/19564918/pexels-photo-19564918.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Minimalist gold necklace"
+    }
+  ],
+  "accessibility": {
+    "focus_states": "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0A0A0A]",
+    "aria": "Use aria-labels for icon buttons. aria-hidden on decorative icons.",
+    "testing": "All interactive and key informational elements MUST include a data-testid attribute (e.g., data-testid='pos-checkout-btn')."
+  },
+  "motion": {
+    "hover": "transition-colors duration-200 ease-in-out",
+    "active": "active:scale-[0.98] transition-transform duration-75",
+    "loading": "skeleton loaders (animate-pulse bg-[#E5E7EB]) for tables and cards."
+  },
+  "instructions_to_main_agent": [
+    "DO NOT create generic layouts. The UI must feel like a high-end financial tool (Stripe/Linear) meeting luxury retail.",
+    "NEVER use generic fonts like Inter, Roboto, or Space Grotesk. Use Cabinet Grotesk for headings and Manrope for body text.",
+    "NO transparent backgrounds on dropdowns or overlays. Always use solid white or backdrop-blur with white tint.",
+    "Implement the POS Billing module with a distinct Left/Right split view. Use a persistent fixed sidebar on the left.",
+    "Ensure high-performance tables. Avoid overusing React state for every cell; use Shadcn Table and optimize rendering.",
+    "Use standard JS files, NOT TSX.",
+    "Ensure all interactive elements have data-testid attributes for testing.",
+    "Toast notifications MUST use Sonner.",
+    "Use lucide-react for icons with a stroke width of 1.5 to maintain the thin, premium look."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy and crisp borders.",
+    "You MUST NOT apply universal transition (e.g., transition: all). Add transitions for specific interactive elements.",
+    "You MUST NOT center align the app container. Do not add `.App { text-align: center; }`.",
+    "Never use AI assistant Emoji characters like \ud83e\udd16\ud83e\udde0\ud83d\udcad\ud83d\udca1\udd2e\ud83c\udfaf etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions. Static = dead.",
+    "Use generous spacing for the layout, but dense spacing for tables.",
+    "Main agent relies on the provided image URLs. Missing categories = main agent will use placeholder text which is FORBIDDEN."
+  ]
+}

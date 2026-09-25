@@ -1,0 +1,14 @@
+{"ts":"2026-08-28T10:17:03.609Z","level":"info","scope":"sqlite","message":"opening database","meta":{"storage":"C:/Users/Lokesh Malla/AppData/Roaming/jewellery-crm-desktop/data/jewellery-crm.sqlite","electron":true}}
+{"ts":"2026-08-28T10:17:05.528Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT 1+1 AS result"}}
+{"ts":"2026-08-28T10:17:05.609Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sequelize_meta';"}}
+{"ts":"2026-08-28T10:17:05.649Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): CREATE TABLE IF NOT EXISTS `sequelize_meta` (`name` VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY);"}}
+{"ts":"2026-08-28T10:17:05.654Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA INDEX_LIST(`sequelize_meta`)"}}
+{"ts":"2026-08-28T10:17:05.655Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA INDEX_INFO(`sqlite_autoindex_sequelize_meta_1`)"}}
+{"ts":"2026-08-28T10:17:05.666Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT `name` FROM `sequelize_meta` AS `SequelizeMeta` ORDER BY `SequelizeMeta`.`name` ASC;"}}
+{"ts":"2026-08-28T10:17:05.671Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sequelize_meta';"}}
+{"ts":"2026-08-28T10:17:05.680Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA INDEX_LIST(`sequelize_meta`)"}}
+{"ts":"2026-08-28T10:17:05.689Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA INDEX_INFO(`sqlite_autoindex_sequelize_meta_1`)"}}
+{"ts":"2026-08-28T10:17:05.703Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT `name` FROM `sequelize_meta` AS `SequelizeMeta` ORDER BY `SequelizeMeta`.`name` ASC;"}}
+{"ts":"2026-08-28T10:17:05.740Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM `sqlite_master` WHERE type='table' and name!='sqlite_sequence';"}}
+{"ts":"2026-08-28T10:17:05.748Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM `sqlite_master` WHERE type='table' and name!='sqlite_sequence';"}}
+{"ts":"2026-08-28T10:17:05.753Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): INSERT INTO schema_meta (key, value, updated_at)\n     VALUES ('schema_version', '{\"version\":12,\"phase\":2}'::jsonb, NOW())\n     ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = NOW()"}}

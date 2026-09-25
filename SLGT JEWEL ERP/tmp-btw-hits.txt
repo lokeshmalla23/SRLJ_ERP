@@ -1,0 +1,4 @@
+﻿Printer: Name=TSC TE244; Model=TSC TE244; Port=USB002
+<Metadata><Application>BarTender 2016 R7</Application><Author>Lokesh Malla</Author><LastModifiedBy>Lokesh Malla</LastModifiedBy><Templates>1</Templates><DataEntryForms>2</DataEntryForms><TemplateSize>96 x 15 mm</TemplateSize><Printer>TSC TE244</Printer><Title>Document1</Title></Metadata>
+tEXtDescription
+tEXtComment

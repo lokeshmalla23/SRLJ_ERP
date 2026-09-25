@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Invoice PDF raster</title>
+  <style>
+    html, body { margin: 0; padding: 0; background: #fff; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="./pdf.min.js"></script>
+<script>
+(function () {
+  function b64ToBytes(b64) {
+    var raw = atob(b64);
+    var bytes = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+    return bytes;
+  }
+
+  window.__pdfDoc = null;
+
+  window.loadInvoicePdf = async function (base64) {
+    if (typeof pdfjsLib === "undefined") {
+      throw new Error("pdf.js failed to load");
+    }
+    var bytes = b64ToBytes(base64);
+    window.__pdfDoc = await pdfjsLib.getDocument({ data: bytes, disableWorker: true }).promise;
+    return window.__pdfDoc.numPages;
+  };
+
+  window.renderInvoicePdfPage = async function (pageNumber, scale) {
+    if (!window.__pdfDoc) throw new Error("PDF not loaded");
+    var page = await window.__pdfDoc.getPage(pageNumber);
+    var viewport = page.getViewport({ scale: scale || 2.5 });
+    var canvas = document.getElementById("c");
+    canvas.width = Math.ceil(viewport.width);
+    canvas.height = Math.ceil(viewport.height);
+    var ctx = canvas.getContext("2d", { alpha: false });
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    return canvas.toDataURL("image/png");
+  };
+})();
+</script>
+</body>
+</html>

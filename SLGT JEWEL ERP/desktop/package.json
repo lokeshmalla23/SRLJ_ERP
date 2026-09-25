@@ -1,0 +1,114 @@
+{
+  "name": "jewellery-crm-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Sri Srinivasa Jewellers",
+  "description": "Jewellery ERP Windows desktop shell (Electron)",
+  "main": "main.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "start:desktop": "npm run build --prefix ../frontend && electron .",
+    "pack": "electron-builder --dir",
+    "predist": "npm run build --prefix ../frontend",
+    "dist": "electron-builder --win nsis",
+    "dist:dir": "electron-builder --win --dir",
+    "rebuild:native": "electron-rebuild -f -w better-sqlite3",
+    "postinstall": "electron-rebuild -f -w better-sqlite3 || echo electron-rebuild skipped",
+    "test:desktop-db": "electron tests/desktopDb.test.js",
+    "test:desktop": "node tests/authorityState.test.js"
+  },
+  "build": {
+    "appId": "com.srinivasa.jewellerycrm",
+    "productName": "JewelleryCRM",
+    "copyright": "Copyright © Sri Srinivasa Jewellers",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "first-launch.html",
+      "build/icon.png",
+      "build/slgt-logo.png",
+      "lib/**/*",
+      "package.json",
+      ".env"
+    ],
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../frontend/dist",
+        "to": "frontend",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "src/**/*",
+          "package.json",
+          "node_modules/**/*",
+          "!node_modules/.cache/**/*",
+          "!.env"
+        ]
+      },
+      {
+        "from": "../shared",
+        "to": "shared",
+        "filter": [
+          "domain/**/*",
+          "package.json",
+          "node_modules/**/*"
+        ]
+      },
+      {
+        "from": "resources/node",
+        "to": "node",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "JewelleryCRM-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Jewellery ERP",
+      "deleteAppDataOnUninstall": false,
+      "warningsAsErrors": false,
+      "include": "build/installer.nsh"
+    },
+    "asar": true
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.10.0",
+    "pg": "^8.22.0",
+    "ws": "^8.21.1"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.7.1",
+    "electron": "^35.7.5",
+    "electron-builder": "^25.1.8"
+  }
+}

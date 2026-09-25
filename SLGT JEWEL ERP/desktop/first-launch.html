@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src http: https:;" />
+  <title>Jewellery ERP — Setup</title>
+  <style>
+    :root {
+      --bg: #111009;
+      --surface: #1c1812;
+      --card: #221e16;
+      --gold: #c9a227;
+      --gold-dim: rgba(201,162,39,0.18);
+      --text: #f0e8d8;
+      --muted: #9a8f7e;
+      --border: rgba(201,162,39,0.22);
+      --input-bg: #17130d;
+      --input-border: #3a3028;
+      --ok: #3d9e78;
+      --bad: #c0604a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,162,39,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 100%, rgba(100,70,20,0.12) 0%, transparent 60%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    /* ── Card ─────────────────────────────────── */
+    .card {
+      width: min(500px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2.5rem 2rem;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 24px 48px rgba(0,0,0,0.6);
+    }
+
+    /* ── Header ───────────────────────────────── */
+    .logo-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .logo-img {
+      width: min(280px, 100%);
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      background: #000;
+    }
+    .logo-row h1 { display: none; }
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--gold);
+    }
+    .subtitle {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Divider ──────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* ── Form elements ────────────────────────── */
+    .field { margin-bottom: 1.1rem; }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    input {
+      display: block;
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input::placeholder { color: #5a5044; }
+    input:focus { border-color: rgba(201,162,39,0.5); }
+
+    /* ── Buttons ──────────────────────────────── */
+    .btn-stack { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem; }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.8rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--input-border);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s;
+      gap: 0.5rem;
+    }
+    button:hover { border-color: var(--gold); background: var(--gold-dim); }
+
+    button.primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #111009;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    button.primary:hover { background: #d4aa2e; border-color: #d4aa2e; }
+
+    button.choice {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem 1.1rem;
+      gap: 0.2rem;
+    }
+    button.choice .choice-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    button.choice .choice-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── Status ───────────────────────────────── */
+    .status {
+      min-height: 1.1rem;
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      line-height: 1.45;
+    }
+    .ok { color: var(--ok); }
+    .bad { color: var(--bad); }
+
+    /* ── Host list ────────────────────────────── */
+    .host-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.75rem; }
+    .host-list button { font-size: 0.85rem; padding: 0.55rem 0.9rem; text-align: left; justify-content: flex-start; }
+
+    /* ── Info box ─────────────────────────────── */
+    .info-box {
+      padding: 0.75rem 1rem;
+      background: rgba(201,162,39,0.06);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .info-box .info-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .info-box .info-value { font-size: 1rem; font-family: monospace; color: var(--gold); font-weight: 600; }
+    .info-box .info-hint { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo-row">
+      <img class="logo-img" src="build/slgt-logo.png" alt="SLGT Jewellery ERP" />
+    </div>
+    <p class="subtitle">Set up this PC for your shop. Technical details stay behind the scenes.</p>
+
+    <!-- Step 1: Choice -->
+    <div id="step-choice">
+      <div style="display:flex;flex-direction:column;gap:0.6rem">
+        <button type="button" id="btn-host" class="choice">
+          <span class="choice-title">Create / Set Up Shop</span>
+          <span class="choice-sub">This PC will run the shop service</span>
+        </button>
+        <button type="button" id="btn-join" class="choice">
+          <span class="choice-title">Join Existing Shop</span>
+          <span class="choice-sub">Connect to another PC on the shop network</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2a: Host setup -->
+    <div id="step-host" class="hidden">
+      <div class="field">
+        <label>Shop name</label>
+        <input id="shop-name" placeholder="Sri Srinivasa Jewellers" />
+      </div>
+      <div class="field">
+        <label>Owner name</label>
+        <input id="owner-name" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label>Owner email</label>
+        <input id="owner-email" type="email" placeholder="owner@shop.com" />
+      </div>
+      <div class="field">
+        <label>Owner password (min 8 characters)</label>
+        <input id="owner-password" type="password" placeholder="Create a strong password" />
+      </div>
+      <div class="field">
+        <label>Confirm password</label>
+        <input id="owner-password2" type="password" placeholder="Confirm password" />
+      </div>
+      <div id="lan-ip-box" class="info-box hidden">
+        <div class="info-label">Other PCs on this network should connect to:</div>
+        <div id="lan-ip-addr" class="info-value"></div>
+        <div class="info-hint">Share this address with staff PCs during their setup</div>
+      </div>
+      <input id="host-url" value="http://127.0.0.1:8000" class="hidden" />
+      <div class="status" id="host-status"></div>
+      <div class="btn-stack">
+        <button type="button" class="primary" id="host-continue">Create Shop</button>
+        <button type="button" id="host-back">Back</button>
+      </div>
+    </div>
+
+    <!-- Step 2b: Join setup -->
+    <div id="step-join" class="hidden">
+      <div class="field">
+        <label>Find Main PC on this network</label>
+        <button type="button" id="btn-discover">Search for Main PC</button>
+      </div>
+      <div id="discovered" class="host-list"></div>
+      <div class="field hidden" id="join-url-wrap">
+        <label>Main PC address (advanced)</label>
+        <input id="join-url" placeholder="http://192.168.1.10:8000" />
+      </div>
+      <div class="field">
+        <label>Name for this PC</label>
+        <input id="device-name" placeholder="Cashier PC 2" />
+      </div>
+      <div id="join-wait" class="info-box hidden">
+        <div class="info-label">Device approval required</div>
+        <div class="info-hint">This computer needs approval from the Main PC (Settings → Devices → Allow Device). No pairing code needed.</div>
+        <div id="join-wait-status" class="info-value" style="margin-top:0.5rem">Waiting for approval…</div>
+      </div>
+      <div class="status" id="join-status"></div>
+      <div class="btn-stack">
+        <button type="button" class="primary" id="join-continue">Request Access</button>
+        <button type="button" id="join-back">Back</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    function show(id) {
+      ['step-choice', 'step-host', 'step-join'].forEach((x) => $(x).classList.add('hidden'));
+      $(id).classList.remove('hidden');
+    }
+
+    $('btn-host').onclick = async () => {
+      show('step-host');
+      if (window.jewelleryCRM?.getLocalIp) {
+        try {
+          const { ips, port } = await window.jewelleryCRM.getLocalIp();
+          if (ips && ips.length > 0) {
+            $('lan-ip-addr').textContent = `http://${ips[0]}:${port}`;
+            $('lan-ip-box').classList.remove('hidden');
+          }
+        } catch { /* not in Electron */ }
+      }
+    };
+    $('btn-join').onclick = () => show('step-join');
+    $('host-back').onclick = () => show('step-choice');
+    $('join-back').onclick = () => show('step-choice');
+
+    function deviceId() {
+      let id = localStorage.getItem('ssj_device_identifier');
+      if (!id) { id = crypto.randomUUID(); localStorage.setItem('ssj_device_identifier', id); }
+      return id;
+    }
+
+    $('btn-discover').onclick = async () => {
+      const statusEl = $('join-status');
+      const box = $('discovered');
+      box.innerHTML = '';
+      statusEl.className = 'status';
+      statusEl.textContent = 'Scanning LAN…';
+      const probes = ['http://127.0.0.1:8000', $('join-url').value.trim()].filter(Boolean);
+      let hosts = [];
+      for (const base of probes) {
+        try {
+          const res = await fetch(base.replace(/\/$/, '') + '/api/devices/discover?timeout_ms=2500');
+          if (res.ok) {
+            const data = await res.json();
+            hosts = data.hosts || [];
+            if (hosts.length) break;
+          }
+        } catch { /* try next */ }
+      }
+      if (!hosts.length) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = 'No shop found. Ask the owner for the Main PC address (http://IP:8000).';
+        return;
+      }
+      statusEl.className = 'status ok';
+      statusEl.textContent = 'Select a shop below, then click Request Access.';
+      for (const h of hosts) {
+        const addr = (h.addresses && h.addresses[0]) ? `http://${h.addresses[0]}:${h.api_port || 8000}` : null;
+        if (!addr) continue;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = `${h.device_name || 'Shop PC'} — ${addr}`;
+        b.onclick = () => { $('join-url').value = addr; };
+        box.appendChild(b);
+      }
+    };
+
+    let lastBackendError = null;
+    if (window.jewelleryCRM?.onBackendError) {
+      window.jewelleryCRM.onBackendError((data) => {
+        lastBackendError = data?.error || 'Shop service failed to start';
+      });
+    }
+
+    async function pingUntilReady(url, attempts = 40) {
+      for (let i = 0; i < attempts; i++) {
+        if (lastBackendError) return { ok: false, error: lastBackendError };
+        const ping = await window.jewelleryCRM.pingBranch(url);
+        if (ping.ok) return ping;
+        statusElSafe(`Starting shop service… (${i + 1}/${attempts})`);
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+      return { ok: false, error: lastBackendError };
+    }
+
+    function statusElSafe(msg) {
+      const el = $('host-status');
+      if (el && el.textContent.startsWith('Starting shop service')) {
+        el.textContent = msg;
+      }
+    }
+
+    async function finishHost(url, shopName) {
+      const statusEl = $('host-status');
+      const ownerName = $('owner-name').value.trim();
+      const ownerEmail = $('owner-email').value.trim();
+      const ownerPassword = $('owner-password').value;
+      const ownerPassword2 = $('owner-password2').value;
+      if (!shopName) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = 'Shop name is required.';
+        return;
+      }
+      if (!ownerEmail || ownerPassword.length < 8) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = 'Owner email and password (min 8 characters) are required.';
+        return;
+      }
+      if (ownerPassword !== ownerPassword2) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = 'Passwords do not match.';
+        return;
+      }
+      statusEl.className = 'status';
+      statusEl.textContent = 'Starting shop service…';
+      lastBackendError = null;
+      const ping = await pingUntilReady(url);
+      if (!ping.ok) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = window.jewelleryCRM?.isDesktop
+          ? (ping.error
+            ? `Shop service failed: ${ping.error}`
+            : 'Shop service is still starting up. Wait a few seconds and click Create Shop again.')
+          : 'Cannot reach shop service. Start Branch Service, then try again.';
+        return;
+      }
+      statusEl.textContent = 'Creating owner account…';
+      try {
+        const boot = await fetch(url.replace(/\/$/, '') + '/api/cluster/bootstrap-owner', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: ownerName || 'Shop Owner',
+            email: ownerEmail,
+            password: ownerPassword,
+            shop_name: shopName,
+          }),
+        });
+        const bootData = await boot.json().catch(() => ({}));
+        if (!boot.ok && boot.status !== 409) {
+          statusEl.className = 'status bad';
+          statusEl.textContent = bootData.detail || 'Could not create owner account';
+          return;
+        }
+      } catch (e) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = e.message || 'Owner bootstrap failed';
+        return;
+      }
+      statusEl.className = 'status ok';
+      statusEl.textContent = 'Shop ready. Signing you in…';
+      let deviceId = null;
+      let shopId = null;
+      let deviceName = null;
+      try {
+        const health = await fetch(url.replace(/\/$/, '') + '/api/health').then((r) => r.json());
+        deviceId = health.device_id || null;
+        shopId = health.shop_id || null;
+        deviceName = health.device_name || null;
+      } catch { /* non-fatal */ }
+      // Auto-login with the just-created credentials so the user lands in the app already authenticated
+      try {
+        const loginRes = await fetch(url.replace(/\/$/, '') + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: ownerEmail, password: ownerPassword }),
+        });
+        const loginData = await loginRes.json().catch(() => ({}));
+        if (loginData.access_token) {
+          localStorage.setItem('ssj_token', loginData.access_token);
+        }
+      } catch { /* non-fatal — user will reach login screen */ }
+      statusEl.textContent = 'Opening CRM…';
+      await window.jewelleryCRM.setConfig({
+        mode: 'host',
+        role: 'active_host',
+        branch_api_url: url.replace(/\/$/, ''),
+        local_api_url: url.replace(/\/$/, ''),
+        shop_name: shopName || null,
+        shop_id: shopId,
+        device_id: deviceId,
+        device_name: deviceName,
+        device_number: 1,
+        setup_complete: true,
+      });
+      await window.jewelleryCRM.completeSetupAndReload();
+    }
+
+    async function finishJoin() {
+      const url = $('join-url').value.trim().replace(/\/$/, '');
+      const name = $('device-name').value.trim() || 'Client PC';
+      const statusEl = $('join-status');
+      const waitBox = $('join-wait');
+      const waitStatus = $('join-wait-status');
+      if (!url) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = 'Select the Main PC from the search results first.';
+        return;
+      }
+      statusEl.className = 'status';
+      statusEl.textContent = 'Connecting…';
+      const ping = await window.jewelleryCRM.pingBranch(url);
+      if (!ping.ok) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = `Cannot reach Main PC. Check both computers are on the same local network and the Main PC firewall allows port 8000.`;
+        return;
+      }
+
+      statusEl.textContent = 'Sending access request…';
+      let data = {};
+      try {
+        const res = await fetch(url + '/api/devices/request-join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            device_identifier: deviceId(),
+            device_name: name,
+            platform: navigator.platform || undefined,
+          }),
+        });
+        data = await res.json().catch(() => ({}));
+        if (!res.ok && res.status !== 429) {
+          statusEl.className = 'status bad';
+          statusEl.textContent = data.detail || 'Access request failed';
+          return;
+        }
+      } catch (e) {
+        statusEl.className = 'status bad';
+        statusEl.textContent = e.message || 'Access request failed';
+        return;
+      }
+
+      if (data.already_approved) {
+        statusEl.className = 'status ok';
+        statusEl.textContent = 'Already approved. Opening CRM…';
+        await window.jewelleryCRM.setConfig({
+          mode: 'join',
+          role: 'replica',
+          branch_api_url: url,
+          host_api_url: url,
+          local_api_url: 'http://127.0.0.1:8000',
+          device_name: name,
+          shop_id: data.shop_id || null,
+          setup_complete: true,
+        });
+        await window.jewelleryCRM.completeSetupAndReload();
+        return;
+      }
+
+      waitBox.classList.remove('hidden');
+      statusEl.textContent = '';
+      waitStatus.textContent = 'Waiting for approval…';
+
+      const deviceIdentifier = deviceId();
+      for (let i = 0; i < 120; i++) {
+        await new Promise((r) => setTimeout(r, 2500));
+        try {
+          const stRes = await fetch(url + '/api/devices/join-status?device_identifier=' + encodeURIComponent(deviceIdentifier));
+          const st = await stRes.json().catch(() => ({}));
+          if (st.status === 'declined') {
+            waitStatus.textContent = 'Access request declined. Ask the owner to Allow Device, then try again.';
+            statusEl.className = 'status bad';
+            statusEl.textContent = 'Declined';
+            return;
+          }
+          if (st.status === 'active' || st.status === 'approved') {
+            waitStatus.textContent = 'Approved. Securing this PC…';
+            let claim = {};
+            if (st.claim_ready) {
+              const claimRes = await fetch(url + '/api/devices/claim-approval', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ device_identifier: deviceIdentifier }),
+              });
+              claim = await claimRes.json().catch(() => ({}));
+            }
+            let watermark = 0;
+            if (claim.bootstrap_token) {
+              try {
+                const snapRes = await fetch(url + '/api/cluster/snapshot/bootstrap?token=' + encodeURIComponent(claim.bootstrap_token));
+                if (snapRes.ok) {
+                  const snapshot = await snapRes.json();
+                  watermark = snapshot.watermark || 0;
+                  if (window.jewelleryCRM?.stashSnapshot) {
+                    await window.jewelleryCRM.stashSnapshot(snapshot);
+                  }
+                }
+              } catch (e) {
+                console.warn('snapshot bootstrap failed', e);
+              }
+            }
+            await window.jewelleryCRM.setConfig({
+              mode: 'join',
+              role: 'replica',
+              branch_api_url: url,
+              host_api_url: url,
+              local_api_url: 'http://127.0.0.1:8000',
+              device_name: name,
+              device_number: claim.device_number || 2,
+              shop_id: claim.shop_id || data.shop_id || null,
+              event_watermark: watermark,
+              setup_complete: true,
+            });
+            if (window.jewelleryCRM?.notifyPairingComplete && claim.device_token) {
+              await window.jewelleryCRM.notifyPairingComplete({
+                shop_id: claim.shop_id,
+                device_id: claim.device?.id || deviceIdentifier,
+                device_number: claim.device_number || 2,
+                device_token: claim.device_token,
+                lan_shared_key: claim.lan_shared_key || null,
+              });
+            }
+            waitStatus.textContent = 'Ready. Opening CRM…';
+            await window.jewelleryCRM.completeSetupAndReload();
+            return;
+          }
+          waitStatus.textContent = 'Waiting for approval… (' + (i + 1) + ')';
+        } catch { /* keep waiting */ }
+      }
+      statusEl.className = 'status bad';
+      statusEl.textContent = 'Timed out waiting for approval. Keep the Main PC open and try again.';
+    }
+
+    $('host-continue').onclick = () => finishHost($('host-url').value.trim(), $('shop-name').value.trim());
+    $('join-continue').onclick = () => finishJoin();
+    $('btn-join').onclick = () => {
+      show('step-join');
+      setTimeout(() => $('btn-discover').click(), 200);
+    };
+  </script>
+</body>
+</html>

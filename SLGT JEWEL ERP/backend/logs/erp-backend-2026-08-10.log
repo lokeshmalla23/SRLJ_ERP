@@ -1,0 +1,79 @@
+{"ts":"2026-08-10T04:22:03.840Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T04:22:41.103Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T04:29:54.960Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+<<<<<<< HEAD
+{"ts":"2026-08-10T06:20:54.339Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T06:21:07.594Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T06:21:07.595Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T06:21:07.596Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T06:21:15.561Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T06:22:09.736Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T06:22:09.749Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-10T07:11:57.096Z","level":"warn","scope":"recovery","message":"snapshot failed","meta":{"error":"Connection terminated unexpectedly"}}
+{"ts":"2026-08-10T08:01:48.465Z","level":"warn","scope":"recovery","message":"snapshot failed","meta":{"error":"read ECONNRESET"}}
+{"ts":"2026-08-10T08:01:50.048Z","level":"warn","scope":"backup","message":"frequent backup failed","meta":{"error":"pg_dump exited 1"}}
+{"ts":"2026-08-10T12:02:37.346Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T12:02:52.746Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T12:02:52.751Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T12:02:52.753Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T12:03:03.253Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T12:03:39.819Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T12:03:39.824Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-10T12:14:03.483Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T12:25:37.158Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T12:25:37.714Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T12:25:37.715Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T12:25:37.716Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T12:25:44.085Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T12:52:24.396Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T12:53:46.003Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T12:55:11.708Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:08:40.525Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:09:51.762Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:24:46.977Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:26:02.026Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:26:02.678Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T13:26:02.680Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T13:26:02.681Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T13:26:19.162Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T13:32:33.247Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:33:59.568Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:42:39.835Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:42:40.261Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T13:42:40.262Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T13:42:40.263Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T13:42:50.212Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T13:55:36.275Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:55:37.228Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T13:55:37.230Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T13:55:37.231Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T13:55:57.996Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T13:55:58.514Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T13:55:58.516Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T13:55:58.517Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T13:56:06.564Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T13:56:57.824Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T13:56:57.826Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-10T14:12:59.212Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T14:12:59.654Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:12:59.655Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T14:12:59.656Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T14:13:10.691Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T14:14:11.759Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:14:11.761Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+=======
+{"ts":"2026-08-10T14:32:09.804Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T14:32:10.110Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:32:10.111Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T14:32:10.111Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T14:32:21.575Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T14:33:27.231Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:33:27.234Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+>>>>>>> 2116cab775257681e258d9da3280d92ad8539f11
+{"ts":"2026-08-10T14:46:22.285Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-10T14:46:22.612Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":12,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:46:22.613Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-10T14:46:22.613Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-10T14:46:30.905Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-10T14:47:12.664Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-10T14:47:12.665Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}

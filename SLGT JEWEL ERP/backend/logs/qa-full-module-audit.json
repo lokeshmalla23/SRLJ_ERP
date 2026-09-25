@@ -1,0 +1,582 @@
+{
+  "generated_at": "2026-08-11T03:55:15.291Z",
+  "base": "http://127.0.0.1:8000",
+  "stamp": 1786420497636,
+  "summary": {
+    "pass": 59,
+    "fail": 6,
+    "warn": 5,
+    "total": 70
+  },
+  "findings": [
+    {
+      "module": "Catalog",
+      "check": "GET /api/catalog/metals",
+      "status": "FAIL",
+      "detail": "status=400 {\"detail\":\"Unknown catalog kind: metals\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Customers",
+      "check": "Reject duplicate phone",
+      "status": "WARN",
+      "detail": "Duplicate phone accepted — may cause CRM data confusion",
+      "severity": "medium"
+    },
+    {
+      "module": "Inventory",
+      "check": "Barcode search finds product",
+      "status": "WARN",
+      "detail": "status=200",
+      "severity": "medium"
+    },
+    {
+      "module": "Purchases",
+      "check": "Create purchase",
+      "status": "FAIL",
+      "detail": "400/400 {\"detail\":\"grand_total is required\"} | {\"detail\":\"purchase_date is required\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Quotations",
+      "check": "Create quotation",
+      "status": "FAIL",
+      "detail": "400/400 {\"detail\":\"customer_name is required\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Schemes",
+      "check": "Enroll customer in scheme",
+      "status": "FAIL",
+      "detail": "400 {\"detail\":\"customer_name, plan_name, monthly_amount, duration_months, start_date are required\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "Orders",
+      "check": "Create order",
+      "status": "FAIL",
+      "detail": "400 {\"detail\":\"customer_name is required\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "POS",
+      "check": "Rate-map vs flat gold_rate mismatch risk",
+      "status": "FAIL",
+      "detail": "flat7000→₹33253 but server rateMap→₹62006 (smoke/tests underpay)",
+      "severity": "critical"
+    },
+    {
+      "module": "Accounts",
+      "check": "Customer ledger loads",
+      "status": "WARN",
+      "detail": "status=404/404",
+      "severity": "medium"
+    },
+    {
+      "module": "POS",
+      "check": "Partial payment (credit) invoice",
+      "status": "WARN",
+      "detail": "Rejected: {\"detail\":\"Payment total ₹12412 does not cover grand total ₹24823 (balance ₹12411)\",\"code\":\"INVALID_PAYMENT\",\"request_id\":\"mso4nf80-ov23mr\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "Promotions",
+      "check": "Create campaign draft",
+      "status": "WARN",
+      "detail": "400 {\"detail\":\"name, type, message_template, and segment are required\"}",
+      "severity": "low"
+    }
+  ],
+  "results": [
+    {
+      "module": "System",
+      "check": "Health ready",
+      "status": "PASS",
+      "detail": "mode=branch db=local-sqlite",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Reject bad password",
+      "status": "PASS",
+      "detail": "status=401",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Owner login",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Auth",
+      "check": "Session /me",
+      "status": "PASS",
+      "detail": "[redacted]",
+      "severity": "info"
+    },
+    {
+      "module": "Dashboard",
+      "check": "GET /api/dashboard/summary",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "GET /api/customers",
+      "status": "PASS",
+      "detail": "status=200 items=2",
+      "severity": "info"
+    },
+    {
+      "module": "Products",
+      "check": "GET /api/products",
+      "status": "PASS",
+      "detail": "status=200 items=8",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "GET /api/categories",
+      "status": "PASS",
+      "detail": "status=200 items=35",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "GET /api/catalog/metals",
+      "status": "FAIL",
+      "detail": "status=400 {\"detail\":\"Unknown catalog kind: metals\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Invoices",
+      "check": "GET /api/invoices",
+      "status": "PASS",
+      "detail": "status=200 items=8",
+      "severity": "info"
+    },
+    {
+      "module": "Quotations",
+      "check": "GET /api/quotations",
+      "status": "PASS",
+      "detail": "status=200 items=5",
+      "severity": "info"
+    },
+    {
+      "module": "Orders",
+      "check": "GET /api/orders",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Vendors",
+      "check": "GET /api/vendors",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Purchases",
+      "check": "GET /api/purchases",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "GET /api/schemes",
+      "status": "PASS",
+      "detail": "status=200 items=3",
+      "severity": "info"
+    },
+    {
+      "module": "Scheme",
+      "check": "GET /api/scheme-plans",
+      "status": "PASS",
+      "detail": "status=200 items=2",
+      "severity": "info"
+    },
+    {
+      "module": "Employees",
+      "check": "GET /api/employees",
+      "status": "PASS",
+      "detail": "status=200 items=1",
+      "severity": "info"
+    },
+    {
+      "module": "Promotions",
+      "check": "GET /api/promotions/campaigns",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Settings",
+      "check": "GET /api/settings",
+      "status": "PASS",
+      "detail": "status=200 items=6",
+      "severity": "info"
+    },
+    {
+      "module": "Notifications",
+      "check": "GET /api/notifications",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Search",
+      "check": "GET /api/search",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Barcodes",
+      "check": "GET /api/barcodes/stats",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Stock",
+      "check": "GET /api/stock/history",
+      "status": "PASS",
+      "detail": "status=200 items=5",
+      "severity": "info"
+    },
+    {
+      "module": "Reports",
+      "check": "GET /api/reports/sales",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/dashboard",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/receivables",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/payables",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/trial-balance",
+      "status": "PASS",
+      "detail": "status=200 items=18",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/cash-book",
+      "status": "PASS",
+      "detail": "status=200 items=3",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/day-book",
+      "status": "PASS",
+      "detail": "status=200 items=3",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/expenses",
+      "status": "PASS",
+      "detail": "status=200 items=1",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/gst",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/integrity",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "GET /api/accounts/audit-trail",
+      "status": "PASS",
+      "detail": "status=200 items=0",
+      "severity": "info"
+    },
+    {
+      "module": "Advances",
+      "check": "GET /api/advances",
+      "status": "PASS",
+      "detail": "status=200 items=4",
+      "severity": "info"
+    },
+    {
+      "module": "Catalog",
+      "check": "Categories seeded",
+      "status": "PASS",
+      "detail": "count=35",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Create customer",
+      "status": "PASS",
+      "detail": "id=183a8bbb-94e3-4047-aa58-843cedfc29d1",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Read back customer",
+      "status": "PASS",
+      "detail": "QA Customer 1786420497636",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Customer 360",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "Reject duplicate phone",
+      "status": "WARN",
+      "detail": "Duplicate phone accepted — may cause CRM data confusion",
+      "severity": "medium"
+    },
+    {
+      "module": "Vendors",
+      "check": "Create vendor",
+      "status": "PASS",
+      "detail": "id=0f52bdf7-2eae-4498-aca0-80fd820c2862",
+      "severity": "info"
+    },
+    {
+      "module": "Employees",
+      "check": "Create employee",
+      "status": "PASS",
+      "detail": "id=94096252-a972-4420-b9eb-356ef0d8541e",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Create product",
+      "status": "PASS",
+      "detail": "id=d1fb2bc9-3562-4647-a5c2-a00a8f082ab0 stock=5",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Barcode search finds product",
+      "status": "WARN",
+      "detail": "status=200",
+      "severity": "medium"
+    },
+    {
+      "module": "Purchases",
+      "check": "Create purchase",
+      "status": "FAIL",
+      "detail": "400/400 {\"detail\":\"grand_total is required\"} | {\"detail\":\"purchase_date is required\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Quotations",
+      "check": "Create quotation",
+      "status": "FAIL",
+      "detail": "400/400 {\"detail\":\"customer_name is required\"}",
+      "severity": "high"
+    },
+    {
+      "module": "Schemes",
+      "check": "Create scheme plan",
+      "status": "PASS",
+      "detail": "id=d8994797-cc6d-42f9-a48f-aa1dc2f963a4",
+      "severity": "info"
+    },
+    {
+      "module": "Schemes",
+      "check": "Enroll customer in scheme",
+      "status": "FAIL",
+      "detail": "400 {\"detail\":\"customer_name, plan_name, monthly_amount, duration_months, start_date are required\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "Orders",
+      "check": "Create order",
+      "status": "FAIL",
+      "detail": "400 {\"detail\":\"customer_name is required\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "Accounts",
+      "check": "Create expense",
+      "status": "PASS",
+      "detail": "id=42828cd9-ef59-4c5b-bd13-dd34b2f45c28",
+      "severity": "info"
+    },
+    {
+      "module": "Settings",
+      "check": "Gold rate map loaded",
+      "status": "PASS",
+      "detail": "24K=14000 22K=12000 18K=7000",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Rate-map vs flat gold_rate mismatch risk",
+      "status": "FAIL",
+      "detail": "flat7000→₹33253 but server rateMap→₹62006 (smoke/tests underpay)",
+      "severity": "critical"
+    },
+    {
+      "module": "POS",
+      "check": "Reject empty cart",
+      "status": "PASS",
+      "detail": "status=400",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Create paid invoice",
+      "status": "PASS",
+      "detail": "SSJ-1/0011 total=56135",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Server totals match calc",
+      "status": "PASS",
+      "detail": "total=56135",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Idempotent retry same request_id",
+      "status": "PASS",
+      "detail": "SSJ-1/0011",
+      "severity": "info"
+    },
+    {
+      "module": "Inventory",
+      "check": "Stock decremented after sale",
+      "status": "PASS",
+      "detail": "5 → 4",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Reject oversell / insufficient stock",
+      "status": "PASS",
+      "detail": "status=500",
+      "severity": "info"
+    },
+    {
+      "module": "Customers",
+      "check": "360 shows invoice linkage",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Sales register includes invoice",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Cash book reflects sale",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Day book loads after sale",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Integrity check",
+      "status": "PASS",
+      "detail": "{\"cutover_date\":null,\"trial_balance\":{\"total_debit\":2167732.5,\"total_credit\":2167732.5,\"balanced\":true,\"difference\":0,\"a",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Trial balance balanced",
+      "status": "PASS",
+      "detail": "D=2167732.5 C=2167732.5",
+      "severity": "info"
+    },
+    {
+      "module": "Accounts",
+      "check": "Customer ledger loads",
+      "status": "WARN",
+      "detail": "status=404/404",
+      "severity": "medium"
+    },
+    {
+      "module": "Dashboard",
+      "check": "Summary after transactions",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Reports",
+      "check": "Sales report includes QA invoice",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "Search",
+      "check": "Global search finds QA customer",
+      "status": "PASS",
+      "detail": "",
+      "severity": "info"
+    },
+    {
+      "module": "POS",
+      "check": "Partial payment (credit) invoice",
+      "status": "WARN",
+      "detail": "Rejected: {\"detail\":\"Payment total ₹12412 does not cover grand total ₹24823 (balance ₹12411)\",\"code\":\"INVALID_PAYMENT\",\"request_id\":\"mso4nf80-ov23mr\"}",
+      "severity": "medium"
+    },
+    {
+      "module": "Promotions",
+      "check": "Create campaign draft",
+      "status": "WARN",
+      "detail": "400 {\"detail\":\"name, type, message_template, and segment are required\"}",
+      "severity": "low"
+    }
+  ]
+}

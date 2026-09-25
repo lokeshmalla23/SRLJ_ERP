@@ -1,0 +1,66 @@
+{"ts":"2026-08-01T07:13:15.552Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T07:13:17.314Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T07:13:17.863Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T07:13:17.864Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T07:13:17.865Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T07:13:31.162Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T07:14:32.417Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T07:14:32.423Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-01T16:41:52.824Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T16:41:53.540Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T16:41:53.542Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"993a6a4c-2406-46f1-a7b7-2d324d563edd","role":"active_host"}}
+{"ts":"2026-08-01T16:41:53.543Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T16:41:55.117Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T16:41:55.817Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T16:41:55.821Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"993a6a4c-2406-46f1-a7b7-2d324d563edd","role":"active_host"}}
+{"ts":"2026-08-01T16:41:55.823Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T16:42:07.028Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T16:45:19.750Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T16:45:20.319Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T16:45:20.320Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T16:45:20.321Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T16:45:34.339Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T16:46:45.072Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T16:46:45.074Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-01T16:59:11.194Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T16:59:11.593Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T16:59:11.594Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T16:59:11.595Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T16:59:22.722Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T17:05:21.456Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T17:05:21.909Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T17:05:21.910Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T17:05:21.910Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T17:05:29.032Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T17:14:11.639Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T17:14:12.054Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T17:14:12.055Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T17:14:12.055Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T17:14:20.104Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T18:23:46.438Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-01T18:23:46.769Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T18:23:46.770Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d","role":"active_host"}}
+{"ts":"2026-08-01T18:23:46.771Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-01T18:23:54.883Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-01T18:24:27.976Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-01T18:24:27.980Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-01T18:25:24.522Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapbxgu-jo5fcw","method":"GET","path":"/api/cluster/bootstrap-status","status":304,"ms":252,"device":null}}
+{"ts":"2026-08-01T18:25:25.788Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapbyek-exuvxw","method":"GET","path":"/api/cluster/bootstrap-status","status":304,"ms":304,"device":null}}
+{"ts":"2026-08-01T18:25:51.907Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapchf4-ux9h7j","method":"POST","path":"/api/auth/login","status":200,"ms":1777,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:52.486Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapciv5-qkzdkr","method":"POST","path":"/api/devices/heartbeat","status":200,"ms":485,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:52.507Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapciv0-rsdnq2","method":"POST","path":"/api/devices/heartbeat","status":200,"ms":511,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:53.475Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcj3y-ydg8bs","method":"GET","path":"/api/notifications","status":200,"ms":1157,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:55.636Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcj44-1rbc04","method":"GET","path":"/api/dashboard/summary","status":200,"ms":3312,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:55.839Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapck06-xdjijm","method":"GET","path":"/api/notifications","status":304,"ms":2361,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:25:58.342Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcloa-efmr2e","method":"GET","path":"/api/dashboard/summary","status":304,"ms":2700,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:12.737Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcxkx-xm5bul","method":"GET","path":"/api/catalog/metal-types","status":200,"ms":1664,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:12.756Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcxky-0ouh31","method":"GET","path":"/api/catalog/purities","status":200,"ms":1682,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:13.015Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcyak-ut8es4","method":"POST","path":"/api/devices/heartbeat","status":200,"ms":1019,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:13.031Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcxkp-8xqw8x","method":"GET","path":"/api/categories","status":200,"ms":1966,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:13.515Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcyvt-snw14m","method":"GET","path":"/api/catalog/purities","status":304,"ms":754,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:13.528Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcxl0-7lysfr","method":"GET","path":"/api/products","status":200,"ms":2452,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:13.558Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcyvq-zu3qzw","method":"GET","path":"/api/catalog/metal-types","status":304,"ms":800,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:14.077Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapcz3l-d8g1bf","method":"GET","path":"/api/categories","status":304,"ms":1036,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:15.105Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapczhc-f77e26","method":"GET","path":"/api/products","status":304,"ms":1569,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:23.058Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapd68t-u4htm5","method":"GET","path":"/api/notifications","status":304,"ms":757,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}
+{"ts":"2026-08-01T18:26:33.032Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msapddqs-rhwxa4","method":"POST","path":"/api/devices/heartbeat","status":200,"ms":1012,"device":"ba8b8518-af5d-4e53-a223-ccc24f80630d"}}

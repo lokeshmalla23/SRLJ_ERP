@@ -1,0 +1,31 @@
+{"ts":"2026-08-03T01:28:52.169Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T01:32:40.382Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T01:32:40.920Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"cloud","schema_version":5,"sqlite":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T01:32:40.920Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T01:32:46.174Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T05:33:35.497Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T05:33:36.229Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"cloud","schema_version":5,"sqlite":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T05:33:36.229Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T05:33:41.928Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T05:54:56.065Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T05:54:56.807Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"cloud","schema_version":5,"sqlite":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T05:54:56.807Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T05:55:02.173Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T06:05:52.656Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T06:05:53.306Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"cloud","schema_version":5,"sqlite":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T06:05:53.306Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T06:05:58.862Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T06:42:50.730Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T06:42:51.419Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"cloud","schema_version":5,"sqlite":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T06:42:51.420Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T06:42:57.181Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T06:43:28.509Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://127.0.0.1:8000","mode":"cloud","mtls":false,"log_dir":"E:\\SSJ ERP\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T14:29:00.169Z","level":"info","scope":"db","message":"opening postgres","meta":{"ssl":true}}
+{"ts":"2026-08-03T14:29:02.132Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":5,"sqlite":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T14:29:02.134Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"3ff646ac-6d4f-49c2-955a-0e2b1e585707","role":"active_host"}}
+{"ts":"2026-08-03T14:29:02.135Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-08-03T14:29:10.505Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-08-03T14:29:44.879Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8000","mode":"branch","mtls":false,"log_dir":"C:\\crm\\backend\\logs"}}
+{"ts":"2026-08-03T14:29:44.883Z","level":"info","scope":"boot","message":"Branch Service ready — local SQLite / LAN only"}
+{"ts":"2026-08-03T14:32:50.890Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msdbwjxq-fjiizy","method":"GET","path":"/api/cluster/bootstrap-status","status":304,"ms":476,"device":null}}
+{"ts":"2026-08-03T14:32:52.466Z","level":"info","scope":"http","message":"request ok","meta":{"id":"msdbwlal-fs8118","method":"GET","path":"/api/cluster/bootstrap-status","status":304,"ms":293,"device":null}}
