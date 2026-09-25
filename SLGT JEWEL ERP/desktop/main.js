@@ -160,7 +160,10 @@ function createSharedPrintWindow() {
     skipTaskbar: true,
     focusable: false,
     frame: false,
-    webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false },
+    // backgroundThrottling off: this window is always hidden, and a throttled
+    // hidden window may never repaint after the 3× oversample zoom — capture
+    // then gets the stale 1× frame (see isStaleOversampleCapture).
+    webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, backgroundThrottling: false },
   });
   try { sharedPrintWindow.setMenuBarVisibility(false); } catch { /* */ }
   sharedPrintWindow.on('closed', () => { sharedPrintWindow = null; });
@@ -193,6 +196,38 @@ async function waitForZoomFactor(webContents, target, timeoutMs = 400) {
     await new Promise((r) => setTimeout(r, 30));
   }
   return false;
+}
+
+/**
+ * True when an oversampled capture still holds the previous 1× frame: all
+ * painted (non-white) pixels sit inside the left 1/oversample of the image,
+ * or nothing is painted at all. A real invoice page always spans nearly the
+ * full width (items table / letterhead), so this never trips on a good capture.
+ */
+function isStaleOversampleCapture(image, oversample) {
+  try {
+    const { width, height } = image.getSize();
+    if (!(width > 2 && height > 2)) return false;
+    const buf = image.toBitmap();
+    const stride = 3;
+    let maxX = -1;
+    for (let y = 0; y < height; y += stride) {
+      const row = y * width * 4;
+      // Scan right-to-left; only columns past the current max can move it.
+      for (let x = width - 1; x > maxX; x -= stride) {
+        const o = row + x * 4;
+        const a = buf[o + 3];
+        if (a > 16 && (buf[o] < 235 || buf[o + 1] < 235 || buf[o + 2] < 235)) {
+          maxX = x;
+          break;
+        }
+      }
+    }
+    if (maxX < 0) return true;
+    return maxX < width * (1 / oversample + 0.06);
+  } catch {
+    return false;
+  }
 }
 
 // All print:html / pdf:saveFromHtml / pdf:generateFromHtml IPC handlers share
@@ -1628,6 +1663,20 @@ try {
     return { success: true, failureReason: null, detail: null };
   }
 
+  // Printer hard margins don't change between jobs — read once per
+  // printer+paper (a PowerShell round-trip), then reuse. Falls back to 0.25in
+  // (a safe value for typical lasers) when the driver can't report it.
+  const hardMarginCache = new Map();
+  async function getCachedHardMarginIn(printerName, paperName) {
+    const key = `${printerName}|${paperName || ''}`;
+    if (hardMarginCache.has(key)) return hardMarginCache.get(key);
+    const { getPrinterHardMarginIn } = require('./lib/windowsPrint');
+    const measured = await getPrinterHardMarginIn(printerName, paperName);
+    const value = measured != null ? measured : 0.25;
+    if (measured != null) hardMarginCache.set(key, value);
+    return value;
+  }
+
   async function printPdfViaWindows(pdfPath, printerName) {
     const { printFileToWindowsPrinter, trySumatraPrint } = require('./lib/windowsPrint');
     try {
@@ -1720,6 +1769,9 @@ try {
           img.addEventListener('error', resolve, { once: true });
         });
       }));
+      // "load" only means the bytes arrived — a large letterhead can still be
+      // mid-decode. decode() resolves once it is paint-ready.
+      await Promise.all(imgs.map((img) => (img.decode ? img.decode().catch(() => {}) : null)));
     })()`).catch(() => {});
     const metrics = await webContents.executeJavaScript(`(() => {
       const html = document.documentElement;
@@ -1815,8 +1867,8 @@ try {
       }
     } catch { /* */ }
 
-    const finalWidth = zoomVerified ? capWidth : Math.round(width);
-    const finalCaptureHeight = zoomVerified ? Math.round(captureHeight * OVERSAMPLE) : Math.round(captureHeight);
+    let finalWidth = zoomVerified ? capWidth : Math.round(width);
+    let finalCaptureHeight = zoomVerified ? Math.round(captureHeight * OVERSAMPLE) : Math.round(captureHeight);
     await new Promise((r) => setTimeout(r, 80));
 
     // One capturePage() per physical page, sliced by vertical offset out of
@@ -1881,6 +1933,59 @@ try {
               image = await webContents.capturePage(captureRect);
             }
           } catch { /* keep the uncorrected capture rather than lose the page entirely */ }
+        }
+      }
+
+      // Stale-frame guard (page 1 only — every page shares the same frame).
+      // innerWidth confirms the 3× zoom was *laid out*, not that it was
+      // *painted*: a heavy page (full-size letterhead image) can still hand
+      // capturePage the previous 1× frame, which shows up as the whole bill
+      // squeezed into the top-left third of an otherwise blank capture.
+      // Retry until the painted content really spans the page; if it never
+      // does, fall back to a plain 1× capture — slightly softer, but full size.
+      if (i === 0 && zoomVerified && isStaleOversampleCapture(image, OVERSAMPLE)) {
+        // 1) Cheap: ask the hidden window to repaint.
+        const softDeadline = Date.now() + 600;
+        while (Date.now() < softDeadline && isStaleOversampleCapture(image, OVERSAMPLE)) {
+          try { webContents.invalidate(); } catch { /* */ }
+          await new Promise((r) => setTimeout(r, 150));
+          image = await webContents.capturePage(captureRect);
+        }
+        // 2) A hidden window may simply not paint on some PCs — briefly make it
+        //    "visible" off-screen and fully transparent (same trick as the
+        //    empty-capture case above) so Chromium produces a real 3× frame.
+        if (isStaleOversampleCapture(image, OVERSAMPLE) && owner && !owner.isDestroyed()) {
+          try {
+            owner.setPosition(-10000, -10000);
+            owner.setOpacity(0);
+            owner.showInactive();
+            const shownDeadline = Date.now() + 1500;
+            do {
+              try { webContents.invalidate(); } catch { /* */ }
+              await new Promise((r) => setTimeout(r, 120));
+              image = await webContents.capturePage(captureRect);
+            } while (Date.now() < shownDeadline && isStaleOversampleCapture(image, OVERSAMPLE));
+          } catch { /* */ } finally {
+            try { owner.hide(); owner.setOpacity(1); } catch { /* */ }
+            forceMainWindowFocus(owner, { force: true });
+          }
+        }
+        // 3) Last resort: plain 1× capture (softer, but full size).
+        if (isStaleOversampleCapture(image, OVERSAMPLE)) {
+          console.warn('[print] oversample capture never repainted — falling back to 1x capture');
+          zoomVerified = false;
+          finalWidth = Math.round(width);
+          finalCaptureHeight = Math.round(captureHeight);
+          try {
+            webContents.setZoomFactor(1);
+            await waitForZoomFactor(webContents, 1, 400);
+            if (owner && !owner.isDestroyed()) {
+              owner.setSize(Math.round(finalWidth * scale), Math.round(finalCaptureHeight * scale * pagesNeeded));
+            }
+          } catch { /* */ }
+          await new Promise((r) => setTimeout(r, 250));
+          captureRect = { x: 0, y: 0, width: Math.round(finalWidth * scale), height: Math.round(finalCaptureHeight * scale) };
+          image = await webContents.capturePage(captureRect);
         }
       }
 
@@ -2515,6 +2620,66 @@ try {
           deviceName,
           mode: 'windows-image',
         };
+      }
+
+      // Letterhead invoices: print straight through the printer driver
+      // (vector text + the letterhead at its own resolution) instead of a
+      // screenshot — the oversampled capture of a full-page letterhead image
+      // came out soft. Normal bills keep the screenshot path below. If the
+      // driver print fails, fall through to the screenshot path as before.
+      const isLetterheadInvoice = printerType === 'invoice' && /class="letterhead-bg"/.test(html);
+      if (isLetterheadInvoice && pageMetrics.pageWidthIn && pageMetrics.pageHeightIn) {
+        try {
+          // Pass the ISO paper by NAME, not as a micron size: a custom size
+          // doesn't match the driver's own A5 form, so the driver silently
+          // fell back to its default (A4) and the A5 bill landed ~1.7in lower
+          // on the sheet with the footer cut off. The GDI image path matches
+          // the driver paper by name for the same reason (windowsPrint.js).
+          const namedPaper = ['A4', 'A5', 'A6'].includes(paperSizeName) ? paperSizeName : null;
+          // margins:'none' draws to the paper edge, but lasers can't print the
+          // outer few mm (~0.24in on an LBP2900) — every edge came out cropped.
+          // Shrink each page uniformly around its centre to sit inside the
+          // driver's printable area, like the GDI image path does.
+          const hardMarginIn = await getCachedHardMarginIn(deviceName, namedPaper);
+          const insetIn = hardMarginIn + 0.02;
+          const fitScale = Math.min(
+            (pageMetrics.pageWidthIn - 2 * insetIn) / pageMetrics.pageWidthIn,
+            (pageMetrics.pageHeightIn - 2 * insetIn) / pageMetrics.pageHeightIn,
+          );
+          if (fitScale > 0.5 && fitScale < 1) {
+            await win.webContents.insertCSS(
+              `@media print { .page { transform: scale(${fitScale.toFixed(4)}); transform-origin: center center; } }`,
+            );
+          }
+          const direct = await runWebContentsPrint(win.webContents, {
+            silent: true,
+            deviceName,
+            printBackground: true,
+            landscape: false,
+            scaleFactor: 100,
+            margins: { marginType: 'none' },
+            pageSize: namedPaper || {
+              width: Math.round(pageMetrics.pageWidthIn * 25400),
+              height: Math.round(pageMetrics.pageHeightIn * 25400),
+            },
+          }, 30_000);
+          if (direct.success) {
+            cleanupTemp();
+            const afterDirect = await confirmSpoolerAccepted(deviceName, beforeJobs.jobCount, {
+              settleMs: 800,
+              requireJob: false,
+            });
+            if (!afterDirect.success && afterDirect.failureReason === 'printer_error') {
+              console.warn('[print] windows-direct printer error: %s', afterDirect.detail);
+              return { ...afterDirect, deviceName, mode: 'windows-direct' };
+            }
+            console.log('[print] windows-direct ok → %s totalMs=%d', deviceName, Date.now() - t0);
+            return { success: true, failureReason: null, deviceName, mode: 'windows-direct' };
+          }
+          console.warn('[print] windows-direct failed: %s — falling back to image print', direct.failureReason);
+        } catch (err) {
+          console.warn('[print] windows-direct failed:', err.message, '— falling back to image print');
+        }
       }
 
       try {

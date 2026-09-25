@@ -317,8 +317,52 @@ async function trySumatraPrint(filePath, printerName) {
   return true;
 }
 
+/**
+ * Largest hardware (unprintable) margin of a printer on a given named paper,
+ * in inches — e.g. ~0.2in on a Canon LBP2900. Used to inset the direct
+ * (driver) print so nothing at the page edges gets clipped. Returns null when
+ * it can't be read (unknown printer, paper not offered by the driver, …).
+ */
+async function getPrinterHardMarginIn(printerName, paperSizeName = null, { timeoutMs = 8_000 } = {}) {
+  const ps = `
+$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Drawing
+$ps = New-Object System.Drawing.Printing.PrinterSettings
+$ps.PrinterName = '${escapePs(printerName)}'
+if (-not $ps.IsValid) { exit 2 }
+$pg = $ps.DefaultPageSettings
+$paperSizeName = '${escapePs(paperSizeName)}'
+if ($paperSizeName) {
+  $m = $ps.PaperSizes | Where-Object { $_.PaperName -ieq $paperSizeName } | Select-Object -First 1
+  if (-not $m) { $m = $ps.PaperSizes | Where-Object { $_.PaperName -ilike "*$paperSizeName*" } | Select-Object -First 1 }
+  if ($m) { $pg.PaperSize = $m }
+}
+$pa = $pg.PrintableArea
+$w = $pg.PaperSize.Width
+$h = $pg.PaperSize.Height
+if ($pg.Landscape) { $t = $w; $w = $h; $h = $t }
+$left = $pa.X; $top = $pa.Y
+$right = $w - $pa.X - $pa.Width
+$bottom = $h - $pa.Y - $pa.Height
+[Console]::Out.Write(([Math]::Max([Math]::Max($left, $right), [Math]::Max($top, $bottom))).ToString([Globalization.CultureInfo]::InvariantCulture))
+`;
+  try {
+    const { stdout } = await execFileAsync(
+      'powershell.exe',
+      ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-Command', ps],
+      { windowsHide: true, timeout: timeoutMs, encoding: 'utf8' },
+    );
+    const hundredths = Number(String(stdout).trim());
+    if (!(hundredths >= 0) || hundredths > 100) return null; // >1in is not a real hard margin
+    return hundredths / 100;
+  } catch {
+    return null;
+  }
+}
+
 module.exports = {
   sleep,
+  getPrinterHardMarginIn,
   printImageGdi,
   printImageFilesGdi,
   printFileToWindowsPrinter,
