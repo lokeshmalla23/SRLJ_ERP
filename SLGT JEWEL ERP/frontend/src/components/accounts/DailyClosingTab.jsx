@@ -880,7 +880,7 @@ export default function DailyClosingTab({ includeHidden = false }) {
                         onClick={() => setPayView(opt.id)}
                         className="rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors"
                         style={{
-                          background: active ? "#B49042" : "transparent",
+                          background: active ? "#315C4A" : "transparent",
                           color: active ? "#fff" : "#8A6A2D",
                         }}
                       >
@@ -1478,7 +1478,7 @@ export default function DailyClosingTab({ includeHidden = false }) {
                 <div className="mt-3 flex items-center justify-between gap-2 text-[12px] text-[#737373]">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 font-medium disabled:opacity-40"
+                    className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 font-medium transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] disabled:opacity-40"
                     disabled={safeHistoryPage <= 1}
                     onClick={() => setHistoryPage((p) => Math.max(1, p - 1))}
                   >
@@ -1490,7 +1490,7 @@ export default function DailyClosingTab({ includeHidden = false }) {
                   </span>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 font-medium disabled:opacity-40"
+                    className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 font-medium transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] disabled:opacity-40"
                     disabled={safeHistoryPage >= historyPageCount}
                     onClick={() => setHistoryPage((p) => Math.min(historyPageCount, p + 1))}
                   >

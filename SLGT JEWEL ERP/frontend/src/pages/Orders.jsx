@@ -64,7 +64,7 @@ const STATUS_PIPELINE = [
 ];
 
 const STATUS_META = {
-  received: { label: "Received", cls: "bg-gray-100 text-gray-700 border border-gray-200" },
+  received: { label: "Received", cls: "bg-[#F1F4ED] text-[#5F6D62] border border-[#DCE3D6]" },
   karigar_assigned: { label: "Karigar Assigned", cls: "bg-blue-100 text-blue-700 border border-blue-200" },
   in_progress: { label: "In Progress", cls: "bg-amber-100 text-amber-700 border border-amber-200" },
   quality_check: { label: "Quality Check", cls: "bg-purple-100 text-purple-700 border border-purple-200" },
@@ -75,10 +75,49 @@ const STATUS_META = {
 
 const ALL_STATUSES = ["received", "karigar_assigned", "in_progress", "quality_check", "ready", "delivered", "cancelled"];
 
+// Presentation-only trade-module canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
+
 // ─── StatusBadge ─────────────────────────────────────────────────────────────
 
 function StatusBadge({ status, deliveryDate }) {
-  const meta = STATUS_META[status] || { label: status, cls: "bg-gray-100 text-gray-600 border border-gray-200" };
+  const meta = STATUS_META[status] || { label: status, cls: "bg-[#F1F4ED] text-[#6E786F] border border-[#DCE3D6]" };
   const pulse = status === "ready" && (isToday(deliveryDate) || isOverdue(deliveryDate));
   return (
     <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${meta.cls}`}>
@@ -112,13 +151,13 @@ function Modal({ open, onClose, title, children, wide = false }) {
 
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#20352A]/35 backdrop-blur-[2px]">
       <div
-        className={`bg-white rounded-2xl shadow-2xl flex flex-col max-h-[90vh] ${wide ? "w-full max-w-2xl" : "w-full max-w-lg"}`}
+        className={`bg-[#FFFDF8] rounded-[14px] shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col max-h-[90vh] border border-[#DCE3D6] ${wide ? "w-full max-w-2xl" : "w-full max-w-lg"}`}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">{title}</h2>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#DCE3D6]">
+          <h2 className="text-base font-semibold text-[#2F3A32]">{title}</h2>
+          <button onClick={onClose} className="p-1.5 rounded-[8px] hover:bg-[#F1F4ED] text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors">
             <X size={16} />
           </button>
         </div>
@@ -186,11 +225,11 @@ function CustomerSearch({ value, onChange, walkin, onWalkinChange }) {
             <input className="input" placeholder="Mobile" value={value?.mobile || ""} onChange={(e) => onChange({ ...value, mobile: e.target.value, id: null })} required />
           </div>
           <div>
-            <label className="form-label">Date of Birth <span className="text-gray-400 font-normal">(optional)</span></label>
+            <label className="form-label">Date of Birth <span className="text-[#8D998F] font-normal">(optional)</span></label>
             <input className="input" type="date" value={value?.dob || ""} onChange={(e) => onChange({ ...value, dob: e.target.value, id: null })} />
           </div>
           <div>
-            <label className="form-label">Anniversary Date <span className="text-gray-400 font-normal">(optional)</span></label>
+            <label className="form-label">Anniversary Date <span className="text-[#8D998F] font-normal">(optional)</span></label>
             <input className="input" type="date" value={value?.anniversary || ""} onChange={(e) => onChange({ ...value, anniversary: e.target.value, id: null })} />
           </div>
         </div>
@@ -201,7 +240,7 @@ function CustomerSearch({ value, onChange, walkin, onWalkinChange }) {
   return (
     <div ref={wrapRef} className="space-y-2">
       <div className="relative">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" />
         <input
           className="input pl-9"
           placeholder="Search by name or mobile..."
@@ -209,14 +248,14 @@ function CustomerSearch({ value, onChange, walkin, onWalkinChange }) {
           onChange={handleChange}
           onFocus={() => results.length > 0 && setOpen(true)}
         />
-        {searching && <Loader2 size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 animate-spin" />}
+        {searching && <Loader2 size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8D998F] animate-spin" />}
         {open && results.length > 0 && (
-          <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+          <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-[#FFFDF8] border border-[#DCE3D6] rounded-[10px] shadow-[0_12px_28px_rgba(35,58,43,0.12)] max-h-48 overflow-y-auto">
             {results.map((c) => (
               <button key={c.id} type="button" onClick={() => select(c)}
-                className="w-full text-left px-4 py-2.5 hover:bg-amber-50 text-sm flex items-center justify-between">
-                <span className="font-medium text-gray-800">{c.name}</span>
-                <span className="text-gray-500 text-xs">{c.mobile}</span>
+                className="w-full text-left px-4 py-2.5 hover:bg-[#F1F4ED] text-sm flex items-center justify-between">
+                <span className="font-medium text-[#34483B]">{c.name}</span>
+                <span className="text-[#6E786F] text-xs">{c.mobile}</span>
               </button>
             ))}
           </div>
@@ -348,7 +387,7 @@ function NewCustomOrderModal({ open, onClose, onCreated }) {
           </div>
           <div>
             <label className="form-label">Balance Due (₹)</label>
-            <div className={`input flex items-center font-semibold ${balance < 0 ? "text-red-600" : "text-gray-700"} bg-gray-50 cursor-default`}>
+            <div className={`input flex items-center font-semibold ${balance < 0 ? "text-red-600" : "text-[#5F6D62]"} bg-[#F1F4ED] cursor-default`}>
               {fmtINR(balance)}
             </div>
           </div>
@@ -374,11 +413,11 @@ function NewCustomOrderModal({ open, onClose, onCreated }) {
           <input className="input" placeholder="Any special instructions..." value={form.notes} onChange={(e) => set("notes", e.target.value)} />
         </div>
 
-        <p className="text-xs text-gray-500 bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
+        <p className="text-xs text-[#6E786F] bg-amber-50 border border-amber-100 rounded-xl px-3 py-2">
           Order is noted as <span className="font-medium text-amber-800">Received</span>. Assign a karigar (from Vendors) after saving.
         </p>
 
-        <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
+        <div className="flex justify-end gap-3 pt-2 border-t border-[#DCE3D6]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" className="btn-primary" disabled={saving}>
             {saving && <Loader2 size={14} className="animate-spin" />}
@@ -475,7 +514,7 @@ function NewRepairJobModal({ open, onClose, onCreated }) {
           </div>
           <div>
             <label className="form-label">Balance Due (₹)</label>
-            <div className={`input flex items-center font-semibold ${balance < 0 ? "text-red-600" : "text-gray-700"} bg-gray-50 cursor-default`}>
+            <div className={`input flex items-center font-semibold ${balance < 0 ? "text-red-600" : "text-[#5F6D62]"} bg-[#F1F4ED] cursor-default`}>
               {fmtINR(balance)}
             </div>
           </div>
@@ -495,11 +534,11 @@ function NewRepairJobModal({ open, onClose, onCreated }) {
           </div>
         </div>
 
-        <p className="text-xs text-gray-500 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2">
+        <p className="text-xs text-[#6E786F] bg-blue-50 border border-blue-100 rounded-xl px-3 py-2">
           Job is noted as <span className="font-medium text-blue-800">Received</span>. Assign a karigar (from Vendors) after saving.
         </p>
 
-        <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
+        <div className="flex justify-end gap-3 pt-2 border-t border-[#DCE3D6]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" className="btn-primary" disabled={saving}>
             {saving && <Loader2 size={14} className="animate-spin" />}
@@ -590,15 +629,15 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
   return (
     <div className="fixed inset-0 z-40 flex justify-end">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#20352A]/30 backdrop-blur-[2px]" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right overflow-y-auto">
+      <div className="relative w-full max-w-md bg-[#FFFDF8] h-full shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col animate-slide-in-right overflow-y-auto border-l border-[#DCE3D6]">
         {/* Header */}
-        <div className="sticky top-0 bg-white z-10 flex items-start justify-between px-6 py-5 border-b border-gray-100">
+        <div className="sticky top-0 bg-[#FFFDF8] z-10 flex items-start justify-between px-6 py-5 border-b border-[#DCE3D6]">
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-lg font-bold text-gray-900 tracking-tight">{order.order_no}</span>
+              <span className="text-lg font-bold text-[#2F3A32] tracking-tight">{order.order_no}</span>
               <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${order.type === "custom" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-blue-50 text-blue-700 border-blue-200"}`}>
                 {order.type === "custom" ? "Custom Order" : "Repair Job"}
               </span>
@@ -606,7 +645,7 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
             </div>
             <StatusBadge status={order.status} deliveryDate={order.delivery_date} />
           </div>
-          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors mt-0.5">
+          <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-[#F1F4ED] text-[#8D998F] hover:text-[#6E786F] transition-colors mt-0.5">
             <X size={16} />
           </button>
         </div>
@@ -614,12 +653,12 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
         <div className="flex-1 px-6 py-5 space-y-6">
           {/* Customer */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Customer</h3>
-            <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+            <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-3">Customer</h3>
+            <div className="flex items-center justify-between bg-[#F1F4ED] rounded-[10px] border border-[#DCE3D6] px-4 py-3">
               <div>
-                <p className="font-semibold text-gray-900">{order.customer_name}</p>
+                <p className="font-semibold text-[#2F3A32]">{order.customer_name}</p>
                 {order.customer_mobile && (
-                  <p className="text-sm text-gray-500 mt-0.5">{order.customer_mobile}</p>
+                  <p className="text-sm text-[#6E786F] mt-0.5">{order.customer_mobile}</p>
                 )}
               </div>
               {order.customer_mobile && (
@@ -634,18 +673,18 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
 
           {/* Description */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-3">
               {order.type === "custom" ? "Design Description" : "Item / Repair Details"}
             </h3>
-            <div className="bg-gray-50 rounded-xl px-4 py-3 space-y-2">
-              <p className="text-sm text-gray-800 leading-relaxed">
+            <div className="bg-[#F1F4ED] rounded-xl px-4 py-3 space-y-2">
+              <p className="text-sm text-[#34483B] leading-relaxed">
                 {order.description || order.item_description || "—"}
               </p>
               {order.type === "custom" && (
-                <div className="pt-2 border-t border-gray-200 grid grid-cols-2 gap-2 text-sm">
-                  {order.metal_type && <div><span className="text-gray-500">Metal:</span> <span className="font-medium text-gray-800">{order.metal_type} {order.purity}</span></div>}
-                  {estWeight != null && estWeight !== "" && <div><span className="text-gray-500">Weight:</span> <span className="font-medium text-gray-800">{estWeight} g</span></div>}
-                  {order.stone_details && <div className="col-span-2"><span className="text-gray-500">Stones:</span> <span className="font-medium text-gray-800">{order.stone_details}</span></div>}
+                <div className="pt-2 border-t border-[#DCE3D6] grid grid-cols-2 gap-2 text-sm">
+                  {order.metal_type && <div><span className="text-[#6E786F]">Metal:</span> <span className="font-medium text-[#34483B]">{order.metal_type} {order.purity}</span></div>}
+                  {estWeight != null && estWeight !== "" && <div><span className="text-[#6E786F]">Weight:</span> <span className="font-medium text-[#34483B]">{estWeight} g</span></div>}
+                  {order.stone_details && <div className="col-span-2"><span className="text-[#6E786F]">Stones:</span> <span className="font-medium text-[#34483B]">{order.stone_details}</span></div>}
                 </div>
               )}
             </div>
@@ -653,33 +692,33 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
 
           {/* Financials */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Financials</h3>
+            <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-3">Financials</h3>
             <div className="grid grid-cols-3 gap-3">
-              <div className="bg-gray-50 rounded-xl px-4 py-3 text-center">
-                <p className="text-xs text-gray-500 mb-1">Est. Price</p>
-                <p className="font-bold text-gray-900 text-sm">{fmtINR(estPrice)}</p>
+              <div className="bg-[#F1F4ED] rounded-xl px-4 py-3 text-center">
+                <p className="text-xs text-[#6E786F] mb-1">Est. Price</p>
+                <p className="font-bold text-[#2F3A32] text-sm">{fmtINR(estPrice)}</p>
               </div>
-              <div className="bg-green-50 rounded-xl px-4 py-3 text-center">
+              <div className="bg-[#EDF4EE] rounded-[10px] border border-[#CFE1D1] px-4 py-3 text-center">
                 <p className="text-xs text-green-600 mb-1">Advance Paid</p>
                 <p className="font-bold text-green-800 text-sm">{fmtINR(order.advance_paid)}</p>
               </div>
-              <div className={`rounded-xl px-4 py-3 text-center ${balance > 0 ? "bg-red-50" : "bg-gray-50"}`}>
-                <p className={`text-xs mb-1 ${balance > 0 ? "text-red-600" : "text-gray-500"}`}>Balance Due</p>
-                <p className={`font-bold text-sm ${balance > 0 ? "text-red-700" : "text-gray-700"}`}>{fmtINR(balance)}</p>
+              <div className={`rounded-[10px] border px-4 py-3 text-center ${balance > 0 ? "bg-[#FEF3F2] border-[#F1C7C4]" : "bg-[#F1F4ED] border-[#DCE3D6]"}`}>
+                <p className={`text-xs mb-1 ${balance > 0 ? "text-red-600" : "text-[#6E786F]"}`}>Balance Due</p>
+                <p className={`font-bold text-sm ${balance > 0 ? "text-red-700" : "text-[#5F6D62]"}`}>{fmtINR(balance)}</p>
               </div>
             </div>
           </section>
 
           {/* Karigar & Delivery */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Assignment & Delivery</h3>
+            <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-3">Assignment & Delivery</h3>
             <div className="space-y-3">
-              <div className="bg-gray-50 rounded-xl px-4 py-3">
-                <p className="text-xs text-gray-500 mb-1">Karigar</p>
+              <div className="bg-[#F1F4ED] rounded-[10px] border border-[#DCE3D6] px-4 py-3">
+                <p className="text-xs text-[#6E786F] mb-1">Karigar</p>
                 {editingKarigar ? (
                   <div className="space-y-2 mt-1">
                     {loadingKarigars ? (
-                      <div className="flex items-center gap-2 text-xs text-gray-500 py-1">
+                      <div className="flex items-center gap-2 text-xs text-[#6E786F] py-1">
                         <Loader2 size={13} className="animate-spin" /> Loading karigars…
                       </div>
                     ) : karigars.length === 0 ? (
@@ -712,7 +751,7 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
                       </button>
                       <button
                         onClick={cancelKarigar}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-200 text-gray-600 hover:bg-gray-300 transition-colors"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#F1F4ED] text-[#6E786F] hover:bg-[#E3E8E0] transition-colors"
                       >
                         Cancel
                       </button>
@@ -720,12 +759,12 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
                   </div>
                 ) : (
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-medium text-gray-800 text-sm">
-                      {order.karigar_name || <span className="text-gray-400 italic">Not assigned yet</span>}
+                    <p className="font-medium text-[#34483B] text-sm">
+                      {order.karigar_name || <span className="text-[#8D998F] italic">Not assigned yet</span>}
                     </p>
                     <button
                       onClick={() => setEditingKarigar(true)}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-600 hover:border-amber-300 hover:text-amber-700 transition-colors"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-white border border-[#DCE3D6] text-[#6E786F] hover:border-amber-300 hover:text-amber-700 transition-colors"
                       title={order.karigar_name ? "Change karigar" : "Assign karigar"}
                     >
                       <Pencil size={12} />
@@ -734,11 +773,11 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
                   </div>
                 )}
               </div>
-              <div className={`rounded-xl px-4 py-3 ${overdue ? "bg-red-50" : "bg-gray-50"}`}>
-                <p className={`text-xs mb-1 ${overdue ? "text-red-600" : "text-gray-500"}`}>
+              <div className={`rounded-xl px-4 py-3 ${overdue ? "bg-red-50" : "bg-[#F1F4ED]"}`}>
+                <p className={`text-xs mb-1 ${overdue ? "text-red-600" : "text-[#6E786F]"}`}>
                   Delivery Date {overdue && "⚠ Overdue"}
                 </p>
-                <p className={`font-medium text-sm ${overdue ? "text-red-700" : "text-gray-800"}`}>
+                <p className={`font-medium text-sm ${overdue ? "text-red-700" : "text-[#34483B]"}`}>
                   {fmtDate(order.delivery_date)}
                 </p>
               </div>
@@ -748,15 +787,15 @@ function OrderDetailPanel({ order, onClose, onStatusUpdated }) {
           {/* Notes */}
           {order.notes && (
             <section>
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Notes</h3>
-              <p className="text-sm text-gray-700 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 leading-relaxed">{order.notes}</p>
+              <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-2">Notes</h3>
+              <p className="text-sm text-[#5F6D62] bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 leading-relaxed">{order.notes}</p>
             </section>
           )}
 
           {/* Status update */}
           {order.status !== "delivered" && order.status !== "cancelled" && (
-            <section className="sticky bottom-0 bg-white pt-4 border-t border-gray-100">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Update Status</h3>
+            <section className="sticky bottom-0 bg-[#FFFDF8] pt-4 border-t border-[#DCE3D6]">
+              <h3 className="text-xs font-semibold text-[#8D998F] uppercase tracking-wider mb-3">Update Status</h3>
               <div className="flex gap-2">
                 <select className="input flex-1 text-sm" value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
                   {ALL_STATUSES.map((s) => (
@@ -786,7 +825,7 @@ function StatusPipeline({ orders }) {
   }, {});
 
   return (
-    <div className="flex items-stretch gap-0 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-6">
+    <div className="flex items-stretch gap-0 bg-[#FFFDF8] rounded-[12px] border border-[#DCE3D6] shadow-[0_1px_2px_rgba(35,58,43,0.04)] overflow-hidden mb-6">
       {STATUS_PIPELINE.map((step, idx) => {
         const Icon = step.icon;
         const count = counts[step.key];
@@ -795,23 +834,23 @@ function StatusPipeline({ orders }) {
         return (
           <div key={step.key} className="flex items-stretch flex-1 min-w-0">
             <div className={`flex flex-col items-center justify-center px-3 py-4 flex-1 gap-1.5 transition-colors
-              ${activeColor ? "bg-amber-50" : "bg-white"}`}>
+              ${activeColor ? "bg-[#EDF4EE]" : "bg-[#FFFDF8]"}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center
-                ${activeColor ? "bg-amber-400 text-white shadow-md" : "bg-gray-100 text-gray-400"}`}>
+                ${activeColor ? "bg-[#244B39] text-white shadow-sm" : "bg-[#F1F4ED] text-[#8D998F]"}`}>
                 <Icon size={15} strokeWidth={2} />
               </div>
-              <div className={`text-xl font-bold leading-none ${activeColor ? "text-amber-700" : "text-gray-300"}`}>
+              <div className={`text-xl font-bold leading-none ${activeColor ? "text-[#244B39]" : "text-[#B6C0B7]"}`}>
                 {count}
               </div>
-              <div className={`text-[10px] font-medium text-center leading-tight ${activeColor ? "text-amber-700" : "text-gray-400"}`}>
+              <div className={`text-[10px] font-medium text-center leading-tight ${activeColor ? "text-[#356747]" : "text-[#8D998F]"}`}>
                 {step.label}
               </div>
             </div>
             {!isLast && (
               <div className="flex items-center self-stretch">
-                <div className="w-px h-full bg-gray-100" />
-                <ChevronRight size={14} className="text-gray-300 -mx-2 z-10" />
-                <div className="w-px h-full bg-gray-100" />
+                <div className="w-px h-full bg-[#F1F4ED]" />
+                <ChevronRight size={14} className="text-[#B6C0B7] -mx-2 z-10" />
+                <div className="w-px h-full bg-[#F1F4ED]" />
               </div>
             )}
           </div>
@@ -825,21 +864,21 @@ function StatusPipeline({ orders }) {
 
 function SummaryCard({ label, value, icon: Icon, color = "gray", highlight = false }) {
   const colors = {
-    gray: "bg-white text-gray-800 border-gray-100",
+    gray: "bg-white text-[#34483B] border-[#DCE3D6]",
     amber: "bg-amber-50 text-amber-800 border-amber-200",
     green: "bg-green-50 text-green-800 border-green-200",
     red: "bg-red-50 text-red-800 border-red-200",
     blue: "bg-blue-50 text-blue-800 border-blue-200",
   };
   const iconColors = {
-    gray: "text-gray-400",
+    gray: "text-[#8D998F]",
     amber: "text-amber-500",
     green: "text-green-500",
     red: "text-red-500",
     blue: "text-blue-500",
   };
   return (
-    <div className={`rounded-2xl border px-5 py-4 flex items-center gap-4 shadow-sm ${colors[color]} ${highlight ? "ring-2 ring-amber-400 ring-offset-1" : ""}`}>
+    <div className={`rounded-[10px] border px-5 py-4 flex items-center gap-4 shadow-[0_1px_2px_rgba(35,58,43,0.04)] ${colors[color]} ${highlight ? "ring-2 ring-[#B8CBB9] ring-offset-1" : ""}`}>
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white shadow-sm ${iconColors[color]}`}>
         <Icon size={18} strokeWidth={1.75} />
       </div>
@@ -866,33 +905,33 @@ function OrdersTable({ orders, loading, onRowClick }) {
   if (orders.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
-          <ClipboardList size={28} className="text-gray-300" />
+        <div className="w-16 h-16 rounded-2xl bg-[#F1F4ED] flex items-center justify-center mb-4">
+          <ClipboardList size={28} className="text-[#B6C0B7]" />
         </div>
-        <p className="text-gray-500 font-medium">No orders found</p>
-        <p className="text-gray-400 text-sm mt-1">Create a new order using the buttons above</p>
+        <p className="text-[#6E786F] font-medium">No orders found</p>
+        <p className="text-[#8D998F] text-sm mt-1">Create a new order using the buttons above</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-gray-100 shadow-sm bg-white">
+    <div className="overflow-x-auto rounded-[10px] border border-[#DCE3D6] shadow-[0_1px_2px_rgba(35,58,43,0.04)] bg-[#FFFDF8]">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-gray-50 border-b border-gray-100">
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Order No</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Metal / Purity</th>
-            <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Est. Price</th>
-            <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Advance</th>
-            <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Balance</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Karigar</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Delivery</th>
-            <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+          <tr className="bg-[#F1F4ED] border-b border-[#DCE3D6]">
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider whitespace-nowrap">Order No</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Customer</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Description</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider whitespace-nowrap">Metal / Purity</th>
+            <th className="text-right px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider whitespace-nowrap">Est. Price</th>
+            <th className="text-right px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Advance</th>
+            <th className="text-right px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Balance</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Karigar</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider whitespace-nowrap">Delivery</th>
+            <th className="text-left px-4 py-3 text-xs font-semibold text-[#6E786F] uppercase tracking-wider">Status</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-50">
+        <tbody className="divide-y divide-[#E3E8E0]">
           {orders.map((o) => {
             const estPrice = o.estimated_price ?? o.est_price ?? 0;
             const balance = o.balance_due != null ? o.balance_due : estPrice - (o.advance_paid || 0);
@@ -900,22 +939,22 @@ function OrdersTable({ orders, loading, onRowClick }) {
             const todayDelivery = isToday(o.delivery_date) && o.status !== "delivered" && o.status !== "cancelled";
             return (
               <tr key={o.id}
-                className="hover:bg-amber-50/40 cursor-pointer transition-colors group"
+                className="hover:bg-[#F7F9F4] cursor-pointer transition-colors group"
                 onClick={() => onRowClick(o)}>
                 <td className="px-4 py-3 whitespace-nowrap">
                   <div className="flex flex-col gap-0.5">
-                    <span className="font-semibold text-amber-700 group-hover:text-amber-800 text-xs">{o.order_no}</span>
+                    <span className="font-semibold text-[#244B39] group-hover:text-[#1D3B2E] text-xs">{o.order_no}</span>
                     <PriorityBadge priority={o.priority} />
                   </div>
                 </td>
                 <td className="px-4 py-3">
                   <div>
-                    <p className="font-medium text-gray-900">{o.customer_name}</p>
-                    {o.customer_mobile && <p className="text-xs text-gray-400">{o.customer_mobile}</p>}
+                    <p className="font-medium text-[#2F3A32]">{o.customer_name}</p>
+                    {o.customer_mobile && <p className="text-xs text-[#8D998F]">{o.customer_mobile}</p>}
                   </div>
                 </td>
                 <td className="px-4 py-3 max-w-[200px]">
-                  <p className="text-gray-700 truncate text-xs" title={o.description || o.item_description}>
+                  <p className="text-[#5F6D62] truncate text-xs" title={o.description || o.item_description}>
                     {o.description || o.item_description || "—"}
                   </p>
                 </td>
@@ -924,13 +963,13 @@ function OrdersTable({ orders, loading, onRowClick }) {
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
                       {o.metal_type} {o.purity}
                     </span>
-                  ) : <span className="text-gray-400 text-xs">—</span>}
+                  ) : <span className="text-[#8D998F] text-xs">—</span>}
                 </td>
-                <td className="px-4 py-3 text-right font-medium text-gray-800 whitespace-nowrap">{fmtINR(estPrice)}</td>
+                <td className="px-4 py-3 text-right font-medium text-[#34483B] whitespace-nowrap">{fmtINR(estPrice)}</td>
                 <td className="px-4 py-3 text-right text-green-700 whitespace-nowrap">{fmtINR(o.advance_paid)}</td>
-                <td className={`px-4 py-3 text-right font-medium whitespace-nowrap ${balance > 0 ? "text-red-600" : "text-gray-500"}`}>{fmtINR(balance)}</td>
-                <td className="px-4 py-3 text-xs text-gray-600">{o.karigar_name || <span className="text-gray-400 italic">Unassigned</span>}</td>
-                <td className={`px-4 py-3 whitespace-nowrap text-xs font-medium ${overdue ? "text-red-600" : todayDelivery ? "text-amber-600" : "text-gray-600"}`}>
+                <td className={`px-4 py-3 text-right font-medium whitespace-nowrap ${balance > 0 ? "text-red-600" : "text-[#6E786F]"}`}>{fmtINR(balance)}</td>
+                <td className="px-4 py-3 text-xs text-[#6E786F]">{o.karigar_name || <span className="text-[#8D998F] italic">Unassigned</span>}</td>
+                <td className={`px-4 py-3 whitespace-nowrap text-xs font-medium ${overdue ? "text-red-600" : todayDelivery ? "text-amber-600" : "text-[#6E786F]"}`}>
                   {overdue && <span className="mr-1">⚠</span>}
                   {fmtDate(o.delivery_date)}
                 </td>
@@ -1002,12 +1041,12 @@ export default function Orders() {
   ).length;
 
   return (
-    <div className="max-w-[1400px] pb-10">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1400px] pb-10`}>
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Orders</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage custom jewellery orders and repair jobs from start to delivery.</p>
+          <h1 className="text-2xl font-bold text-[#2F3A32] tracking-tight">Orders</h1>
+          <p className="text-[#6E786F] text-sm mt-1">Manage custom jewellery orders and repair jobs from start to delivery.</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <button onClick={() => setShowRepairModal(true)} className="btn-secondary flex items-center gap-1.5">
@@ -1045,16 +1084,16 @@ export default function Orders() {
       <StatusPipeline orders={orders} />
 
       {/* Tabs */}
-      <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-xl w-fit mb-5">
+      <div className="flex items-center gap-1 p-1 bg-[#F1F4ED] rounded-[10px] border border-[#DCE3D6] w-fit mb-5">
         <button
           onClick={() => setTab("custom")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === "custom" ? "bg-white text-amber-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === "custom" ? "bg-[#244B39] text-white shadow-sm" : "text-[#6E786F] hover:text-[#244B39]"}`}>
           <ClipboardList size={15} strokeWidth={1.75} />
           Custom Orders
         </button>
         <button
           onClick={() => setTab("repair")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === "repair" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}>
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${tab === "repair" ? "bg-[#244B39] text-white shadow-sm" : "text-[#6E786F] hover:text-[#244B39]"}`}>
           <Wrench size={15} strokeWidth={1.75} />
           Repair Jobs
         </button>
@@ -1097,7 +1136,7 @@ export default function Orders() {
           display: block;
           font-size: 0.75rem;
           font-weight: 500;
-          color: #6b7280;
+          color: #6E786F;
           margin-bottom: 0.375rem;
         }
       `}</style>

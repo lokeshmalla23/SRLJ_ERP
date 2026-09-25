@@ -67,7 +67,7 @@ function FactoryResetSection({ canWrite = false }) {
           type="button"
           disabled={!canWrite}
           onClick={() => { setOpen(true); setConfirm(""); }}
-          className="px-3 py-1.5 text-[12px] font-medium bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-40"
+          className="h-8 rounded-[8px] border border-red-600 bg-red-600 px-3 text-[11.5px] font-semibold text-white transition-colors hover:border-red-700 hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Reset All Data
         </button>
@@ -79,23 +79,23 @@ function FactoryResetSection({ canWrite = false }) {
       </div>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-[420px] p-6 space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2A1B18]/50 p-4 backdrop-blur-[2px]">
+          <div className="w-[420px] max-w-full space-y-4 rounded-[10px] border border-[#E1C9C4] bg-[#FEFEFB] p-6 shadow-[0_24px_60px_rgba(63,29,24,0.24)]">
             <div className="flex items-center gap-2">
               <AlertTriangle size={18} className="text-red-600 shrink-0" />
-              <h2 className="text-[15px] font-semibold text-[#0A0A0A]">Reset All Data</h2>
+              <h2 className="text-[15px] font-semibold text-[#294236]">Reset All Data</h2>
             </div>
             <p className="text-[13px] text-[#525252]">
               This will permanently delete the entire database — all customers, invoices, products,
               custom catalog entries, employees, and settings. The app will restart with built-in
               catalog standards only (Gold, Silver, Grams, Piece, Tray, and standard purities).
             </p>
-            <div className="p-3 bg-red-50 border border-red-200 rounded text-[12px] text-red-700 font-medium">
+            <div className="rounded-[9px] border border-red-200 bg-red-50 p-3 text-[12px] font-medium text-red-700">
               This action cannot be undone. Export your data first if you need it.
             </div>
             <div>
               <label className="text-[12px] text-[#737373] block mb-1">
-                Type <span className="font-mono font-bold text-[#0A0A0A]">RESET</span> to confirm
+                Type <span className="font-mono font-bold text-[#294236]">RESET</span> to confirm
               </label>
               <input
                 className="input w-full"
@@ -114,7 +114,7 @@ function FactoryResetSection({ canWrite = false }) {
                 type="button"
                 onClick={doReset}
                 disabled={confirm !== "RESET" || busy}
-                className="px-4 py-2 text-[13px] font-medium bg-red-600 text-white rounded disabled:opacity-40 hover:bg-red-700"
+                className="h-9 rounded-[9px] border border-red-600 bg-red-600 px-4 text-[12.5px] font-semibold text-white transition-colors hover:border-red-700 hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {busy ? "Resetting…" : "Yes, Delete Everything"}
               </button>
@@ -560,14 +560,14 @@ export default function BackupExportTab({ canWrite = false }) {
           icon={Usb}
           title="Transfer to USB / folder"
           description="Full shop database snapshot plus date-range CSVs for invoices, expenses, and stock — saved to a pendrive or any folder."
-          className="border-[#0A0A0A]"
+          className="border-[#AFC1AD] bg-[#FBFCF8]"
           footer={(
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 disabled={loading.transfer || !canWrite}
                 onClick={transferToFolder}
-                className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+                className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#173D2C] hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading.transfer ? <Loader2 size={14} className="animate-spin" /> : <Usb size={14} strokeWidth={1.5} />}
                 {loading.transfer ? "Saving backup…" : "Save to USB / folder…"}
@@ -580,7 +580,7 @@ export default function BackupExportTab({ canWrite = false }) {
         >
           {dateControls}
           <div className="mt-3 text-[11.5px] text-[#737373]">
-            CSV range: <span className="font-medium text-[#0A0A0A]">{from}</span> → <span className="font-medium text-[#0A0A0A]">{to}</span>
+            CSV range: <span className="font-medium text-[#294236]">{from}</span> → <span className="font-medium text-[#294236]">{to}</span>
           </div>
         </SettingsActionCard>
 
@@ -593,7 +593,7 @@ export default function BackupExportTab({ canWrite = false }) {
               type="button"
               disabled={loading.enc || !canWrite}
               onClick={createEncrypted}
-              className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#173D2C] hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading.enc ? <Loader2 size={14} className="animate-spin" /> : <Database size={14} strokeWidth={1.5} />}
               {loading.enc ? "Encrypting…" : "Create Encrypted Backup"}
@@ -608,7 +608,7 @@ export default function BackupExportTab({ canWrite = false }) {
                   <div className="pl-2 text-[#a3a3a3]">No files</div>
                 ) : (
                   (encBackups.backups[tier] || []).slice(0, 4).map((b) => (
-                    <div key={b.path || b.name} className="flex items-center justify-between gap-2 pl-2 border-l border-[#E5E7EB] py-0.5">
+                    <div key={b.path || b.name} className="flex items-center justify-between gap-2 pl-2 border-l border-[#DCE3D6] py-0.5">
                       <span className="truncate font-mono text-[11.5px]">{b.name}</span>
                       <button
                         type="button"
@@ -637,7 +637,7 @@ export default function BackupExportTab({ canWrite = false }) {
               type="button"
               onClick={() => download("inventory", `inventory_backup_${today}.json`)}
               disabled={loading.inventory || !canWrite}
-              className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#173D2C] hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading.inventory ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} strokeWidth={1.5} />}
               {loading.inventory ? "Preparing…" : "Download backup"}
@@ -646,7 +646,7 @@ export default function BackupExportTab({ canWrite = false }) {
               type="button"
               onClick={pickInventoryFile}
               disabled={inventoryRestoring || !canWrite}
-              className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-white text-[#0A0A0A] border border-[#0A0A0A] disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#9FAF9E] bg-white px-3 text-[12.5px] font-semibold text-[#315E48] transition-colors hover:border-[#78917C] hover:bg-[#F3F6F1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <FolderOpen size={14} strokeWidth={1.5} /> Choose file to restore…
             </button>
@@ -670,14 +670,14 @@ export default function BackupExportTab({ canWrite = false }) {
             ["Stock movements", summary?.inventory_movements],
           ].map(([label, value]) => (
             <span key={label} className="inline-flex items-center gap-1.5">
-              <span className="font-semibold text-[#0A0A0A] tabular-nums">{value ?? "—"}</span>
+              <span className="font-semibold text-[#294236] tabular-nums">{value ?? "—"}</span>
               {label}
             </span>
           ))}
         </div>
 
         {inventoryFile ? (
-          <div className="mt-4 flex flex-wrap items-center gap-3 p-3 border border-amber-200 bg-amber-50 rounded-lg">
+          <div className="mt-4 flex flex-wrap items-center gap-3 p-3 border border-amber-200 bg-amber-50 rounded-[9px]">
             <div className="min-w-0 flex-1">
               <div className="text-[12.5px] font-medium text-amber-900 truncate">{inventoryFile.name}</div>
               <div className="text-[11.5px] text-amber-700">
@@ -718,7 +718,7 @@ export default function BackupExportTab({ canWrite = false }) {
               type="button"
               onClick={() => download("customer", `customer_backup_${today}.json`)}
               disabled={loading.customer || !canWrite}
-              className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#173D2C] hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading.customer ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} strokeWidth={1.5} />}
               {loading.customer ? "Preparing…" : "Download backup"}
@@ -727,7 +727,7 @@ export default function BackupExportTab({ canWrite = false }) {
               type="button"
               onClick={pickCustomerFile}
               disabled={customerRestoring || !canWrite}
-              className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-white text-[#0A0A0A] border border-[#0A0A0A] disabled:opacity-50"
+              className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#9FAF9E] bg-white px-3 text-[12.5px] font-semibold text-[#315E48] transition-colors hover:border-[#78917C] hover:bg-[#F3F6F1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <FolderOpen size={14} strokeWidth={1.5} /> Choose file to restore…
             </button>
@@ -746,14 +746,14 @@ export default function BackupExportTab({ canWrite = false }) {
             ["Customers", summary?.customers],
           ].map(([label, value]) => (
             <span key={label} className="inline-flex items-center gap-1.5">
-              <span className="font-semibold text-[#0A0A0A] tabular-nums">{value ?? "—"}</span>
+              <span className="font-semibold text-[#294236] tabular-nums">{value ?? "—"}</span>
               {label}
             </span>
           ))}
         </div>
 
         {customerFile ? (
-          <div className="mt-4 flex flex-wrap items-center gap-3 p-3 border border-amber-200 bg-amber-50 rounded-lg">
+          <div className="mt-4 flex flex-wrap items-center gap-3 p-3 border border-amber-200 bg-amber-50 rounded-[9px]">
             <div className="min-w-0 flex-1">
               <div className="text-[12.5px] font-medium text-amber-900 truncate">{customerFile.name}</div>
               <div className="text-[11.5px] text-amber-700">
@@ -792,7 +792,7 @@ export default function BackupExportTab({ canWrite = false }) {
             type="button"
             onClick={pickImportFile}
             disabled={importBusy || !canWrite}
-            className="inline-flex items-center gap-2 px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+            className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#173D2C] hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <FolderOpen size={14} strokeWidth={1.5} /> Choose backup file…
           </button>
@@ -800,7 +800,7 @@ export default function BackupExportTab({ canWrite = false }) {
             <span className="text-[12px] text-amber-800">Desktop ERP app required</span>
           )}
           {importFile && (
-            <div className="flex items-center gap-2 text-[12.5px] text-[#0A0A0A]">
+            <div className="flex items-center gap-2 text-[12.5px] text-[#294236]">
               <span className="font-mono truncate max-w-[260px]">{importFile.name}</span>
               <button
                 type="button"
@@ -913,7 +913,7 @@ export default function BackupExportTab({ canWrite = false }) {
                     type="button"
                     onClick={() => triggerCsvImport(e.key)}
                     disabled={csvImporting[e.key] || !canWrite}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] bg-[#0A0A0A] text-white rounded disabled:opacity-50"
+                    className="inline-flex h-8 items-center gap-1.5 rounded-[8px] border border-[#244B39] bg-[#244B39] px-3 text-[11.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {csvImporting[e.key] ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} strokeWidth={1.5} />}
                     {csvImporting[e.key] ? "Importing…" : "Upload CSV"}
@@ -925,7 +925,7 @@ export default function BackupExportTab({ canWrite = false }) {
         </div>
       </SettingsSection>
 
-      <div className="w-full p-4 bg-amber-50 border border-amber-200 rounded-lg">
+      <div className="w-full p-4 bg-amber-50 border border-amber-200 rounded-[9px]">
         <div className="text-[12.5px] font-semibold text-amber-800 mb-1">Recommended: weekly USB + encrypted backup</div>
         <div className="text-[12px] text-amber-700">
           Export customers, products, and invoices every week. Store copies on a USB drive and keep an encrypted snapshot on this PC.

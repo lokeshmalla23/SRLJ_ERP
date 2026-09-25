@@ -117,7 +117,7 @@ export default function StatementsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <input type="date" className="input w-40" value={from} onChange={(e) => setFrom(e.target.value)} />
         <input type="date" className="input w-40" value={to} onChange={(e) => setTo(e.target.value)} />
         {[
@@ -129,7 +129,7 @@ export default function StatementsTab() {
           <button
             key={id}
             type="button"
-            className={`text-xs px-3 py-1.5 rounded-full border ${view === id ? "bg-[#0A0A0A] text-white border-[#0A0A0A]" : "bg-white text-[#525252] border-[#E5E7EB]"}`}
+            className={`rounded-full border px-3 py-1.5 text-xs transition-colors ${view === id ? "border-[#315C4A] bg-[#315C4A] text-white shadow-sm" : "border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"}`}
             onClick={() => setView(id)}
           >
             {label}
@@ -138,8 +138,8 @@ export default function StatementsTab() {
       </div>
 
       {view === "tb" && (
-        <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
-          <div className="px-4 py-3 flex justify-between items-center border-b" style={{ borderColor: "#E5E7EB" }}>
+        <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
+          <div className="px-4 py-3 flex justify-between items-center border-b" style={{ borderColor: "#D8D2C6" }}>
             <span className="text-sm font-medium">Trial Balance</span>
             <button
               type="button"
@@ -157,7 +157,7 @@ export default function StatementsTab() {
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+              <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                 <th className="px-3 py-2">Code</th>
                 <th className="px-3 py-2">Account</th>
                 <th className="px-3 py-2 text-right">Debit</th>
@@ -166,7 +166,7 @@ export default function StatementsTab() {
             </thead>
             <tbody>
               {(tb?.rows || []).map((r) => (
-                <tr key={r.code} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                <tr key={r.code} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                   <td className="px-3 py-2 font-mono text-[12px]">{r.code}</td>
                   <td className="px-3 py-2">{r.name}</td>
                   <td className="px-3 py-2 text-right tabular-nums">{fmtINR(r.debit)}</td>
@@ -175,7 +175,7 @@ export default function StatementsTab() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t font-semibold" style={{ borderColor: "#E5E7EB" }}>
+              <tr className="border-t font-semibold" style={{ borderColor: "#D8D2C6" }}>
                 <td className="px-3 py-2" colSpan={2}>Totals</td>
                 <td className="px-3 py-2 text-right">{fmtINR(tb?.totals?.debit)}</td>
                 <td className="px-3 py-2 text-right">{fmtINR(tb?.totals?.credit)}</td>
@@ -187,23 +187,23 @@ export default function StatementsTab() {
 
       {view === "pnl" && (
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
-            <SimpleBarChart data={pnlBars} bars={[{ key: "value", name: "Amount", color: "#B49042" }]} />
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
+            <SimpleBarChart data={pnlBars} bars={[{ key: "value", name: "Amount", color: "#3D6B5B" }]} />
             <div className="mt-3 text-sm">
               Net profit: <strong style={{ color: (pnl?.totals?.net_profit || 0) >= 0 ? "#16A34A" : "#DC2626" }}>{fmtINR(pnl?.totals?.net_profit)}</strong>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+                <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                   <th className="px-3 py-2">Account</th>
                   <th className="px-3 py-2 text-right">Amount</th>
                 </tr>
               </thead>
               <tbody>
                 {[...(pnl?.income || []).map((r) => ({ ...r, side: "Income" })), ...(pnl?.expense || []).map((r) => ({ ...r, side: "Expense" }))].map((r) => (
-                  <tr key={`${r.side}-${r.code}`} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={`${r.side}-${r.code}`} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                     <td className="px-3 py-2">{r.name} <span className="text-[11px] text-[#a3a3a3]">({r.side})</span></td>
                     <td className="px-3 py-2 text-right tabular-nums">{fmtINR(r.amount)}</td>
                   </tr>
@@ -216,15 +216,15 @@ export default function StatementsTab() {
 
       {view === "bs" && (
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
             <SimplePieChart data={bsPie} />
             <div className="text-xs text-[#737373] mt-2">As of {bs?.as_of}</div>
           </div>
-          <div className="bg-white rounded-2xl border p-4 space-y-3 text-sm" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4 space-y-3 text-sm" style={{ borderColor: "#D8D2C6" }}>
             <div className="flex justify-between"><span>Assets</span><strong>{fmtINR(bs?.totals?.assets)}</strong></div>
             <div className="flex justify-between"><span>Liabilities</span><strong>{fmtINR(bs?.totals?.liabilities)}</strong></div>
             <div className="flex justify-between"><span>Equity</span><strong>{fmtINR(bs?.totals?.equity)}</strong></div>
-            <div className="flex justify-between border-t pt-2" style={{ borderColor: "#E5E7EB" }}>
+            <div className="flex justify-between border-t pt-2" style={{ borderColor: "#D8D2C6" }}>
               <span>Liabilities + Equity</span>
               <strong>{fmtINR(bs?.totals?.liabilities_and_equity)}</strong>
             </div>
@@ -234,7 +234,7 @@ export default function StatementsTab() {
 
       {view === "voucher" && (
         <div className="space-y-4">
-          <form onSubmit={postVoucher} className="bg-white rounded-2xl border p-4 space-y-3" style={{ borderColor: "#E5E7EB" }}>
+          <form onSubmit={postVoucher} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4 space-y-3" style={{ borderColor: "#D8D2C6" }}>
             <div className="flex gap-2 flex-wrap">
               <select className="input w-40" value={voucher.voucher_type} onChange={(e) => setVoucher((v) => ({ ...v, voucher_type: e.target.value }))}>
                 <option value="journal">Journal</option>
@@ -302,12 +302,12 @@ export default function StatementsTab() {
             </div>
           </form>
 
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
-            <div className="px-4 py-2 text-xs font-semibold uppercase text-[#737373] border-b" style={{ borderColor: "#E5E7EB" }}>Recent journals</div>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
+            <div className="px-4 py-2 text-xs font-semibold uppercase text-[#737373] border-b" style={{ borderColor: "#D8D2C6" }}>Recent journals</div>
             <table className="w-full text-sm">
               <tbody>
                 {journals.map((j) => (
-                  <tr key={j.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={j.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                     <td className="px-3 py-2 font-mono text-[12px]">{j.entry_date}</td>
                     <td className="px-3 py-2">{j.memo || j.voucher_type || "—"}</td>
                     <td className="px-3 py-2 text-[12px] text-[#737373]">{j.source_type}</td>

@@ -47,8 +47,8 @@ function Modal({ open, onClose, title, children }) {
       style={{ background: "rgba(0,0,0,0.45)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-2xl shadow-xl flex flex-col w-full max-w-lg" style={{ maxHeight: "90vh" }}>
-        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: "#E5E7EB" }}>
+      <div className="flex w-full max-w-lg flex-col rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_22px_60px_rgba(20,31,25,0.22)]" style={{ maxHeight: "90vh" }}>
+        <div className="flex items-center justify-between border-b border-[#DDD7CA] bg-[#FBF8F1] px-6 py-4" style={{ borderColor: "#DDD7CA" }}>
           <h2 className="font-semibold text-base" style={{ color: "#0A0A0A" }}>{title}</h2>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-gray-100">
             <X size={18} style={{ color: "#737373" }} />
@@ -173,14 +173,14 @@ export default function IncomeTab() {
         </button>
       </div>
 
-      <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
+      <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <label className="text-[11px] text-[#737373]">
           From
           <input
             type="date"
             value={filterFrom}
             onChange={(e) => setFilterFrom(e.target.value)}
-            className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+            className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           />
         </label>
         <label className="text-[11px] text-[#737373]">
@@ -189,7 +189,7 @@ export default function IncomeTab() {
             type="date"
             value={filterTo}
             onChange={(e) => setFilterTo(e.target.value)}
-            className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+            className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           />
         </label>
         <FilterMultiSelect label="Mode" value={filterMode} onChange={setFilterMode} options={PAYMENT_MODES} />
@@ -198,10 +198,10 @@ export default function IncomeTab() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+      <div className="overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]" style={{ borderColor: "#D8D2C6" }}>
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+            <tr style={{ background: "#F1EEE7", borderBottom: "1px solid #D8D2C6" }}>
               {["Date", "Description", "Amount", "Mode", "Actions"].map((h) => (
                 <th
                   key={h}
@@ -231,7 +231,7 @@ export default function IncomeTab() {
               incomes.map((inc, idx) => (
                 <tr
                   key={inc.id}
-                  style={{ borderBottom: idx < incomes.length - 1 ? "1px solid #E5E7EB" : "none" }}
+                  style={{ borderBottom: idx < incomes.length - 1 ? "1px solid #D8D2C6" : "none" }}
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <td className="px-4 py-3 text-xs" style={{ color: "#737373" }}>

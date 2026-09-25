@@ -84,7 +84,7 @@ export default function StockCheckReport({ onBack }) {
       format: "checkbox",
       exportValue: () => "☐",
       render: (r) => (
-        <input type="checkbox" className="accent-[#B49042]" checked={checked.has(r.id)} onChange={() => toggleChecked(r.id)} />
+        <input type="checkbox" className="accent-[#315C4A]" checked={checked.has(r.id)} onChange={() => toggleChecked(r.id)} />
       ),
     },
   ];

@@ -28,7 +28,7 @@ function Num(props) {
 
 function Text({ label, value, onChange, disabled, placeholder }) {
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       {label}
       <input
         className="input mt-1"
@@ -43,7 +43,7 @@ function Text({ label, value, onChange, disabled, placeholder }) {
 
 function Select({ label, value, onChange, disabled, options }) {
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       {label}
       <select className="input mt-1" disabled={disabled} value={value} onChange={(e) => onChange(e.target.value)}>
         {options.map((o) => (
@@ -56,8 +56,8 @@ function Select({ label, value, onChange, disabled, options }) {
 
 function Toggle({ label, checked, onChange, disabled }) {
   return (
-    <label className="flex items-center gap-2 text-[12.5px] text-[#0A0A0A] cursor-pointer">
-      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
+    <label className="flex cursor-pointer items-center gap-2 text-[12px] font-medium text-[#34463A]">
+      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} className="h-4 w-4 rounded border-[#C8D2C5] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35" />
       {label}
     </label>
   );
@@ -279,7 +279,7 @@ function WidgetProps({ id, layout, onChange, canWrite, letterheadOn = false, let
     return (
       <div className="space-y-3">
         {letterheadOn && (
-          <p className="text-[12px] text-[#525252] bg-[#FAFAFA] border border-[#E5E7EB] rounded-md px-2.5 py-2">
+          <p className="rounded-[9px] border border-[#DCE3D6] bg-[#F5F7F1] px-2.5 py-2 text-[12px] text-[#5F6F63]">
             Page size is {letterheadPaper} from Settings → Company → Invoice Letterhead. Header blank, footer blank and side margin still apply so content stays in the printable area.
           </p>
         )}
@@ -313,7 +313,7 @@ function WidgetProps({ id, layout, onChange, canWrite, letterheadOn = false, let
         </div>
         <Select label="Border" value={box.border} onChange={(v) => onChange("title.border", v)} disabled={disabled} options={BORDER_OPTS} />
         <PadGrid box={box} prefix="title" onChange={onChange} disabled={disabled} />
-        <div className="border-t border-[#E5E7EB] pt-3 space-y-2">
+        <div className="border-t border-[#DCE3D6] pt-3 space-y-2">
           <p className="text-[11px] font-semibold text-[#737373] uppercase tracking-wide">Invoice no / date</p>
           <Toggle label="Invoice number" checked={meta.show_invoice_no} onChange={(v) => onChange("meta.show_invoice_no", v)} disabled={disabled} />
           <Toggle label="Date" checked={meta.show_date} onChange={(v) => onChange("meta.show_date", v)} disabled={disabled} />
@@ -376,7 +376,7 @@ function WidgetProps({ id, layout, onChange, canWrite, letterheadOn = false, let
         </p>
         <div className="space-y-2">
           {box.columns.map((col, idx) => (
-            <div key={col.id} className="border border-[#E5E7EB] rounded-md p-2">
+            <div key={col.id} className="rounded-[8px] border border-[#E0E5DD] bg-[#F8F9F5] p-2">
               <div className="flex items-center gap-2">
                 <input type="checkbox" checked={col.show} disabled={disabled} onChange={(e) => onChange(`items.columns.${col.id}.show`, e.target.checked)} />
                 <input
@@ -399,7 +399,7 @@ function WidgetProps({ id, layout, onChange, canWrite, letterheadOn = false, let
                   max={50}
                   disabled={disabled || !col.show}
                   value={col.width}
-                  className="flex-1"
+                  className="h-1.5 flex-1 accent-[#315E48]"
                   onChange={(e) => onChange(`items.columns.${col.id}.width`, Number(e.target.value))}
                 />
                 <span className="text-[11px] w-10 text-right tabular-nums">{col.width}%</span>
@@ -530,8 +530,8 @@ function SubList({ ids, selected, onSelect, labels }) {
         <button
           key={sid}
           type="button"
-          className={`w-full text-left text-[12.5px] px-2 py-1.5 rounded ${
-            selected === sid ? "font-semibold text-[#0A0A0A] bg-[#F4F4F5]" : "text-[#525252] hover:bg-[#F4F4F5]"
+          className={`w-full rounded-[7px] px-2 py-1.5 text-left text-[12px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
+            selected === sid ? "bg-[#EAF1E8] font-semibold text-[#315E48]" : "text-[#66746A] hover:bg-[#F3F5EF] hover:text-[#34463A]"
           }`}
           onClick={() => onSelect(sid)}
         >
@@ -606,7 +606,7 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
   };
 
   if (loading) {
-    return <p className="text-[13px] text-[#737373]">Loading invoice layout…</p>;
+    return <p className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] px-4 py-3 text-[12.5px] text-[#6F7C72]">Loading invoice layout…</p>;
   }
 
   const expandedId = selected === "paper" ? "paper" : widgetParent(selected);
@@ -626,9 +626,9 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
             <DragModeToggle on={dragOn} onChange={setDragOn} disabled={!effectiveCanWrite} />
           </div>
 
-          <div className="bg-white border border-[#E5E7EB] rounded-lg">
+          <div className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
             <div className="px-3.5 pt-3 pb-1.5">
-              <h3 className="text-[15px] font-semibold text-[#0A0A0A]">{widgetLabel(selected, layout) || "Edit"}</h3>
+              <h3 className="font-display text-[14.5px] font-semibold text-[#294236]">{widgetLabel(selected, layout) || "Edit"}</h3>
               <p className="text-[12px] text-[#737373] mt-0.5">{customizeHint(selected, layout)}</p>
             </div>
             <div className="px-3.5 pb-2">
@@ -646,19 +646,19 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
             </div>
           </div>
 
-          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
-            <p className="text-[12px] font-semibold text-[#0A0A0A] px-3.5 py-2 border-b border-[#E5E7EB]">Other Sections</p>
+          <div className="overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
+            <p className="border-b border-[#DCE3D6] bg-[#F3F5EE] px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.09em] text-[#5F7064]">Other Sections</p>
             {otherIds.map((id) => {
               const visible = id === "paper" ? true : sectionVisible(layout, id);
               const expanded = expandedId === id;
               const kids = id === "title" ? TITLE_CHILDREN : id === "info" ? INFO_CHILDREN : id === "signatures" ? SIG_CHILDREN : id === "items" ? layout.items.columns.map((c) => `items.col.${c.id}`) : [];
               const colLabels = id === "items" ? Object.fromEntries(layout.items.columns.map((c) => [`items.col.${c.id}`, c.label])) : null;
               return (
-                <div key={id} className="border-b border-[#E5E7EB] last:border-b-0">
-                  <div className={`flex items-center ${expanded ? "bg-[#FAFAFA]" : ""}`}>
+                <div key={id} className="border-b border-[#DCE3D6] last:border-b-0">
+                  <div className={`flex items-center transition-colors ${expanded ? "bg-[#F0F4ED]" : "hover:bg-[#F8F9F5]"}`}>
                     <button
                       type="button"
-                      className="flex-1 text-left text-[13px] px-3.5 py-2 text-[#0A0A0A]"
+                      className="flex-1 px-3.5 py-2 text-left text-[12.5px] font-medium text-[#34463A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#78917C]/35"
                       onClick={() => setSelected(id)}
                     >
                       {SECTION_META[id]?.label || id}
@@ -666,7 +666,7 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
                     {id !== "paper" && (
                       <button
                         type="button"
-                        className="p-1.5 text-[#737373]"
+                        className="rounded-[7px] p-1.5 text-[#748078] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
                         disabled={!effectiveCanWrite}
                         onClick={() => setLayout((prev) => setSectionVisible(prev, id, !visible))}
                         title={visible ? "Hide" : "Show"}
@@ -676,7 +676,7 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
                     )}
                     <button
                       type="button"
-                      className="p-1.5 text-[#A3A3A3]"
+                      className="rounded-[7px] p-1.5 text-[#8A958D] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
                       onClick={() => setSelected(id)}
                       aria-label={expanded ? "Collapse" : "Expand"}
                     >
@@ -698,7 +698,7 @@ export default function InvoiceLayoutEditor({ canWrite = false, unlocked = false
             title="Live Preview"
             subtitle={`${previewLayout.page_w_in} × ${previewLayout.page_h_in} in${letterhead.enabled ? ` · ${letterhead.paper_size} letterhead` : ""}. Click any text to edit it. ${dragOn ? "Gold bars resize by dragging." : "Turn Draggable ON to resize by dragging."}`}
           />
-          <div className="bg-[#E5E7EB] p-2.5 rounded-lg shadow-inner overflow-auto">
+          <div className="overflow-auto rounded-[10px] border border-[#D6DDD3] bg-[#ECEEE8] p-2.5 shadow-inner">
             <InvoiceA5Canvas
               layout={layout}
               company={company}

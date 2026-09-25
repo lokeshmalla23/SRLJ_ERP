@@ -143,8 +143,8 @@ const lastMonthRange = () => {
   };
 };
 
-const GOLD_ACCENT = "#B49042";
-const PIE_COLORS = ["#B49042", "#D4AF70", "#8B6914", "#E8D4A0", "#6B4F10", "#F0E68C"];
+const GOLD_ACCENT = "#3D6B5B";
+const PIE_COLORS = ["#315C4A", "#B08A3A", "#7D8882", "#C8B27A", "#527A69", "#A7B3AD"];
 
 const downloadCsv = (rows, filename) => {
   const blob = new Blob([rows], { type: "text/csv;charset=utf-8;" });
@@ -159,28 +159,28 @@ const downloadCsv = (rows, filename) => {
 
 function StatCard({ label, value, accent = false, icon: Icon, sub }) {
   return (
-    <div className="card">
+    <div className={`card relative overflow-hidden !rounded-xl !border-[#D8D2C6] !bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] ${accent ? "before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[#B08A3A]" : ""}`}>
       <div className="flex items-start justify-between">
-        <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
+        <div className="pr-2 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#6F7772]">
           {label}
         </div>
         {Icon && (
           <div
-            className={`h-7 w-7 rounded-md flex items-center justify-center border ${
-              accent ? "bg-[#FDFBF7] border-[#EADFBF]" : "bg-[#F9FAFB] border-[#E5E7EB]"
+            className={`flex h-7 w-7 items-center justify-center rounded-[8px] border ${
+              accent ? "border-[#D8C28C] bg-[#FBF6E9]" : "border-[#D8D2C6] bg-[#F1EEE7]"
             }`}
           >
             <Icon
               size={14}
               strokeWidth={1.5}
-              className={accent ? "text-[#B49042]" : "text-[#525252]"}
+              className={accent ? "text-[#8A6A2D]" : "text-[#59635D]"}
             />
           </div>
         )}
       </div>
       <div
         className={`mt-4 font-display text-[26px] font-semibold leading-none tracking-tight ${
-          accent ? "text-[#B49042]" : "text-[#0A0A0A]"
+          accent ? "text-[#315C4A]" : "text-[#24332B]"
         }`}
       >
         {value}
@@ -192,14 +192,14 @@ function StatCard({ label, value, accent = false, icon: Icon, sub }) {
 
 function TableShell({ headers, children, empty }) {
   return (
-    <div className="table-shell overflow-x-auto">
+    <div className="table-shell overflow-x-auto !rounded-xl !border-[#D8D2C6] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
       <table className="w-full min-w-[700px]">
         <thead>
-          <tr className="table-head-row">
+          <tr className="table-head-row !bg-[#F1EEE7] !border-[#DDD7CA]">
             {headers.map((h) => (
               <th
                 key={h.key}
-                className={`table-th ${h.right ? "text-right" : ""}`}
+                className={`table-th !text-[#6C746F] ${h.right ? "text-right" : ""}`}
               >
                 {h.label}
               </th>
@@ -209,7 +209,7 @@ function TableShell({ headers, children, empty }) {
         <tbody>
           {empty ? (
             <tr>
-              <td colSpan={headers.length} className="table-td text-center text-[#737373] py-10">
+              <td colSpan={headers.length} className="table-td !border-[#E6E1D7] py-10 text-center text-[#747B76]">
                 {empty}
               </td>
             </tr>
@@ -224,7 +224,7 @@ function TableShell({ headers, children, empty }) {
 
 function SectionTitle({ children }) {
   return (
-    <h3 className="text-[13px] font-semibold text-[#0A0A0A] mb-3 mt-6">{children}</h3>
+    <h3 className="mb-3 mt-7 flex items-center gap-2 border-b border-[#DED8CC] pb-2 text-[13px] font-semibold tracking-[-0.01em] text-[#24332B] before:h-3 before:w-0.5 before:rounded-full before:bg-[#B08A3A]">{children}</h3>
   );
 }
 
@@ -237,14 +237,14 @@ function CollapsibleAlertSection({ icon, title, count, children }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 mt-6 mb-1 text-[13px] font-semibold text-[#0A0A0A] hover:opacity-80"
+        className="mb-1 mt-6 flex items-center gap-2 rounded-[9px] px-1 text-[13px] font-semibold text-[#24332B] hover:bg-[#F7F5EF]"
         aria-expanded={open}
       >
         {icon}
         {title}
         <span
           className="text-[11px] font-medium px-1.5 py-0.5 rounded-full"
-          style={{ background: "#F3F4F6", color: "#525252" }}
+          style={{ background: "#F1EEE7", color: "#59635D" }}
         >
           {count}
         </span>
@@ -266,15 +266,15 @@ function CollapsibleAlertSection({ icon, title, count, children }) {
 
 function Badge({ children, color = "gray" }) {
   const colors = {
-    gray: "bg-[#F3F4F6] text-[#374151]",
-    gold: "bg-[#FDFBF7] text-[#B49042] border border-[#EADFBF]",
-    green: "bg-[#F0FDF4] text-[#166534]",
+    gray: "border border-[#D8D2C6] bg-[#F1EEE7] text-[#4F5953]",
+    gold: "border border-[#D8C28C] bg-[#FBF6E9] text-[#765A20]",
+    green: "border border-[#CBDAD0] bg-[#F1F6F2] text-[#315C4A]",
     red: "bg-[#FEF2F2] text-[#991B1B]",
     blue: "bg-[#EFF6FF] text-[#1D4ED8]",
     amber: "bg-[#FFFBEB] text-[#92400E]",
   };
   return (
-    <span className={`px-2 py-0.5 rounded text-[11px] font-medium ${colors[color] || colors.gray}`}>
+    <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${colors[color] || colors.gray}`}>
       {children}
     </span>
   );
@@ -314,13 +314,13 @@ function BillDetailsModal({ invoice, onClose }) {
   const balanceDue = +((invoice.grand_total || 0) - amountPaid).toFixed(2);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 overflow-y-auto" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#1C2621]/50 p-4 backdrop-blur-[2px]" onClick={onClose}>
       <div
-        className="bg-white rounded-xl shadow-2xl w-full max-w-3xl mt-8 mb-8"
+        className="mb-8 mt-8 w-full max-w-3xl rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_22px_60px_rgba(20,31,25,0.22)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-[#E5E7EB]">
+        <div className="flex items-start justify-between border-b border-[#DDD7CA] bg-[#FBF8F1] p-5">
           <div>
             <div className="text-[16px] font-display font-semibold text-[#0A0A0A]">
               Invoice {invoice.invoice_no}
@@ -334,7 +334,7 @@ function BillDetailsModal({ invoice, onClose }) {
           </button>
         </div>
 
-        <div className="p-5 max-h-[75vh] overflow-y-auto">
+        <div className="max-h-[75vh] overflow-y-auto p-5">
           {/* Customer Information */}
           <BillDetailsSection title="Customer Information" icon={User2}>
             <div className="grid grid-cols-2 gap-4">
@@ -482,9 +482,9 @@ function DateRangePicker({ from, to, setFrom, setTo, presets = "sales" }) {
   const quickPresets = presets === "sales" ? salesPresets : salesPresets;
 
   return (
-    <div className="card mb-5">
+    <div className="card mb-5 !rounded-xl !border-[#D8D2C6] !bg-[#FBF8F1] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.btn-secondary]:hover:!border-[#9EB2A6] [&_.btn-secondary]:hover:!bg-[#F1F5F1]">
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2 text-[#525252]">
+        <div className="flex items-center gap-2 border-r border-[#DED8CC] pr-3 text-[#315C4A]">
           <Filter size={13} strokeWidth={1.5} />
           <span className="text-[12.5px] font-medium">Date range</span>
         </div>
@@ -661,7 +661,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -674,7 +674,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
     <div>
       <DateRangePicker from={from} to={to} setFrom={setFrom} setTo={setTo} />
 
-      <div className="mb-4 overflow-x-auto rounded-xl border border-[#EADFBF] bg-[#FDFBF7] px-2 py-2">
+      <div className="mb-4 overflow-x-auto rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] px-2 py-2">
         <div className="flex min-w-max flex-wrap gap-1.5">
           {SALES_SUBTABS.map((tab) => {
             const active = subTab === tab.id;
@@ -685,8 +685,8 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
                 onClick={() => setSubTab(tab.id)}
                 className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors ${
                   active
-                    ? "bg-[#B49042] text-white shadow-sm"
-                    : "bg-white text-[#525252] border border-[#E5E7EB] hover:border-[#B49042] hover:text-[#B49042]"
+                    ? "border border-[#315C4A] bg-[#315C4A] text-white shadow-sm"
+                    : "border border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]"
                 }`}
               >
                 {tab.label}
@@ -721,8 +721,8 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
               onClick={() => setChartCategory("all")}
               className={`rounded-full px-2.5 py-1 text-[11px] font-medium border transition-colors ${
                 chartCategory === "all"
-                  ? "bg-[#B49042] text-white border-[#B49042]"
-                  : "bg-white text-[#525252] border-[#E5E7EB] hover:border-[#B49042]"
+                  ? "border-[#315C4A] bg-[#315C4A] text-white"
+                  : "border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
               }`}
             >
               All
@@ -734,8 +734,8 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
                 onClick={() => setChartCategory(c.name)}
                 className={`rounded-full px-2.5 py-1 text-[11px] font-medium border transition-colors ${
                   chartCategory === c.name
-                    ? "bg-[#B49042] text-white border-[#B49042]"
-                    : "bg-white text-[#525252] border-[#E5E7EB] hover:border-[#B49042]"
+                    ? "border-[#315C4A] bg-[#315C4A] text-white"
+                    : "border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
                 }`}
               >
                 {c.name}
@@ -827,7 +827,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
             {invoices.map((i) => (
               <tr
                 key={i.id}
-                className="table-row cursor-pointer hover:bg-[#FAFAFA]"
+                className="table-row cursor-pointer hover:bg-[#F7F5EF]"
                 onClick={() => setSelectedInvoice(i)}
               >
                 <td className="table-td font-mono text-[12px]">{i.invoice_no}</td>
@@ -1086,7 +1086,7 @@ function GstTab({ from, to, setFrom, setTo, includeHidden = false }) {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -1329,7 +1329,7 @@ function InventoryTab({ includeHidden = false }) {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -1613,7 +1613,7 @@ function CustomersTab({ from, to, setFrom, setTo }) {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -1662,10 +1662,10 @@ function CustomersTab({ from, to, setFrom, setTo }) {
             <div style={{ height: 200 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={acquisitionData} margin={{ top: 4, right: 8, left: 0, bottom: 4 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#737373" }} />
-                  <YAxis tick={{ fontSize: 10, fill: "#737373" }} allowDecimals={false} />
-                  <Tooltip contentStyle={{ fontSize: 12 }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#DDD7CA" vertical={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#6F7772" }} axisLine={{ stroke: "#D8D2C6" }} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: "#6F7772" }} allowDecimals={false} axisLine={false} tickLine={false} />
+                  <Tooltip contentStyle={{ fontSize: 12, borderRadius: 9, border: "1px solid #D8D2C6", boxShadow: "0 8px 22px rgba(38,52,43,0.10)", color: "#24332B" }} labelStyle={{ color: "#59635D", fontWeight: 600 }} />
                   <Bar dataKey="value" name="New Customers" fill={GOLD_ACCENT} radius={[3, 3, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
@@ -1697,7 +1697,7 @@ function CustomersTab({ from, to, setFrom, setTo }) {
                       <Cell key={idx} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ fontSize: 12, borderRadius: 9, border: "1px solid #D8D2C6", boxShadow: "0 8px 22px rgba(38,52,43,0.10)", color: "#24332B" }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -1899,7 +1899,7 @@ function SchemesTab() {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -2153,7 +2153,7 @@ function PurchasesTab({ from, to, setFrom, setTo }) {
   if (loading) return (
     <div className="space-y-4">
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 rounded-xl border border-[#E1DBD0] shimmer" />
     </div>
   );
 
@@ -2501,12 +2501,12 @@ export default function Reports() {
   })();
 
   return (
-    <div className={hiddenUnlocked ? hiddenUnlockBleedClass(true) : undefined}>
+    <div className={hiddenUnlocked ? hiddenUnlockBleedClass(true) : "min-h-[calc(100vh-4rem)] -m-5 bg-[#F4F1EA] px-5 py-5 2xl:-m-7 2xl:px-7 2xl:py-7 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!border-[#244A3A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.btn-secondary]:hover:!border-[#9EB2A6] [&_.btn-secondary]:hover:!bg-[#F1F5F1] [&_.card]:!rounded-xl [&_.card]:!border-[#D8D2C6] [&_.card]:!bg-[#FFFDF9] [&_.card]:shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)] [&_.table-shell]:!border-[#D8D2C6] [&_.table-head-row]:!bg-[#F1EEE7] [&_.table-head-row]:!border-[#DDD7CA] [&_.table-th]:!text-[#6C746F] [&_.table-td]:!border-[#E6E1D7] [&_.table-row:hover_.table-td]:!bg-[#F7F5EF]"}>
     <div className="max-w-[1400px]">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1
-            className="select-none text-xl font-bold text-[#0A0A0A]"
+            className="select-none font-display text-[22px] font-semibold tracking-[-0.02em] text-[#24332B]"
             onClick={handleTitleClick}
             title={isOwner && !hiddenUnlocked ? "Triple-click to unlock hidden bill figures" : undefined}
           >
@@ -2529,7 +2529,7 @@ export default function Reports() {
       </div>
 
       {/* Category tabs */}
-      <div className="mb-0 overflow-x-auto border-b border-[#EADFBF]">
+      <div className="mb-0 overflow-x-auto border-b border-[#D8D2C6]">
         <div className="flex min-w-max items-end gap-0.5">
           {visibleCategories.map((c) => {
             const active = c.id === categoryId;
@@ -2540,9 +2540,7 @@ export default function Reports() {
                 onClick={() => selectCategory(c.id)}
                 className={`whitespace-nowrap border-b-2 px-3.5 py-2.5 text-[12.5px] font-medium transition-colors ${
                   active
-                    ? c.id === "hidden-data"
-                      ? "border-violet-600 text-violet-700"
-                      : "border-[#B49042] text-[#B49042]"
+                    ? "border-[#315C4A] text-[#315C4A]"
                     : c.id === "hidden-data"
                       ? "border-transparent text-violet-600 hover:text-violet-800"
                       : "border-transparent text-[#737373] hover:text-[#0A0A0A]"
@@ -2557,7 +2555,7 @@ export default function Reports() {
 
       {/* Report pills */}
       {categoryReports.length > 1 ? (
-      <div className="mb-4 overflow-x-auto rounded-b-xl border border-t-0 border-[#EADFBF] bg-[#FDFBF7] px-2 py-2">
+      <div className="mb-4 overflow-x-auto rounded-b-xl border border-t-0 border-[#D8D2C6] bg-[#FBF8F1] px-2 py-2 shadow-[0_1px_2px_rgba(38,52,43,0.03)]">
         <div className="flex min-w-max flex-wrap gap-1.5">
           {categoryReports.map((r) => {
             const active = report?.id === r.id;
@@ -2568,8 +2566,8 @@ export default function Reports() {
                 onClick={() => setReportId(r.id)}
                 className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors ${
                   active
-                    ? "bg-[#B49042] text-white shadow-sm"
-                    : "bg-white text-[#525252] border border-[#E5E7EB] hover:border-[#B49042] hover:text-[#B49042]"
+                    ? "border border-[#315C4A] bg-[#315C4A] text-white shadow-sm"
+                    : "border border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]"
                 }`}
               >
                 {r.name}
@@ -2583,8 +2581,8 @@ export default function Reports() {
       )}
 
       <div className="mb-3">
-        <h2 className="text-lg font-semibold text-[#0A0A0A]">{report?.name}</h2>
-        <p className="text-xs text-[#737373]">
+        <h2 className="font-display text-lg font-semibold tracking-[-0.015em] text-[#24332B]">{report?.name}</h2>
+        <p className="mt-0.5 text-xs text-[#737B76]">
           {report?.description || categoryMeta?.description || ""}
           {report?.source === "accounts" ? " · Accounting (journals)" : ""}
         </p>

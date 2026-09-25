@@ -11,7 +11,7 @@ const Pagination = ({
   <nav
     role="navigation"
     aria-label="pagination"
-    className={cn("mx-auto flex w-full justify-center", className)}
+    className={cn("mx-auto flex w-full items-center justify-center gap-1", className)}
     {...props} />
 )
 Pagination.displayName = "Pagination"
@@ -19,7 +19,7 @@ Pagination.displayName = "Pagination"
 const PaginationContent = React.forwardRef(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn("flex flex-row items-center gap-1", className)}
+    className={cn("flex flex-row items-center gap-1.5", className)}
     {...props} />
 ))
 PaginationContent.displayName = "PaginationContent"
@@ -37,10 +37,14 @@ const PaginationLink = ({
 }) => (
   <a
     aria-current={isActive ? "page" : undefined}
-    className={cn(buttonVariants({
-      variant: isActive ? "outline" : "ghost",
-      size,
-    }), className)}
+    className={cn(
+      buttonVariants({
+        variant: isActive ? "outline" : "ghost",
+        size,
+      }),
+      isActive && "border-[#D9A441]/60 bg-[#F7F5EF] text-[#17382A] shadow-[0_1px_2px_rgba(23,32,28,0.05)]",
+      className
+    )}
     {...props} />
 )
 PaginationLink.displayName = "PaginationLink"
@@ -81,7 +85,7 @@ const PaginationEllipsis = ({
 }) => (
   <span
     aria-hidden
-    className={cn("flex h-9 w-9 items-center justify-center", className)}
+    className={cn("flex h-9 w-9 items-center justify-center rounded-lg text-[#8A9690]", className)}
     {...props}>
     <MoreHorizontal className="h-4 w-4" />
     <span className="sr-only">More pages</span>

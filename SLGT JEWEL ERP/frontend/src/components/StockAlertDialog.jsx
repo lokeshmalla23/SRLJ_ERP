@@ -23,26 +23,26 @@ export default function StockAlertDialog({ open, title = "Out of Stock", message
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.5)" }}
+      className="dialog-overlay fixed inset-0 z-[95] flex items-center justify-center p-4 backdrop-blur-[2px]"
+      style={{ background: "rgba(23, 32, 28, 0.46)" }}
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose?.(); }}
     >
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden">
-        <div className="px-5 py-4 flex items-start gap-3">
-          <div className="h-10 w-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-            <AlertTriangle size={20} className="text-red-600" strokeWidth={1.5} />
+      <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
+        <div className="flex items-start gap-3.5 border-b border-[#E2E7E2] bg-[linear-gradient(90deg,rgba(249,236,234,0.92),rgba(255,253,249,0.98)_58%)] px-5 py-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#E8C9C5] bg-[#F9ECEA]">
+            <AlertTriangle size={20} className="text-[#9D4B47]" strokeWidth={1.5} />
           </div>
           <div className="min-w-0">
-            <div className="text-[14px] font-semibold text-[#0A0A0A]">{title}</div>
-            <div className="text-[13px] text-[#525252] mt-1 whitespace-pre-line">{message}</div>
+            <div className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#17201C]">{title}</div>
+            <div className="mt-1.5 whitespace-pre-line text-[13px] leading-5 text-[#6F7772]">{message}</div>
           </div>
         </div>
-        <div className="px-5 py-3.5 border-t border-[#E5E7EB]">
+        <div className="border-t border-[#E2E7E2] bg-[#F7F9F6] px-5 py-3.5">
           <button
             ref={okRef}
             type="button"
             onClick={onClose}
-            className="w-full py-2 rounded-md bg-[#0A0A0A] text-white text-[13px] font-semibold hover:bg-[#262626]"
+            className="btn-primary min-h-9 w-full focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
           >
             OK
           </button>

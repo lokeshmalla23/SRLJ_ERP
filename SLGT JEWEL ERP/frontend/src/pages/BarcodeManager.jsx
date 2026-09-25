@@ -58,7 +58,7 @@ function BarcodePreview({ code, small = false }) {
       });
     } catch {}
   }, [code, small]);
-  if (!code) return <span className="text-[11px] text-[#a3a3a3]">No barcode</span>;
+  if (!code) return <span className="text-[11px] text-[#89928C]">No barcode</span>;
   return <svg ref={ref} />;
 }
 
@@ -229,7 +229,7 @@ export default function BarcodeManager() {
   const totalWeight = selectedProducts.reduce((s, p) => s + tagWeight(p, getPrintQty(p)), 0);
 
   return (
-    <div className="max-w-[1400px]">
+    <div className="max-w-[1400px] [&>div:first-child]:mb-5">
       <PageHeader
         title="Barcode Manager"
         subtitle="Print jewellery barcode tags (G.W / N.W / St.W layout) for inventory."
@@ -246,12 +246,12 @@ export default function BarcodeManager() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         {[
-          ["Total Products",  tabStats.total,        "text-[#0A0A0A]"],
+          ["Total Products",  tabStats.total,        "text-[#17201C]"],
           ["Have Barcode",    tabStats.with_barcode,  "text-green-600"],
-          ["Missing Barcode", tabStats.missing,       tabStats.missing > 0 ? "text-amber-600" : "text-[#0A0A0A]"],
+          ["Missing Barcode", tabStats.missing,       tabStats.missing > 0 ? "text-amber-600" : "text-[#17201C]"],
         ].map(([lbl, val, cls]) => (
           <div key={lbl} className="card">
-            <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">{lbl}</div>
+            <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">{lbl}</div>
             <div className={`font-display text-[24px] font-semibold mt-2 tabular-nums ${cls}`}>{val}</div>
             {lbl === "Missing Barcode" && val > 0 &&
               <div className="text-[11px] text-amber-600 mt-1">Click "Auto-generate" to fix</div>}
@@ -260,7 +260,7 @@ export default function BarcodeManager() {
       </div>
 
       {/* In Stock / Out of Stock tabs */}
-      <div className="flex items-center gap-1 mb-4 border-b border-[#E5E7EB]">
+      <div className="flex items-center gap-1 mb-4 border-b border-[#E2E7E2]">
         {[
           { key: "in_stock", label: "In Stock", count: inStockProducts.length },
           { key: "out_of_stock", label: "Out of Stock", count: outOfStockProducts.length },
@@ -275,8 +275,8 @@ export default function BarcodeManager() {
             }}
             className={`flex items-center gap-1.5 px-4 py-2.5 text-[12.5px] font-medium whitespace-nowrap border-b-2 transition-colors ${
               stockTab === key
-                ? "border-[#B49042] text-[#B49042]"
-                : "border-transparent text-[#737373] hover:text-[#0A0A0A]"
+                ? "border-[#214F3A] text-[#214F3A] bg-[#FAF7EF]"
+                : "border-transparent text-[#6F7772] hover:text-[#214F3A] hover:bg-[#FAF7EF]"
             }`}
           >
             <Package size={13} strokeWidth={1.5} />
@@ -286,8 +286,8 @@ export default function BarcodeManager() {
                 stockTab === key
                   ? key === "out_of_stock"
                     ? "bg-red-50 text-red-700"
-                    : "bg-[#FDFBF7] text-[#7a5e26]"
-                  : "bg-[#F3F4F6] text-[#737373]"
+                    : "bg-[#EAF2ED] text-[#214F3A]"
+                  : "bg-[#F1F4F0] text-[#6F7772]"
               }`}
             >
               {count}
@@ -303,7 +303,7 @@ export default function BarcodeManager() {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="relative flex-1">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#89928C]" strokeWidth={1.5} />
               <input className="input pl-9" placeholder="Search by name, code or barcode…" value={q} onChange={e => setQ(e.target.value)} />
             </div>
             <button className="btn-secondary text-[12px]" onClick={selectAll}>Select All</button>
@@ -311,21 +311,21 @@ export default function BarcodeManager() {
           </div>
 
           {/* Added-on date / time window — filters which products are listed to select from */}
-          <div className="flex flex-wrap items-end gap-2 mb-3 p-3 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB]">
+          <div className="flex flex-wrap items-end gap-2 mb-3 p-3 rounded-xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
             <div>
-              <div className="text-[10px] uppercase tracking-[0.06em] text-[#a3a3a3] mb-1">From Date</div>
+              <div className="text-[10px] uppercase tracking-[0.06em] text-[#89928C] mb-1">From Date</div>
               <input type="date" className="input !py-1.5 !text-[12.5px]" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-[0.06em] text-[#a3a3a3] mb-1">To Date</div>
+              <div className="text-[10px] uppercase tracking-[0.06em] text-[#89928C] mb-1">To Date</div>
               <input type="date" className="input !py-1.5 !text-[12.5px]" value={dateTo} onChange={e => setDateTo(e.target.value)} />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-[0.06em] text-[#a3a3a3] mb-1">Start Time</div>
+              <div className="text-[10px] uppercase tracking-[0.06em] text-[#89928C] mb-1">Start Time</div>
               <input type="time" className="input !py-1.5 !text-[12.5px]" value={timeFrom} onChange={e => setTimeFrom(e.target.value)} />
             </div>
             <div>
-              <div className="text-[10px] uppercase tracking-[0.06em] text-[#a3a3a3] mb-1">End Time</div>
+              <div className="text-[10px] uppercase tracking-[0.06em] text-[#89928C] mb-1">End Time</div>
               <input type="time" className="input !py-1.5 !text-[12.5px]" value={timeTo} onChange={e => setTimeTo(e.target.value)} />
             </div>
             {(dateFrom || dateTo || timeFrom || timeTo) && (
@@ -340,13 +340,13 @@ export default function BarcodeManager() {
           </div>
 
           {selectedIds.size > 0 && (
-            <div className="mb-3 px-3 py-2 bg-blue-50 border border-blue-200 rounded-md text-[12.5px] text-blue-700 flex items-center gap-2">
+            <div className="mb-3 px-3 py-2 bg-[#EAF2ED] border border-[#CBDED2] rounded-lg text-[12.5px] text-[#214F3A] flex items-center gap-2">
               <CheckSquare size={14} />
               {selectedIds.size} product{selectedIds.size > 1 ? "s" : ""} selected — {totalTags} tag{totalTags !== 1 ? "s" : ""} to print
             </div>
           )}
 
-          <div className="table-shell">
+          <div className="table-shell !rounded-[10px] !border-[#E2E7E2] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
             <table className="w-full">
               <thead>
                 <tr className="table-head-row">
@@ -365,24 +365,24 @@ export default function BarcodeManager() {
                   const code = p.barcode || p.code;
                   return (
                     <tr key={p.id}
-                      className={`table-row cursor-pointer ${sel ? "bg-blue-50/60" : ""}`}
+                      className={`table-row cursor-pointer transition-colors ${sel ? "bg-[#EAF2ED]" : ""}`}
                       onClick={() => toggleSelect(p.id)}
                     >
                       <td className="table-td">
-                        <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${sel ? "bg-[#0A0A0A] border-[#0A0A0A]" : "border-[#D4D4D8]"}`}>
+                        <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${sel ? "bg-[#214F3A] border-[#214F3A]" : "border-[#D3DCD5] bg-[#FFFDF9]"}`}>
                           {sel && <Check size={10} className="text-white" />}
                         </div>
                       </td>
                       <td className="table-td">
-                        <div className="text-[13px] font-medium text-[#0A0A0A]">{p.subcategory_name || p.name}</div>
-                        <div className="text-[11px] text-[#737373]">{p.code} {p.category_name ? `· ${p.category_name}` : ""}</div>
+                        <div className="text-[13px] font-medium text-[#17201C]">{p.subcategory_name || p.name}</div>
+                        <div className="text-[11px] text-[#6F7772]">{p.code} {p.category_name ? `· ${p.category_name}` : ""}</div>
                       </td>
                       <td className="table-td" onClick={e => e.stopPropagation()}>
                         {code
                           ? <BarcodePreview code={code} small />
                           : <span className="chip chip-warning text-[10px]">Missing</span>}
                       </td>
-                      <td className="table-td text-[12.5px] text-[#525252]">{p.purity_name || "—"}</td>
+                      <td className="table-td text-[12.5px] text-[#4E5A53]">{p.purity_name || "—"}</td>
                       <td className="table-td text-right font-mono text-[12.5px]">{p.gross_weight ? `${p.gross_weight}g` : "—"}</td>
                       <td className="table-td text-center">
                         <span className={`chip ${p.stock_qty > 0 ? "chip-success" : "chip-danger"}`}>{p.stock_qty || 0}</span>
@@ -400,7 +400,7 @@ export default function BarcodeManager() {
                 })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="table-td text-center text-[#737373] py-8">
+                    <td colSpan={7} className="table-td text-center text-[#6F7772] py-8">
                       {q
                         ? "No products found"
                         : stockTab === "out_of_stock"
@@ -414,7 +414,7 @@ export default function BarcodeManager() {
           </div>
 
           {filtered.length > 0 && (
-            <div className="flex items-center justify-between mt-3 text-[12px] text-[#737373]">
+            <div className="flex items-center justify-between mt-3 px-3 py-2 rounded-[10px] border border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)] text-[12px] text-[#6F7772]">
               <button
                 type="button"
                 className="btn-secondary !py-1.5 !px-3 disabled:opacity-40"
@@ -442,29 +442,29 @@ export default function BarcodeManager() {
         <div className="space-y-4">
           {/* Tag preview */}
           <div className="card">
-            <div className="text-[12px] font-semibold text-[#0A0A0A] mb-3">Label Preview</div>
+            <div className="text-[12px] font-semibold text-[#17201C] mb-3">Label Preview</div>
             <div className="flex justify-center min-h-[80px] items-center">
               {previewProduct
                 ? <JewelleryTagPreview product={previewProduct} shopName={shopName} className="w-full" />
                 : (
-                  <div className="flex flex-col items-center text-[#a3a3a3] gap-2">
+                  <div className="flex flex-col items-center text-[#89928C] gap-2">
                     <Tag size={24} strokeWidth={1} />
                     <span className="text-[11px] text-center">Select one product<br/>to preview the label</span>
                   </div>
                 )}
             </div>
-            <div className="mt-3 pt-3 border-t border-[#F4F4F5] text-[10.5px] text-[#a3a3a3] text-center">
+            <div className="mt-3 pt-3 border-t border-[#E2E7E2] text-[10.5px] text-[#89928C] text-center">
               Preview shows fold + 4 mm padding guides · not printed on the tag
             </div>
           </div>
 
           {/* Print summary + button */}
           <div className="card space-y-3">
-            <div className="text-[12px] font-semibold text-[#0A0A0A]">Print</div>
-            <div className="text-[12px] text-[#737373] space-y-1">
-              <div>Selected: <span className="text-[#0A0A0A] font-medium">{selectedIds.size} product{selectedIds.size !== 1 ? "s" : ""}</span></div>
-              <div>Total tags: <span className="text-[#0A0A0A] font-medium">{totalTags}</span></div>
-              <div>Total weight: <span className="text-[#0A0A0A] font-medium">{totalWeight.toFixed(3)}g</span></div>
+            <div className="text-[12px] font-semibold text-[#17201C]">Print</div>
+            <div className="text-[12px] text-[#6F7772] space-y-1">
+              <div>Selected: <span className="text-[#17201C] font-medium">{selectedIds.size} product{selectedIds.size !== 1 ? "s" : ""}</span></div>
+              <div>Total tags: <span className="text-[#17201C] font-medium">{totalTags}</span></div>
+              <div>Total weight: <span className="text-[#17201C] font-medium">{totalWeight.toFixed(3)}g</span></div>
             </div>
             <button
               className="btn-primary w-full justify-center"

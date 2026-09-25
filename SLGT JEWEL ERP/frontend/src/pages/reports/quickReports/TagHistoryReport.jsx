@@ -60,10 +60,10 @@ export default function TagHistoryReport({ onBack, includeHidden = false }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#DED8CC] pb-3">
         <div className="flex items-center gap-3">
           {onBack && (
-            <button onClick={onBack} className="text-[#737373] hover:text-[#0A0A0A]">
+            <button onClick={onBack} className="flex h-8 w-8 items-center justify-center rounded-[9px] border border-[#D8D2C6] bg-[#FFFDF9] text-[#5E6861] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]">
               <ArrowLeft size={16} strokeWidth={1.5} />
             </button>
           )}

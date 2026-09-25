@@ -2,12 +2,12 @@ import { Inbox } from "lucide-react";
 
 export default function EmptyState({ title, description, action, icon: Icon = Inbox }) {
   return (
-    <div className="flex flex-col items-start p-10 border border-dashed border-[#E5E7EB] rounded-lg bg-[#FAFAFA]">
-      <div className="h-10 w-10 rounded-md bg-white border border-[#E5E7EB] flex items-center justify-center mb-4">
-        <Icon size={18} strokeWidth={1.5} className="text-[#737373]" />
+    <div className="flex flex-col items-start rounded-[14px] border border-dashed border-[#E2E7E2] bg-[#FBFAF6] p-10">
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg border border-[#D9C48C] bg-white">
+        <Icon size={18} strokeWidth={1.5} className="text-[#214F3A]" />
       </div>
-      <div className="font-display text-[16px] font-medium text-[#0A0A0A]">{title}</div>
-      {description && <div className="text-[13px] text-[#737373] mt-1 max-w-md">{description}</div>}
+      <div className="font-display text-[16px] font-semibold leading-tight tracking-[-0.01em] text-[#17201C]">{title}</div>
+      {description && <div className="mt-1.5 max-w-md text-[13px] leading-relaxed text-[#6B756F]">{description}</div>}
       {action && <div className="mt-5">{action}</div>}
     </div>
   );

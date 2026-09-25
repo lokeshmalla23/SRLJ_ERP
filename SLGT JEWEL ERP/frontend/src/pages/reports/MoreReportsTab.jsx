@@ -12,7 +12,7 @@ import PrintSummaryButton from "./PrintSummaryButton";
 
 /** Buybook physical-custody trail: posted -> in_stock -> melted -> used. */
 const BUYBOOK_STATUS_META = {
-  posted: { label: "Posted", hint: "Recorded & journaled — not yet placed in stock", color: "#525252", bg: "#F3F4F6", hoverBg: "#E5E7EB" },
+  posted: { label: "Posted", hint: "Recorded & journaled — not yet placed in stock", color: "#525252", bg: "#F3F4F6", hoverBg: "#D8D2C6" },
   in_stock: { label: "In Stock", hint: "Held as-is in the shop, unrefined", color: "#1D4ED8", bg: "#DBEAFE", hoverBg: "#BFDBFE" },
   melted: { label: "Melted", hint: "Sent for melting / refining", color: "#B45309", bg: "#FEF3C7", hoverBg: "#FDE68A" },
   used: { label: "Used", hint: "Refined gold consumed into new production", color: "#166534", bg: "#DCFCE7", hoverBg: "#BBF7D0" },
@@ -133,13 +133,13 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
   return (
     <div className="space-y-4">
       {!hideInnerPills && (
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5 rounded-xl border border-[#DDD7CA] bg-[#FBF8F1] p-2">
         {tabs.map(([id, label, Icon]) => (
           <button
             key={id}
             type="button"
             onClick={() => setSub(id)}
-            className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border ${sub === id ? "bg-[#0A0A0A] text-white border-[#0A0A0A]" : "bg-white text-[#525252] border-[#E5E7EB]"}`}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs transition-colors ${sub === id ? "border-[#315C4A] bg-[#315C4A] text-white shadow-sm" : "border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"}`}
           >
             <Icon size={12} /> {label}
           </button>
@@ -182,7 +182,7 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
               const meta = BUYBOOK_STATUS_META[s];
               const stat = statusSummary[s];
               return (
-                <div key={s} className="bg-white border rounded-xl p-3" style={{ borderColor: "#E5E7EB" }}>
+                <div key={s} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
                   <div className="text-[11px] uppercase tracking-wide font-semibold" style={{ color: meta.color }}>
                     {meta.label}
                   </div>
@@ -201,10 +201,10 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
           <SimplePieChart
             data={(buybook.stock_by_purity || []).map((r) => ({ name: r.purity, value: r.weight }))}
           />
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+                <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                   <th className="px-3 py-2">Receipt</th>
                   <th className="px-3 py-2">Weight</th>
                   <th className="px-3 py-2">Purity</th>
@@ -217,7 +217,7 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
                   const meta = BUYBOOK_STATUS_META[r.status] || BUYBOOK_STATUS_META.posted;
                   const next = NEXT_BUYBOOK_STATUS[r.status] || null;
                   return (
-                    <tr key={r.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                    <tr key={r.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                       <td className="px-3 py-2 font-mono text-[12px]">{r.receipt_no}</td>
                       <td className="px-3 py-2">{r.weight_g}g</td>
                       <td className="px-3 py-2">{r.purity || "—"}</td>
@@ -270,18 +270,18 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
           {karigarLedger && (
             <div className="grid md:grid-cols-4 gap-3 text-sm">
               {Object.entries(karigarLedger.weight || {}).map(([k, v]) => (
-                <div key={k} className="bg-white border rounded-xl p-3" style={{ borderColor: "#E5E7EB" }}>
+                <div key={k} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]" style={{ borderColor: "#D8D2C6" }}>
                   <div className="text-[11px] text-[#737373] uppercase">{k}</div>
                   <div className="text-lg font-semibold">{v} g</div>
                 </div>
               ))}
-              <div className="bg-white border rounded-xl p-3" style={{ borderColor: "#E5E7EB" }}>
+              <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]" style={{ borderColor: "#D8D2C6" }}>
                 <div className="text-[11px] text-[#737373] uppercase">Labour</div>
                 <div className="text-lg font-semibold">{fmtINR(karigarLedger.labour_payable)}</div>
               </div>
             </div>
           )}
-          <form onSubmit={postMetal} className="bg-white border rounded-2xl p-4 grid grid-cols-2 md:grid-cols-5 gap-2" style={{ borderColor: "#E5E7EB" }}>
+          <form onSubmit={postMetal} className="grid grid-cols-2 gap-2 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)] md:grid-cols-5" style={{ borderColor: "#D8D2C6" }}>
             <select className="input" value={metalForm.movement_type} onChange={(e) => setMetalForm((f) => ({ ...f, movement_type: e.target.value }))}>
               <option value="issue">Issue</option>
               <option value="return">Return</option>
@@ -290,7 +290,7 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
             <WeightInput className="input" placeholder="Weight g" required value={metalForm.weight} onValueChange={(raw) => setMetalForm((f) => ({ ...f, weight: raw }))} />
             <input className="input" placeholder="Purity" value={metalForm.purity} onChange={(e) => setMetalForm((f) => ({ ...f, purity: e.target.value }))} />
             <input className="input" placeholder="Notes" value={metalForm.notes} onChange={(e) => setMetalForm((f) => ({ ...f, notes: e.target.value }))} />
-            <button type="submit" className="btn-primary text-sm">Save</button>
+            <button type="submit" className="btn-primary !rounded-[9px] !border-[#315C4A] !bg-[#315C4A] text-sm hover:!bg-[#244A3A]">Save</button>
           </form>
         </div>
       )}
@@ -314,12 +314,12 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
             />
           </div>
         <div className="grid md:grid-cols-1 gap-4">
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
             <div className="px-3 py-2 text-xs font-semibold uppercase text-[#737373]">Gold rate history</div>
             <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-t bg-[#F9FAFB] text-[11px] uppercase text-[#737373]" style={{ borderColor: "#E5E7EB" }}>
+                <tr className="border-t bg-[#F1EEE7] text-[11px] uppercase text-[#737373]" style={{ borderColor: "#D8D2C6" }}>
                   <th className="px-3 py-2 text-left font-medium">Date & Time</th>
                   <th className="px-3 py-2 text-right font-medium">24K</th>
                   <th className="px-3 py-2 text-right font-medium">22K</th>
@@ -332,7 +332,7 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
               </thead>
               <tbody>
                 {rateHist.map((r) => (
-                  <tr key={r.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={r.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                     <td className="px-3 py-2 text-[12px] whitespace-nowrap">{fmtDateTime(r.occurred_at || r.created_at)}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{r.gold_24k != null ? fmtINR(r.gold_24k) : "—"}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{r.gold_22k != null ? fmtINR(r.gold_22k) : "—"}</td>
@@ -347,12 +347,12 @@ export default function MoreReportsTab({ includeHidden = false, reportId }) {
             </table>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
             <div className="px-3 py-2 text-xs font-semibold uppercase text-[#737373]">Billing rate events</div>
             <table className="w-full text-sm">
               <tbody>
                 {rateEvents.map((r) => (
-                  <tr key={r.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={r.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                     <td className="px-3 py-2 text-[12px]">{fmtDateTime(r.created_at)}</td>
                     <td className="px-3 py-2 capitalize">{r.event_type}</td>
                     <td className="px-3 py-2 tabular-nums">{r.gold_rate ?? "—"}</td>
@@ -387,12 +387,12 @@ function OldGoldBuyForm({ onDone }) {
     }
   };
   return (
-    <form onSubmit={submit} className="bg-white border rounded-2xl p-4 grid grid-cols-2 md:grid-cols-5 gap-2" style={{ borderColor: "#E5E7EB" }}>
+    <form onSubmit={submit} className="grid grid-cols-2 gap-2 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)] md:grid-cols-5" style={{ borderColor: "#D8D2C6" }}>
       <WeightInput className="input" required placeholder="Weight g" value={form.weight_g} onValueChange={(raw) => setForm((f) => ({ ...f, weight_g: raw }))} />
       <input className="input" placeholder="Purity" value={form.purity} onChange={(e) => setForm((f) => ({ ...f, purity: e.target.value }))} />
       <MoneyInput className="input" required placeholder="Rate" value={form.rate} onValueChange={(raw) => setForm((f) => ({ ...f, rate: raw }))} />
       <input className="input" placeholder="Notes" value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} />
-      <button type="submit" className="btn-primary text-sm" disabled={saving}>Cash buy</button>
+      <button type="submit" className="btn-primary !rounded-[9px] !border-[#315C4A] !bg-[#315C4A] text-sm hover:!bg-[#244A3A]" disabled={saving}>Cash buy</button>
     </form>
   );
 }

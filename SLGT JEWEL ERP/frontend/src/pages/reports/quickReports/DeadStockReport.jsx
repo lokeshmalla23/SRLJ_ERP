@@ -44,7 +44,7 @@ export default function DeadStockReport({ onBack }) {
                 <button
                   key={f.value}
                   onClick={() => setMinDays(f.value)}
-                  className={minDays === f.value ? "btn-primary !py-1 !text-[11.5px]" : "btn-secondary !py-1 !text-[11.5px]"}
+                  className={minDays === f.value ? "btn-primary !rounded-[9px] !border-[#315C4A] !bg-[#315C4A] !py-1 !text-[11.5px] hover:!bg-[#244A3A]" : "btn-secondary !rounded-[9px] !border-[#D2CCBF] !bg-[#FFFDF9] !py-1 !text-[11.5px] hover:!border-[#9EB2A6] hover:!bg-[#F1F5F1]"}
                 >
                   {f.label}
                 </button>

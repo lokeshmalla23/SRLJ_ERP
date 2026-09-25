@@ -7,11 +7,11 @@ export default function ManualVerificationTable({ data, loading }) {
 
   return (
     <div className="mt-8">
-      <div className="text-[13px] font-semibold text-[#0A0A0A] mb-1">Items Requiring Manual Verification</div>
-      <p className="text-[12px] text-[#737373] mb-3">
+      <div className="text-[13px] font-semibold text-[#17201C] mb-1">Items Requiring Manual Verification</div>
+      <p className="text-[12px] text-[#6F7772] mb-3">
         Stock with no barcode cannot be scanned — physically count these separately.
       </p>
-      <div className="table-shell overflow-x-auto">
+      <div className="table-shell overflow-x-auto !rounded-[10px] !border-[#E2E7E2] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
         <table className="w-full">
           <thead>
             <tr className="table-head-row">
@@ -27,9 +27,9 @@ export default function ManualVerificationTable({ data, loading }) {
           <tbody>
             {items.map((r) => (
               <tr key={r.product_id} className="table-row">
-                <td className="table-td text-[13px] font-medium text-[#0A0A0A]">{r.item_name || "—"}</td>
-                <td className="table-td text-[12.5px] text-[#525252]">{r.category_name || "—"}</td>
-                <td className="table-td text-[12.5px] text-[#525252]">{r.purity_name || "—"}</td>
+                <td className="table-td text-[13px] font-medium text-[#17201C]">{r.item_name || "—"}</td>
+                <td className="table-td text-[12.5px] text-[#4E5A53]">{r.category_name || "—"}</td>
+                <td className="table-td text-[12.5px] text-[#4E5A53]">{r.purity_name || "—"}</td>
                 <td className="table-td text-right font-mono text-[12.5px]">{r.quantity}</td>
                 <td className="table-td text-right font-mono text-[12.5px]">{fmtWeight(r.gross_weight)}</td>
                 <td className="table-td text-right font-mono text-[12.5px]">{fmtWeight(r.net_weight)}</td>

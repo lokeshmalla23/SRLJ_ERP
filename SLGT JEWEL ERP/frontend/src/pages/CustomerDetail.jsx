@@ -71,17 +71,17 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/30" onClick={onClose} />
+      <div className="fixed inset-0 z-40 bg-[#17201C]/30" onClick={onClose} />
 
       {/* Panel */}
-      <div className="fixed right-0 top-0 bottom-0 z-50 w-[600px] bg-white shadow-2xl flex flex-col">
+      <div className="fixed right-0 top-0 bottom-0 z-50 w-[600px] bg-[#FFFDF9] border-l border-[#E2E7E2] shadow-[0_0_45px_rgba(23,56,42,0.16)] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E7EB] flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E7E2] bg-[#FAF7EF] flex-shrink-0">
           <div>
-            <div className="text-[14px] font-semibold text-[#0A0A0A]">{invoice.invoice_no}</div>
-            <div className="text-[11px] text-[#737373] mt-0.5">{fmtDateTime(invoiceOccurredAt(invoice))}</div>
+            <div className="text-[14px] font-semibold text-[#17201C]">{invoice.invoice_no}</div>
+            <div className="text-[11px] text-[#6F7772] mt-0.5">{fmtDateTime(invoiceOccurredAt(invoice))}</div>
           </div>
-          <button onClick={onClose} className="h-8 w-8 rounded-lg hover:bg-[#F5F5F5] flex items-center justify-center text-[#737373] hover:text-[#0A0A0A]">
+          <button onClick={onClose} className="h-8 w-8 rounded-lg hover:bg-[#F1F4F0] flex items-center justify-center text-[#6F7772] hover:text-[#214F3A]">
             <X size={15} strokeWidth={1.5} />
           </button>
         </div>
@@ -89,15 +89,15 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {/* Customer & rate info */}
-          <div className="rounded-xl bg-[#FAFAFA] border border-[#E5E7EB] px-4 py-3 flex items-start justify-between">
+          <div className="rounded-xl bg-[#FAF7EF] border border-[#E2E7E2] px-4 py-3 flex items-start justify-between">
             <div>
-              <div className="text-[11px] uppercase tracking-widest text-[#737373] font-semibold mb-1">Bill To</div>
-              <div className="text-[13px] font-semibold text-[#0A0A0A]">{invoice.customer_name || "Walk-in"}</div>
-              {invoice.customer_mobile && <div className="text-[11.5px] text-[#525252] font-mono mt-0.5">{invoice.customer_mobile}</div>}
+              <div className="text-[11px] uppercase tracking-widest text-[#6F7772] font-semibold mb-1">Bill To</div>
+              <div className="text-[13px] font-semibold text-[#17201C]">{invoice.customer_name || "Walk-in"}</div>
+              {invoice.customer_mobile && <div className="text-[11.5px] text-[#4E5A53] font-mono mt-0.5">{invoice.customer_mobile}</div>}
             </div>
             {invoice.gold_rate && (
               <div className="text-right">
-                <div className="text-[10px] uppercase tracking-widest text-[#737373]">Gold Rate</div>
+                <div className="text-[10px] uppercase tracking-widest text-[#6F7772]">Gold Rate</div>
                 <div className="text-[13px] font-semibold text-[#92400E]">{fmtRatePerGram(invoice.gold_rate)}</div>
               </div>
             )}
@@ -105,41 +105,41 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
 
           {/* Items */}
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#737373] font-semibold mb-2">Items</div>
-            <div className="rounded-xl border border-[#E5E7EB] overflow-hidden">
+            <div className="text-[11px] uppercase tracking-widest text-[#6F7772] font-semibold mb-2">Items</div>
+            <div className="rounded-xl border border-[#E2E7E2] overflow-hidden">
               <table className="w-full text-[12px]">
                 <thead>
-                  <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
-                    <th className="text-left px-3 py-2 font-semibold text-[#525252]">Description</th>
-                    <th className="text-right px-3 py-2 font-semibold text-[#525252]">Qty</th>
-                    <th className="text-right px-3 py-2 font-semibold text-[#525252]">G.Wt</th>
-                    <th className="text-right px-3 py-2 font-semibold text-[#525252]">N.Wt</th>
-                    <th className="text-right px-3 py-2 font-semibold text-[#525252]">Amount</th>
+                  <tr className="bg-[#F1F4F0] border-b border-[#E2E7E2]">
+                    <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">Description</th>
+                    <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">Qty</th>
+                    <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">G.Wt</th>
+                    <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">N.Wt</th>
+                    <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">Amount</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F5F5F5]">
+                <tbody className="divide-y divide-[#E2E7E2]">
                   {items.map((it, i) => {
                     const qty = it.quantity || 1;
                     return (
                       <tr key={i}>
                         <td className="px-3 py-2.5">
-                          <div className="font-medium text-[#0A0A0A]">{it.name || it.product_name || "Item"}{qty > 1 ? ` × ${qty}` : ""}</div>
-                          {it.purity && <div className="text-[10.5px] text-[#737373]">{it.purity}</div>}
+                          <div className="font-medium text-[#17201C]">{it.name || it.product_name || "Item"}{qty > 1 ? ` × ${qty}` : ""}</div>
+                          {it.purity && <div className="text-[10.5px] text-[#6F7772]">{it.purity}</div>}
                         </td>
-                        <td className="px-3 py-2.5 text-right font-mono text-[#525252]">{qty}</td>
-                        <td className="px-3 py-2.5 text-right font-mono text-[#525252]">{Number(it.gross_weight || 0).toFixed(3)}</td>
-                        <td className="px-3 py-2.5 text-right font-mono text-[#525252]">{Number(it.net_weight || 0).toFixed(3)}</td>
-                        <td className="px-3 py-2.5 text-right font-mono font-medium text-[#0A0A0A]">{fmtINR(Number(it.unit_price || 0) * qty)}</td>
+                        <td className="px-3 py-2.5 text-right font-mono text-[#4E5A53]">{qty}</td>
+                        <td className="px-3 py-2.5 text-right font-mono text-[#4E5A53]">{Number(it.gross_weight || 0).toFixed(3)}</td>
+                        <td className="px-3 py-2.5 text-right font-mono text-[#4E5A53]">{Number(it.net_weight || 0).toFixed(3)}</td>
+                        <td className="px-3 py-2.5 text-right font-mono font-medium text-[#17201C]">{fmtINR(Number(it.unit_price || 0) * qty)}</td>
                       </tr>
                     );
                   })}
                 </tbody>
                 <tfoot>
-                  <tr className="bg-[#F9FAFB] border-t-2 border-[#E5E7EB]">
-                    <td className="px-3 py-2 font-semibold text-[#0A0A0A]" colSpan={2}>Total</td>
-                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#0A0A0A]">{totals.gross.toFixed(3)}</td>
-                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#0A0A0A]">{totals.net.toFixed(3)}</td>
-                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#0A0A0A]">{fmtINR(invoice.subtotal)}</td>
+                  <tr className="bg-[#F1F4F0] border-t-2 border-[#E2E7E2]">
+                    <td className="px-3 py-2 font-semibold text-[#17201C]" colSpan={2}>Total</td>
+                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#17201C]">{totals.gross.toFixed(3)}</td>
+                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#17201C]">{totals.net.toFixed(3)}</td>
+                    <td className="px-3 py-2 text-right font-mono font-semibold text-[#17201C]">{fmtINR(invoice.subtotal)}</td>
                   </tr>
                 </tfoot>
               </table>
@@ -147,11 +147,11 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
           </div>
 
           {/* Totals breakdown */}
-          <div className="rounded-xl border border-[#E5E7EB] overflow-hidden">
-            <div className="divide-y divide-[#F5F5F5]">
+          <div className="rounded-xl border border-[#E2E7E2] overflow-hidden">
+            <div className="divide-y divide-[#E2E7E2]">
               {Number(invoice.discount) > 0 && (
                 <div className="flex justify-between px-4 py-2.5 text-[12.5px]">
-                  <span className="text-[#525252]">Discount</span>
+                  <span className="text-[#4E5A53]">Discount</span>
                   <span className="font-mono text-green-600">− {fmtINR(invoice.discount)}</span>
                 </div>
               )}
@@ -160,27 +160,27 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
                   invoices carry Old Gold as a payment instead (rendered below). */}
               {!hasOldGoldPayment(invoice) && Number(invoice.old_gold_value) > 0 && (
                 <div className="flex justify-between px-4 py-2.5 text-[12.5px]">
-                  <span className="text-[#525252]">Old Gold Exchange</span>
+                  <span className="text-[#4E5A53]">Old Gold Exchange</span>
                   <span className="font-mono text-green-600">− {fmtINR(invoice.old_gold_value)}</span>
                 </div>
               )}
               {!hasOldSilverPayment(invoice) && Number(invoice.old_silver_value) > 0 && (
                 <div className="flex justify-between px-4 py-2.5 text-[12.5px]">
-                  <span className="text-[#525252]">Old Silver Exchange</span>
+                  <span className="text-[#4E5A53]">Old Silver Exchange</span>
                   <span className="font-mono text-green-600">− {fmtINR(invoice.old_silver_value)}</span>
                 </div>
               )}
               <div className="flex justify-between px-4 py-2.5 text-[12.5px]">
-                <span className="text-[#525252]">CGST {((invoice.gst_pct || 3) / 2).toFixed(1)}%</span>
-                <span className="font-mono text-[#0A0A0A]">{fmtINR(gstCgst)}</span>
+                <span className="text-[#4E5A53]">CGST {((invoice.gst_pct || 3) / 2).toFixed(1)}%</span>
+                <span className="font-mono text-[#17201C]">{fmtINR(gstCgst)}</span>
               </div>
               <div className="flex justify-between px-4 py-2.5 text-[12.5px]">
-                <span className="text-[#525252]">SGST {((invoice.gst_pct || 3) / 2).toFixed(1)}%</span>
-                <span className="font-mono text-[#0A0A0A]">{fmtINR(gstSgst)}</span>
+                <span className="text-[#4E5A53]">SGST {((invoice.gst_pct || 3) / 2).toFixed(1)}%</span>
+                <span className="font-mono text-[#17201C]">{fmtINR(gstSgst)}</span>
               </div>
-              <div className="flex justify-between px-4 py-3 bg-[#FAFAFA]">
-                <span className="font-semibold text-[14px] text-[#0A0A0A]">Net Total</span>
-                <span className="font-bold text-[15px] text-[#0A0A0A] font-mono">{fmtINR(invoice.grand_total)}</span>
+              <div className="flex justify-between px-4 py-3 bg-[#FAF7EF]">
+                <span className="font-semibold text-[14px] text-[#17201C]">Net Total</span>
+                <span className="font-bold text-[15px] text-[#17201C] font-mono">{fmtINR(invoice.grand_total)}</span>
               </div>
             </div>
           </div>
@@ -188,16 +188,16 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
           {/* Payment summary */}
           {payments.length > 0 && (
             <div>
-              <div className="text-[11px] uppercase tracking-widest text-[#737373] font-semibold mb-2">Payment</div>
-              <div className="rounded-xl border border-[#E5E7EB] divide-y divide-[#F5F5F5]">
+              <div className="text-[11px] uppercase tracking-widest text-[#6F7772] font-semibold mb-2">Payment</div>
+              <div className="rounded-xl border border-[#E2E7E2] divide-y divide-[#E2E7E2]">
                 {payments.map((p, i) => (
                   <div key={i} className="px-4 py-2.5">
                     <div className="flex justify-between items-center text-[12.5px]">
-                      <span className="capitalize text-[#525252]">{(p.mode || "cash").replace(/_/g, " ")}</span>
-                      <span className="font-mono font-medium text-[#0A0A0A]">{fmtINR(p.amount)}</span>
+                      <span className="capitalize text-[#4E5A53]">{(p.mode || "cash").replace(/_/g, " ")}</span>
+                      <span className="font-mono font-medium text-[#17201C]">{fmtINR(p.amount)}</span>
                     </div>
                     {exchangePaymentSnap(p) && (
-                      <div className="text-[10.5px] text-[#8A857C] font-mono mt-0.5">
+                      <div className="text-[10.5px] text-[#89928C] font-mono mt-0.5">
                         {Number(exchangePaymentSnap(p).weight).toFixed(3)} g | {exchangePaymentSnap(p).purity}{exchangeSnapShowsRate(p) && <> | {fmtINR(exchangePaymentSnap(p).rate, { decimals: 0 })}/g</>}
                       </div>
                     )}
@@ -209,7 +209,7 @@ function InvoiceSidePanel({ invoice, company, onClose }) {
         </div>
 
         {/* Bottom action bar */}
-        <div className="flex-shrink-0 border-t border-[#E5E7EB] px-5 py-4 flex items-center gap-3 bg-white">
+        <div className="flex-shrink-0 border-t border-[#E2E7E2] px-5 py-4 flex items-center gap-3 bg-[#FAF7EF]">
           <button onClick={handlePrint} className="btn-primary flex-1 inline-flex items-center justify-center gap-2">
             <Printer size={14} strokeWidth={1.5} /> Print Invoice
           </button>
@@ -248,20 +248,20 @@ function CollectPaymentModal({ invoice, onClose, onSuccess }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/30" onClick={onClose} />
+      <div className="fixed inset-0 z-50 bg-[#17201C]/30" onClick={onClose} />
       <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-        <div className="bg-white rounded-xl shadow-2xl w-[420px] pointer-events-auto" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#E5E7EB]">
+        <div className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-[420px] pointer-events-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E7E2]">
             <div>
-              <div className="text-[14px] font-semibold text-[#0A0A0A]">Collect Payment</div>
-              <div className="text-[11px] text-[#737373] mt-0.5">{invoice.invoice_no} · Balance due {fmtINR(invoice.balance_due)}</div>
+              <div className="text-[14px] font-semibold text-[#17201C]">Collect Payment</div>
+              <div className="text-[11px] text-[#6F7772] mt-0.5">{invoice.invoice_no} · Balance due {fmtINR(invoice.balance_due)}</div>
             </div>
-            <button onClick={onClose} className="h-8 w-8 rounded-lg hover:bg-[#F5F5F5] flex items-center justify-center text-[#737373]">
+            <button onClick={onClose} className="h-8 w-8 rounded-lg hover:bg-[#F1F4F0] flex items-center justify-center text-[#6F7772] hover:text-[#214F3A]">
               <X size={15} strokeWidth={1.5} />
             </button>
           </div>
           <form onSubmit={handleSubmit} className="p-5 space-y-4">
-            <label className="block text-[12px] text-[#525252]">
+            <label className="block text-[12px] text-[#4E5A53]">
               Amount (₹)
               <MoneyInput
                 className="input mt-1 w-full"
@@ -273,7 +273,7 @@ function CollectPaymentModal({ invoice, onClose, onSuccess }) {
                 required
               />
             </label>
-            <label className="block text-[12px] text-[#525252]">
+            <label className="block text-[12px] text-[#4E5A53]">
               Payment Mode
               <select className="input mt-1 w-full" value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })}>
                 <option value="cash">Cash</option>
@@ -283,7 +283,7 @@ function CollectPaymentModal({ invoice, onClose, onSuccess }) {
                 <option value="cheque">Cheque</option>
               </select>
             </label>
-            <label className="block text-[12px] text-[#525252]">
+            <label className="block text-[12px] text-[#4E5A53]">
               Reference / Note
               <input className="input mt-1 w-full" value={form.reference} onChange={(e) => setForm({ ...form, reference: e.target.value })} placeholder="Optional" />
             </label>
@@ -394,10 +394,10 @@ export default function CustomerDetail() {
     return (
       <div className={hiddenUnlockBleedClass(hiddenUnlocked)}>
       <div className="max-w-[720px]">
-        <button onClick={() => nav("/customers")} className="inline-flex items-center gap-1.5 text-[12.5px] text-[#525252] hover:text-[#0A0A0A] mb-4">
+        <button onClick={() => nav("/customers")} className="inline-flex items-center gap-1.5 text-[12.5px] text-[#6F7772] hover:text-[#214F3A] mb-4">
           <ArrowLeft size={13} strokeWidth={1.5} /> All customers
         </button>
-        <div className="card p-8 text-[13px] text-[#737373]">{error}</div>
+        <div className="card p-8 text-[13px] text-[#6F7772]">{error}</div>
       </div>
       </div>
     );
@@ -408,7 +408,7 @@ export default function CustomerDetail() {
       <div className={hiddenUnlockBleedClass(hiddenUnlocked)}>
       <div className="space-y-4">
         <PageLoadingBadge />
-        <div className="h-96 shimmer rounded-md" />
+        <div className="h-96 shimmer rounded-xl border border-[#E2E7E2]" />
       </div>
       </div>
     );
@@ -443,19 +443,19 @@ export default function CustomerDetail() {
   return (
     <div className={hiddenUnlockBleedClass(hiddenUnlocked)}>
     <div className="max-w-[1200px]">
-      <button onClick={() => nav("/customers")} className="inline-flex items-center gap-1.5 text-[12.5px] text-[#525252] hover:text-[#0A0A0A] mb-4">
+      <button onClick={() => nav("/customers")} className="inline-flex items-center gap-1.5 text-[12.5px] text-[#6F7772] hover:text-[#214F3A] mb-4">
         <ArrowLeft size={13} strokeWidth={1.5} /> All customers
       </button>
 
       {/* Profile header */}
-      <div className="flex items-start gap-6 mb-8">
-        <div className="h-16 w-16 rounded-md bg-[#0A0A0A] text-white flex items-center justify-center font-display text-[24px]">
+      <div className="flex items-start gap-6 mb-6">
+        <div className="h-16 w-16 rounded-xl bg-[#214F3A] text-white flex items-center justify-center font-display text-[24px] shadow-[0_2px_8px_rgba(23,56,42,0.18)]">
           {displayName.slice(0, 1).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 flex-wrap">
             <h2
-              className="font-display text-[26px] font-semibold text-[#0A0A0A] tracking-tight select-none"
+              className="font-display text-[26px] font-semibold text-[#17201C] tracking-tight select-none"
               onClick={handleTitleClick}
               title={titleHint}
             >
@@ -468,7 +468,7 @@ export default function CustomerDetail() {
             <button
               type="button"
               onClick={() => setEditOpen(true)}
-              className="inline-flex items-center gap-1 text-[11.5px] text-[#737373] hover:text-[#0A0A0A] border border-[#E5E7EB] rounded-md px-2 py-1"
+              className="inline-flex items-center gap-1 text-[11.5px] text-[#6F7772] hover:text-[#214F3A] border border-[#E2E7E2] rounded-lg px-2 py-1"
             >
               <Pencil size={11} strokeWidth={1.5} /> Edit
             </button>
@@ -483,13 +483,13 @@ export default function CustomerDetail() {
               </button>
             )}
           </div>
-          <div className="mt-2 flex items-center gap-5 text-[12.5px] text-[#525252]">
-            {customer.mobile && <span className="inline-flex items-center gap-1.5"><Phone size={12} strokeWidth={1.5} className="text-[#a3a3a3]" />{customer.mobile}</span>}
-            {customer.email && <span className="inline-flex items-center gap-1.5"><Mail size={12} strokeWidth={1.5} className="text-[#a3a3a3]" />{customer.email}</span>}
-            {customer.address && <span className="inline-flex items-center gap-1.5"><MapPin size={12} strokeWidth={1.5} className="text-[#a3a3a3]" />{customer.address}</span>}
+          <div className="mt-2 flex items-center gap-5 text-[12.5px] text-[#4E5A53]">
+            {customer.mobile && <span className="inline-flex items-center gap-1.5"><Phone size={12} strokeWidth={1.5} className="text-[#89928C]" />{customer.mobile}</span>}
+            {customer.email && <span className="inline-flex items-center gap-1.5"><Mail size={12} strokeWidth={1.5} className="text-[#89928C]" />{customer.email}</span>}
+            {customer.address && <span className="inline-flex items-center gap-1.5"><MapPin size={12} strokeWidth={1.5} className="text-[#89928C]" />{customer.address}</span>}
           </div>
           {(customer.pan_number || customer.aadhaar_number) && (
-            <div className="mt-1.5 flex items-center gap-5 text-[11.5px] text-[#8A857C] font-mono">
+            <div className="mt-1.5 flex items-center gap-5 text-[11.5px] text-[#89928C] font-mono">
               {customer.pan_number && <span>PAN: {customer.pan_number}</span>}
               {customer.aadhaar_number && <span>Aadhaar: {customer.aadhaar_number}</span>}
             </div>
@@ -500,7 +500,7 @@ export default function CustomerDetail() {
           onClick={handleWhatsApp}
           disabled={!normalizeIndianMobile(customer.mobile)}
           title={normalizeIndianMobile(customer.mobile) ? `WhatsApp ${customer.mobile}` : "No valid mobile for WhatsApp"}
-          className="ml-auto shrink-0 inline-flex items-center gap-2 rounded-lg bg-[#25D366] hover:bg-[#1EBE5A] text-white font-semibold text-[13.5px] px-4 py-2.5 shadow-sm disabled:opacity-40 disabled:hover:bg-[#25D366] disabled:cursor-not-allowed"
+          className="ml-auto shrink-0 inline-flex items-center gap-2 rounded-[10px] border border-[#1EAD59] bg-[#25D366] hover:bg-[#1EBE5A] text-white font-semibold text-[13.5px] px-4 py-2.5 shadow-sm disabled:opacity-40 disabled:hover:bg-[#25D366] disabled:cursor-not-allowed"
         >
           <WhatsAppGlyph size={18} />
           WhatsApp
@@ -508,7 +508,7 @@ export default function CustomerDetail() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Stat label="Total Purchases" value={fmtINR(customer.total_purchases || 0)} icon={TrendingUp} />
         <Stat
           label="Outstanding Due"
@@ -529,30 +529,30 @@ export default function CustomerDetail() {
       <div id="notes-card" className="card mb-6 scroll-mt-4">
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="flex items-center gap-2">
-            <StickyNote size={14} strokeWidth={1.5} className="text-[#B49042]" />
-            <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">Notes</div>
+            <StickyNote size={14} strokeWidth={1.5} className="text-[#D9A441]" />
+            <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">Notes</div>
           </div>
           <button
             type="button"
             onClick={() => setEditOpen(true)}
-            className="inline-flex items-center gap-1 text-[11.5px] text-[#737373] hover:text-[#0A0A0A] border border-[#E5E7EB] rounded-md px-2 py-1"
+            className="inline-flex items-center gap-1 text-[11.5px] text-[#6F7772] hover:text-[#214F3A] border border-[#E2E7E2] rounded-lg px-2 py-1"
           >
             <Pencil size={11} strokeWidth={1.5} /> {customer.notes ? "Edit notes" : "Add notes"}
           </button>
         </div>
         {customer.notes ? (
-          <p className="text-[13px] text-[#0A0A0A] whitespace-pre-wrap">{customer.notes}</p>
+          <p className="text-[13px] text-[#17201C] whitespace-pre-wrap">{customer.notes}</p>
         ) : (
-          <p className="text-[13px] text-[#a3a3a3]">No notes added yet for this customer.</p>
+          <p className="text-[13px] text-[#89928C]">No notes added yet for this customer.</p>
         )}
       </div>
 
       {/* Bookings / Advance ledger */}
       <div className="card p-0 overflow-hidden mb-6">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between gap-3">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between gap-3">
           <div>
             <div className="section-title">Bookings &amp; advance ledger</div>
-            <div className="text-[12px] text-[#737373] mt-0.5">
+            <div className="text-[12px] text-[#6F7772] mt-0.5">
               Locked ornaments, installment payments, and balance due for this customer
             </div>
           </div>
@@ -563,9 +563,9 @@ export default function CustomerDetail() {
           )}
         </div>
         {bookings.length === 0 ? (
-          <div className="p-8 text-center text-[13px] text-[#737373]">No advance bookings yet.</div>
+          <div className="p-8 text-center text-[13px] text-[#6F7772]">No advance bookings yet.</div>
         ) : (
-          <ul className="divide-y divide-[#E5E7EB]">
+          <ul className="divide-y divide-[#E2E7E2]">
             {bookings.map((b) => {
               const statusCls = b.status === "booked"
                 ? "bg-amber-100 text-amber-800"
@@ -581,7 +581,7 @@ export default function CustomerDetail() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono text-[13px] font-semibold text-[#0A0A0A]">{b.quote_no}</span>
+                        <span className="font-mono text-[13px] font-semibold text-[#17201C]">{b.quote_no}</span>
                         <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium capitalize ${statusCls}`}>
                           {b.status}
                         </span>
@@ -591,54 +591,54 @@ export default function CustomerDetail() {
                           </span>
                         )}
                       </div>
-                      <div className="text-[11.5px] text-[#737373] mt-1">
+                      <div className="text-[11.5px] text-[#6F7772] mt-1">
                         {b.booked_at ? `Booked ${fmtDateTime(invoiceOccurredAt(b))}` : "—"}
                         {b.valid_until ? ` · Hold till ${fmtDate(b.valid_until)}` : ""}
                         {b.gold_rate != null ? ` · ${fmtRatePerGram(b.gold_rate)}` : ""}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[11px] uppercase tracking-wider text-[#737373]">Bill / Paid / Due</div>
-                      <div className="text-[13px] font-semibold tabular-nums text-[#0A0A0A]">
+                      <div className="text-[11px] uppercase tracking-wider text-[#6F7772]">Bill / Paid / Due</div>
+                      <div className="text-[13px] font-semibold tabular-nums text-[#17201C]">
                         {fmtINR(b.grand_total)} · {fmtINR(b.advance_paid)} · {fmtINR(b.remaining_amount)}
                       </div>
                       {Number(b.installment_count) > 1 && (
-                        <div className="text-[11px] text-[#737373]">{b.installment_count} installments</div>
+                        <div className="text-[11px] text-[#6F7772]">{b.installment_count} installments</div>
                       )}
                     </div>
                   </div>
 
                   {products.length > 0 && (
                     <div>
-                      <div className="text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1.5">
+                      <div className="text-[11px] uppercase tracking-wider font-semibold text-[#6F7772] mb-1.5">
                         {b.status === "booked" ? "Locked ornaments" : "Ornaments"}
                       </div>
-                      <div className="rounded-lg border border-[#E5E7EB] overflow-hidden">
+                      <div className="rounded-lg border border-[#E2E7E2] overflow-hidden">
                         <table className="w-full text-[12px]">
                           <thead>
-                            <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
-                              <th className="text-left px-3 py-2 font-semibold text-[#525252]">Item</th>
-                              <th className="text-left px-3 py-2 font-semibold text-[#525252]">Tag</th>
-                              <th className="text-right px-3 py-2 font-semibold text-[#525252]">Weight</th>
-                              <th className="text-right px-3 py-2 font-semibold text-[#525252]">Status</th>
+                            <tr className="bg-[#FAF7EF] border-b border-[#E2E7E2]">
+                              <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">Item</th>
+                              <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">Tag</th>
+                              <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">Weight</th>
+                              <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">Status</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-[#F5F5F5]">
+                          <tbody className="divide-y divide-[#E2E7E2]">
                             {products.map((p, idx) => (
                               <tr key={p.product_id || idx}>
                                 <td className="px-3 py-2">
-                                  <div className="font-medium text-[#0A0A0A]">{p.name}</div>
-                                  {p.purity && <div className="text-[10.5px] text-[#737373]">{p.purity}</div>}
+                                  <div className="font-medium text-[#17201C]">{p.name}</div>
+                                  {p.purity && <div className="text-[10.5px] text-[#6F7772]">{p.purity}</div>}
                                 </td>
-                                <td className="px-3 py-2 font-mono text-[#525252]">{p.barcode || "—"}</td>
-                                <td className="px-3 py-2 text-right font-mono text-[#525252]">
+                                <td className="px-3 py-2 font-mono text-[#4E5A53]">{p.barcode || "—"}</td>
+                                <td className="px-3 py-2 text-right font-mono text-[#4E5A53]">
                                   {Number(p.net_weight || 0) > 0 ? `${Number(p.net_weight).toFixed(3)} g` : "—"}
                                 </td>
                                 <td className="px-3 py-2 text-right">
                                   {p.locked ? (
                                     <span className="text-amber-700 font-semibold">Reserved</span>
                                   ) : (
-                                    <span className="text-[#737373] capitalize">{p.status || "—"}</span>
+                                    <span className="text-[#6F7772] capitalize">{p.status || "—"}</span>
                                   )}
                                 </td>
                               </tr>
@@ -651,30 +651,30 @@ export default function CustomerDetail() {
 
                   {payments.length > 0 && (
                     <div>
-                      <div className="text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1.5">
+                      <div className="text-[11px] uppercase tracking-wider font-semibold text-[#6F7772] mb-1.5">
                         Advance payments
                       </div>
-                      <div className="rounded-lg border border-[#E5E7EB] overflow-hidden">
+                      <div className="rounded-lg border border-[#E2E7E2] overflow-hidden">
                         <table className="w-full text-[12px]">
                           <thead>
-                            <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
-                              <th className="text-left px-3 py-2 font-semibold text-[#525252]">#</th>
-                              <th className="text-left px-3 py-2 font-semibold text-[#525252]">When</th>
-                              <th className="text-left px-3 py-2 font-semibold text-[#525252]">Mode</th>
-                              <th className="text-right px-3 py-2 font-semibold text-[#525252]">Amount</th>
+                            <tr className="bg-[#FAF7EF] border-b border-[#E2E7E2]">
+                              <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">#</th>
+                              <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">When</th>
+                              <th className="text-left px-3 py-2 font-semibold text-[#4E5A53]">Mode</th>
+                              <th className="text-right px-3 py-2 font-semibold text-[#4E5A53]">Amount</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-[#F5F5F5]">
+                          <tbody className="divide-y divide-[#E2E7E2]">
                             {payments.map((p, idx) => (
                               <tr key={p.advance_id || idx}>
-                                <td className="px-3 py-2 font-mono text-[#525252]">{p.installment_no || idx + 1}</td>
-                                <td className="px-3 py-2 font-mono text-[#525252]">
+                                <td className="px-3 py-2 font-mono text-[#4E5A53]">{p.installment_no || idx + 1}</td>
+                                <td className="px-3 py-2 font-mono text-[#4E5A53]">
                                   {p.paid_at ? fmtDateTime(invoiceOccurredAt(p)) : "—"}
                                 </td>
-                                <td className="px-3 py-2 capitalize text-[#525252]">
+                                <td className="px-3 py-2 capitalize text-[#4E5A53]">
                                   {String(p.mode || "cash").replace(/_/g, " ")}
                                 </td>
-                                <td className="px-3 py-2 text-right font-mono font-semibold text-[#0A0A0A]">
+                                <td className="px-3 py-2 text-right font-mono font-semibold text-[#17201C]">
                                   {fmtINR(p.amount)}
                                 </td>
                               </tr>
@@ -693,11 +693,11 @@ export default function CustomerDetail() {
 
       {/* Purchase history */}
       <div className="card p-0 overflow-hidden mb-6">
-        <div className="p-5 border-b border-[#E5E7EB]">
+        <div className="p-5 border-b border-[#E2E7E2]">
           <div className="section-title">Purchase history</div>
         </div>
         {invoices.length === 0 ? (
-          <div className="p-8 text-[13px] text-[#737373]">No purchases yet.</div>
+          <div className="p-8 text-[13px] text-[#6F7772]">No purchases yet.</div>
         ) : (
           <table className="w-full">
             <thead>
@@ -721,22 +721,22 @@ export default function CustomerDetail() {
                       <span className="inline-flex items-center gap-1.5">
                         {inv.invoice_no}
                         {inv.is_hidden ? (
-                          <span className="rounded-full bg-[#B49042]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#B49042]">
+                          <span className="rounded-full bg-[#D9A441]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#D9A441]">
                             Hidden
                           </span>
                         ) : null}
                       </span>
                     </td>
-                    <td className="table-td text-[#525252]">
+                    <td className="table-td text-[#4E5A53]">
                       {labels || "—"}
                       {items.length > 2 && ` +${items.length - 2}`}
                     </td>
                     <td className="table-td text-right font-medium tabular-nums">{fmtINR(inv.grand_total)}</td>
-                    <td className="table-td text-right text-[#737373] font-mono text-[12px]">{fmtDateTime(invoiceOccurredAt(inv))}</td>
+                    <td className="table-td text-right text-[#6F7772] font-mono text-[12px]">{fmtDateTime(invoiceOccurredAt(inv))}</td>
                     <td className="table-td text-center">
                       <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${badge.cls}`}>{badge.label}</span>
                       {(inv.cancelled_at || inv.returned_at) && (
-                        <div className="mt-1 text-[10px] text-[#a3a3a3] font-mono">
+                        <div className="mt-1 text-[10px] text-[#89928C] font-mono">
                           {fmtDate(inv.cancelled_at || inv.returned_at)}
                         </div>
                       )}
@@ -744,7 +744,7 @@ export default function CustomerDetail() {
                     <td className="table-td text-center">
                       <button
                         onClick={() => setSelectedInvoice(inv)}
-                        className="inline-flex items-center gap-1 text-[11.5px] text-[#525252] hover:text-[#0A0A0A] border border-[#E5E7EB] rounded-lg px-2.5 py-1 hover:border-[#0A0A0A] transition-colors"
+                        className="inline-flex items-center gap-1 text-[11.5px] text-[#4E5A53] hover:text-[#214F3A] border border-[#E2E7E2] rounded-lg px-2.5 py-1 hover:border-[#17201C] transition-colors"
                       >
                         <Eye size={12} strokeWidth={1.5} /> View
                       </button>
@@ -760,7 +760,7 @@ export default function CustomerDetail() {
       {/* Outstanding Balances */}
       {outstanding.data.length > 0 && (
         <div className="card p-0 overflow-hidden mb-6">
-          <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+          <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
             <div className="flex items-center gap-2">
               <AlertCircle size={14} strokeWidth={1.5} className="text-amber-500" />
               <div className="section-title">Outstanding Balances</div>
@@ -784,7 +784,7 @@ export default function CustomerDetail() {
                     <span className="inline-flex items-center gap-1.5">
                       {inv.invoice_no}
                       {inv.is_hidden ? (
-                        <span className="rounded-full bg-[#B49042]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#B49042]">
+                        <span className="rounded-full bg-[#D9A441]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#D9A441]">
                           Hidden
                         </span>
                       ) : null}
@@ -792,11 +792,11 @@ export default function CustomerDetail() {
                   </td>
                   <td className="table-td text-right tabular-nums">{fmtINR(inv.grand_total)}</td>
                   <td className="table-td text-right tabular-nums font-semibold text-amber-600">{fmtINR(inv.balance_due)}</td>
-                  <td className="table-td text-right text-[#737373] font-mono text-[12px]">{fmtDate(invoiceOccurredAt(inv))}</td>
+                  <td className="table-td text-right text-[#6F7772] font-mono text-[12px]">{fmtDate(invoiceOccurredAt(inv))}</td>
                   <td className="table-td text-center">
                     <button
                       onClick={() => setCollectModal(inv)}
-                      className="inline-flex items-center gap-1 text-[11.5px] text-white bg-amber-500 hover:bg-amber-600 rounded-lg px-2.5 py-1 transition-colors"
+                      className="inline-flex items-center gap-1 text-[11.5px] text-white bg-[#214F3A] hover:bg-[#17382A] border border-[#214F3A] rounded-lg px-2.5 py-1 transition-colors shadow-[0_1px_2px_rgba(23,56,42,0.14)]"
                     >
                       <RefreshCw size={11} strokeWidth={2} /> Collect
                     </button>
@@ -823,25 +823,25 @@ export default function CustomerDetail() {
       {/* Gold Saving Schemes */}
       {schemes.length > 0 && (
         <div className="card p-0 overflow-hidden">
-          <div className="p-5 border-b border-[#E5E7EB]">
+          <div className="p-5 border-b border-[#E2E7E2]">
             <div className="section-title">Gold Saving Schemes</div>
           </div>
-          <ul className="divide-y divide-[#E5E7EB]">
+          <ul className="divide-y divide-[#E2E7E2]">
             {schemes.map((s) => (
               <li key={s.id} className="p-5 flex items-center gap-4">
                 <div className="h-9 w-9 rounded-md bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center">
-                  <Sparkles size={14} strokeWidth={1.5} className="text-[#B49042]" />
+                  <Sparkles size={14} strokeWidth={1.5} className="text-[#D9A441]" />
                 </div>
                 <div className="flex-1">
                   <div className="text-[13.5px] font-medium">{s.plan_name || "Scheme"}</div>
-                  <div className="text-[11.5px] text-[#737373] font-mono">
+                  <div className="text-[11.5px] text-[#6F7772] font-mono">
                     {asArray(s.payments).length || 0} / {s.duration_months || "—"} paid · Started {fmtDate(s.start_date)}
                     {s.status === "breaked" ? " · Breaked" : s.status === "matured" ? " · Matured" : s.status === "completed" ? " · Collected" : ""}
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-[13px] font-semibold tabular-nums">{fmtINR(s.monthly_amount)}</div>
-                  <div className="text-[11px] text-[#a3a3a3] uppercase tracking-widest">Monthly</div>
+                  <div className="text-[11px] text-[#89928C] uppercase tracking-widest">Monthly</div>
                 </div>
               </li>
             ))}
@@ -851,9 +851,9 @@ export default function CustomerDetail() {
 
       {/* ERP Statement */}
       <div className="card p-0 overflow-hidden mb-6">
-        <div className="p-5 border-b border-[#E5E7EB]">
+        <div className="p-5 border-b border-[#E2E7E2]">
           <div className="section-title">ERP Statement</div>
-          <div className="text-[12px] text-[#737373] mt-0.5">
+          <div className="text-[12px] text-[#6F7772] mt-0.5">
             Every advance, refund, invoice, and payment for this customer — filter by date
           </div>
         </div>
@@ -878,7 +878,7 @@ export default function CustomerDetail() {
           </div>
         )}
         {!statement?.data?.length ? (
-          <div className="p-8 text-center text-[13px] text-[#737373]">
+          <div className="p-8 text-center text-[13px] text-[#6F7772]">
             {statementLoading ? "Loading statement…" : "No transactions in this period."}
           </div>
         ) : (
@@ -985,7 +985,7 @@ function EditCustomerModal({ customer, onClose, onSaved, nav }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-start justify-center p-4 overflow-y-auto">
       <DuplicateCustomerDialog
         info={dupCustomer}
         onClose={() => setDupCustomer(null)}
@@ -993,10 +993,10 @@ function EditCustomerModal({ customer, onClose, onSaved, nav }) {
         onCreateAnyway={() => { setDupCustomer(null); save(null, { force: true }); }}
         creating={busy}
       />
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-lg mt-16 mb-8">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-lg mt-16 mb-8">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
           <div className="section-title">Edit customer</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#214F3A]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -1038,7 +1038,7 @@ function EditCustomerModal({ customer, onClose, onSaved, nav }) {
             <textarea className="input" rows={3} value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Any remarks or notes about this customer" />
           </EditField>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" disabled={busy} className="btn-primary">{busy ? "Saving…" : "Save changes"}</button>
         </div>
@@ -1050,18 +1050,18 @@ function EditCustomerModal({ customer, onClose, onSaved, nav }) {
 function EditField({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">{label}</span>
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-1.5">{label}</span>
       {children}
     </label>
   );
 }
 
 const METAL_ACCENTS = {
-  gold: "#B49042",
+  gold: "#D9A441",
   silver: "#94A3B8",
-  platinum: "#7C8B9C",
+  platinum: "#64748B",
 };
-const FALLBACK_ACCENTS = ["#C08552", "#8D9F87", "#A0785A", "#7B8794"];
+const FALLBACK_ACCENTS = ["#D9A441", "#2F6B4F", "#A88A53", "#64748B"];
 
 function metalAccent(name, index) {
   const key = String(name || "").trim().toLowerCase();
@@ -1073,30 +1073,30 @@ function MetalCard({ metal, index = 0 }) {
   return (
     <div className="card !py-4 border-t-2 overflow-hidden" style={{ borderTopColor: accent }}>
       <div className="flex items-center justify-between">
-        <div className="text-[13.5px] font-semibold text-[#0A0A0A]">{metal.metal}</div>
+        <div className="text-[13.5px] font-semibold text-[#17201C]">{metal.metal}</div>
         <div className="h-7 w-7 rounded-full flex-shrink-0" style={{ backgroundColor: `${accent}22`, border: `1px solid ${accent}55` }} />
       </div>
       <div className="mt-2 flex items-baseline gap-1.5">
-        <span className="font-display text-[22px] font-semibold tabular-nums text-[#0A0A0A]">
+        <span className="font-display text-[22px] font-semibold tabular-nums text-[#17201C]">
           {Number(metal.total_net_weight || 0).toFixed(3)}
         </span>
-        <span className="text-[11px] text-[#a3a3a3]">g net</span>
+        <span className="text-[11px] text-[#89928C]">g net</span>
       </div>
-      <div className="mt-3 rounded-lg border border-[#E5E7EB] overflow-hidden">
+      <div className="mt-3 rounded-lg border border-[#E2E7E2] overflow-hidden">
         <table className="w-full text-[11.5px]">
           <thead>
-            <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
-              <th className="text-left px-2.5 py-1.5 font-semibold text-[#737373]">Purity</th>
-              <th className="text-right px-2.5 py-1.5 font-semibold text-[#737373]">Gross Wt</th>
-              <th className="text-right px-2.5 py-1.5 font-semibold text-[#737373]">Net Wt</th>
+            <tr className="bg-[#FAF7EF] border-b border-[#E2E7E2]">
+              <th className="text-left px-2.5 py-1.5 font-semibold text-[#6F7772]">Purity</th>
+              <th className="text-right px-2.5 py-1.5 font-semibold text-[#6F7772]">Gross Wt</th>
+              <th className="text-right px-2.5 py-1.5 font-semibold text-[#6F7772]">Net Wt</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#F5F5F5]">
+          <tbody className="divide-y divide-[#E2E7E2]">
             {metal.rows.map((r) => (
               <tr key={r.purity}>
-                <td className="px-2.5 py-1.5 font-medium text-[#0A0A0A]">{r.purity}</td>
-                <td className="px-2.5 py-1.5 text-right font-mono text-[#525252]">{Number(r.gross_weight || 0).toFixed(3)}</td>
-                <td className="px-2.5 py-1.5 text-right font-mono text-[#525252]">{Number(r.net_weight || 0).toFixed(3)}</td>
+                <td className="px-2.5 py-1.5 font-medium text-[#17201C]">{r.purity}</td>
+                <td className="px-2.5 py-1.5 text-right font-mono text-[#4E5A53]">{Number(r.gross_weight || 0).toFixed(3)}</td>
+                <td className="px-2.5 py-1.5 text-right font-mono text-[#4E5A53]">{Number(r.net_weight || 0).toFixed(3)}</td>
               </tr>
             ))}
           </tbody>
@@ -1110,10 +1110,10 @@ function Stat({ label, value, icon: Icon, highlight }) {
   return (
     <div className={`card ${highlight ? "border-amber-300 bg-amber-50" : ""}`}>
       <div className="flex items-center justify-between">
-        <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">{label}</div>
-        {Icon && <Icon size={14} strokeWidth={1.5} className={highlight ? "text-amber-500" : "text-[#B49042]"} />}
+        <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">{label}</div>
+        {Icon && <Icon size={14} strokeWidth={1.5} className={highlight ? "text-amber-500" : "text-[#214F3A]"} />}
       </div>
-      <div className={`font-display text-[22px] font-semibold mt-2 tabular-nums ${highlight ? "text-amber-600" : "text-[#0A0A0A]"}`}>{value}</div>
+      <div className={`font-display text-[22px] font-semibold mt-2 tabular-nums ${highlight ? "text-amber-600" : "text-[#17201C]"}`}>{value}</div>
     </div>
   );
 }

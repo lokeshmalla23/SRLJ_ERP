@@ -63,15 +63,15 @@ function ProductTagCard({ p, canEdit }) {
   const productLabel = p.subcategory_name || p.name || "—";
   return (
     <Link to={canEdit ? `/inventory/${p.id}` : "#"}
-      className="flex items-center gap-2.5 p-2.5 rounded-lg border border-[#E5E7EB] hover:border-[#0A0A0A] hover:bg-[#FAFAFA] transition-colors group">
+      className="flex items-center gap-2.5 p-2.5 rounded-lg border border-[#E2E7E2] hover:border-[#CBDED2] hover:bg-[#FAF7EF] transition-colors group focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#214F3A]/40 focus-visible:outline-offset-2">
       {/* Icon */}
-      <div className="h-12 w-12 rounded-md bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center flex-shrink-0">
-        <Sparkles size={12} className="text-[#d4d4d8]" strokeWidth={1.5} />
+      <div className="h-12 w-12 rounded-md bg-[#FAF7EF] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
+        <Sparkles size={12} className="text-[#D3DCD5]" strokeWidth={1.5} />
       </div>
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="text-[12.5px] font-medium text-[#0A0A0A] truncate leading-tight">{productLabel}</div>
-        <div className="text-[10.5px] text-[#a3a3a3] font-mono">{p.code || "—"}</div>
+        <div className="text-[12.5px] font-medium text-[#17201C] truncate leading-tight">{productLabel}</div>
+        <div className="text-[10.5px] text-[#89928C] font-mono">{p.code || "—"}</div>
         <div className="flex items-center gap-1.5 mt-1">
           {p.purity_name && <span className="text-[10px] px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded font-medium">{p.purity_name}</span>}
           <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${isOut ? "bg-red-50 text-red-700" : isLow ? "bg-amber-50 text-amber-700" : "bg-green-50 text-green-700"}`}>
@@ -80,7 +80,7 @@ function ProductTagCard({ p, canEdit }) {
               : `${p.stock_qty} pcs`}
           </span>
         </div>
-        <div className="text-[10.5px] text-[#737373] mt-0.5">
+        <div className="text-[10.5px] text-[#6F7772] mt-0.5">
           {p.net_weight ? `${p.net_weight}g net` : ""}
           {p.hallmark ? ` · ${p.hallmark}` : ""}
         </div>
@@ -119,14 +119,14 @@ function SubCategoryGroups({ prods, canEdit, groupPrefix, expandedSub, toggleSub
         const subKey = `${groupPrefix}:${g.key}`;
         const isSubOpen = !!expandedSub[subKey];
         return (
-          <div key={subKey} className="border border-[#E5E7EB] rounded-lg overflow-hidden">
+          <div key={subKey} className="border border-[#E2E7E2] rounded-lg overflow-hidden bg-[#FFFDF9]">
             <button onClick={() => toggleSub(subKey)}
-              className="w-full flex items-center gap-3 p-3 hover:bg-[#FAFAFA] transition-colors text-left">
-              <div className="h-10 w-10 rounded-md bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center flex-shrink-0">
-                <Sparkles size={14} className="text-[#d4d4d8]" strokeWidth={1.5} />
+              className="w-full flex items-center gap-3 p-3 hover:bg-[#FBF9F4] transition-colors text-left">
+              <div className="h-10 w-10 rounded-md bg-[#FAF7EF] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
+                <Sparkles size={14} className="text-[#D3DCD5]" strokeWidth={1.5} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-[13px] font-medium text-[#0A0A0A] truncate">{g.label}</div>
+                <div className="text-[13px] font-medium text-[#17201C] truncate">{g.label}</div>
                 {g.purities.length > 0 && (
                   <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                     {g.purities.map((pu) => (
@@ -136,10 +136,10 @@ function SubCategoryGroups({ prods, canEdit, groupPrefix, expandedSub, toggleSub
                 )}
               </div>
               <div className="text-right flex-shrink-0">
-                <div className="text-[13px] font-semibold text-[#0A0A0A] tabular-nums">{g.totalQty} pcs</div>
-                <div className="text-[10.5px] text-[#737373]">{g.prods.length} tag{g.prods.length === 1 ? "" : "s"}</div>
+                <div className="text-[13px] font-semibold text-[#17201C] tabular-nums">{g.totalQty} pcs</div>
+                <div className="text-[10.5px] text-[#6F7772]">{g.prods.length} tag{g.prods.length === 1 ? "" : "s"}</div>
               </div>
-              {isSubOpen ? <ChevronDown size={14} className="text-[#737373] flex-shrink-0" /> : <ChevronRight size={14} className="text-[#737373] flex-shrink-0" />}
+              {isSubOpen ? <ChevronDown size={14} className="text-[#6F7772] flex-shrink-0" /> : <ChevronRight size={14} className="text-[#6F7772] flex-shrink-0" />}
             </button>
             {isSubOpen && (
               <div className="p-3 pt-0 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))" }}>
@@ -210,14 +210,14 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
         {(isOutTab
           ? [
               { label: "Out of Stock", val: overallStats.total, color: "text-red-600" },
-              { label: "Sold out", val: overallStats.sold, color: "text-[#0A0A0A]" },
-              { label: "Deleted P", val: overallStats.deletedP, color: "text-[#737373]" },
+              { label: "Sold out", val: overallStats.sold, color: "text-[#17201C]" },
+              { label: "Deleted P", val: overallStats.deletedP, color: "text-[#6F7772]" },
               { label: "Zero Qty", val: overallStats.outOfStock, color: "text-red-600" },
               { label: "Damaged", val: overallStats.damaged, color: "text-amber-600" },
             ]
           : [
-              { label: "Categories", val: topCats.length, color: "text-[#0A0A0A]" },
-              { label: "In Stock Products", val: overallStats.total, color: "text-[#0A0A0A]" },
+              { label: "Categories", val: topCats.length, color: "text-[#17201C]" },
+              { label: "In Stock Products", val: overallStats.total, color: "text-[#17201C]" },
               { label: "Pieces", val: overallStats.totalQty, color: "text-green-700" },
               { label: "Low Stock", val: overallStats.lowStock, color: "text-amber-600" },
               { label: "Available", val: overallStats.available, color: "text-green-700" },
@@ -225,7 +225,7 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
         ).map((s) => (
           <div key={s.label} className="card !p-3 text-center">
             <div className={`font-display text-[22px] font-bold tabular-nums ${s.color}`}>{s.val}</div>
-            <div className="text-[11px] text-[#737373] mt-0.5">{s.label}</div>
+            <div className="text-[11px] text-[#6F7772] mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
@@ -240,34 +240,34 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
           const isOpen = expanded[cat.id];
 
           return (
-            <div key={cat.id} className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
+            <div key={cat.id} className="bg-[#FFFDF9] border border-[#E2E7E2] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
               {/* Category header */}
               <button onClick={() => toggle(cat.id)}
-                className="w-full flex items-center gap-4 p-5 hover:bg-[#FAFAFA] transition-colors text-left">
-                <div className="h-10 w-10 rounded-lg bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center flex-shrink-0">
-                  <Layers size={18} className="text-[#B49042]" strokeWidth={1.5} />
+                className="w-full flex items-center gap-4 p-5 hover:bg-[#FBF9F4] transition-colors text-left">
+                <div className="h-10 w-10 rounded-lg bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
+                  <Layers size={18} className="text-[#79591F]" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[15px] text-[#0A0A0A]">{cat.name}</span>
-                    <span className="text-[11px] text-[#737373] bg-[#F3F4F6] px-2 py-0.5 rounded-full">{s.total} items</span>
+                    <span className="font-semibold text-[15px] text-[#17201C]">{cat.name}</span>
+                    <span className="text-[11px] text-[#6F7772] bg-[#F1F4F0] border border-[#D3DCD5] px-2 py-0.5 rounded-full">{s.total} items</span>
                     {!isOutTab && s.lowStock > 0 && <span className="text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">{s.lowStock} low</span>}
                     {isOutTab && s.sold > 0 && <span className="text-[11px] text-red-700 bg-red-50 px-2 py-0.5 rounded-full">{s.sold} sold</span>}
                   </div>
 
                   {/* Stock distribution bar */}
                   <div className="mt-2 flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-[#F3F4F6] rounded-full overflow-hidden flex">
+                    <div className="flex-1 h-1.5 bg-[#F1F4F0] rounded-full overflow-hidden flex">
                       {s.total > 0 && <>
                         <div className="bg-green-500 h-full" style={{ width: `${(s.available / s.total) * 100}%` }} />
-                        <div className="bg-[#B49042] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
+                        <div className="bg-[#D9A441] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
                         <div className="bg-amber-400 h-full" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
                         <div className="bg-red-400 h-full" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
                       </>}
                     </div>
-                    <div className="flex items-center gap-3 text-[11px] text-[#737373] flex-shrink-0">
+                    <div className="flex items-center gap-3 text-[11px] text-[#6F7772] flex-shrink-0">
                       <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-500" />{s.available} avail</span>
-                      <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#B49042]" />{s.onDisplay} display</span>
+                      <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#D9A441]" />{s.onDisplay} display</span>
                       {s.reserved > 0 && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-400" />{s.reserved} reserved</span>}
                     </div>
                   </div>
@@ -276,21 +276,21 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
                 {/* Stats */}
                 <div className="hidden md:flex items-center gap-6 flex-shrink-0 text-right">
                   <div>
-                    <div className="text-[11px] text-[#737373]">Net Weight</div>
-                    <div className="text-[14px] font-semibold text-[#0A0A0A] tabular-nums">{fmtWeight(s.netWt)}</div>
+                    <div className="text-[11px] text-[#6F7772]">Net Weight</div>
+                    <div className="text-[14px] font-semibold text-[#17201C] tabular-nums">{fmtWeight(s.netWt)}</div>
                   </div>
                   <div>
-                    <div className="text-[11px] text-[#737373]">In Stock</div>
+                    <div className="text-[11px] text-[#6F7772]">In Stock</div>
                     <div className="text-[14px] font-semibold text-green-700 tabular-nums">{s.totalQty}</div>
                   </div>
                 </div>
 
-                {isOpen ? <ChevronDown size={16} className="text-[#737373] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#737373] flex-shrink-0" />}
+                {isOpen ? <ChevronDown size={16} className="text-[#6F7772] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#6F7772] flex-shrink-0" />}
               </button>
 
               {/* Expanded content — one summary card per sub-category (qty + purities); click to reveal tags */}
               {isOpen && (
-                <div className="border-t border-[#E5E7EB]">
+                <div className="border-t border-[#E2E7E2]">
                   <SubCategoryGroups
                     prods={prods}
                     canEdit={canEdit}
@@ -312,39 +312,39 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
           const s = catStats(uncat);
           const isOpen = expanded["__uncat__"];
           return (
-            <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
+            <div className="bg-[#FFFDF9] border border-[#E2E7E2] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
               <button onClick={() => toggle("__uncat__")}
-                className="w-full flex items-center gap-4 p-5 hover:bg-[#FAFAFA] transition-colors text-left">
-                <div className="h-10 w-10 rounded-lg bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center flex-shrink-0">
-                  <Layers size={18} className="text-[#B49042]" strokeWidth={1.5} />
+                className="w-full flex items-center gap-4 p-5 hover:bg-[#FBF9F4] transition-colors text-left">
+                <div className="h-10 w-10 rounded-lg bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
+                  <Layers size={18} className="text-[#79591F]" strokeWidth={1.5} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[15px] text-[#0A0A0A]">Uncategorized</span>
-                    <span className="text-[11px] text-[#737373] bg-[#F3F4F6] px-2 py-0.5 rounded-full">{s.total} items</span>
+                    <span className="font-semibold text-[15px] text-[#17201C]">Uncategorized</span>
+                    <span className="text-[11px] text-[#6F7772] bg-[#F1F4F0] border border-[#D3DCD5] px-2 py-0.5 rounded-full">{s.total} items</span>
                   </div>
                   <div className="mt-2 flex items-center gap-3">
-                    <div className="flex-1 h-1.5 bg-[#F3F4F6] rounded-full overflow-hidden flex">
+                    <div className="flex-1 h-1.5 bg-[#F1F4F0] rounded-full overflow-hidden flex">
                       {s.total > 0 && <>
                         <div className="bg-green-500 h-full" style={{ width: `${(s.available / s.total) * 100}%` }} />
-                        <div className="bg-[#B49042] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
+                        <div className="bg-[#D9A441] h-full" style={{ width: `${(s.onDisplay / s.total) * 100}%` }} />
                         <div className="bg-amber-400 h-full" style={{ width: `${(s.reserved / s.total) * 100}%` }} />
                         <div className="bg-red-400 h-full" style={{ width: `${(s.damaged / s.total) * 100}%` }} />
                       </>}
                     </div>
-                    <div className="flex items-center gap-3 text-[11px] text-[#737373] flex-shrink-0">
+                    <div className="flex items-center gap-3 text-[11px] text-[#6F7772] flex-shrink-0">
                       <span>{s.totalQty} in stock</span>
                     </div>
                   </div>
                 </div>
                 <div className="hidden md:flex items-center gap-6 flex-shrink-0 text-right">
-                  <div><div className="text-[11px] text-[#737373]">Net Weight</div><div className="text-[14px] font-semibold text-[#0A0A0A] tabular-nums">{fmtWeight(s.netWt)}</div></div>
-                  <div><div className="text-[11px] text-[#737373]">In Stock</div><div className="text-[14px] font-semibold text-green-700 tabular-nums">{s.totalQty}</div></div>
+                  <div><div className="text-[11px] text-[#6F7772]">Net Weight</div><div className="text-[14px] font-semibold text-[#17201C] tabular-nums">{fmtWeight(s.netWt)}</div></div>
+                  <div><div className="text-[11px] text-[#6F7772]">In Stock</div><div className="text-[14px] font-semibold text-green-700 tabular-nums">{s.totalQty}</div></div>
                 </div>
-                {isOpen ? <ChevronDown size={16} className="text-[#737373] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#737373] flex-shrink-0" />}
+                {isOpen ? <ChevronDown size={16} className="text-[#6F7772] flex-shrink-0" /> : <ChevronRight size={16} className="text-[#6F7772] flex-shrink-0" />}
               </button>
               {isOpen && (
-                <div className="border-t border-[#E5E7EB]">
+                <div className="border-t border-[#E2E7E2]">
                   <SubCategoryGroups
                     prods={uncat}
                     canEdit={canEdit}
@@ -359,8 +359,8 @@ function CategoryOverview({ products, categories, canEdit, stockTab = "in_stock"
         })()}
 
         {topCats.every((c) => catProducts(c.id).length === 0) && products.filter((p) => !p.category_id).length === 0 && (
-          <div className="text-center py-16 text-[#737373]">
-            <Package size={32} className="mx-auto mb-3 text-[#d4d4d8]" strokeWidth={1} />
+          <div className="text-center py-16 text-[#6F7772]">
+            <Package size={32} className="mx-auto mb-3 text-[#D3DCD5]" strokeWidth={1} />
             <div className="text-[13px]">No products match the selected filter</div>
           </div>
         )}
@@ -564,7 +564,7 @@ export default function Inventory() {
   const isPureTab = stockTab === "pure";
 
   return (
-    <div className="max-w-[1400px]">
+    <div className="max-w-[1400px] [&>div:first-child]:mb-5">
       <PageHeader
         title="Inventory"
         subtitle="Every piece in your showroom — catalogued, weighed and hallmarked."
@@ -620,30 +620,30 @@ export default function Inventory() {
       {!isPureTab && (
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
         <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
+          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
             Total Products
           </div>
-          <div className="font-display text-[24px] font-semibold text-[#0A0A0A] mt-2 tabular-nums">
+          <div className="font-display text-[24px] font-semibold text-[#17201C] mt-2 tabular-nums">
             {stats.total}
           </div>
         </div>
         <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
+          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
             Total Items in Stock
           </div>
-          <div className="font-display text-[24px] font-semibold text-[#0A0A0A] mt-2 tabular-nums">
+          <div className="font-display text-[24px] font-semibold text-[#17201C] mt-2 tabular-nums">
             {stats.totalItems}
           </div>
         </div>
         <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
+          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
             Total Gross Weight
           </div>
           <div className="mt-2 space-y-1">
             {weightByMetal.map((m) => (
               <div key={m.name} className="flex items-baseline justify-between gap-2">
-                <span className="text-[11.5px] text-[#737373]">{m.name}</span>
-                <span className="font-display text-[16px] font-semibold text-[#0A0A0A] tabular-nums">
+                <span className="text-[11.5px] text-[#6F7772]">{m.name}</span>
+                <span className="font-display text-[16px] font-semibold text-[#17201C] tabular-nums">
                   {fmtWeight(m.gross)}
                 </span>
               </div>
@@ -651,14 +651,14 @@ export default function Inventory() {
           </div>
         </div>
         <div className="card">
-          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
+          <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6F7772]">
             Total Net Weight
           </div>
           <div className="mt-2 space-y-1">
             {weightByMetal.map((m) => (
               <div key={m.name} className="flex items-baseline justify-between gap-2">
-                <span className="text-[11.5px] text-[#737373]">{m.name}</span>
-                <span className="font-display text-[16px] font-semibold text-[#0A0A0A] tabular-nums">
+                <span className="text-[11.5px] text-[#6F7772]">{m.name}</span>
+                <span className="font-display text-[16px] font-semibold text-[#17201C] tabular-nums">
                   {fmtWeight(m.net)}
                 </span>
               </div>
@@ -669,7 +669,7 @@ export default function Inventory() {
       )}
 
       {/* ── In Stock / Out of Stock / Pure tabs ── */}
-      <div className="flex items-center gap-1 mb-4 border-b border-[#E5E7EB]">
+      <div className="flex items-center gap-1 mb-4 border-b border-[#E2E7E2]">
         {[
           { key: "in_stock", label: "In Stock", count: stats.total, icon: Package },
           { key: "out_of_stock", label: "Out of Stock", count: stats.outCount, icon: Package },
@@ -687,8 +687,8 @@ export default function Inventory() {
             }}
             className={`flex items-center gap-1.5 px-4 py-2.5 text-[12.5px] font-medium whitespace-nowrap border-b-2 transition-colors ${
               stockTab === key
-                ? "border-[#B49042] text-[#B49042]"
-                : "border-transparent text-[#737373] hover:text-[#0A0A0A]"
+                ? "border-[#214F3A] text-[#214F3A] bg-[#FAF7EF]"
+                : "border-transparent text-[#6F7772] hover:text-[#214F3A] hover:bg-[#FAF7EF]"
             }`}
             data-testid={key === "pure" ? "inventory-pure-tab" : undefined}
           >
@@ -700,8 +700,8 @@ export default function Inventory() {
                   stockTab === key
                     ? key === "out_of_stock"
                       ? "bg-red-50 text-red-700"
-                      : "bg-[#FDFBF7] text-[#7a5e26]"
-                    : "bg-[#F3F4F6] text-[#737373]"
+                      : "bg-[#EAF2ED] text-[#214F3A]"
+                    : "bg-[#F1F4F0] text-[#6F7772]"
                 }`}
               >
                 {count}
@@ -721,7 +721,7 @@ export default function Inventory() {
         <div className="relative flex-1 min-w-[200px] max-w-md">
           <Search
             size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#89928C]"
             strokeWidth={1.5}
           />
           <input
@@ -783,7 +783,7 @@ export default function Inventory() {
         {/* Low stock toggle — only meaningful for in-stock items */}
         {stockTab === "in_stock" && (
           <button
-            className={`btn-secondary ${lowOnly ? "!bg-[#FDFBF7] !border-[#EADFBF] !text-[#7a5e26]" : ""}`}
+            className={`btn-secondary ${lowOnly ? "!bg-[#EAF2ED] !border-[#CBDED2] !text-[#17382A]" : ""}`}
             onClick={() => setLowOnly(!lowOnly)}
           >
             <Filter size={14} strokeWidth={1.5} /> Low stock
@@ -803,8 +803,8 @@ export default function Inventory() {
                 onClick={() => setStatus(s)}
                 className={`px-3 py-1 rounded-full text-[12px] font-medium border transition-colors ${
                   active
-                    ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                    : "bg-white text-[#525252] border-[#E5E7EB] hover:border-[#0A0A0A] hover:text-[#0A0A0A]"
+                    ? "bg-[#214F3A] text-white border-[#214F3A] shadow-[0_1px_2px_rgba(23,56,42,0.12)]"
+                    : "bg-[#FFFDF9] text-[#6F7772] border-[#E2E7E2] hover:border-[#CBDED2] hover:text-[#214F3A]"
                 }`}
               >
                 {meta ? meta.label : "All"}
@@ -815,7 +815,7 @@ export default function Inventory() {
       )}
 
       {stockTab === "out_of_stock" && (
-        <p className="mb-4 text-[12px] text-[#737373]">
+        <p className="mb-4 text-[12px] text-[#6F7772]">
           Sold out, Deleted P, and zero-quantity items. They stay here until restocked or restored.
         </p>
       )}

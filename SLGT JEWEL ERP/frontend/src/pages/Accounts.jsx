@@ -78,17 +78,17 @@ function Modal({ open, onClose, title, children, wide = false }) {
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.45)" }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C2621]/50 p-4 backdrop-blur-[2px]"
+      style={{ background: "rgba(28,38,33,0.50)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className={`bg-white rounded-2xl shadow-xl flex flex-col ${wide ? "w-full max-w-2xl" : "w-full max-w-lg"}`}
+        className={`flex flex-col rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_22px_60px_rgba(20,31,25,0.22)] ${wide ? "w-full max-w-2xl" : "w-full max-w-lg"}`}
         style={{ maxHeight: "90vh" }}
       >
         <div
-          className="flex items-center justify-between px-6 py-4 border-b"
-          style={{ borderColor: "#E5E7EB" }}
+          className="flex items-center justify-between border-b border-[#DDD7CA] bg-[#FBF8F1] px-6 py-4"
+          style={{ borderColor: "#DDD7CA" }}
         >
           <h2 className="font-semibold text-base" style={{ color: "#0A0A0A" }}>
             {title}
@@ -346,14 +346,14 @@ function ExpensesTab() {
         </div>
       </div>
 
-      <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
+      <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <label className="text-[11px] text-[#737373]">
           From
           <input
             type="date"
             value={filterFrom}
             onChange={(e) => setFilterFrom(e.target.value)}
-            className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+            className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           />
         </label>
         <label className="text-[11px] text-[#737373]">
@@ -362,7 +362,7 @@ function ExpensesTab() {
             type="date"
             value={filterTo}
             onChange={(e) => setFilterTo(e.target.value)}
-            className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+            className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           />
         </label>
         <FilterMultiSelect label="Category" value={filterCat} onChange={setFilterCat} options={categories} />
@@ -374,12 +374,12 @@ function ExpensesTab() {
 
       {/* Table */}
       <div
-        className="bg-white rounded-xl border overflow-hidden"
-        style={{ borderColor: "#E5E7EB" }}
+        className="overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]"
+        style={{ borderColor: "#D8D2C6" }}
       >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+            <tr style={{ background: "#F1EEE7", borderBottom: "1px solid #D8D2C6" }}>
               {["Date", "Description", "Category", "Amount", "Mode", "Actions"].map(
                 (h) => (
                   <th
@@ -414,9 +414,9 @@ function ExpensesTab() {
                   <tr
                     key={exp.id}
                     style={{
-                      borderBottom: idx < expenses.length - 1 ? "1px solid #E5E7EB" : "none",
+                      borderBottom: idx < expenses.length - 1 ? "1px solid #D8D2C6" : "none",
                     }}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-[#F7F5EF] transition-colors"
                   >
                     <td className="px-4 py-3 text-xs" style={{ color: "#737373" }}>
                       {fmtDateTimeParts(exp.date, exp.time)}
@@ -626,7 +626,7 @@ function ExpensesTab() {
           {/* Category list */}
           <div
             className="rounded-xl border overflow-hidden"
-            style={{ borderColor: "#E5E7EB" }}
+            style={{ borderColor: "#D8D2C6" }}
           >
             {categories.length === 0 ? (
               <div className="py-8 text-center text-sm" style={{ color: "#737373" }}>
@@ -636,7 +636,7 @@ function ExpensesTab() {
               <table className="w-full text-sm">
                 <thead>
                   <tr
-                    style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}
+                    style={{ background: "#F1EEE7", borderBottom: "1px solid #D8D2C6" }}
                   >
                     {["Icon", "Name", "Color", ""].map((h) => (
                       <th
@@ -655,9 +655,9 @@ function ExpensesTab() {
                       key={cat.id}
                       style={{
                         borderBottom:
-                          idx < categories.length - 1 ? "1px solid #E5E7EB" : "none",
+                          idx < categories.length - 1 ? "1px solid #D8D2C6" : "none",
                       }}
-                      className="hover:bg-gray-50 transition-colors"
+                      className="hover:bg-[#F7F5EF] transition-colors"
                     >
                       <td className="px-4 py-2.5 text-lg">{cat.icon || "🏷️"}</td>
                       <td
@@ -671,7 +671,7 @@ function ExpensesTab() {
                           className="inline-block w-5 h-5 rounded-full border"
                           style={{
                             background: cat.color || "#3B82F6",
-                            borderColor: "#E5E7EB",
+                            borderColor: "#D8D2C6",
                           }}
                         />
                       </td>
@@ -701,7 +701,7 @@ function ExpensesTab() {
           {/* Add / Edit category form */}
           <div
             className="rounded-xl border p-4"
-            style={{ borderColor: "#E5E7EB", background: "#F9FAFB" }}
+            style={{ borderColor: "#D8D2C6", background: "#F1EEE7" }}
           >
             <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: "#737373" }}>
               {editingCat ? `Editing: ${editingCat.name}` : "Add New Category"}
@@ -751,7 +751,7 @@ function ExpensesTab() {
                     value={catForm.color}
                     onChange={(e) => setCatForm({ ...catForm, color: e.target.value })}
                     className="w-7 h-7 rounded cursor-pointer border"
-                    style={{ borderColor: "#E5E7EB" }}
+                    style={{ borderColor: "#D8D2C6" }}
                     title="Custom color"
                   />
                 </div>
@@ -895,13 +895,13 @@ function LedgerTab() {
 
       {/* Ledger table */}
       <div
-        className="bg-white rounded-xl border overflow-hidden"
-        style={{ borderColor: "#E5E7EB" }}
+        className="overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]"
+        style={{ borderColor: "#D8D2C6" }}
       >
         <table className="w-full text-sm">
           <thead>
             <tr
-              style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}
+              style={{ background: "#F1EEE7", borderBottom: "1px solid #D8D2C6" }}
             >
               {["Date", "Sales", "Schemes", "Expenses", "Net"].map((h) => (
                 <th
@@ -937,9 +937,9 @@ function LedgerTab() {
                     key={row.date || idx}
                     style={{
                       borderBottom:
-                        idx < rows.length - 1 ? "1px solid #E5E7EB" : "none",
+                        idx < rows.length - 1 ? "1px solid #D8D2C6" : "none",
                     }}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-[#F7F5EF] transition-colors"
                   >
                     <td className="px-4 py-3 text-xs" style={{ color: "#737373" }}>
                       {fmtDate(row.date)}
@@ -976,7 +976,7 @@ function LedgerTab() {
           </tbody>
           {!loading && rows.length > 0 && (
             <tfoot>
-              <tr style={{ background: "#F9FAFB", borderTop: "2px solid #E5E7EB" }}>
+              <tr style={{ background: "#F1EEE7", borderTop: "2px solid #D8D2C6" }}>
                 <td
                   className="px-4 py-3 text-xs font-bold uppercase tracking-wide"
                   style={{ color: "#0A0A0A" }}
@@ -1051,12 +1051,12 @@ function GlTab() {
       </p>
       <div>
         <h3 className="text-sm font-semibold mb-2">Chart of accounts</h3>
-        <div className="bg-white border border-[#E5E7EB] rounded overflow-hidden">
+        <div className="bg-white border border-[#D8D2C6] rounded overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="bg-[#F9FAFB] text-left"><th className="p-2">Code</th><th className="p-2">Name</th><th className="p-2">Type</th></tr></thead>
+            <thead><tr className="bg-[#F1EEE7] text-left"><th className="p-2">Code</th><th className="p-2">Name</th><th className="p-2">Type</th></tr></thead>
             <tbody>
               {accounts.map((a) => (
-                <tr key={a.id} className="border-t border-[#E5E7EB]"><td className="p-2 font-mono">{a.code}</td><td className="p-2">{a.name}</td><td className="p-2 capitalize">{a.type}</td></tr>
+                <tr key={a.id} className="border-t border-[#D8D2C6]"><td className="p-2 font-mono">{a.code}</td><td className="p-2">{a.name}</td><td className="p-2 capitalize">{a.type}</td></tr>
               ))}
               {!accounts.length && <tr><td className="p-3 text-[#737373]" colSpan={3}>No accounts yet — post a sale to seed defaults.</td></tr>}
             </tbody>
@@ -1067,7 +1067,7 @@ function GlTab() {
         <h3 className="text-sm font-semibold mb-2">Recent journals</h3>
         <div className="space-y-2">
           {journals.map((j) => (
-            <div key={j.id} className="bg-white border border-[#E5E7EB] rounded p-3 text-sm">
+            <div key={j.id} className="bg-white border border-[#D8D2C6] rounded p-3 text-sm">
               <div className="flex justify-between"><span className="font-medium">{j.memo || j.source_type}</span><span className="text-[#737373]">{j.entry_date}</span></div>
               <ul className="mt-1 text-[12px] text-[#525252]">
                 {(j.lines || []).map((l) => (
@@ -1112,12 +1112,12 @@ export default function Accounts() {
   };
 
   return (
-    <div className={`flex flex-col h-full min-h-full ${hiddenUnlocked ? hiddenUnlockBleedClass(true) : "bg-[#F9FAFB] -mx-8"}`}>
-      <div className="border-b border-[#E5E7EB] bg-white px-4 md:px-6 py-4">
+    <div className={`flex min-h-[calc(100vh-4rem)] flex-col ${hiddenUnlocked ? hiddenUnlockBleedClass(true) : "-m-5 bg-[#F4F1EA] px-5 py-5 2xl:-m-7 2xl:px-7 2xl:py-7 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.btn-secondary]:hover:!border-[#9EB2A6] [&_.btn-secondary]:hover:!bg-[#F1F5F1] [&_.card]:!rounded-xl [&_.card]:!border-[#D8D2C6] [&_.card]:!bg-[#FFFDF9] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]"}`}>
+      <div className="border-b border-[#D8D2C6] bg-[#FFFDF9]/95 px-4 py-4 shadow-[0_1px_2px_rgba(38,52,43,0.03)] backdrop-blur-sm md:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1
-              className="select-none text-xl font-bold text-[#0A0A0A]"
+              className="select-none font-display text-[22px] font-semibold tracking-[-0.02em] text-[#24332B]"
               onClick={handleTitleClick}
               title={isOwner && !hiddenUnlocked ? "Triple-click to unlock hidden bill figures" : undefined}
             >

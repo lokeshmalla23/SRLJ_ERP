@@ -25,7 +25,7 @@ const EMPTY_SUMMARY = {
 function WeightByPurityCard({ label, items }) {
   const list = (items || []).filter((x) => Number(x.weight) > 0);
   return (
-    <div className="bg-white border rounded-xl p-3" style={{ borderColor: "#E5E7EB" }}>
+    <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
       <div className="text-[11px] text-[#737373] uppercase tracking-wide">{label}</div>
       {list.length === 0 ? (
         <div className="text-lg font-semibold tabular-nums mt-0.5">0.000 g</div>
@@ -55,7 +55,7 @@ function splitDateTime(iso) {
 
 function Card({ label, value }) {
   return (
-    <div className="bg-white border rounded-xl p-3" style={{ borderColor: "#E5E7EB" }}>
+    <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
       <div className="text-[11px] text-[#737373] uppercase tracking-wide">{label}</div>
       <div className="text-lg font-semibold tabular-nums mt-0.5">{value}</div>
     </div>
@@ -232,13 +232,13 @@ export default function OldGoldExchangeTab({ includeHidden = false, metal = "gol
       </div>
 
       {/* Purity distribution */}
-      <div className="bg-white rounded-2xl border p-3" style={{ borderColor: "#E5E7EB" }}>
+      <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <div className="text-xs font-semibold uppercase text-[#737373] mb-1">Purity Distribution (active exchanged gold)</div>
         <SimplePieChart data={pieData} />
       </div>
 
       {/* Filters */}
-      <div className="bg-white border rounded-2xl p-3 flex flex-wrap items-end gap-2" style={{ borderColor: "#E5E7EB" }}>
+      <div className="flex flex-wrap items-end gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]">
         <Field label="Date From">
           <input type="date" className="input" value={filters.from} onChange={(e) => setFilter("from", e.target.value)} />
         </Field>
@@ -286,10 +286,10 @@ export default function OldGoldExchangeTab({ includeHidden = false, metal = "gol
       {loading ? <PageLoadingBadge /> : null}
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border overflow-hidden overflow-x-auto" style={{ borderColor: "#E5E7EB" }}>
+      <div className="overflow-x-auto overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
         <table className="w-full text-sm min-w-[900px]">
           <thead>
-            <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+            <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
               <th className="px-3 py-2">Invoice Number</th>
               <th className="px-3 py-2">Customer Name</th>
               <th className="px-3 py-2">Phone Number</th>
@@ -312,7 +312,7 @@ export default function OldGoldExchangeTab({ includeHidden = false, metal = "gol
               const { date, time } = splitDateTime(transactionAt(r));
               const busy = busyRowId === r.id;
               return (
-                <tr key={r.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                <tr key={r.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                   <td className="px-3 py-2 font-mono text-[12px]">{r.invoice_no || "—"}</td>
                   <td className="px-3 py-2">{r.customer_name || "—"}</td>
                   <td className="px-3 py-2 font-mono text-[12px]">{r.customer_phone || "—"}</td>
@@ -394,9 +394,9 @@ function Field({ label, children }) {
 function ViewModal({ row, onClose, onPrint, onDownload, busy }) {
   const { date, time } = splitDateTime(row.invoice_at || row.created_at);
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: "#E5E7EB" }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C2621]/50 p-4 backdrop-blur-[2px]" onClick={onClose}>
+      <div className="w-full max-w-md rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_22px_60px_rgba(20,31,25,0.22)]" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between border-b border-[#DDD7CA] bg-[#FBF8F1] px-5 py-4">
           <div className="text-[15px] font-semibold text-[#0A0A0A]">{title}</div>
           <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]"><X size={18} strokeWidth={1.5} /></button>
         </div>
@@ -413,7 +413,7 @@ function ViewModal({ row, onClose, onPrint, onDownload, busy }) {
           <Row label="Date" value={date} />
           <Row label="Time" value={time} />
         </div>
-        <div className="flex items-center justify-end gap-2 p-5 border-t" style={{ borderColor: "#E5E7EB" }}>
+        <div className="flex items-center justify-end gap-2 border-t border-[#DDD7CA] bg-[#FBF8F1] p-4 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-white">
           <button className="btn-secondary flex items-center gap-1.5" disabled={busy || !row.invoice_id} onClick={onDownload}>
             <Download size={13} strokeWidth={1.5} /> Download
           </button>

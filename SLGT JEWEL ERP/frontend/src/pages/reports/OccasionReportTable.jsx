@@ -13,7 +13,7 @@ function realMonth() {
 
 function TodayBadge() {
   return (
-    <span className="ml-2 inline-flex items-center rounded-full bg-[#B49042] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+    <span className="ml-2 inline-flex items-center rounded-full border border-[#D6C28C] bg-[#F5EBD4] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[#765A20]">
       Today
     </span>
   );
@@ -38,8 +38,8 @@ export default function OccasionReportTable({ kind = "birthday" }) {
         const todayRows = (rows || []).filter((r) => r.is_today);
         if (!todayRows.length) return null;
         return (
-          <div className="mb-4 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-4">
-            <div className="mb-3 flex items-center gap-2 text-[12px] font-semibold uppercase tracking-widest text-[#B49042]">
+          <div className="mb-4 rounded-xl border border-[#DDD7CA] bg-[#FBF8F1] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
+            <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#765A20]">
               <Icon size={14} strokeWidth={1.75} />
               {todayTitle}
             </div>
@@ -47,7 +47,7 @@ export default function OccasionReportTable({ kind = "birthday" }) {
               {todayRows.map((row) => (
                 <div
                   key={row.id || `${row.mobile}-${row[dateKey]}`}
-                  className="rounded-lg border border-[#EADFBF] bg-white px-3 py-2.5"
+                  className="rounded-[9px] border border-[#DDD7CA] bg-[#FFFDF9] px-3 py-2.5"
                 >
                   <div className="text-[13px] font-semibold text-[#0A0A0A]">
                     {row.name || "—"}

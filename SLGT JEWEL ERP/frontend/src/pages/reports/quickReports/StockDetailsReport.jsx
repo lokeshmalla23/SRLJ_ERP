@@ -328,9 +328,9 @@ function ReportPrintPreview({ html, onPrint, onDownload, onClose, printing, down
   const busy = printing || downloading || pdfGenerating;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl flex flex-col" style={{ width: "min(92vw, 820px)", maxHeight: "94vh" }}>
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E5E7EB] flex-shrink-0">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1C2621]/70 backdrop-blur-sm">
+      <div className="flex flex-col rounded-xl border border-white/20 bg-[#FFFDF9] shadow-[0_24px_70px_rgba(20,31,25,0.28)]" style={{ width: "min(92vw, 820px)", maxHeight: "94vh" }}>
+        <div className="flex flex-shrink-0 items-center justify-between border-b border-[#DDD7CA] bg-[#FFFDF9] px-5 py-3.5">
           <div>
             <p className="text-[14px] font-semibold text-[#0A0A0A]">Stock Details — Print Preview</p>
             <p className="text-[11px] text-[#737373] mt-0.5">A4 portrait · review before printing</p>
@@ -339,7 +339,7 @@ function ReportPrintPreview({ html, onPrint, onDownload, onClose, printing, down
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto bg-[#D9D9D9] p-5">
+        <div className="flex-1 overflow-y-auto bg-[#D8D5CE] p-5">
           {pdfGenerating ? (
             <div className="flex items-center justify-center gap-2 text-[13px] text-[#525252] py-24">
               <RefreshCw size={15} strokeWidth={1.5} className="animate-spin" /> Generating PDF preview…
@@ -370,7 +370,7 @@ function ReportPrintPreview({ html, onPrint, onDownload, onClose, printing, down
             </div>
           )}
         </div>
-        <div className="flex-shrink-0 px-5 py-3.5 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="flex flex-shrink-0 items-center justify-end gap-2 border-t border-[#DDD7CA] bg-[#FFFDF9] px-5 py-3.5 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-white">
           <button onClick={onClose} className="btn-secondary" disabled={printing || downloading}>Close</button>
           <button onClick={onDownload} className="btn-secondary flex items-center gap-1.5" disabled={busy}>
             {downloading
@@ -476,10 +476,10 @@ export default function StockDetailsReport({ onBack }) {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#DED8CC] pb-3">
         <div className="flex items-center gap-3">
           {onBack && (
-            <button onClick={onBack} className="text-[#737373] hover:text-[#0A0A0A]">
+            <button onClick={onBack} className="flex h-8 w-8 items-center justify-center rounded-[9px] border border-[#D8D2C6] bg-[#FFFDF9] text-[#5E6861] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]">
               <ArrowLeft size={16} strokeWidth={1.5} />
             </button>
           )}
@@ -531,7 +531,7 @@ export default function StockDetailsReport({ onBack }) {
       {!loading && data && data.categories.length > 0 && (
         <div className="mt-4 space-y-6">
           {/* Summary bar */}
-          <div className="flex items-center gap-6 px-4 py-2.5 bg-[#FDFBF7] border border-[#EADFBF] rounded-lg text-[12.5px]">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] px-4 py-3 text-[12.5px] shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
             <span className="text-[#737373]">Categories: <strong className="text-[#0A0A0A]">{data.categories.length}</strong></span>
             <span className="text-[#737373]">Total Items: <strong className="text-[#0A0A0A]">{totalItems}</strong></span>
             <span className="text-[#737373]">Total G.Wt: <strong className="text-[#0A0A0A]">{Number(data.totals.total_gross_weight).toFixed(3)} g</strong></span>
@@ -541,7 +541,7 @@ export default function StockDetailsReport({ onBack }) {
           {data.categories.map((cat) => (
             <div key={cat.category_name} className="table-shell">
               {/* Category subheader */}
-              <div className="px-4 py-2 bg-[#F9FAFB] border-b border-[#E5E7EB]">
+              <div className="border-b border-[#DDD7CA] bg-[#F1EEE7] px-4 py-2.5">
                 <span className="text-[12px] font-bold text-[#0A0A0A] uppercase tracking-wide">{cat.category_name}</span>
                 <span className="ml-3 text-[11px] text-[#737373]">{cat.items.length} items · {Number(cat.total_gross_weight).toFixed(3)} g gross</span>
               </div>
@@ -572,7 +572,7 @@ export default function StockDetailsReport({ onBack }) {
                         <td className="table-td text-center text-[12px]">{stockDetailsDate(it)}</td>
                       </tr>
                     ))}
-                    <tr className="bg-[#FAFAFA] font-semibold">
+                    <tr className="bg-[#F1EEE7] font-semibold">
                       <td className="table-td text-[12px]" colSpan={4}>{cat.total_pcs} items</td>
                       <td className="table-td text-center text-[12px]">{cat.total_pcs}</td>
                       <td className="table-td text-right font-mono text-[12px]">{Number(cat.total_gross_weight).toFixed(3)}</td>
@@ -586,7 +586,7 @@ export default function StockDetailsReport({ onBack }) {
           ))}
 
           {/* Grand total */}
-          <div className="flex items-center gap-8 px-4 py-3 bg-[#0A0A0A] text-white rounded-lg text-[13px] font-semibold">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-2 rounded-xl border border-[#315C4A] bg-[#274F3E] px-4 py-3 text-[13px] font-semibold text-white shadow-[0_6px_18px_rgba(39,79,62,0.16)]">
             <span>GRAND TOTAL</span>
             <span>PCS: {data.totals.total_pcs}</span>
             <span>G.Wt: {Number(data.totals.total_gross_weight).toFixed(3)} g</span>

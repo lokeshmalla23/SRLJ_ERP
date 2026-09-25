@@ -279,7 +279,7 @@ export default function BarcodeStockCheck() {
   const scopeLabel = mode.type === "category" ? mode.categoryName : "All Products";
 
   return (
-    <div className="max-w-[1400px]">
+    <div className="max-w-[1400px] [&>div:first-child]:mb-5">
       <PageHeader
         title="Barcode Stock Check"
         subtitle={
@@ -289,8 +289,8 @@ export default function BarcodeStockCheck() {
         }
         actions={
           <>
-            <span className="text-[11px] text-[#a3a3a3] font-mono self-center mr-1">{fmtDateTime(new Date())}</span>
-            {user?.name && <span className="text-[11.5px] text-[#737373] self-center mr-2">{user.name}</span>}
+            <span className="text-[11px] text-[#89928C] font-mono self-center mr-1">{fmtDateTime(new Date())}</span>
+            {user?.name && <span className="text-[11.5px] text-[#6F7772] self-center mr-2">{user.name}</span>}
             <button type="button" className="btn-secondary" onClick={loadAll}>
               <RefreshCw size={14} strokeWidth={1.5} /> Refresh
             </button>
@@ -313,7 +313,7 @@ export default function BarcodeStockCheck() {
       />
 
       {hasDiscrepancy && (
-        <div className="mb-5 flex items-start gap-2.5 px-4 py-3 rounded-md bg-amber-50 border border-amber-200">
+        <div className="mb-5 flex items-start gap-2.5 px-4 py-3 rounded-lg bg-[#FBF4E3] border border-amber-200 shadow-[0_1px_2px_rgba(23,56,42,0.03)]">
           <AlertTriangle size={16} className="text-amber-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
           <div className="text-[12.5px] text-amber-800">
             Inventory changed for {summary.discrepancy_barcodes} barcode{summary.discrepancy_barcodes !== 1 ? "s" : ""} since some scans were recorded.

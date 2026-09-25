@@ -29,7 +29,7 @@ function Num(props) {
 
 function Text({ label, value, onChange, disabled, placeholder }) {
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       {label}
       <input
         className="input mt-1"
@@ -44,8 +44,8 @@ function Text({ label, value, onChange, disabled, placeholder }) {
 
 function Toggle({ label, checked, onChange, disabled }) {
   return (
-    <label className="flex items-center gap-2 text-[12.5px] text-[#0A0A0A] cursor-pointer">
-      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
+    <label className="flex cursor-pointer items-center gap-2 text-[12px] font-medium text-[#34463A]">
+      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} className="h-4 w-4 rounded border-[#C8D2C5] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35" />
       {label}
     </label>
   );
@@ -53,7 +53,7 @@ function Toggle({ label, checked, onChange, disabled }) {
 
 function FontFamilySelect({ value, onChange, disabled }) {
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       Font
       <select
         className="input mt-1"
@@ -125,7 +125,7 @@ function WidgetProps({ id, layout, onChange, canWrite, printerType }) {
       return (
         <div className="space-y-3">
           <div className="grid grid-cols-[repeat(auto-fit,minmax(148px,1fr))] gap-2">
-            <label className="block text-[12px] text-[#525252]">
+            <label className="block text-[11.5px] font-medium text-[#5F6F63]">
               Roll width
               <select
                 className="input mt-1"
@@ -358,7 +358,7 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
   );
 
   if (loading) {
-    return <p className="text-[13px] text-[#737373]">Loading estimation layout…</p>;
+    return <p className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] px-4 py-3 text-[12.5px] text-[#6F7C72]">Loading estimation layout…</p>;
   }
 
   const pageWpx = isThermal
@@ -376,8 +376,8 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
         <div className="space-y-3">
           <PrintSettingsLockBanner frozen={frozen} />
 
-          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
-            <p className="text-[12px] font-semibold text-[#0A0A0A] px-3.5 py-2 border-b border-[#E5E7EB]">
+          <div className="overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
+            <p className="border-b border-[#DCE3D6] bg-[#F3F5EE] px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.09em] text-[#5F7064]">
               Printing estimations with
             </p>
             <div className="p-3 space-y-2">
@@ -389,17 +389,17 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
                     type="button"
                     disabled={!canWrite || switchingActive}
                     onClick={() => switchActiveType(t.id)}
-                    className={`w-full flex items-center gap-2.5 rounded-md border px-3 py-2 text-left transition-colors ${
-                      isActive ? "border-[#0A0A0A] bg-[#FAFAFA]" : "border-[#E5E7EB] hover:border-[#D4D4D4]"
-                    } disabled:opacity-60`}
+                    className={`flex w-full items-center gap-2.5 rounded-[9px] border px-3 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:opacity-60 ${
+                      isActive ? "border-[#9FB39D] bg-[#F0F5EE]" : "border-[#DCE3D6] bg-white hover:border-[#B9C7B7] hover:bg-[#F8F9F5]"
+                    }`}
                   >
-                    <t.icon size={15} strokeWidth={1.5} className={isActive ? "text-[#0A0A0A]" : "text-[#a3a3a3]"} />
+                    <t.icon size={15} strokeWidth={1.7} className={isActive ? "text-[#315E48]" : "text-[#8A958D]"} />
                     <span className="min-w-0 flex-1">
-                      <span className="block text-[12.5px] font-medium text-[#0A0A0A]">{t.label}</span>
+                      <span className="block text-[12.5px] font-medium text-[#294236]">{t.label}</span>
                       <span className="block text-[11px] text-[#737373]">{t.sub}</span>
                     </span>
                     {isActive && (
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-white bg-[#0A0A0A] rounded px-1.5 py-0.5 shrink-0">
+                      <span className="shrink-0 rounded-md border border-[#244B39] bg-[#244B39] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] text-white">
                         Active
                       </span>
                     )}
@@ -409,14 +409,14 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
             </div>
           </div>
 
-          <div className="flex rounded-lg border border-[#E5E7EB] bg-[#FAFAFA] p-1 gap-1">
+          <div className="flex gap-1 rounded-[10px] border border-[#DCE3D6] bg-[#F1F3ED] p-1">
             {PRINTER_TABS.map((t) => (
               <button
                 key={t.id}
                 type="button"
                 onClick={() => { setPrinterType(t.id); setSelected("paper"); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-2.5 py-1.5 text-[12.5px] font-medium transition-colors ${
-                  printerType === t.id ? "bg-white shadow-sm text-[#0A0A0A]" : "text-[#737373] hover:text-[#0A0A0A]"
+                className={`flex flex-1 items-center justify-center gap-1.5 rounded-[8px] px-2.5 py-1.5 text-[12px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
+                  printerType === t.id ? "bg-[#244B39] text-white shadow-sm" : "text-[#66746A] hover:bg-white hover:text-[#315E48]"
                 }`}
               >
                 <t.icon size={13} strokeWidth={1.5} />
@@ -430,9 +430,9 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
               : "Same detailed estimation slip as before, printed on A5. Turn fields on or off, then Save."}
           </p>
 
-          <div className="bg-white border border-[#E5E7EB] rounded-lg">
+          <div className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
             <div className="px-3.5 pt-3 pb-1.5">
-              <h3 className="text-[15px] font-semibold text-[#0A0A0A]">{SECTION_META[selected]?.label || "Edit"}</h3>
+              <h3 className="font-display text-[14.5px] font-semibold text-[#294236]">{SECTION_META[selected]?.label || "Edit"}</h3>
               <p className="text-[12px] text-[#737373] mt-0.5">Changes show live on the preview</p>
             </div>
             <div className="px-3.5 pb-2">
@@ -453,17 +453,17 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
             </div>
           </div>
 
-          <div className="bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
-            <p className="text-[12px] font-semibold text-[#0A0A0A] px-3.5 py-2 border-b border-[#E5E7EB]">Other Sections</p>
+          <div className="overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
+            <p className="border-b border-[#DCE3D6] bg-[#F3F5EE] px-3.5 py-2 text-[11px] font-bold uppercase tracking-[0.09em] text-[#5F7064]">Other Sections</p>
             {otherIds.map((id) => {
               const visible = id === "paper" ? true : sectionVisible(layout, id);
               const expanded = selected === id;
               return (
-                <div key={id} className="border-b border-[#E5E7EB] last:border-b-0">
-                  <div className={`flex items-center ${expanded ? "bg-[#FAFAFA]" : ""}`}>
+                <div key={id} className="border-b border-[#DCE3D6] last:border-b-0">
+                  <div className={`flex items-center transition-colors ${expanded ? "bg-[#F0F4ED]" : "hover:bg-[#F8F9F5]"}`}>
                     <button
                       type="button"
-                      className="flex-1 text-left text-[13px] px-3.5 py-2 text-[#0A0A0A]"
+                      className="flex-1 px-3.5 py-2 text-left text-[12.5px] font-medium text-[#34463A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#78917C]/35"
                       onClick={() => setSelected(id)}
                     >
                       {SECTION_META[id]?.label || id}
@@ -471,7 +471,7 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
                     {id !== "paper" && (
                       <button
                         type="button"
-                        className="p-1.5 text-[#737373]"
+                        className="rounded-[7px] p-1.5 text-[#748078] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
                         disabled={!effectiveCanWrite}
                         onClick={() => setLayoutState((prev) => setSectionVisible(prev, id, !visible, setPath, mergeFn))}
                         title={visible ? "Hide" : "Show"}
@@ -481,7 +481,7 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
                     )}
                     <button
                       type="button"
-                      className="p-1.5 text-[#A3A3A3]"
+                      className="rounded-[7px] p-1.5 text-[#8A958D] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
                       onClick={() => setSelected(id)}
                       aria-label={expanded ? "Collapse" : "Expand"}
                     >
@@ -502,7 +502,7 @@ export default function EstimationLayoutEditor({ canWrite = false, unlocked = fa
               ? `${layout.paper_width_mm}mm roll — thermal receipt`
               : `${layout.page_w_in} × ${layout.page_h_in} in A5 — old detailed slip`}
           />
-          <div className="bg-[#E5E7EB] p-2.5 rounded-lg shadow-inner overflow-auto">
+          <div className="overflow-auto rounded-[10px] border border-[#D6DDD3] bg-[#ECEEE8] p-2.5 shadow-inner">
             <div className="bg-white shadow-md overflow-hidden mx-auto" style={{ width: pageWpx * scale, height: pageHpx * scale }}>
               <iframe
                 key={previewHtml}

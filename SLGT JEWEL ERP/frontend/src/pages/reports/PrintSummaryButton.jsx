@@ -17,7 +17,7 @@ export default function PrintSummaryButton({
   closingTables = [],
   disabled = false,
   allowEmpty = false,
-  className = "btn-secondary !py-1 !text-[11.5px]",
+  className = "btn-secondary !rounded-[9px] !border-[#D2CCBF] !bg-[#FFFDF9] !py-1 !text-[11.5px] hover:!border-[#9EB2A6] hover:!bg-[#F1F5F1]",
 }) {
   const [open, setOpen] = useState(false);
   const empty = !rows?.length;

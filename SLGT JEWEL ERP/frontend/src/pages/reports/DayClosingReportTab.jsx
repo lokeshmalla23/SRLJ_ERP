@@ -198,7 +198,7 @@ export default function DayClosingReportTab({ includeHidden = false }) {
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center justify-end gap-2">
+      <div className="mb-4 flex flex-wrap items-center justify-end gap-2 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] px-3.5 py-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB]">
         <label className="flex items-center gap-2 text-[12px] text-[#525252]">
           <span className="font-medium">Date</span>
           <input
@@ -239,7 +239,7 @@ export default function DayClosingReportTab({ includeHidden = false }) {
       {loading ? (
         <div className="space-y-4">
           <PageLoadingBadge />
-          <div className="h-72 shimmer rounded-md" />
+          <div className="h-72 rounded-xl border border-[#E1DBD0] shimmer" />
         </div>
       ) : (
         <>
@@ -265,7 +265,7 @@ export default function DayClosingReportTab({ includeHidden = false }) {
 
           <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="table-shell overflow-x-auto">
-              <div className="px-3 py-2 text-[12px] font-semibold text-[#0A0A0A]">
+              <div className="border-b border-[#DDD7CA] bg-[#FBF8F1] px-3 py-2.5 text-[12px] font-semibold text-[#24332B]">
                 Today's Day Close final info
               </div>
               <table className="w-full">
@@ -289,7 +289,7 @@ export default function DayClosingReportTab({ includeHidden = false }) {
             </div>
 
             <div className="table-shell overflow-x-auto">
-              <div className="px-3 py-2 text-[12px] font-semibold text-[#0A0A0A]">Today sales</div>
+              <div className="border-b border-[#DDD7CA] bg-[#FBF8F1] px-3 py-2.5 text-[12px] font-semibold text-[#24332B]">Today sales</div>
               <table className="w-full">
                 <thead>
                   <tr className="table-head-row">

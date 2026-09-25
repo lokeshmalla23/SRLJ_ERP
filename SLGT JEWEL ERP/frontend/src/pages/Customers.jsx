@@ -98,7 +98,7 @@ export default function Customers() {
 
   return (
     <div className={hiddenUnlockBleedClass(hiddenUnlocked)}>
-    <div className="max-w-[1400px]">
+    <div className="max-w-[1400px] [&>div:first-child]:mb-5">
       <PageHeader
         title="Customers"
         subtitle="Every relationship in your ledger — birthdays, purchases, and outstanding."
@@ -116,9 +116,9 @@ export default function Customers() {
         }
       />
 
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-4 p-3 rounded-xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
         <div className="relative flex-1 max-w-md">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#89928C]" strokeWidth={1.5} />
           <input className="input pl-9" placeholder="Search by name, mobile or email" value={q} onChange={(e) => setQ(e.target.value)} />
         </div>
         <select className="input max-w-[160px]" value={tag} onChange={(e) => setTag(e.target.value)}>
@@ -157,19 +157,19 @@ export default function Customers() {
                 <tr key={c.id} className="table-row cursor-pointer" onClick={() => nav(`/customers/${c.id}`)}>
                   <td className="table-td">
                     <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center text-[13px] font-medium">
+                      <div className="h-9 w-9 rounded-full bg-[#214F3A] text-white flex items-center justify-center text-[13px] font-medium shadow-[0_1px_2px_rgba(23,56,42,0.14)]">
                         {c.name.slice(0, 1).toUpperCase()}
                       </div>
                       <div>
-                        <div className="font-mono text-[10px] text-[#a3a3a3]">{fmtCustomerCode(c.serial_no)}</div>
+                        <div className="font-mono text-[10px] text-[#89928C]">{fmtCustomerCode(c.serial_no)}</div>
                         <div className="font-medium">{c.name}</div>
-                        <div className="font-mono text-[11px] text-[#a3a3a3]">{c.address || "—"}</div>
+                        <div className="font-mono text-[11px] text-[#89928C]">{c.address || "—"}</div>
                       </div>
                     </div>
                   </td>
                   <td className="table-td">
                     <div className="font-mono text-[12.5px]">{c.mobile}</div>
-                    <div className="text-[11px] text-[#a3a3a3]">{c.email || "—"}</div>
+                    <div className="text-[11px] text-[#89928C]">{c.email || "—"}</div>
                   </td>
                   <td className="table-td">
                     <span className={TAG_CLASS[c.tag] || "chip chip-neutral"}>{c.tag || "regular"}</span>
@@ -185,13 +185,13 @@ export default function Customers() {
                   </td>
                   <td className="table-td text-right tabular-nums">
                     <div className="font-medium text-[#92400E]">{(c.gold_gross ?? 0).toFixed(3)} g</div>
-                    <div className="text-[10.5px] text-[#a3a3a3]">net {(c.gold_net ?? 0).toFixed(3)} g</div>
+                    <div className="text-[10.5px] text-[#89928C]">net {(c.gold_net ?? 0).toFixed(3)} g</div>
                   </td>
                   <td className="table-td text-right tabular-nums">
                     <div className="font-medium text-[#475569]">{(c.silver_gross ?? 0).toFixed(3)} g</div>
-                    <div className="text-[10.5px] text-[#a3a3a3]">net {(c.silver_net ?? 0).toFixed(3)} g</div>
+                    <div className="text-[10.5px] text-[#89928C]">net {(c.silver_net ?? 0).toFixed(3)} g</div>
                   </td>
-                  <td className="table-td text-right text-[#737373] font-mono text-[12px]">{fmtDate(c.created_at)}</td>
+                  <td className="table-td text-right text-[#6F7772] font-mono text-[12px]">{fmtDate(c.created_at)}</td>
                   <td className="table-td text-center">
                     <button
                       type="button"
@@ -224,7 +224,7 @@ export default function Customers() {
       )}
 
       {!loading && rows.length > PAGE_SIZE && (
-        <div className="flex items-center justify-between mt-3 text-[12px] text-[#737373]">
+        <div className="flex items-center justify-between mt-3 px-3 py-2 rounded-[10px] border border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)] text-[12px] text-[#6F7772]">
           <button
             type="button"
             className="btn-secondary !py-1.5 !px-3 disabled:opacity-40"
@@ -285,11 +285,11 @@ function NewCustomerModal({ onClose, onCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center p-4 overflow-y-auto">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-lg mt-16 mb-8">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-start justify-center p-4 overflow-y-auto">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-lg mt-16 mb-8">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
           <div className="section-title">Add customer</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#17201C]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -331,7 +331,7 @@ function NewCustomerModal({ onClose, onCreated }) {
             <textarea className="input" rows={3} value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Any remarks or notes about this customer" />
           </Field>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" data-testid={T.customerSave} disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Create customer"}
@@ -352,7 +352,7 @@ function NewCustomerModal({ onClose, onCreated }) {
 function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">{label}</span>
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-1.5">{label}</span>
       {children}
     </label>
   );

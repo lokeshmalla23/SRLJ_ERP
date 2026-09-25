@@ -44,7 +44,7 @@ function HiddenAwareCell({ value, hidden }) {
   return (
     <span className="inline-flex items-center gap-1.5">
       {value}
-      <span className="rounded-full bg-[#B49042]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#B49042]">
+      <span className="rounded-full border border-[#D8C28C] bg-[#FBF6E9] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#765A20]">
         Hidden
       </span>
     </span>
@@ -282,7 +282,7 @@ function RegisterPanel({
           <select
             value={bankAcct}
             onChange={(e) => setBankAcct(e.target.value)}
-            className="rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+            className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           >
             <option value="1010">Bank</option>
             <option value="1020">UPI</option>
@@ -382,7 +382,7 @@ function PartyLedgerPanel({ kind }) {
         <select
           value={partyId}
           onChange={(e) => setPartyId(e.target.value)}
-          className="min-w-[200px] rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+          className="min-w-[200px] rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
         >
           <option value="">Select {kind}…</option>
           {parties.map((p) => (
@@ -483,14 +483,14 @@ function MetalPanel({ includeHidden = false }) {
   return (
     <div>
       {/* Live inventory snapshot — date chips would be misleading (API has no period filter). */}
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <p className="text-xs text-[#525252]">
           Current stock as of now · pieces, weight and GL from live inventory (not a date range)
         </p>
         <button
           type="button"
           onClick={load}
-          className="inline-flex items-center gap-1 rounded-lg bg-[#0A0A0A] px-3 py-1.5 text-xs font-medium text-white"
+          className="inline-flex items-center gap-1 rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A]"
         >
           {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
           Refresh
@@ -676,12 +676,12 @@ function OldGoldSalePanel({ onChanged, includeHidden = false, metal = "gold" }) 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div>
           <p className="mb-1 text-xs font-medium text-[#525252]">Select available {noun}</p>
-          <div className="max-h-56 overflow-auto rounded-lg border border-[#E5E7EB]">
+          <div className="max-h-56 overflow-auto rounded-[10px] border border-[#D8D2C6] bg-[#FFFDF9]">
             {available.length ? (
               available.map((r) => (
                 <label
                   key={r.id}
-                  className="flex cursor-pointer items-center gap-2 border-b border-[#F3F4F6] px-2.5 py-1.5 text-xs last:border-0 hover:bg-[#FDFBF7]"
+                  className="flex cursor-pointer items-center gap-2 border-b border-[#F3F4F6] px-2.5 py-1.5 text-xs last:border-0 hover:bg-[#FBF8F1]"
                 >
                   <input
                     type="checkbox"
@@ -761,7 +761,7 @@ function OldGoldSalePanel({ onChanged, includeHidden = false, metal = "gold" }) 
             type="button"
             onClick={submit}
             disabled={submitting}
-            className="inline-flex items-center gap-1 rounded-lg bg-[#0A0A0A] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+            className="inline-flex items-center gap-1 rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A] disabled:opacity-50"
           >
             {submitting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
             Record {isSilver ? "Old Silver Sale" : "Old Gold Sale"}
@@ -796,7 +796,7 @@ function OldGoldSalePanel({ onChanged, includeHidden = false, metal = "gold" }) 
                 <button
                   type="button"
                   onClick={() => cancelSale(r)}
-                  className="rounded-lg border border-[#E5E7EB] bg-white px-2 py-1 text-[11px] hover:bg-[#FDFBF7]"
+                  className="rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2 py-1 text-[11px] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
                 >
                   Cancel
                 </button>
@@ -859,7 +859,7 @@ function IntegrityPanel() {
       <button
         type="button"
         onClick={load}
-        className="rounded-lg bg-[#0A0A0A] px-3 py-1.5 text-xs text-white"
+        className="rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs text-white transition hover:bg-[#244A3A]"
       >
         {loading ? "Loading…" : "Refresh integrity"}
       </button>
@@ -904,20 +904,20 @@ function IntegrityPanel() {
         <p className="text-xs text-emerald-700">No integrity warnings.</p>
       ) : null}
       {assessment ? (
-        <div className="rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3 text-xs">
+        <div className="rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 text-xs">
           <div className="font-semibold">Historical assessment</div>
           <div className="mt-1 text-[#525252]">
             Strategy: {assessment.strategy} — recommended cutover {assessment.recommended_cutover_date}
           </div>
         </div>
       ) : null}
-      <div className="rounded-xl border border-[#E5E7EB] bg-white p-3">
+      <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <div className="mb-2 text-sm font-semibold">Apply accounting cutover</div>
         <div className="flex flex-wrap gap-2">
-          <input type="date" value={cutoverDate} onChange={(e) => setCutoverDate(e.target.value)} className="rounded border px-2 py-1 text-xs" />
-          <MoneyInput placeholder="Cash count" value={cash} onValueChange={(raw) => setCash(raw)} className="rounded border px-2 py-1 text-xs" />
-          <MoneyInput placeholder="Bank count" value={bank} onValueChange={(raw) => setBank(raw)} className="rounded border px-2 py-1 text-xs" />
-          <button type="button" onClick={applyCutover} className="rounded-lg bg-[#B49042] px-3 py-1.5 text-xs text-white">
+          <input type="date" value={cutoverDate} onChange={(e) => setCutoverDate(e.target.value)} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <MoneyInput placeholder="Cash count" value={cash} onValueChange={(raw) => setCash(raw)} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <MoneyInput placeholder="Bank count" value={bank} onValueChange={(raw) => setBank(raw)} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <button type="button" onClick={applyCutover} className="rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A]">
             Post opening balances
           </button>
         </div>
@@ -1012,20 +1012,20 @@ function ReconciliationPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
+      <div className="rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3">
         <div className="mb-2 text-sm font-semibold">Bank accounts</div>
         <div className="mb-2 flex flex-wrap gap-2">
-          <input placeholder="Name (e.g. HDFC Current)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="rounded border px-2 py-1 text-xs" />
-          <input placeholder="Bank" value={form.bank_name} onChange={(e) => setForm({ ...form, bank_name: e.target.value })} className="rounded border px-2 py-1 text-xs" />
-          <input placeholder="A/c No" value={form.account_number} onChange={(e) => setForm({ ...form, account_number: e.target.value })} className="rounded border px-2 py-1 text-xs" />
-          <input placeholder="IFSC" value={form.ifsc} onChange={(e) => setForm({ ...form, ifsc: e.target.value })} className="rounded border px-2 py-1 text-xs" />
-          <select value={form.gl_code} onChange={(e) => setForm({ ...form, gl_code: e.target.value })} className="rounded border px-2 py-1 text-xs">
+          <input placeholder="Name (e.g. HDFC Current)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <input placeholder="Bank" value={form.bank_name} onChange={(e) => setForm({ ...form, bank_name: e.target.value })} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <input placeholder="A/c No" value={form.account_number} onChange={(e) => setForm({ ...form, account_number: e.target.value })} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <input placeholder="IFSC" value={form.ifsc} onChange={(e) => setForm({ ...form, ifsc: e.target.value })} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <select value={form.gl_code} onChange={(e) => setForm({ ...form, gl_code: e.target.value })} className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]">
             <option value="1010">GL Bank</option>
             <option value="1020">GL UPI</option>
             <option value="1030">GL Card</option>
           </select>
-          <MoneyInput placeholder="Opening" value={form.opening_balance} onValueChange={(raw) => setForm({ ...form, opening_balance: raw })} className="w-24 rounded border px-2 py-1 text-xs" />
-          <button type="button" onClick={createBank} className="rounded-lg bg-[#B49042] px-3 py-1.5 text-xs text-white">Add</button>
+          <MoneyInput placeholder="Opening" value={form.opening_balance} onValueChange={(raw) => setForm({ ...form, opening_balance: raw })} className="w-28 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
+          <button type="button" onClick={createBank} className="rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A]">Add</button>
         </div>
         <AccountsTable
           columns={[
@@ -1050,7 +1050,7 @@ function ReconciliationPanel() {
         onRefresh={loadRecon}
         loading={loading}
       >
-        <select value={bankId} onChange={(e) => setBankId(e.target.value)} className="min-w-[180px] rounded border px-2 py-1 text-xs">
+        <select value={bankId} onChange={(e) => setBankId(e.target.value)} className="min-w-[180px] rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]">
           <option value="">Select bank…</option>
           {banks.map((b) => (
             <option key={b.id} value={b.id}>{b.name}</option>
@@ -1060,7 +1060,7 @@ function ReconciliationPanel() {
           placeholder="Statement balance"
           value={stmtBal}
           onValueChange={(raw) => setStmtBal(raw)}
-          className="w-36 rounded border px-2 py-1 text-xs"
+          className="w-36 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
         />
       </AccountsFilterBar>
 
@@ -1449,7 +1449,7 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
   return (
     <div className="min-h-[70vh]">
       {/* Group tabs */}
-      <div className="mb-0 overflow-x-auto border-b border-[#EADFBF]">
+      <div className="mb-0 overflow-x-auto border-b border-[#D8D2C6]">
         <div className="flex min-w-max items-end gap-0.5">
           {navGroups.map((group) => {
             const active = group.id === activeGroupId;
@@ -1460,9 +1460,7 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
                 onClick={() => selectGroup(group.id)}
                 className={`whitespace-nowrap border-b-2 px-3.5 py-2.5 text-[12.5px] font-medium transition-colors ${
                   active
-                    ? group.id === "hidden-data"
-                      ? "border-violet-600 text-violet-700"
-                      : "border-[#B49042] text-[#B49042]"
+                    ? "border-[#315C4A] text-[#315C4A]"
                     : group.id === "hidden-data"
                       ? "border-transparent text-violet-600 hover:text-violet-800"
                       : "border-transparent text-[#737373] hover:text-[#0A0A0A]"
@@ -1477,7 +1475,7 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
 
       {/* Section tabs within group */}
       {activeGroup.items.length > 1 ? (
-        <div className="mb-4 overflow-x-auto rounded-b-xl border border-t-0 border-[#EADFBF] bg-[#FDFBF7] px-2 py-2">
+        <div className="mb-4 overflow-x-auto rounded-b-xl border border-t-0 border-[#D8D2C6] bg-[#FBF8F1] px-2 py-2 shadow-[0_1px_2px_rgba(38,52,43,0.03)]">
           <div className="flex min-w-max flex-wrap gap-1.5">
             {activeGroup.items.map((item) => {
               const active = section === item.id;
@@ -1488,8 +1486,8 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
                   onClick={() => setSection(item.id)}
                   className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors ${
                     active
-                      ? "bg-[#B49042] text-white shadow-sm"
-                      : "bg-white text-[#525252] border border-[#E5E7EB] hover:border-[#B49042] hover:text-[#B49042]"
+                      ? "border border-[#315C4A] bg-[#315C4A] text-white shadow-sm"
+                      : "border border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]"
                   }`}
                 >
                   {item.label}
@@ -1515,7 +1513,7 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
 
       {section !== "daily-closing" && section !== "opening-setup" ? (
         <div className="mb-3">
-          <h2 className="text-lg font-semibold text-[#0A0A0A]">{meta.label}</h2>
+          <h2 className="font-display text-lg font-semibold tracking-[-0.015em] text-[#24332B]">{meta.label}</h2>
           {meta.hint ? <p className="text-xs text-[#737373]">{meta.hint}</p> : null}
         </div>
       ) : null}

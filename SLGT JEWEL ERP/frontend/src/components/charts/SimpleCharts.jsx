@@ -11,24 +11,56 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import { colors, typography } from "@/lib/theme";
 
-/** Neutral gold / ink palette — matches jewellery CRM UI (no purple). */
+/** Forest-led categorical palette with restrained champagne and silver accents. */
 export const CHART_COLORS = [
-  "#B49042",
-  "#0A0A0A",
-  "#737373",
-  "#D4A84B",
-  "#525252",
-  "#A3A3A3",
-  "#8B6914",
-  "#404040",
+  colors.forest,
+  colors.champagne,
+  colors.slate,
+  colors.forestDark,
+  colors.goldMuted,
+  "#A9B7AE",
+  "#4D6B5B",
+  "#C6D2CA",
 ];
 
+const AXIS_TICK = {
+  fill: colors.muted,
+  fontFamily: typography.fontBody,
+  fontSize: 10,
+};
+
 const tipStyle = {
-  background: "#fff",
-  border: "1px solid #E5E7EB",
-  borderRadius: 8,
+  background: colors.cream,
+  border: `1px solid ${colors.border}`,
+  borderRadius: 12,
+  boxShadow: "0 12px 32px rgba(23, 56, 42, 0.11)",
+  color: colors.ink,
+  fontFamily: typography.fontBody,
   fontSize: 12,
+  padding: "10px 12px",
+};
+
+const tooltipLabelStyle = {
+  color: colors.ink,
+  fontFamily: typography.fontBody,
+  fontSize: 12,
+  fontWeight: 700,
+  marginBottom: 4,
+};
+
+const tooltipItemStyle = {
+  color: colors.muted,
+  fontFamily: typography.fontBody,
+  fontSize: 12,
+};
+
+const legendStyle = {
+  color: colors.muted,
+  fontFamily: typography.fontBody,
+  fontSize: 11,
+  paddingTop: 8,
 };
 
 export function SimplePieChart({
@@ -42,7 +74,7 @@ export function SimplePieChart({
   const rows = (data || []).filter((d) => Number(d[dataKey]) > 0);
   if (!rows.length) {
     return (
-      <div className="flex items-center justify-center text-[12px] text-[#a3a3a3]" style={{ height }}>
+      <div className="chart-empty-state text-[12px]" style={{ height }}>
         No chart data
       </div>
     );
@@ -67,11 +99,22 @@ export function SimplePieChart({
           }}
         >
           {rows.map((_, i) => (
-            <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+            <Cell
+              key={i}
+              fill={CHART_COLORS[i % CHART_COLORS.length]}
+              stroke={colors.cream}
+              strokeWidth={2}
+            />
           ))}
         </Pie>
-        <Tooltip contentStyle={tipStyle} formatter={(v) => Number(v).toLocaleString("en-IN")} />
-        <Legend wrapperStyle={{ fontSize: 11 }} />
+        <Tooltip
+          contentStyle={tipStyle}
+          labelStyle={tooltipLabelStyle}
+          itemStyle={tooltipItemStyle}
+          cursor={{ fill: colors.silver, fillOpacity: 0.55 }}
+          formatter={(v) => Number(v).toLocaleString("en-IN")}
+        />
+        <Legend iconType="circle" iconSize={8} wrapperStyle={legendStyle} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -80,13 +123,13 @@ export function SimplePieChart({
 export function SimpleBarChart({
   data,
   xKey = "name",
-  bars = [{ key: "value", name: "Value", color: "#B49042" }],
+  bars = [{ key: "value", name: "Value", color: colors.forest }],
   height = 220,
 }) {
   const rows = data || [];
   if (!rows.length) {
     return (
-      <div className="flex items-center justify-center text-[12px] text-[#a3a3a3]" style={{ height }}>
+      <div className="chart-empty-state text-[12px]" style={{ height }}>
         No chart data
       </div>
     );
@@ -95,20 +138,35 @@ export function SimpleBarChart({
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={rows} margin={{ top: 8, right: 8, left: 0, bottom: rotateLabels ? 48 : 8 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+        <CartesianGrid vertical={false} strokeDasharray="3 4" stroke={colors.border} />
         <XAxis
           dataKey={xKey}
-          tick={{ fontSize: 10, fill: "#737373" }}
+          tick={AXIS_TICK}
+          axisLine={false}
+          tickLine={false}
+          tickMargin={8}
           interval={0}
           angle={rotateLabels ? -28 : 0}
           textAnchor={rotateLabels ? "end" : "middle"}
           height={rotateLabels ? 56 : 30}
         />
-        <YAxis tick={{ fontSize: 10, fill: "#737373" }} width={52} />
-        <Tooltip contentStyle={tipStyle} formatter={(v) => Number(v).toLocaleString("en-IN")} />
-        <Legend wrapperStyle={{ fontSize: 11 }} />
+        <YAxis tick={AXIS_TICK} axisLine={false} tickLine={false} tickMargin={8} width={52} />
+        <Tooltip
+          contentStyle={tipStyle}
+          labelStyle={tooltipLabelStyle}
+          itemStyle={tooltipItemStyle}
+          cursor={{ fill: colors.silver, fillOpacity: 0.62 }}
+          formatter={(v) => Number(v).toLocaleString("en-IN")}
+        />
+        <Legend iconType="circle" iconSize={8} wrapperStyle={legendStyle} />
         {bars.map((b) => (
-          <Bar key={b.key} dataKey={b.key} name={b.name || b.key} fill={b.color || "#B49042"} radius={[4, 4, 0, 0]} />
+          <Bar
+            key={b.key}
+            dataKey={b.key}
+            name={b.name || b.key}
+            fill={b.color || colors.forest}
+            radius={[4, 4, 0, 0]}
+          />
         ))}
       </BarChart>
     </ResponsiveContainer>

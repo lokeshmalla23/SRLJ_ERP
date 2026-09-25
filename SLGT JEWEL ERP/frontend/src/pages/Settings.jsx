@@ -72,8 +72,8 @@ function emptyClickState() {
 
 function ViewOnlyBanner({ module, action }) {
   return (
-    <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[12.5px] text-amber-900">
-      <AlertTriangle size={14} className="mt-0.5 shrink-0" strokeWidth={1.5} />
+    <div className="mb-4 flex items-start gap-2 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-3 py-2 text-[12px] leading-relaxed text-[#755D25]">
+      <AlertTriangle size={14} className="mt-0.5 shrink-0 text-[#9B7B36]" strokeWidth={1.7} />
       <span>
         View only — you need <span className="font-mono font-semibold">{module}.{action}</span> to make changes.
       </span>
@@ -282,45 +282,51 @@ export default function SettingsPage() {
     return (
       <div className="w-full">
         <PageHeader title="Settings" subtitle="Configure your showroom, live rates, staff and access controls." />
-        <div className="card text-[13px] text-[#737373]">
-          You do not have permission to view any settings. Ask the shop owner to grant <span className="font-mono">settings.view</span>.
+        <div className="rounded-[10px] border border-dashed border-[#CDD7C9] bg-[#F7F8F3] px-5 py-6 text-[12.5px] leading-relaxed text-[#6D7A70]">
+          You do not have permission to view any settings. Ask the shop owner to grant <span className="font-mono font-semibold text-[#315E48]">settings.view</span>.
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full min-h-[calc(100vh-8rem)]">
+    <div className="w-full min-h-[calc(100vh-7rem)] min-w-0 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#244B39] [&_.btn-primary]:!bg-[#244B39] [&_.btn-primary:hover]:!bg-[#173D2C] [&_.btn-primary:focus-visible]:!ring-2 [&_.btn-primary:focus-visible]:!ring-[#315E48]/30 [&_.btn-primary:focus-visible]:!ring-offset-2 [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#CDD6CA] [&_.btn-secondary:hover]:!border-[#9FAF9E] [&_.btn-secondary:hover]:!bg-[#F7F9F4] [&_.btn-secondary:focus-visible]:!ring-2 [&_.btn-secondary:focus-visible]:!ring-[#78917C]/35 [&_.input]:!rounded-[9px] [&_.input]:!border-[#C8D2C5] [&_.input:focus]:!border-[#5F7D67] [&_.input:focus]:!ring-2 [&_.input:focus]:!ring-[#DCE7D8] [&_.input:disabled]:!bg-[#F1F2ED] [&_.label]:!text-[11px] [&_.label]:!font-semibold [&_.label]:!uppercase [&_.label]:!tracking-[0.08em] [&_.label]:!text-[#67766B] [&_.table-shell]:!border-[#DCE3D6] [&_.table-head-row]:!border-[#D9E0D6] [&_.table-head-row]:!bg-[#F3F5EE] [&_.table-th]:!text-[#66766A] [&_.table-td]:!border-[#E6E9E2] [&_.table-row:hover_.table-td]:!bg-[#F5F7F1]">
       {isOwner ? (
         <DbBrowser open={dbBrowserOpen} onClose={() => setDbBrowserOpen(false)} />
       ) : null}
       <div onClick={handlePageHeaderClick}>
         <PageHeader title="Settings" subtitle="Configure your showroom, live rates, staff and access controls." />
       </div>
-      <div className="sticky top-16 z-10 -mx-1 mb-5 border-b border-[#E5E7EB] bg-[#F7F7F5]/95 backdrop-blur-sm">
-        <div className="flex items-center gap-0.5 overflow-x-auto px-1">
-          {visibleTabs.map((t) => {
-            const Icon = t.icon;
-            const isActive = tab === t.id;
-            return (
-              <button
-                key={t.id}
-                type="button"
-                data-testid={t.tid}
-                onClick={() => handleTabClick(t.id)}
-                className={`flex items-center gap-2 px-3.5 py-2.5 text-[12.5px] font-medium border-b-2 transition-colors whitespace-nowrap ${
-                  isActive
-                    ? "text-[#0A0A0A] border-[#0A0A0A]"
-                    : "text-[#737373] border-transparent hover:text-[#0A0A0A]"
-                }`}
-              >
-                <Icon size={14} strokeWidth={1.5} />
-                {t.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <div className="grid min-w-0 gap-4 xl:grid-cols-[232px_minmax(0,1fr)]">
+        <aside className="min-w-0 rounded-[10px] border border-[#DCE3D6] bg-[#F1F3EB] p-1.5 shadow-[0_1px_2px_rgba(36,55,45,0.04)] xl:sticky xl:top-[5.4rem] xl:z-10 xl:max-h-[calc(100vh-7rem)] xl:self-start">
+          <div className="flex gap-1 overflow-x-auto xl:block xl:overflow-y-auto xl:pr-0.5">
+            {visibleTabs.map((t) => {
+              const Icon = t.icon;
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  type="button"
+                  data-testid={t.tid}
+                  onClick={() => handleTabClick(t.id)}
+                  className={`group relative flex min-h-9 w-full shrink-0 items-center gap-2 rounded-[8px] px-3 py-2 text-left text-[12px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/40 xl:mb-0.5 ${
+                    isActive
+                      ? "bg-[#244B39] text-white shadow-[0_1px_2px_rgba(26,58,41,0.16)]"
+                      : "text-[#627166] hover:bg-white hover:text-[#294236]"
+                  }`}
+                >
+                  <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-[7px] transition-colors ${isActive ? "bg-white/10 text-[#E5D19B]" : "bg-[#E5EAE1] text-[#6B7B70] group-hover:bg-[#EDF2EA] group-hover:text-[#315E48]"}`}>
+                    <Icon size={13} strokeWidth={1.8} />
+                  </span>
+                  <span className="whitespace-nowrap">{t.label}</span>
+                  {isActive ? <span className="absolute inset-y-2 left-0 w-0.5 rounded-full bg-[#D2B568]" /> : null}
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+
+        <div className="min-w-0">
 
       {active?.write && !canWrite && (
         <ViewOnlyBanner module={active.module} action={active.write} />
@@ -420,6 +426,8 @@ export default function SettingsPage() {
       {tab === "audit" && <AuditTab />}
       {tab === "backup" && <BackupExportTab canWrite={canWrite} />}
       {tab === "import" && <ImportCsvTab canWrite={canWrite} />}
+        </div>
+      </div>
     </div>
   );
 }
@@ -465,24 +473,24 @@ function ShopNetworkTab({ canWrite = false }) {
           title="Shop Network"
           description="One active host writes; other PCs hold full replicas and sync over LAN."
           actions={(
-            <button type="button" onClick={refresh} className="flex items-center gap-2 text-[13px] px-3 py-2 border border-[#E5E7EB]">
-              <RefreshCw size={14} /> Refresh
+            <button type="button" onClick={refresh} className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#344A3C] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35">
+              <RefreshCw size={14} strokeWidth={1.7} /> Refresh
             </button>
           )}
         >
           <div className="space-y-2 text-[13px]">
-            <div className="flex justify-between py-2 border-b border-[#F0F0F0]">
+            <div className="flex justify-between py-2 border-b border-[#E6E9E2]">
               <span className="text-[#737373]">This PC role</span>
               <span className="font-medium">{cluster?.fenced ? "Fenced" : (cluster?.role === "active_host" ? "Host ★" : "Full replica")}</span>
             </div>
             {showDiag && (
               <>
-                <div className="flex justify-between py-2 border-b border-[#F0F0F0]"><span className="text-[#737373]">Shop ID</span><span className="font-mono text-[11px]">{cluster?.shop_id || "—"}</span></div>
-                <div className="flex justify-between py-2 border-b border-[#F0F0F0]"><span className="text-[#737373]">Host term</span><span>{cluster?.host_term ?? "—"}</span></div>
-                <div className="flex justify-between py-2 border-b border-[#F0F0F0]"><span className="text-[#737373]">Event watermark</span><span>{cluster?.event_watermark ?? 0}</span></div>
+                <div className="flex justify-between py-2 border-b border-[#E6E9E2]"><span className="text-[#737373]">Shop ID</span><span className="font-mono text-[11px]">{cluster?.shop_id || "—"}</span></div>
+                <div className="flex justify-between py-2 border-b border-[#E6E9E2]"><span className="text-[#737373]">Host term</span><span>{cluster?.host_term ?? "—"}</span></div>
+                <div className="flex justify-between py-2 border-b border-[#E6E9E2]"><span className="text-[#737373]">Event watermark</span><span>{cluster?.event_watermark ?? 0}</span></div>
               </>
             )}
-            <button type="button" className="text-[12px] text-[#737373] underline" onClick={() => setShowDiag((v) => !v)}>
+            <button type="button" className="w-fit text-[11.5px] font-semibold text-[#5D7564] underline decoration-[#B9C7B7] underline-offset-2 transition-colors hover:text-[#244B39] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35" onClick={() => setShowDiag((v) => !v)}>
               {showDiag ? "Hide diagnostics" : "Diagnostics"}
             </button>
           </div>
@@ -497,17 +505,17 @@ function ShopNetworkTab({ canWrite = false }) {
           )}
 
           {canPromote && cluster?.role !== "active_host" && !cluster?.fenced && (
-            <div className="mt-4 border border-amber-200 bg-amber-50 px-4 py-4 space-y-3 rounded-md">
-              <h4 className="text-[14px] font-semibold text-[#0A0A0A]">Make this PC the Host</h4>
+            <div className="mt-4 space-y-3 rounded-[9px] border border-[#E6D2A5] bg-[#FBF7ED] px-4 py-4">
+              <h4 className="text-[13.5px] font-semibold text-[#594821]">Make this PC the Host</h4>
               <p className="text-[13px] text-[#525252]">
                 Only promote if the previous host is shut down or disconnected from the LAN.
               </p>
-              <label className="flex items-start gap-2 text-[13px]">
-                <input type="checkbox" checked={confirm.isolate} onChange={(e) => setConfirm((c) => ({ ...c, isolate: e.target.checked }))} className="mt-1" />
+              <label className="flex items-start gap-2 text-[12.5px] leading-relaxed text-[#6B5B32]">
+                <input type="checkbox" checked={confirm.isolate} onChange={(e) => setConfirm((c) => ({ ...c, isolate: e.target.checked }))} className="mt-0.5 h-4 w-4 rounded border-[#C7B98F] accent-[#315E48] focus:ring-2 focus:ring-[#B49042]/30" />
                 I have shut down or isolated the previous host.
               </label>
-              <label className="flex items-start gap-2 text-[13px]">
-                <input type="checkbox" checked={confirm.dual} onChange={(e) => setConfirm((c) => ({ ...c, dual: e.target.checked }))} className="mt-1" />
+              <label className="flex items-start gap-2 text-[12.5px] leading-relaxed text-[#6B5B32]">
+                <input type="checkbox" checked={confirm.dual} onChange={(e) => setConfirm((c) => ({ ...c, dual: e.target.checked }))} className="mt-0.5 h-4 w-4 rounded border-[#C7B98F] accent-[#315E48] focus:ring-2 focus:ring-[#B49042]/30" />
                 I understand dual-active risk and confirm this promote.
               </label>
               <button
@@ -529,7 +537,7 @@ function ShopNetworkTab({ canWrite = false }) {
                     setBusy(false);
                   }
                 }}
-                className="px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-40"
+                className="h-9 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {busy ? "Promoting…" : "Make this PC Host"}
               </button>
@@ -554,7 +562,7 @@ function ShopNetworkTab({ canWrite = false }) {
                 return (
                   <div key={d.id} className="flex items-center justify-between py-3">
                     <div>
-                      <div className="text-[13px] font-medium text-[#0A0A0A]">
+                      <div className="text-[13px] font-medium text-[#294236]">
                         {d.device_name}{d.is_self ? " (this PC)" : ""}{isHost ? " ★ HOST" : ""}
                       </div>
                       <div className="text-[12px] text-[#737373] font-mono">{d.device_identifier}</div>
@@ -642,9 +650,9 @@ function SystemHealthTab() {
   }, []);
 
   const row = (label, value, ok = true) => (
-    <div className="flex items-center justify-between py-3 border-b border-[#F0F0F0]">
-      <span className="text-[13px] text-[#737373]">{label}</span>
-      <span className={`text-[13px] font-medium ${ok ? "text-[#0A0A0A]" : "text-red-700"}`}>{value}</span>
+    <div className="flex items-center justify-between gap-4 border-b border-[#E6E9E2] py-3 last:border-b-0">
+      <span className="text-[12px] text-[#6F7C72]">{label}</span>
+      <span className={`text-right text-[12.5px] font-semibold ${ok ? "text-[#294236]" : "text-red-700"}`}>{value}</span>
     </div>
   );
 
@@ -657,7 +665,7 @@ function SystemHealthTab() {
           <button
             type="button"
             onClick={refresh}
-            className="flex items-center gap-2 text-[13px] px-3 py-2 border border-[#E5E7EB] hover:bg-[#FAFAFA]"
+            className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#344A3C] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
           >
             <RefreshCw size={14} /> Refresh
           </button>
@@ -665,22 +673,22 @@ function SystemHealthTab() {
       >
 
       {window.jewelleryCRM?.setLoginItem && (
-        <div className="flex items-center justify-between py-3 px-4 border border-[#E5E7EB] mb-4 rounded">
+        <div className="mb-4 flex items-center justify-between gap-4 rounded-[9px] border border-[#D9E1D6] bg-[#F5F7F1] px-4 py-3">
           <div>
-            <p className="text-[13px] font-medium text-[#0A0A0A]">Start with Windows</p>
+            <p className="text-[12.5px] font-semibold text-[#34463A]">Start with Windows</p>
             <p className="text-[11.5px] text-[#737373]">Launch automatically when this PC turns on — recommended for the owner PC</p>
           </div>
           <button
             type="button"
             onClick={toggleStartup}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${openAtLogin ? "bg-emerald-500" : "bg-[#D1D5DB]"}`}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/40 focus-visible:ring-offset-2 ${openAtLogin ? "border-[#244B39] bg-[#244B39]" : "border-[#C8D0C4] bg-[#D8DDD5]"}`}
           >
-            <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${openAtLogin ? "translate-x-6" : "translate-x-1"}`} />
+            <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${openAtLogin ? "translate-x-6" : "translate-x-1"}`} />
           </button>
         </div>
       )}
 
-      <div className="border border-[#E5E7EB] px-4">
+      <div className="overflow-hidden rounded-[9px] border border-[#DCE3D6] bg-white px-4">
         {row("Local Database", health?.database?.status === "ok" ? "Healthy" : "Unavailable", health?.database?.status === "ok")}
         {row("Branch Mode", health?.app_mode || "—")}
         {row("Schema", String(health?.schema_version ?? diag?.schema_version ?? "—"))}
@@ -734,7 +742,7 @@ function SystemHealthTab() {
               setBusy(null);
             }
           }}
-          className="px-3 py-2 text-[13px] bg-[#0A0A0A] text-white disabled:opacity-50"
+          className="h-9 rounded-[9px] border border-[#244B39] bg-[#244B39] px-3 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {busy === "backup" ? "Backing up…" : "Run Backup Now"}
         </button>
@@ -753,7 +761,7 @@ function SystemHealthTab() {
               setBusy(null);
             }
           }}
-          className="px-3 py-2 text-[13px] border border-[#E5E7EB]"
+          className="h-9 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#344A3C] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Retry Failed Sync
         </button>
@@ -772,7 +780,7 @@ function SystemHealthTab() {
               setBusy(null);
             }
           }}
-          className="px-3 py-2 text-[13px] border border-[#E5E7EB]"
+          className="h-9 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#344A3C] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Write Recovery Snapshot
         </button>
@@ -870,8 +878,10 @@ function ImportCsvTab({ canWrite = false }) {
                 key={t.id}
                 type="button"
                 onClick={() => { setKind(t.id); setResult(null); }}
-                className={`px-3 py-2 text-[13px] border ${
-                  kind === t.id ? "bg-[#0A0A0A] text-white border-[#0A0A0A]" : "border-[#E5E7EB] text-[#0A0A0A]"
+                className={`h-9 rounded-[9px] border px-3 text-[12.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
+                  kind === t.id
+                    ? "border-[#244B39] bg-[#244B39] text-white"
+                    : "border-[#D5DDD2] bg-white text-[#4F6154] hover:border-[#AAB9A7] hover:bg-[#F6F8F3]"
                 }`}
               >
                 {t.label}
@@ -883,7 +893,7 @@ function ImportCsvTab({ canWrite = false }) {
             <button
               type="button"
               onClick={downloadTemplate}
-              className="px-3 py-2 text-[13px] border border-[#E5E7EB] hover:bg-[#FAFAFA]"
+              className="h-9 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#344A3C] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
             >
               Download {kindMeta.label} template
             </button>
@@ -893,7 +903,7 @@ function ImportCsvTab({ canWrite = false }) {
                   type="checkbox"
                   checked={updateExisting}
                   onChange={(e) => setUpdateExisting(e.target.checked)}
-                  className="mt-1"
+                  className="mt-1 h-4 w-4 rounded border-[#C8D2C5] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35"
                 />
                 Update existing rows when match key already exists
               </label>
@@ -905,7 +915,7 @@ function ImportCsvTab({ canWrite = false }) {
                 accept=".csv,text/csv"
                 disabled={busy || !canWrite}
                 onChange={(e) => onFile(e.target.files?.[0])}
-                className="block w-full text-[13px] text-[#737373] file:mr-3 file:py-2 file:px-3 file:border file:border-[#E5E7EB] file:bg-white file:text-[13px]"
+                className="block w-full rounded-[9px] border border-dashed border-[#C7D2C4] bg-[#F8F9F5] p-2.5 text-[12.5px] text-[#6F7C72] file:mr-3 file:rounded-[8px] file:border file:border-[#CDD6CA] file:bg-white file:px-3 file:py-2 file:text-[12.5px] file:font-semibold file:text-[#344A3C] hover:border-[#9FAF9E] focus-within:border-[#78917C] focus-within:ring-2 focus-within:ring-[#DCE7D8]"
               />
               {busy && <p className="text-[12px] text-[#737373] mt-2">Importing…</p>}
               {!canWrite && (
@@ -1009,9 +1019,8 @@ function HiddenBillSettingsTab({ canWrite = false }) {
         title="Hidden bill password"
         description="Used when staff tap the shop name 3 times on POS. Digits only (4–8). Owner-only setting."
       >
-        <p className="text-[12px] mb-3">
-          Status:{" "}
-          <strong className={configured ? "text-green-700" : "text-amber-700"}>
+        <p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[#DEE4DA] bg-[#F5F7F1] px-2.5 py-1 text-[11.5px] text-[#69776D]">
+          Status <strong className={configured ? "text-[#315E48]" : "text-[#9A6D20]"}>
             {configured ? "Configured" : "Not set yet"}
           </strong>
         </p>
@@ -1208,9 +1217,9 @@ function BillingTab({ canWrite = false }) {
             />
           </label>
         </div>
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#EADFBF] bg-[#FDFBF7] p-3">
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[9px] border border-[#EADFBF] bg-[#FDFBF7] p-3">
           <div>
-            <div className="text-[13px] font-medium text-[#0A0A0A]">Show Transaction Time</div>
+            <div className="text-[13px] font-medium text-[#294236]">Show Transaction Time</div>
             <p className="mt-0.5 text-[12px] text-[#737373]">
               On: every date shown in Accounts, Reports, and Statements also shows the time of day.
               Off: only the date is shown everywhere — no times.
@@ -1234,9 +1243,9 @@ function BillingTab({ canWrite = false }) {
           </p>
         ) : null}
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#EADFBF] bg-[#FDFBF7] p-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[9px] border border-[#EADFBF] bg-[#FDFBF7] p-3">
             <div>
-              <div className="text-[13px] font-medium text-[#0A0A0A]">Letterhead on Print</div>
+              <div className="text-[13px] font-medium text-[#294236]">Letterhead on Print</div>
               <p className="mt-0.5 text-[12px] text-[#737373]">
                 On: printer and print preview use the uploaded letterhead as the page background.
                 Off: paper bills stay plain.
@@ -1254,9 +1263,9 @@ function BillingTab({ canWrite = false }) {
               disabled={!canWrite || !letterhead.hasImage}
             />
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#EADFBF] bg-[#FDFBF7] p-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-[9px] border border-[#EADFBF] bg-[#FDFBF7] p-3">
             <div>
-              <div className="text-[13px] font-medium text-[#0A0A0A]">Letterhead on Download</div>
+              <div className="text-[13px] font-medium text-[#294236]">Letterhead on Download</div>
               <p className="mt-0.5 text-[12px] text-[#737373]">
                 On: downloaded POS PDFs show the letterhead behind the bill.
                 Off: downloaded files stay plain.
@@ -1363,31 +1372,31 @@ function BillingTab({ canWrite = false }) {
         )}
       >
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
-          <label className="flex items-start gap-3 cursor-pointer border border-[#E5E7EB] rounded-lg p-3">
+          <label className={`flex cursor-pointer items-start gap-3 rounded-[9px] border p-3 transition-colors ${offlinePricingMode === "preserve" ? "border-[#9FB39D] bg-[#F0F5EE]" : "border-[#DCE3D6] bg-white hover:border-[#B9C7B7]"}`}>
             <input
               type="radio"
               name="offline_pricing_mode"
               value="preserve"
               checked={offlinePricingMode === "preserve"}
               onChange={() => setOfflinePricingMode("preserve")}
-              className="mt-0.5"
+              className="mt-0.5 h-4 w-4 accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35"
             />
             <div>
-              <div className="text-[13px] font-medium text-[#0A0A0A]">Preserve original quoted price</div>
+              <div className="text-[13px] font-medium text-[#294236]">Preserve original quoted price</div>
               <div className="text-[12px] text-[#737373]">Use the gold rate that was shown at the time of the draft (recommended)</div>
             </div>
           </label>
-          <label className="flex items-start gap-3 cursor-pointer border border-[#E5E7EB] rounded-lg p-3">
+          <label className={`flex cursor-pointer items-start gap-3 rounded-[9px] border p-3 transition-colors ${offlinePricingMode === "recalculate" ? "border-[#9FB39D] bg-[#F0F5EE]" : "border-[#DCE3D6] bg-white hover:border-[#B9C7B7]"}`}>
             <input
               type="radio"
               name="offline_pricing_mode"
               value="recalculate"
               checked={offlinePricingMode === "recalculate"}
               onChange={() => setOfflinePricingMode("recalculate")}
-              className="mt-0.5"
+              className="mt-0.5 h-4 w-4 accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35"
             />
             <div>
-              <div className="text-[13px] font-medium text-[#0A0A0A]">Recalculate using latest rate at sync</div>
+              <div className="text-[13px] font-medium text-[#294236]">Recalculate using latest rate at sync</div>
               <div className="text-[12px] text-[#737373]">Invoice uses the gold rate active when the host comes back online</div>
             </div>
           </label>
@@ -1536,8 +1545,8 @@ function OwnerCredentialsCard({ canWrite = false, unlocked = false, onLocked }) 
         <span className="text-[12px] font-medium text-[#B49042]">Locked</span>
       )}
     >
-      <div className="mb-4 rounded-md border border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-[12.5px] text-[#525252]">
-        <span className="font-medium text-[#0A0A0A]">Current login username:</span>{" "}
+      <div className="mb-4 rounded-[9px] border border-[#DCE3D6] bg-[#F5F7F1] px-3 py-2 text-[12px] text-[#5F6F63]">
+        <span className="font-medium text-[#294236]">Current login username:</span>{" "}
         {currentUsername === undefined ? "Loading…" : currentUsername ? (
           <span className="font-mono">{currentUsername}</span>
         ) : (
@@ -1545,7 +1554,7 @@ function OwnerCredentialsCard({ canWrite = false, unlocked = false, onLocked }) 
         )}
       </div>
       {unlocked && (
-        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[12.5px] text-amber-900">
+        <div className="mb-4 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-3 py-2 text-[12px] text-[#755D25]">
           Unlocked for editing. After you save, this section will lock again.
         </div>
       )}
@@ -1672,9 +1681,9 @@ function MetalPriceSourcesSection({ sources, setSource, disabled, canWrite }) {
             <p className="text-[12.5px] text-[#737373]">No sources to test — enter a URL above first.</p>
           )}
           {results.map((r) => (
-            <div key={r.slot} className="rounded-md border border-[#E5E7EB] p-3">
+            <div key={r.slot} className="rounded-[9px] border border-[#DCE3D6] bg-white p-3">
               <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-semibold text-[#0A0A0A]">
+                <div className="text-sm font-semibold text-[#294236]">
                   {METAL_SOURCE_FIELDS.find((f) => f.key === r.slot)?.label || r.slot}
                 </div>
                 {r.reachable ? (
@@ -1844,7 +1853,7 @@ function CompanyTab({ canWrite = false, unlocked = false, onLocked }) {
         )}
       >
       {unlocked && !frozen && (
-        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-[12.5px] text-amber-900">
+        <div className="mb-4 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-3 py-2 text-[12px] text-[#755D25]">
           Unlocked for editing. After you save, the profile will lock again.
         </div>
       )}
@@ -1864,9 +1873,9 @@ function CompanyTab({ canWrite = false, unlocked = false, onLocked }) {
           <F label="Showroom Logo">
             <div className="flex items-center gap-4">
               {form.logo ? (
-                <img src={form.logo} alt="Showroom logo" className="h-14 w-14 rounded-md object-contain border border-[#E5E7EB] bg-white" />
+                <img src={form.logo} alt="Showroom logo" className="h-14 w-14 rounded-[9px] border border-[#DCE3D6] bg-white object-contain p-1" />
               ) : (
-                <div className="h-14 w-14 rounded-md border border-dashed border-[#E5E7EB] flex items-center justify-center text-[10px] text-[#a3a3a3]">
+                <div className="flex h-14 w-14 items-center justify-center rounded-[9px] border border-dashed border-[#C5D0C2] bg-[#F7F8F3] text-[10px] text-[#8B968E]">
                   No logo
                 </div>
               )}
@@ -1905,7 +1914,7 @@ function CompanyTab({ canWrite = false, unlocked = false, onLocked }) {
               )}
             </div>
             {form.login_music && (
-              <label className="flex items-center gap-2 mt-2.5 text-[12.5px] text-[#0A0A0A] cursor-pointer w-fit">
+              <label className="flex items-center gap-2 mt-2.5 text-[12.5px] text-[#294236] cursor-pointer w-fit">
                 <input
                   type="checkbox"
                   checked={Boolean(form.login_music_loop)}
@@ -1966,9 +1975,9 @@ function CompanyTab({ canWrite = false, unlocked = false, onLocked }) {
           />
         </F>
       </div>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[#EADFBF] bg-[#FDFBF7] p-3">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[9px] border border-[#EADFBF] bg-[#FDFBF7] p-3">
         <div>
-          <div className="text-[13px] font-medium text-[#0A0A0A]">Aadhaar Mandatory Above ₹50,000</div>
+          <div className="text-[13px] font-medium text-[#294236]">Aadhaar Mandatory Above ₹50,000</div>
           <p className="mt-0.5 text-[12px] text-[#737373]">
             On: POS billing requires the customer's Aadhaar number before a bill over ₹50,000 can be completed.
             Off: Aadhaar stays optional at any bill amount.
@@ -2034,17 +2043,17 @@ function CompanyUnlockDialog({
   return (
     <div
       className="fixed inset-0 z-[80] flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.5)" }}
+      style={{ background: "rgba(26, 38, 31, 0.48)" }}
       onClick={(e) => e.target === e.currentTarget && !busy && onClose()}
     >
-      <form onSubmit={submit} className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E7EB]">
+      <form onSubmit={submit} className="w-full max-w-sm overflow-hidden rounded-[10px] border border-[#D4DDD1] bg-[#FEFEFB] shadow-[0_24px_60px_rgba(27,43,34,0.22)]">
+        <div className="flex items-center justify-between border-b border-[#DDE4DA] bg-[#F1F4EC] px-4 py-3">
           <div>
-            <div className="text-sm font-semibold text-[#0A0A0A]">{title}</div>
-            <div className="text-[11px] text-[#737373]">{subtitle}</div>
+            <div className="font-display text-[14px] font-semibold text-[#294236]">{title}</div>
+            <div className="mt-0.5 text-[11px] text-[#748078]">{subtitle}</div>
           </div>
-          <button type="button" onClick={onClose} disabled={busy} className="p-1 rounded hover:bg-gray-100">
-            <X size={18} className="text-[#737373]" />
+          <button type="button" onClick={onClose} disabled={busy} className="rounded-[8px] p-1.5 text-[#748078] transition-colors hover:bg-white hover:text-[#294236] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35">
+            <X size={17} strokeWidth={1.7} />
           </button>
         </div>
         <div className="p-4 space-y-3">
@@ -2242,7 +2251,7 @@ function PrintersDevicesTab({ canWrite = false, unlocked = false, onLocked }) {
     <SettingsTabFrame>
       <PrintSettingsLockBanner frozen={frozen} />
       {!isDesktop && (
-        <div className="border border-amber-200 bg-amber-50 text-[13px] text-[#92400E] flex items-center gap-2 rounded-lg px-4 py-3">
+        <div className="flex items-center gap-2 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-4 py-3 text-[12.5px] text-[#755D25]">
           <AlertTriangle size={14} strokeWidth={1.5} />
           Printer/device status requires the desktop app — you&apos;re viewing this in a browser.
         </div>
@@ -2291,10 +2300,10 @@ function PrintersDevicesTab({ canWrite = false, unlocked = false, onLocked }) {
                 {printers.length === 0 ? (
                   <div className="text-[12px] text-[#737373]">No physical printers found.</div>
                 ) : printers.map((p) => (
-                  <div key={p.name} className="flex items-center justify-between text-[13px] border border-[#E5E7EB] rounded-md px-3 py-2">
+                  <div key={p.name} className="flex items-center justify-between rounded-[8px] border border-[#E0E5DD] bg-[#F8F9F5] px-3 py-2 text-[12.5px] transition-colors hover:border-[#C5D1C3] hover:bg-white">
                     <div className="flex items-center gap-2 min-w-0">
                       <span className={`h-2 w-2 rounded-full flex-shrink-0 ${p.connected ? "bg-[#166534]" : "bg-[#DC2626]"}`} />
-                      <span className="font-medium text-[#0A0A0A] truncate">{p.displayName || p.name}</span>
+                      <span className="font-medium text-[#294236] truncate">{p.displayName || p.name}</span>
                       <span className={`text-[11px] ${p.connected ? "text-[#166534]" : "text-[#DC2626]"}`}>
                         {p.connected ? "Connected" : "Offline"}
                       </span>
@@ -2559,9 +2568,9 @@ function GoldRateTab({ canWrite = false }) {
           </button>
         )}
       >
-        <div className="flex items-center justify-between gap-3 mb-4 p-3 rounded-md border border-gray-200 bg-gray-50">
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-[9px] border border-[#D9E1D6] bg-[#F5F7F1] p-3">
           <div>
-            <div className="text-sm font-medium text-gray-900">Live rate from configured source</div>
+            <div className="text-[12.5px] font-semibold text-[#34463A]">Live rate from configured source</div>
             <div className="text-[11px] text-gray-400 mb-0.5">
               Set in Settings → Company → Company Profile → Metal Price Sources
             </div>
@@ -2647,7 +2656,7 @@ function UsersTab() {
               <tr key={u.id} className="table-row">
                 <td className="table-td">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center text-[12px]">
+                    <div className="h-8 w-8 rounded-full bg-[#244B39] text-white flex items-center justify-center text-[12px]">
                       {u.name?.slice(0, 1).toUpperCase()}
                     </div>
                     <div className="font-medium">{u.name}</div>
@@ -2709,11 +2718,11 @@ function NewUserModal({ roles, onClose, onCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
-          <div className="section-title">Invite user</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]"><X size={16} strokeWidth={1.5} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A261F]/45 p-4 backdrop-blur-[2px]">
+      <form onSubmit={save} className="w-full max-w-md overflow-hidden rounded-[10px] border border-[#D4DDD1] bg-[#FEFEFB] shadow-[0_24px_60px_rgba(27,43,34,0.22)]">
+        <div className="flex items-center justify-between border-b border-[#DDE4DA] bg-[#F1F4EC] px-5 py-4">
+          <div className="section-title !text-[#294236]">Invite user</div>
+          <button type="button" onClick={onClose} className="rounded-[8px] p-1.5 text-[#7A857D] transition-colors hover:bg-white hover:text-[#294236] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"><X size={16} strokeWidth={1.7} /></button>
         </div>
         <div className="p-5 space-y-3">
           <F label="Name"><input required className="input" value={form.name} onChange={(e) => set("name", e.target.value)} /></F>
@@ -2725,7 +2734,7 @@ function NewUserModal({ roles, onClose, onCreated }) {
             </select>
           </F>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#DCE3D6] flex items-center justify-end gap-2">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" disabled={busy} className="btn-primary">{busy ? "Creating…" : "Create user"}</button>
         </div>
@@ -2737,7 +2746,7 @@ function NewUserModal({ roles, onClose, onCreated }) {
 function F({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">{label}</span>
+      <span className="mb-1.5 block text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#67766B]">{label}</span>
       {children}
     </label>
   );
@@ -2785,7 +2794,7 @@ function StepRow({ step }) {
     error: <XCircle size={18} className="text-red-500" />,
   };
   return (
-    <div className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors ${
+    <div className={`flex items-center gap-3 rounded-[8px] px-3 py-2.5 transition-colors ${
       step.state === "active" ? "bg-amber-50" : step.state === "done" ? "bg-green-50" : step.state === "error" ? "bg-red-50" : "bg-transparent"
     }`}>
       <div className="flex-shrink-0">{icons[step.state] || icons.pending}</div>
@@ -2922,13 +2931,13 @@ function TransferModal({ device, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A261F]/50 backdrop-blur-[2px]">
+      <div className="mx-4 w-full max-w-md overflow-hidden rounded-[10px] border border-[#D4DDD1] bg-[#FEFEFB] shadow-[0_24px_60px_rgba(27,43,34,0.24)]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-5">
+        <div className="border-b border-[#355845] bg-[#244B39] px-6 py-5">
           <div className="flex items-center gap-3">
-            <div className="bg-white/20 rounded-full p-2">
-              <ArrowLeftRight size={20} className="text-white" />
+            <div className="rounded-[9px] border border-white/15 bg-white/10 p-2">
+              <ArrowLeftRight size={20} className="text-[#E5D19B]" strokeWidth={1.7} />
             </div>
             <div>
               <h2 className="text-white font-semibold text-[15px]">Transfer Shop Ownership</h2>
@@ -2944,7 +2953,7 @@ function TransferModal({ device, onClose }) {
 
         {/* Error */}
         {error && (
-          <div className="mx-6 mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+          <div className="mx-6 mb-4 p-3 bg-red-50 border border-red-200 rounded-[9px]">
             <p className="text-red-600 text-[13px] font-medium">{error}</p>
             <p className="text-red-500 text-[12px] mt-1">Make sure the other PC is on and connected, then try again.</p>
           </div>
@@ -2952,7 +2961,7 @@ function TransferModal({ device, onClose }) {
 
         {/* Done */}
         {done && (
-          <div className="mx-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
+          <div className="mx-6 mb-4 p-3 bg-green-50 border border-green-200 rounded-[9px] flex items-center gap-2">
             <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
             <p className="text-green-700 text-[13px] font-medium">Ownership transferred! Reloading in a moment…</p>
           </div>
@@ -2964,14 +2973,14 @@ function TransferModal({ device, onClose }) {
             {error && (
               <button
                 onClick={handleRetry}
-                className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-[13px] font-medium transition-colors"
+                className="h-9 flex-1 rounded-[9px] border border-[#B49042] bg-[#B49042] px-3 text-[12.5px] font-semibold text-white transition-colors hover:border-[#967333] hover:bg-[#967333] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B49042]/30 focus-visible:ring-offset-2"
               >
                 Try Again
               </button>
             )}
             <button
               onClick={handleCancel}
-              className={`py-2.5 border border-[#E5E7EB] rounded-lg text-[13px] text-[#737373] hover:bg-[#F9FAFB] hover:text-[#0A0A0A] transition-colors ${error ? "flex-1" : "w-full"}`}
+              className={`h-9 rounded-[9px] border border-[#CDD6CA] bg-white px-3 text-[12.5px] font-semibold text-[#526458] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] hover:text-[#294236] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${error ? "flex-1" : "w-full"}`}
             >
               {error ? "Cancel" : "Cancel Transfer"}
             </button>
@@ -3141,24 +3150,24 @@ function DevicesTab({ canWrite = false }) {
   return (
     <SettingsTabFrame>
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
-        <div className="border border-[#E5E7EB] rounded-xl p-4 bg-white">
+        <div className="relative overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-4 shadow-[0_1px_2px_rgba(36,55,45,0.04)] before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[#B49042]">
           <div className="flex items-center gap-2 mb-1">
             <Database size={13} strokeWidth={1.5} className="text-[#B49042]" />
             <span className="text-[10.5px] uppercase tracking-widest font-semibold text-[#737373]">Local Data Saved</span>
           </div>
-          <div className="font-display text-[22px] font-bold text-[#0A0A0A] leading-none">
+          <div className="font-display text-[22px] font-bold text-[#294236] leading-none">
             {dbMb != null ? `${dbMb} MB` : "—"}
           </div>
           <div className="text-[11px] text-[#9CA3AF] mt-1">
             {dbStatus?.schemaVersion ? `Schema v${dbStatus.schemaVersion}` : "SQLite database"}
           </div>
         </div>
-        <div className="border border-[#E5E7EB] rounded-xl p-4 bg-white">
+        <div className="relative overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-4 shadow-[0_1px_2px_rgba(36,55,45,0.04)] before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[#B49042]">
           <div className="flex items-center gap-2 mb-1">
             <Monitor size={13} strokeWidth={1.5} className="text-[#737373]" />
             <span className="text-[10.5px] uppercase tracking-widest font-semibold text-[#737373]">Devices</span>
           </div>
-          <div className="font-display text-[22px] font-bold text-[#0A0A0A] leading-none">
+          <div className="font-display text-[22px] font-bold text-[#294236] leading-none">
             {approved.length}
           </div>
           <div className="text-[11px] text-[#9CA3AF] mt-1">
@@ -3169,14 +3178,14 @@ function DevicesTab({ canWrite = false }) {
 
       {lanAddresses.length > 0 && (
         <p className="text-[12px] text-[#737373]">
-          Main PC address (diagnostic): <span className="font-mono text-[#0A0A0A]">{lanAddresses[0]}</span>
+          Main PC address (diagnostic): <span className="font-mono text-[#294236]">{lanAddresses[0]}</span>
         </p>
       )}
 
       {/* Pending Requests */}
-      <div className="border border-amber-200 rounded-xl bg-amber-50/70 overflow-hidden">
+      <div className="overflow-hidden rounded-[10px] border border-[#E7D5AA] bg-[#FBF7ED]">
         <div className="px-4 py-3 border-b border-amber-200">
-          <h3 className="text-[13px] font-semibold text-[#0A0A0A]">Pending Requests</h3>
+          <h3 className="text-[13px] font-semibold text-[#294236]">Pending Requests</h3>
           <p className="text-[12px] text-[#737373] mt-0.5">
             Computers on the local network that asked to join. Allow before staff can sign in.
           </p>
@@ -3216,7 +3225,7 @@ function DevicesTab({ canWrite = false }) {
             {pending.map((d) => (
               <div key={d.id} className="px-4 py-3 flex items-start justify-between gap-3 bg-white/80">
                 <div className="min-w-0">
-                  <div className="font-semibold text-[13px] text-[#0A0A0A]">{d.device_name || "Staff PC"}</div>
+                  <div className="font-semibold text-[13px] text-[#294236]">{d.device_name || "Staff PC"}</div>
                   <div className="text-[11px] text-[#737373] mt-0.5">
                     {d.meta?.platform ? `${d.meta.platform} · ` : ""}
                     First seen {d.meta?.requested_at ? new Date(d.meta.requested_at).toLocaleString() : (d.created_at ? new Date(d.created_at).toLocaleString() : "—")}
@@ -3234,7 +3243,7 @@ function DevicesTab({ canWrite = false }) {
                       type="button"
                       disabled={actionBusy === d.id}
                       onClick={() => allowDevice(d)}
-                      className="px-3 py-1.5 text-[12px] font-semibold rounded-lg bg-[#0A0A0A] text-white disabled:opacity-50"
+                      className="h-8 rounded-[8px] border border-[#244B39] bg-[#244B39] px-3 text-[11.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {actionBusy === d.id ? "…" : "Allow Device"}
                     </button>
@@ -3242,7 +3251,7 @@ function DevicesTab({ canWrite = false }) {
                       type="button"
                       disabled={actionBusy === d.id}
                       onClick={() => declineDeviceReq(d)}
-                      className="px-3 py-1.5 text-[12px] font-medium rounded-lg border border-[#E5E7EB] bg-white disabled:opacity-50"
+                      className="h-8 rounded-[8px] border border-[#CDD6CA] bg-white px-3 text-[11.5px] font-semibold text-[#526458] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Decline
                     </button>
@@ -3258,7 +3267,7 @@ function DevicesTab({ canWrite = false }) {
                     type="button"
                     disabled={actionBusy === d.id}
                     onClick={() => allowDevice(d)}
-                    className="px-3 py-1.5 text-[12px] font-semibold rounded-lg bg-[#0A0A0A] text-white disabled:opacity-50"
+                    className="h-8 rounded-[8px] border border-[#244B39] bg-[#244B39] px-3 text-[11.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Allow Device
                   </button>
@@ -3274,15 +3283,15 @@ function DevicesTab({ canWrite = false }) {
         <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2">Approved Devices</p>
         <div className="space-y-2">
           {owner && (
-            <div className="border-2 border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4">
+            <div className="rounded-[10px] border border-[#D8C89E] bg-[#FBF7ED] p-4 shadow-[0_1px_2px_rgba(87,68,26,0.05)]">
               <div className="flex items-center gap-3">
-                <div className="bg-amber-100 rounded-full p-2.5">
-                  <Crown size={18} className="text-amber-600" />
+                <div className="rounded-[9px] border border-[#E2D3AB] bg-[#F3E9CF] p-2.5">
+                  <Crown size={18} className="text-[#9B7B36]" strokeWidth={1.7} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-[14px] text-[#0A0A0A]">{owner.device_name}</span>
-                    <span className="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-semibold">MAIN PC</span>
+                    <span className="font-semibold text-[14px] text-[#294236]">{owner.device_name}</span>
+                    <span className="rounded-full border border-[#DCC994] bg-[#F5EAD0] px-2 py-0.5 text-[9.5px] font-bold tracking-[0.06em] text-[#7A6129]">MAIN PC</span>
                   </div>
                   <div className="flex items-center gap-3 mt-1 text-[11px] text-[#737373]">
                     <StatusDot status={deviceStatus(owner)} />
@@ -3295,15 +3304,15 @@ function DevicesTab({ canWrite = false }) {
           {clients.map((device) => {
             const status = deviceStatus(device);
             return (
-              <div key={device.id} className="border border-[#E5E7EB] bg-white rounded-xl p-4">
+              <div key={device.id} className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-4 shadow-[0_1px_2px_rgba(36,55,45,0.035)]">
                 <div className="flex items-center gap-3">
-                  <div className="bg-[#F3F4F6] rounded-full p-2.5">
-                    <Monitor size={18} className="text-[#6B7280]" />
+                  <div className="rounded-[9px] border border-[#DCE3D6] bg-[#F0F3ED] p-2.5">
+                    <Monitor size={18} className="text-[#64756A]" strokeWidth={1.7} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold text-[14px] text-[#0A0A0A]">{device.device_name}</span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">CLIENT</span>
+                      <span className="font-semibold text-[14px] text-[#294236]">{device.device_name}</span>
+                      <span className="rounded-full border border-[#C8D8C6] bg-[#EAF1E8] px-2 py-0.5 text-[9.5px] font-bold tracking-[0.06em] text-[#315E48]">CLIENT</span>
                     </div>
                     <div className="flex flex-wrap items-center gap-3 mt-1 text-[11px] text-[#9CA3AF]">
                       <StatusDot status={status} />
@@ -3321,7 +3330,7 @@ function DevicesTab({ canWrite = false }) {
                       <button
                         type="button"
                         onClick={() => renameDeviceReq(device)}
-                        className="px-2.5 py-1.5 border border-[#E5E7EB] rounded-lg text-[12px] text-[#374151] hover:bg-[#F9FAFB]"
+                        className="h-8 rounded-[8px] border border-[#CDD6CA] bg-white px-2.5 text-[11.5px] font-semibold text-[#526458] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
                       >
                         Rename
                       </button>
@@ -3330,7 +3339,7 @@ function DevicesTab({ canWrite = false }) {
                       <button
                         type="button"
                         onClick={() => setTransferTarget(device)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-[12px] text-[#374151] hover:bg-amber-50 hover:border-amber-300 hover:text-amber-700 font-medium whitespace-nowrap"
+                        className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-[8px] border border-[#D7C89F] bg-[#FBF7ED] px-3 text-[11.5px] font-semibold text-[#755D25] transition-colors hover:border-[#B99B55] hover:bg-[#F5ECD7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B49042]/30"
                       >
                         <ArrowLeftRight size={12} />
                         Transfer Ownership
@@ -3340,7 +3349,7 @@ function DevicesTab({ canWrite = false }) {
                       <button
                         type="button"
                         onClick={() => revokeDevice(device)}
-                        className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-[12px] hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700 font-medium"
+                        className="h-8 rounded-[8px] border border-[#E2C6B9] bg-white px-3 text-[11.5px] font-semibold text-[#9A4F3D] transition-colors hover:border-[#D39D8B] hover:bg-[#FFF4EF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B6534D]/25"
                       >
                         Revoke
                       </button>
@@ -3349,7 +3358,7 @@ function DevicesTab({ canWrite = false }) {
                       <button
                         type="button"
                         onClick={() => deleteDevice(device)}
-                        className="px-2.5 py-1.5 border border-[#E5E7EB] rounded-lg text-[12px] hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+                        className="h-8 rounded-[8px] border border-[#E5C8C2] bg-white px-2.5 text-[11.5px] font-semibold text-[#A34A42] transition-colors hover:border-[#D6A198] hover:bg-[#FFF3F1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B6534D]/25"
                         title="Remove this device"
                       >
                         <Trash2 size={12} />
@@ -3361,7 +3370,7 @@ function DevicesTab({ canWrite = false }) {
             );
           })}
           {clients.length === 0 && !owner && (
-            <div className="border border-dashed border-[#E5E7EB] rounded-xl p-8 text-center">
+            <div className="rounded-[10px] border border-dashed border-[#C8D3C5] bg-[#F8F9F5] p-8 text-center">
               <Monitor size={28} className="text-[#D1D5DB] mx-auto mb-2" />
               <p className="text-[13px] text-[#737373] font-medium">No approved client PCs yet</p>
               <p className="text-[12px] text-[#9CA3AF] mt-1">Staff PCs appear under Pending Requests when they open the ERP</p>
@@ -3376,10 +3385,10 @@ function DevicesTab({ canWrite = false }) {
           <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2">Revoked Devices</p>
           <div className="space-y-2">
             {revoked.map((device) => (
-              <div key={device.id} className="border border-[#E5E7EB] bg-[#FAFAFA] rounded-xl p-4 opacity-80">
+              <div key={device.id} className="rounded-[10px] border border-[#E0E4DE] bg-[#F3F4F0] p-4 opacity-80">
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="font-semibold text-[13px] text-[#0A0A0A]">{device.device_name}</div>
+                    <div className="font-semibold text-[13px] text-[#294236]">{device.device_name}</div>
                     <div className="text-[11px] font-mono text-[#9CA3AF] mt-0.5">{device.device_identifier}</div>
                     <div className="text-[11px] text-red-700 mt-1">Revoked — must request access again</div>
                   </div>
@@ -3387,7 +3396,7 @@ function DevicesTab({ canWrite = false }) {
                     <button
                       type="button"
                       onClick={() => deleteDevice(device)}
-                      className="px-3 py-1.5 border border-[#E5E7EB] rounded-lg text-[12px] hover:bg-red-50 hover:text-red-600"
+                      className="h-8 rounded-[8px] border border-[#E5C8C2] bg-white px-3 text-[11.5px] font-semibold text-[#A34A42] transition-colors hover:border-[#D6A198] hover:bg-[#FFF3F1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B6534D]/25"
                     >
                       Remove
                     </button>

@@ -3,6 +3,7 @@ import { KPISkeleton, SectionSkeleton, PageLoadingBadge } from "@/components/ui/
 import {
   AlertTriangle, Coins, Sparkles, ArrowRight,
   Edit2, Check, X, IndianRupee, Package, ChevronDown, ChevronUp,
+  CalendarDays, TrendingUp,
 } from "lucide-react";
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
@@ -26,6 +27,52 @@ function parseND(raw) {
   if (!raw) return {};
   if (typeof raw === "string") { try { return JSON.parse(raw); } catch { return {}; } }
   return raw;
+}
+
+function getDashboardDayLine(now = new Date()) {
+  const day = new Intl.DateTimeFormat(undefined, { weekday: "long" }).format(now);
+  const hour = now.getHours();
+  const salutation = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  return `${day} · ${salutation}. A clear view of today’s showroom activity.`;
+}
+
+function DashboardAtmosphere() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden lg:block">
+      <div className="absolute right-9 top-1/2 h-52 w-52 -translate-y-1/2 rounded-full border border-[#B28B48]/20" />
+      <div className="absolute right-[74px] top-1/2 h-36 w-36 -translate-y-1/2 rounded-full border border-[#B28B48]/30" />
+      <div className="absolute right-[139px] top-[67%] h-5 w-5 rotate-45 border border-[#B28B48]/35 bg-[#F7F5F0]/60" />
+      <div className="absolute right-[141px] top-[34%] h-px w-14 rotate-90 bg-[#B28B48]/25" />
+      <div className="absolute bottom-[-58px] right-[29%] h-60 w-px rotate-[14deg] bg-[#476B60]/20" />
+      <div className="absolute right-[31%] top-[23%] h-16 w-9 -rotate-[28deg] rounded-[100%_0_100%_0] border border-[#527568]/20 bg-[#DDE6E0]/35" />
+      <div className="absolute right-[25%] top-[42%] h-14 w-8 rotate-[24deg] rounded-[0_100%_0_100%] border border-[#527568]/20 bg-[#DDE6E0]/30" />
+      <div className="absolute right-[38%] top-[57%] h-12 w-7 -rotate-[12deg] rounded-[100%_0_100%_0] border border-[#527568]/15 bg-[#DDE6E0]/25" />
+      <div className="absolute right-[17%] top-[16%] h-10 w-6 rotate-[42deg] rounded-[0_100%_0_100%] border border-[#527568]/15 bg-[#DDE6E0]/20" />
+    </div>
+  );
+}
+
+function DashboardHeader({ firstName, supportingLine, onTitleClick, titleHint, lockButton }) {
+  return (
+    <section className="relative -mx-2 mb-5 overflow-hidden px-2 py-3 sm:px-4 sm:py-5">
+      <div className="relative z-10">
+        <PageHeader
+          title={(
+            <span className="inline-flex flex-wrap items-baseline gap-x-2.5">
+              <span className="font-sans text-[12px] font-semibold uppercase tracking-[0.24em] text-[#987A3A]">Namaste,</span>{" "}
+              <span className="text-[40px] font-normal leading-none tracking-[-0.025em] text-[#173C33] sm:text-[46px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{firstName}</span>
+              <span className="text-[30px] font-normal leading-none text-[#B28B48] sm:text-[34px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>.</span>
+            </span>
+          )}
+          subtitle={supportingLine}
+          onTitleClick={onTitleClick}
+          titleHint={titleHint}
+          actions={lockButton}
+        />
+      </div>
+      <DashboardAtmosphere />
+    </section>
+  );
 }
 
 function LowStockPanel() {
@@ -82,12 +129,12 @@ function LowStockPanel() {
         /* ── Minimized pill ── */
         <button
           onClick={toggle}
-          className="flex items-center gap-2 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white pl-4 pr-3 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-200"
+          className="flex items-center gap-2 bg-[#173C33] hover:bg-[#214C40] active:scale-95 text-white pl-4 pr-3 py-2.5 rounded-full shadow-[0_10px_30px_rgba(23,60,51,0.2)] hover:shadow-[0_12px_34px_rgba(23,60,51,0.24)] transition-all duration-200"
           style={{ transition: "background 0.15s, box-shadow 0.2s, transform 0.1s" }}
         >
-          <AlertTriangle size={13} className="flex-shrink-0" />
+          <AlertTriangle size={13} className="flex-shrink-0 text-[#D7BC7C]" />
           <span className="text-[12.5px] font-semibold tracking-wide">Low Stock Reminder</span>
-          <span className="bg-white/25 border border-white/30 text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center leading-none">
+          <span className="bg-white/10 border border-white/15 text-[#F2DFAF] text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center leading-none">
             {alerts.length}
           </span>
           <ChevronUp size={13} className="flex-shrink-0 opacity-70" />
@@ -95,26 +142,25 @@ function LowStockPanel() {
       ) : (
         /* ── Expanded card ── */
         <div
-          className="bg-white rounded-2xl shadow-2xl border border-[#E5E7EB] overflow-hidden"
-          style={{ width: "312px", boxShadow: "0 20px 60px -12px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04)" }}
+          className="bg-white rounded-[18px] shadow-[0_20px_60px_-18px_rgba(29,42,37,0.28)] border border-[#E3E0D8] overflow-hidden"
+          style={{ width: "312px" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-amber-100"
-            style={{ background: "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)" }}>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E9E1D1] bg-[#FBF8F0]">
             <div className="flex items-center gap-2.5">
-              <div className="h-7 w-7 rounded-lg bg-amber-100 border border-amber-200 flex items-center justify-center flex-shrink-0">
-                <AlertTriangle size={13} className="text-amber-600" />
+              <div className="h-7 w-7 rounded-[10px] bg-[#F4E9CF] border border-[#E6D3A8] flex items-center justify-center flex-shrink-0">
+                <AlertTriangle size={13} className="text-[#9A6C25]" />
               </div>
               <div>
-                <div className="text-[12.5px] font-bold text-amber-900 leading-none">Low Stock Reminder</div>
-                <div className="text-[10px] text-amber-600 mt-0.5">
+                <div className="text-[12.5px] font-bold text-[#173C33] leading-none">Low Stock Reminder</div>
+                <div className="text-[10px] text-[#9A6C25] mt-0.5">
                   {alerts.length} item{alerts.length !== 1 ? "s" : ""} need restocking
                 </div>
               </div>
             </div>
             <button
               onClick={toggle}
-              className="h-7 w-7 rounded-lg flex items-center justify-center text-amber-600 hover:bg-amber-200 transition-colors"
+              className="h-7 w-7 rounded-[9px] flex items-center justify-center text-[#9A6C25] hover:bg-[#F4E9CF] transition-colors"
               title="Minimize"
             >
               <ChevronDown size={14} />
@@ -122,7 +168,7 @@ function LowStockPanel() {
           </div>
 
           {/* Items */}
-          <div className="overflow-y-auto divide-y divide-[#F3F4F6]" style={{ maxHeight: "260px" }}>
+          <div className="overflow-y-auto divide-y divide-[#EEECE6]" style={{ maxHeight: "260px" }}>
             {alerts.map((n) => {
               const d = parseND(n.data);
               const isOut = n.type === "out_of_stock";
@@ -133,19 +179,19 @@ function LowStockPanel() {
                 .replace("Out of Stock: ", "")
                 .replace("Low Stock Alert: ", "");
               return (
-                <div key={n.id} className={`flex items-start gap-3 px-4 py-3 transition-colors hover:bg-[#FAFAFA] ${isOut ? "bg-red-50/20" : ""}`}>
-                  <div className={`h-8 w-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 border ${isOut ? "bg-red-50 border-red-100" : "bg-amber-50 border-amber-100"}`}>
+                <div key={n.id} className={`flex items-start gap-3 px-4 py-3 transition-colors hover:bg-[#FAF9F6] ${isOut ? "bg-red-50/20" : ""}`}>
+                  <div className={`h-8 w-8 rounded-[10px] flex items-center justify-center flex-shrink-0 mt-0.5 border ${isOut ? "bg-red-50 border-red-100" : "bg-amber-50 border-amber-100"}`}>
                     <Package size={13} className={isOut ? "text-red-500" : "text-amber-600"} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-[12.5px] font-semibold text-[#0A0A0A] leading-tight truncate">{productName}</div>
-                    <div className="text-[11px] text-[#737373] mt-0.5 leading-tight line-clamp-1">{n.message}</div>
+                    <div className="text-[12.5px] font-semibold text-[#17231F] leading-tight truncate">{productName}</div>
+                    <div className="text-[11px] text-[#737873] mt-0.5 leading-tight line-clamp-1">{n.message}</div>
                     <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${isOut ? "bg-red-50 text-red-700 border-red-200" : "bg-amber-50 text-amber-700 border-amber-200"}`}>
                         {isOut ? "Out of stock" : stockQty != null ? `${stockQty} ${unit} left` : "Low stock"}
                       </span>
                       {d.threshold != null && (
-                        <span className="text-[10px] text-[#a3a3a3]">min {d.threshold}</span>
+                        <span className="text-[10px] text-[#A0A49F]">min {d.threshold}</span>
                       )}
                     </div>
                   </div>
@@ -155,11 +201,11 @@ function LowStockPanel() {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2.5 border-t border-[#E5E7EB] bg-[#FAFAFA] flex items-center justify-between">
-            <Link to="/inventory" className="text-[11px] text-amber-700 hover:text-amber-900 font-semibold flex items-center gap-1 transition-colors">
+          <div className="px-4 py-2.5 border-t border-[#E9E7E0] bg-[#FAF9F6] flex items-center justify-between">
+            <Link to="/inventory" className="text-[11px] text-[#8B682C] hover:text-[#5E481F] font-semibold flex items-center gap-1 transition-colors">
               View Inventory <ArrowRight size={11} />
             </Link>
-            <span className="text-[10px] text-[#a3a3a3]">refreshes every 30s</span>
+            <span className="text-[10px] text-[#A0A49F]">refreshes every 30s</span>
           </div>
         </div>
       )}
@@ -182,10 +228,10 @@ const RATE_FIELDS = [
 
 function RateItem({ label, value }) {
   return (
-    <div className="flex flex-col items-center gap-0 px-6 border-l border-[#FDE68A] first:border-l-0">
-      <div className="text-[10px] uppercase tracking-widest text-[#92400E] font-bold mb-1">{label}</div>
-      <span className="font-bold text-[18px] text-[#78350F] leading-none">{fmtINR(value)}</span>
-      <div className="text-[9px] text-[#B45309]/60 uppercase tracking-wider mt-0.5">per gram</div>
+    <div className="min-w-0 bg-[#173C33] px-2 py-2.5 text-center sm:px-3">
+      <div className="text-[9.5px] uppercase tracking-[0.16em] text-[#D7C18D] font-semibold mb-1.5 truncate">{label}</div>
+      <span className="font-display text-[17px] font-semibold text-[#FFF9EA] leading-none tabular-nums">{fmtINR(value)}</span>
+      <div className="text-[8.5px] text-[#D7C18D]/55 uppercase tracking-[0.14em] mt-1">per gram</div>
     </div>
   );
 }
@@ -231,24 +277,24 @@ function EditRatesModal({ open, goldRate, onClose, onSave }) {
     try { const payload = Object.fromEntries(RATE_FIELDS.map(({ field }) => [field, parseMoneyInput(draft[field])])); await onSave(payload); onClose(); } finally { setSaving(false); }
   };
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(10,10,10,0.4)" }} onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl border border-[#F0F0F0]">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#F0F0F0]">
-          <div><h2 className="text-[14px] font-semibold text-[#0A0A0A]">Edit Gold Rates</h2><p className="text-[11px] text-[#737373] mt-0.5">Rates are per gram, in ₹.</p></div>
-          <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]"><X size={16} strokeWidth={1.5} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: "rgba(18,29,25,0.48)" }} onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="w-full max-w-sm bg-[#FFFEFB] rounded-[18px] shadow-[0_24px_70px_-20px_rgba(18,38,31,0.38)] border border-[#E4E0D6]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#ECE8DF]">
+          <div><h2 className="font-display text-[16px] font-semibold text-[#173C33]">Edit Gold Rates</h2><p className="text-[11px] text-[#747A75] mt-0.5">Rates are per gram, in ₹.</p></div>
+          <button onClick={onClose} className="h-8 w-8 rounded-[9px] flex items-center justify-center text-[#8B918C] hover:bg-[#F3F1EA] hover:text-[#173C33] transition-colors" aria-label="Close rate editor"><X size={16} strokeWidth={1.5} /></button>
         </div>
         <div className="px-6 py-5 space-y-3">
           {RATE_FIELDS.map(({ label, field }) => (
             <div key={field} className="flex items-center justify-between gap-4">
-              <label className="text-[12.5px] text-[#525252]">{label}</label>
+              <label className="text-[12.5px] text-[#4E5752]">{label}</label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-[#a3a3a3]">₹</span>
-                <MoneyInput value={draft[field] ?? ""} onValueChange={(raw, numeric) => handleFieldChange(field, raw, numeric)} className="w-32 border border-[#E5E7EB] rounded-lg pl-6 pr-2.5 py-1.5 text-[13px] text-right font-mono text-[#0A0A0A] focus:outline-none focus:border-[#B49042] focus:ring-1 focus:ring-[#B49042]/30" />
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-[#9A8A65]">₹</span>
+                <MoneyInput value={draft[field] ?? ""} onValueChange={(raw, numeric) => handleFieldChange(field, raw, numeric)} className="w-32 border border-[#DFDDD5] rounded-[10px] pl-6 pr-2.5 py-1.5 text-[13px] text-right font-mono text-[#17231F] focus:outline-none focus:border-[#B28B48] focus:ring-1 focus:ring-[#B28B48]/25" />
               </div>
             </div>
           ))}
         </div>
-        <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-[#F0F0F0]">
+        <div className="flex items-center justify-end gap-2 px-6 py-4 border-t border-[#ECE8DF] bg-[#FBFAF6] rounded-b-[18px]">
           <button onClick={onClose} className="btn-secondary text-[12.5px]">Cancel</button>
           <button onClick={handleSave} disabled={saving} className="btn-primary inline-flex items-center gap-1.5 text-[12.5px]"><Check size={13} strokeWidth={2} /> {saving ? "Saving…" : "Save"}</button>
         </div>
@@ -262,19 +308,26 @@ function GoldRatesBar({ goldRate, onSave }) {
   const gr = goldRate ?? {};
   return (
     <>
-      <button type="button" onClick={() => setModalOpen(true)} className="w-full text-left rounded-2xl border border-[#FDE68A] px-6 py-4 flex items-center gap-6 hover:border-[#F59E0B] transition-colors cursor-pointer" style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)" }} data-testid={T.goldRateWidget}>
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shadow-sm"><Coins size={16} strokeWidth={1.5} className="text-white" /></div>
+      <button
+        type="button"
+        onClick={() => setModalOpen(true)}
+        className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-[18px] border border-[#214B40] bg-[#173C33] px-4 py-4 text-left shadow-[0_12px_34px_-18px_rgba(23,60,51,0.48)] hover:bg-[#1B443A] hover:border-[#2C5C4E] transition-colors cursor-pointer md:flex md:gap-6 md:px-6"
+        data-testid={T.goldRateWidget}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="h-9 w-9 rounded-[11px] border border-[#D7BC7C]/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0"><Coins size={16} strokeWidth={1.5} className="text-[#DCC589]" /></div>
           <div>
-            <div className="text-[11px] uppercase tracking-widest text-[#92400E] font-bold">Live Gold Rates</div>
-            <div className="flex items-center gap-1 mt-0.5">
-              <span className="relative flex h-1.5 w-1.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" /><span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" /></span>
-              <span className="text-[9.5px] text-[#78350F]/60">Today</span>
+            <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#F0DDAF] font-semibold">Live Gold Rates</div>
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="relative flex h-1.5 w-1.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8FB8A7] opacity-60" /><span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8FB8A7]" /></span>
+              <span className="text-[9.5px] text-[#D7C18D]/60">Today</span>
             </div>
           </div>
         </div>
-        <div className="flex items-center flex-1">{RATE_FIELDS.map(({ label, field }) => <RateItem key={field} label={label} value={gr[field]} />)}</div>
-        <Edit2 size={12} strokeWidth={1.5} className="text-[#B45309]/60 flex-shrink-0" />
+        <div className="order-3 col-span-2 grid min-w-0 flex-1 grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-white/10 bg-white/10 sm:grid-cols-5 md:order-none">
+          {RATE_FIELDS.map(({ label, field }) => <RateItem key={field} label={label} value={gr[field]} />)}
+        </div>
+        <Edit2 size={12} strokeWidth={1.5} className="order-2 text-[#D7C18D]/60 group-hover:text-[#F0DDAF] flex-shrink-0 md:order-none" />
       </button>
       <EditRatesModal open={modalOpen} goldRate={gr} onClose={() => setModalOpen(false)} onSave={onSave} />
     </>
@@ -285,53 +338,68 @@ function GoldRatesBar({ goldRate, onSave }) {
 function MetalCard({ metal, todayGross, todayNet, todayPieces, monthGross, monthNet, monthPieces }) {
   const isGold = metal === "gold";
   return (
-    <div className={`rounded-2xl border p-5 ${isGold ? "border-[#F59E0B] bg-gradient-to-br from-[#FFFBEB] to-[#FEF9EC]" : "border-[#CBD5E1] bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9]"}`}>
+    <article className={`rounded-[18px] border p-5 shadow-[0_10px_30px_-22px_rgba(32,43,38,0.35)] ${isGold ? "border-[#E7D5AA] bg-[#FBF7ED]" : "border-[#D7E0E4] bg-[#F3F7F8]"}`}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
-        <div className={`h-10 w-10 rounded-xl flex items-center justify-center shadow-sm ${isGold ? "bg-gradient-to-br from-[#F59E0B] to-[#D97706]" : "bg-gradient-to-br from-[#64748B] to-[#475569]"}`}>
-          <span className="text-white font-bold text-[15px]">{isGold ? "Au" : "Ag"}</span>
+        <div className={`h-10 w-10 rounded-[12px] flex items-center justify-center border ${isGold ? "bg-[#C6A15B] border-[#B28B48] text-white" : "bg-[#718792] border-[#607681] text-white"}`}>
+          <span className="font-display text-[15px] font-semibold">{isGold ? "Au" : "Ag"}</span>
         </div>
         <div>
-          <div className={`text-[15px] font-bold ${isGold ? "text-[#78350F]" : "text-[#1E293B]"}`}>{isGold ? "Gold" : "Silver"} Sales</div>
-          <div className="text-[11px] text-[#737373]">Gross & net weight summary</div>
+          <div className={`font-display text-[16px] font-semibold ${isGold ? "text-[#6E5420]" : "text-[#314A54]"}`}>{isGold ? "Gold" : "Silver"} Sales</div>
+          <div className="text-[11px] text-[#747975]">Gross & net weight summary</div>
         </div>
       </div>
 
       {/* Today / Month columns */}
       <div className="grid grid-cols-2 gap-3">
         {/* Today */}
-        <div className={`rounded-xl p-3.5 ${isGold ? "bg-[#FEF3C7]/60" : "bg-[#E2E8F0]/50"}`}>
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373] mb-3">Today</div>
+        <div className={`rounded-[12px] border p-3.5 ${isGold ? "bg-white/55 border-[#E9DDBF]" : "bg-white/65 border-[#DCE4E7]"}`}>
+          <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#6F7671] mb-3">Today</div>
           <div className="space-y-2.5">
             <div>
-              <div className="text-[10px] text-[#9CA3AF] uppercase tracking-wide">Gross Wt</div>
-              <div className={`text-[20px] font-bold leading-tight ${isGold ? "text-[#78350F]" : "text-[#1E293B]"}`}>{todayGross.toFixed(3)} <span className="text-[12px] font-normal text-[#737373]">g</span></div>
+              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Gross Wt</div>
+              <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{todayGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
             </div>
             <div>
-              <div className="text-[10px] text-[#9CA3AF] uppercase tracking-wide">Net Wt</div>
-              <div className="text-[16px] font-semibold text-[#374151] leading-tight">{todayNet.toFixed(3)} <span className="text-[11px] font-normal text-[#737373]">g</span></div>
+              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Net Wt</div>
+              <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{todayNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
             </div>
-            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#FDE68A] text-[#92400E]" : "border-[#CBD5E1] text-[#475569]"}`}>{todayPieces} piece{todayPieces !== 1 ? "s" : ""}</div>
+            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{todayPieces} piece{todayPieces !== 1 ? "s" : ""}</div>
           </div>
         </div>
 
         {/* This Month */}
-        <div className={`rounded-xl p-3.5 ${isGold ? "bg-[#FFFBEB]/60" : "bg-[#F8FAFC]/60"}`}>
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373] mb-3">This Month</div>
+        <div className={`rounded-[12px] border p-3.5 ${isGold ? "bg-white/40 border-[#EEE3CB]" : "bg-white/45 border-[#E0E7E9]"}`}>
+          <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#6F7671] mb-3">This Month</div>
           <div className="space-y-2.5">
             <div>
-              <div className="text-[10px] text-[#9CA3AF] uppercase tracking-wide">Gross Wt</div>
-              <div className={`text-[20px] font-bold leading-tight ${isGold ? "text-[#78350F]" : "text-[#1E293B]"}`}>{monthGross.toFixed(3)} <span className="text-[12px] font-normal text-[#737373]">g</span></div>
+              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Gross Wt</div>
+              <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{monthGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
             </div>
             <div>
-              <div className="text-[10px] text-[#9CA3AF] uppercase tracking-wide">Net Wt</div>
-              <div className="text-[16px] font-semibold text-[#374151] leading-tight">{monthNet.toFixed(3)} <span className="text-[11px] font-normal text-[#737373]">g</span></div>
+              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Net Wt</div>
+              <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{monthNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
             </div>
-            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#FDE68A] text-[#92400E]" : "border-[#CBD5E1] text-[#475569]"}`}>{monthPieces} piece{monthPieces !== 1 ? "s" : ""}</div>
+            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{monthPieces} piece{monthPieces !== 1 ? "s" : ""}</div>
           </div>
         </div>
       </div>
-    </div>
+    </article>
+  );
+}
+
+function MetricCard({ icon: Icon, label, value, detail }) {
+  return (
+    <article className="rounded-[16px] border border-[#E5E2DA] bg-white p-5 shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)] transition-colors hover:border-[#D4D9D4]">
+      <div className="flex items-center gap-3">
+        <div className="h-9 w-9 rounded-[11px] border border-[#DCE4DF] bg-[#F3F7F4] flex items-center justify-center flex-shrink-0">
+          <Icon size={15} strokeWidth={1.6} className="text-[#315B4E]" />
+        </div>
+        <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#747A76]">{label}</div>
+      </div>
+      <div className="font-display text-[24px] font-semibold text-[#18231F] mt-4 leading-tight tracking-[-0.02em] tabular-nums">{value}</div>
+      <div className="text-[11px] text-[#818681] mt-1.5">{detail}</div>
+    </article>
   );
 }
 
@@ -341,15 +409,15 @@ const BillingTooltip = ({ active, payload, label }) => {
   const sales = payload.find((p) => p.dataKey === "sales")?.value ?? 0;
   const count = payload.find((p) => p.dataKey === "count")?.payload?.count ?? 0;
   return (
-    <div className="bg-[#0A0A0A] text-white rounded-lg p-3 text-[11px] border border-[#262626] min-w-[150px]">
-      <div className="font-medium mb-2 text-[#a3a3a3]">{label}</div>
+    <div className="bg-white text-[#1D2924] rounded-[12px] p-3 text-[11px] border border-[#DDE2DE] min-w-[160px] shadow-[0_12px_30px_-16px_rgba(22,45,36,0.35)]">
+      <div className="font-semibold mb-2 text-[#5F6B65]">{label}</div>
       <div className="flex items-center justify-between gap-4">
-        <span className="text-[#D4A84B]">Billing</span>
-        <span className="font-mono font-medium">{fmtINR(sales)}</span>
+        <span className="text-[#315B4E]">Billing</span>
+        <span className="font-mono font-medium tabular-nums">{fmtINR(sales)}</span>
       </div>
-      <div className="flex items-center justify-between gap-4 mt-1">
-        <span className="text-[#a3a3a3]">Bills</span>
-        <span className="font-mono font-medium">{Number(count) || 0}</span>
+      <div className="flex items-center justify-between gap-4 mt-1.5 pt-1.5 border-t border-[#EEF0EC]">
+        <span className="text-[#8A918C]">Bills</span>
+        <span className="font-mono font-medium tabular-nums">{Number(count) || 0}</span>
       </div>
     </div>
   );
@@ -360,29 +428,31 @@ function BillingTrendChart({ data }) {
   const hasSales = rows.some((d) => Number(d.sales) > 0 || Number(d.count) > 0);
   if (!rows.length || !hasSales) {
     return (
-      <div className="h-[220px] flex items-center justify-center text-[12px] text-[#737373]">
+      <div className="h-[230px] flex flex-col items-center justify-center gap-2 text-[12px] text-[#7C837E]">
+        <TrendingUp size={18} strokeWidth={1.4} className="text-[#9AA69F]" />
         No billings in the last 7 days.
       </div>
     );
   }
   return (
-    <div className="w-full min-w-0 h-[220px]">
+    <div className="w-full min-w-0 h-[230px]">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={rows} margin={{ top: 8, right: 8, left: 0, bottom: 0 }} barCategoryGap="28%">
-          <CartesianGrid stroke="#F1F1F1" strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="date" stroke="#a3a3a3" fontSize={10} tickLine={false} axisLine={false} />
+        <BarChart data={rows} margin={{ top: 10, right: 8, left: 0, bottom: 0 }} barCategoryGap="28%">
+          <CartesianGrid stroke="#E7E8E3" strokeDasharray="2 5" vertical={false} />
+          <XAxis dataKey="date" stroke="#A3A9A4" fontSize={10} tickLine={false} axisLine={{ stroke: "#E0E3DF" }} tickMargin={10} />
           <YAxis
-            stroke="#a3a3a3"
+            stroke="#A3A9A4"
             fontSize={10}
             tickLine={false}
             axisLine={false}
             width={52}
             domain={[0, "auto"]}
             tickFormatter={(v) => fmtINR(v, { decimals: 0 })}
+            tickMargin={8}
           />
-          <Tooltip content={<BillingTooltip />} cursor={{ fill: "#F9FAFB" }} />
-          <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-          <Bar dataKey="sales" name="Billing ₹" fill="#B49042" radius={[3, 3, 0, 0]} maxBarSize={28} />
+          <Tooltip content={<BillingTooltip />} cursor={{ fill: "rgba(33,78,66,0.05)" }} />
+          <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: 11, paddingTop: 12, color: "#68716C" }} />
+          <Bar dataKey="sales" name="Billing ₹" fill="#234F43" radius={[4, 4, 0, 0]} maxBarSize={28} />
         </BarChart>
       </ResponsiveContainer>
     </div>
@@ -390,11 +460,11 @@ function BillingTrendChart({ data }) {
 }
 
 // ─── Purity Donut ─────────────────────────────────────────────────────────────
-const PURITY_COLORS = { "24K Gold": "#F59E0B", "22K Gold": "#D97706", "18K Gold": "#B45309", "Silver": "#94A3B8" };
-const FALLBACK_COLORS = ["#F59E0B", "#D97706", "#B45309", "#94A3B8", "#6B7280"];
+const PURITY_COLORS = { "24K Gold": "#234F43", "22K Gold": "#5D7E71", "18K Gold": "#C09A55", "Silver": "#8A9BA3" };
+const FALLBACK_COLORS = ["#234F43", "#5D7E71", "#C09A55", "#8A9BA3", "#B8B2A5"];
 
 function PurityDonut({ data }) {
-  if (!data || data.length === 0) return <div className="h-48 flex items-center justify-center text-[12px] text-[#737373]">No data this month.</div>;
+  if (!data || data.length === 0) return <div className="h-48 flex items-center justify-center text-[12px] text-[#7C837E]">No data this month.</div>;
   const total = data.reduce((s, d) => s + d.gross_weight, 0);
   return (
     <div>
@@ -404,21 +474,21 @@ function PurityDonut({ data }) {
             {data.map((entry, i) => <Cell key={i} fill={PURITY_COLORS[entry.purity] || FALLBACK_COLORS[i % FALLBACK_COLORS.length]} />)}
           </Pie>
           <Tooltip
-            contentStyle={{ background: "#fff", color: "#0A0A0A", border: "1px solid #E5E7EB", borderRadius: 6, fontSize: 11, boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+            contentStyle={{ background: "#FFFFFF", color: "#1D2924", border: "1px solid #DDE2DE", borderRadius: 12, fontSize: 11, boxShadow: "0 12px 30px -16px rgba(22,45,36,0.35)" }}
             formatter={(v, name) => [`${Number(v).toFixed(3)} g`, name]}
           />
         </PieChart>
       </ResponsiveContainer>
-      <div className="space-y-2 mt-1">
+      <div className="space-y-2.5 mt-2">
         {data.map((d, i) => {
           const pct = total > 0 ? Math.round((d.gross_weight / total) * 100) : 0;
           const color = PURITY_COLORS[d.purity] || FALLBACK_COLORS[i % FALLBACK_COLORS.length];
           return (
             <div key={d.purity} className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: color }} />
-              <span className="text-[11.5px] text-[#525252] flex-1">{d.purity}</span>
-              <span className="text-[11px] font-mono text-[#0A0A0A]">{Number(d.gross_weight).toFixed(3)} g</span>
-              <span className="text-[10px] text-[#9CA3AF] w-8 text-right">{pct}%</span>
+              <span className="text-[11.5px] text-[#505A55] flex-1">{d.purity}</span>
+              <span className="text-[11px] font-mono text-[#27332E] tabular-nums">{Number(d.gross_weight).toFixed(3)} g</span>
+              <span className="text-[10px] text-[#939994] w-8 text-right tabular-nums">{pct}%</span>
             </div>
           );
         })}
@@ -429,20 +499,21 @@ function PurityDonut({ data }) {
 
 // ─── Top Categories ────────────────────────────────────────────────────────────
 function CategoryBars({ categories }) {
-  if (!categories || categories.length === 0) return <div className="text-[12px] text-[#737373] py-4">No category data this month.</div>;
+  if (!categories || categories.length === 0) return <div className="text-[12px] text-[#7C837E] py-6 text-center">No category data this month.</div>;
   const max = Math.max(...categories.map((c) => c.total), 1);
   return (
-    <div className="space-y-3">
-      {categories.map(({ name, total }) => {
+    <div className="space-y-3.5">
+      {categories.map(({ name, total }, i) => {
         const pct = Math.round((total / max) * 100);
+        const color = ["#234F43", "#5D7E71", "#B28B48", "#899A91", "#B7B0A2"][i % 5];
         return (
           <div key={name}>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[12px] font-medium text-[#0A0A0A]">{name}</span>
-              <span className="text-[11.5px] text-[#525252]">{fmtINR(total)}</span>
+            <div className="flex items-center justify-between gap-3 mb-1.5">
+              <span className="text-[12px] font-medium text-[#27332E] truncate">{name}</span>
+              <span className="text-[11.5px] text-[#59635E] font-mono tabular-nums">{fmtINR(total)}</span>
             </div>
-            <div className="h-1.5 w-full bg-[#F5F5F5] rounded-full overflow-hidden">
-              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, #B49042, #F0C468)" }} />
+            <div className="h-1.5 w-full bg-[#ECEEE9] rounded-full overflow-hidden">
+              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
             </div>
           </div>
         );
@@ -503,23 +574,32 @@ export default function Dashboard() {
     finally { setRateSaving(false); }
   }, []);
 
+  const firstName = user?.name?.split(" ")[0] || "there";
+  const supportingLine = getDashboardDayLine();
+  const surfaceClassName = includeHidden
+    ? hiddenUnlockBleedClass(includeHidden)
+    : "-mx-5 -my-5 min-h-[calc(100vh-4rem)] bg-[#F7F5F0] px-5 py-5 xl:-mx-7 xl:-my-7 xl:px-7 xl:py-7";
+
   if (loading) {
     return (
       <>
-      <div className={hiddenUnlockBleedClass(includeHidden)}>
-      <div className="max-w-[1400px] space-y-4">
-        <PageHeader
-          title={`Namaste, ${user?.name?.split(" ")[0] || "there"}.`}
-          subtitle="A calm summary of today's showroom activity."
-          onTitleClick={handleTitleClick}
-          titleHint={titleHint}
-          actions={lockButton}
-        />
-        <PageLoadingBadge />
-        <div className="h-14 shimmer rounded-2xl" />
-        <KPISkeleton count={4} />
-        <div className="grid grid-cols-3 gap-4"><SectionSkeleton height="h-56" /><SectionSkeleton height="h-56" /><SectionSkeleton height="h-56" /></div>
-      </div>
+      <div className={surfaceClassName}>
+        <div className="max-w-[1400px] space-y-5">
+          <DashboardHeader
+            firstName={firstName}
+            supportingLine={supportingLine}
+            onTitleClick={handleTitleClick}
+            titleHint={titleHint}
+            lockButton={lockButton}
+          />
+          <div className="flex items-center justify-between gap-4 rounded-[14px] border border-[#E4E1D9] bg-white/70 px-4 py-3">
+            <PageLoadingBadge />
+            <span className="hidden text-[11px] text-[#8A908B] sm:inline">Preparing your showroom overview</span>
+          </div>
+          <div className="h-[86px] shimmer rounded-[18px]" />
+          <KPISkeleton count={4} />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"><SectionSkeleton height="h-60" /><SectionSkeleton height="h-60" /><SectionSkeleton height="h-60" /></div>
+        </div>
       </div>
       {dialog}
       </>
@@ -529,15 +609,22 @@ export default function Dashboard() {
   if (!data) {
     return (
       <>
-      <div className={hiddenUnlockBleedClass(includeHidden)}>
-        <PageHeader
-          title={`Namaste, ${user?.name?.split(" ")[0] || "there"}.`}
-          subtitle="A calm summary of today's showroom activity."
-          onTitleClick={handleTitleClick}
-          titleHint={titleHint}
-          actions={lockButton}
-        />
-        <div className="card p-10 text-center text-[13px] text-[#737373]">Unable to load dashboard. Please refresh.</div>
+      <div className={surfaceClassName}>
+        <div className="max-w-[1400px]">
+          <DashboardHeader
+            firstName={firstName}
+            supportingLine={supportingLine}
+            onTitleClick={handleTitleClick}
+            titleHint={titleHint}
+            lockButton={lockButton}
+          />
+          <div role="alert" className="rounded-[18px] border border-[#E4D8D2] bg-white px-6 py-12 text-center shadow-[0_12px_34px_-26px_rgba(50,40,35,0.4)]">
+            <div className="mx-auto h-10 w-10 rounded-[12px] border border-[#E7D6CC] bg-[#FBF2EC] flex items-center justify-center">
+              <AlertTriangle size={17} strokeWidth={1.6} className="text-[#A35F3C]" />
+            </div>
+            <div className="mt-4 text-[13px] font-semibold text-[#3A332F]">Unable to load dashboard. Please refresh.</div>
+          </div>
+        </div>
       </div>
       {dialog}
       </>
@@ -549,47 +636,51 @@ export default function Dashboard() {
 
   return (
     <>
-    <div className={hiddenUnlockBleedClass(includeHidden)}>
-    <div className="max-w-[1400px] space-y-4">
+    <div className={surfaceClassName}>
+    <div className="max-w-[1400px] space-y-5">
 
       {/* Header */}
-      <PageHeader
-        title={`Namaste, ${user?.name?.split(" ")[0] || "there"}.`}
-        subtitle="A calm summary of today's showroom activity."
+      <DashboardHeader
+        firstName={firstName}
+        supportingLine={supportingLine}
         onTitleClick={handleTitleClick}
         titleHint={titleHint}
-        actions={lockButton}
+        lockButton={lockButton}
       />
 
       {/* Live Gold Rates */}
       <GoldRatesBar goldRate={gr} onSave={handleRateSave} />
 
       {/* Revenue KPIs */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="card p-4">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373]">Today Sales</div>
-          <div className="text-[22px] font-bold text-[#0A0A0A] mt-1 leading-tight">{fmtINR(kpis.today_sales ?? 0)}</div>
-          <div className="text-[11px] text-[#737373] mt-1">{kpis.today_invoices ?? 0} invoice{(kpis.today_invoices ?? 0) !== 1 ? "s" : ""}</div>
-        </div>
-        <div className="card p-4">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373]">This Month</div>
-          <div className="text-[22px] font-bold text-[#0A0A0A] mt-1 leading-tight">{fmtINR(kpis.month_sales ?? 0)}</div>
-          <div className="text-[11px] text-[#737373] mt-1">{kpis.month_invoices ?? 0} invoice{(kpis.month_invoices ?? 0) !== 1 ? "s" : ""}</div>
-        </div>
-        <div className="card p-4">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373]">Today Cash</div>
-          <div className="text-[22px] font-bold text-[#0A0A0A] mt-1 leading-tight">{fmtINR(kpis.today_cash ?? 0)}</div>
-          <div className="text-[11px] text-[#737373] mt-1">Cash collections</div>
-        </div>
-        <div className="card p-4">
-          <div className="text-[10px] uppercase tracking-widest font-bold text-[#737373]">Avg Daily</div>
-          <div className="text-[22px] font-bold text-[#0A0A0A] mt-1 leading-tight">{fmtINR(kpis.avg_daily_sales ?? 0)}</div>
-          <div className="text-[11px] text-[#737373] mt-1">This month so far</div>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard
+          icon={IndianRupee}
+          label="Today Sales"
+          value={fmtINR(kpis.today_sales ?? 0)}
+          detail={`${kpis.today_invoices ?? 0} invoice${(kpis.today_invoices ?? 0) !== 1 ? "s" : ""}`}
+        />
+        <MetricCard
+          icon={CalendarDays}
+          label="This Month"
+          value={fmtINR(kpis.month_sales ?? 0)}
+          detail={`${kpis.month_invoices ?? 0} invoice${(kpis.month_invoices ?? 0) !== 1 ? "s" : ""}`}
+        />
+        <MetricCard
+          icon={Coins}
+          label="Today Cash"
+          value={fmtINR(kpis.today_cash ?? 0)}
+          detail="Cash collections"
+        />
+        <MetricCard
+          icon={TrendingUp}
+          label="Avg Daily"
+          value={fmtINR(kpis.avg_daily_sales ?? 0)}
+          detail="This month so far"
+        />
       </div>
 
       {/* ── Metal Summary Cards ───────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <MetalCard
           metal="gold"
           todayGross={kpis.today_gold_gross ?? 0}
@@ -613,51 +704,51 @@ export default function Dashboard() {
       {/* ── Daily Billing + Purity Breakdown ─────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Bar chart — 2/3 width */}
-        <div className="lg:col-span-2 min-w-0 card p-4">
+        <section className="lg:col-span-2 min-w-0 rounded-[18px] border border-[#E4E2DB] bg-white p-5 shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)]">
           <div className="mb-3">
-            <div className="section-title text-[13px]">Daily Billing — Last 7 Days</div>
-            <div className="text-[11px] text-[#737373] mt-0.5">Invoice total billed each day</div>
+            <div className="font-display text-[14px] font-semibold text-[#20352E]">Daily Billing — Last 7 Days</div>
+            <div className="text-[11px] text-[#7C837E] mt-0.5">Invoice total billed each day</div>
           </div>
           <BillingTrendChart data={trend} />
-        </div>
+        </section>
 
         {/* Purity donut — 1/3 width */}
-        <div className="card p-4">
+        <section className="rounded-[18px] border border-[#E4E2DB] bg-white p-5 shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)]">
           <div className="mb-3">
-            <div className="section-title text-[13px]">Purity Breakdown</div>
-            <div className="text-[11px] text-[#737373] mt-0.5">By gross weight this month</div>
+            <div className="font-display text-[14px] font-semibold text-[#20352E]">Purity Breakdown</div>
+            <div className="text-[11px] text-[#7C837E] mt-0.5">By gross weight this month</div>
           </div>
           <PurityDonut data={purity_breakdown} />
-        </div>
+        </section>
       </div>
 
       {/* ── Bottom Row ────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
 
         {/* Recent Transactions */}
-        <div className="card p-0 overflow-hidden" data-testid={T.recentInvoicesTable}>
-          <div className="px-4 py-3 border-b border-[#E5E7EB] flex items-center justify-between">
-            <div><div className="section-title text-[13px]">Recent Transactions</div><div className="text-[11px] text-[#737373] mt-0.5">Latest 5 invoices</div></div>
+        <section className="rounded-[18px] border border-[#E4E2DB] bg-white overflow-hidden shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)]" data-testid={T.recentInvoicesTable}>
+          <div className="px-5 py-4 border-b border-[#E9E7E0] flex items-center justify-between gap-3">
+            <div><div className="font-display text-[14px] font-semibold text-[#20352E]">Recent Transactions</div><div className="text-[11px] text-[#7C837E] mt-0.5">Latest 5 invoices</div></div>
             {isEnabled("reports") && (
-              <Link to="/reports" className="text-[11.5px] text-[#525252] hover:text-[#0A0A0A] inline-flex items-center gap-1">View all <ArrowRight size={11} strokeWidth={1.5} /></Link>
+              <Link to="/reports" className="text-[11.5px] text-[#356052] hover:text-[#173C33] inline-flex items-center gap-1 font-medium">View all <ArrowRight size={11} strokeWidth={1.5} /></Link>
             )}
           </div>
           {recent_invoices.length === 0 ? (
-            <div className="p-6 text-center text-[12px] text-[#737373]">No invoices yet.</div>
+            <div className="p-7 text-center text-[12px] text-[#7C837E]">No invoices yet.</div>
           ) : (
-            <div className="divide-y divide-[#F5F5F5]">
+            <div className="divide-y divide-[#EEECE6]">
               {recent_invoices.map((inv) => (
-                <div key={inv.id} className="flex items-center gap-3 px-4 py-2.5">
-                  <div className="h-7 w-7 rounded-lg bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center flex-shrink-0"><IndianRupee size={12} strokeWidth={1.5} className="text-[#B49042]" /></div>
+                <div key={inv.id} className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-[#FAF9F6]">
+                  <div className="h-8 w-8 rounded-[10px] bg-[#F3F7F4] border border-[#DCE4DF] flex items-center justify-center flex-shrink-0"><IndianRupee size={12} strokeWidth={1.5} className="text-[#356052]" /></div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[12px] font-medium text-[#0A0A0A] truncate">{inv.customer_name || "Walk-in"}</span>
-                      <span className="text-[12px] font-semibold text-[#0A0A0A] ml-2 flex-shrink-0">{fmtINR(inv.grand_total)}</span>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[12px] font-medium text-[#25312C] truncate">{inv.customer_name || "Walk-in"}</span>
+                      <span className="text-[12px] font-semibold text-[#25312C] ml-2 flex-shrink-0 font-mono tabular-nums">{fmtINR(inv.grand_total)}</span>
                     </div>
-                    <div className="flex items-center justify-between mt-0.5">
-                      <span className="text-[10.5px] font-mono text-[#a3a3a3]">{inv.invoice_no}</span>
+                    <div className="flex items-center justify-between gap-3 mt-0.5">
+                      <span className="text-[10.5px] font-mono text-[#969C97]">{inv.invoice_no}</span>
                       {inv.payment_mode && (
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${inv.payment_mode === "cash" ? "bg-[#F5F5F5] text-[#525252] border-[#E5E7EB]" : inv.payment_mode === "card" ? "bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE]" : "bg-[#F5F3FF] text-[#6D28D9] border-[#DDD6FE]"}`}>{inv.payment_mode}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${inv.payment_mode === "cash" ? "bg-[#F1F4F1] text-[#52615A] border-[#DDE4DF]" : inv.payment_mode === "card" ? "bg-[#EFF5F7] text-[#3E6474] border-[#CFDFE5]" : "bg-[#F5F2F8] text-[#6B557A] border-[#E1D8E8]"}`}>{inv.payment_mode}</span>
                       )}
                     </div>
                   </div>
@@ -665,34 +756,34 @@ export default function Dashboard() {
               ))}
             </div>
           )}
-        </div>
+        </section>
 
         {/* Top Selling Categories */}
-        <div className="card p-4">
-          <div className="mb-4"><div className="section-title text-[13px]">Top Selling Categories</div><div className="text-[11px] text-[#737373] mt-0.5">By sales this month</div></div>
+        <section className="rounded-[18px] border border-[#E4E2DB] bg-white p-5 shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)]">
+          <div className="mb-4"><div className="font-display text-[14px] font-semibold text-[#20352E]">Top Selling Categories</div><div className="text-[11px] text-[#7C837E] mt-0.5">By sales this month</div></div>
           <CategoryBars categories={top_categories} />
-        </div>
+        </section>
 
         {/* Low Stock Alerts */}
-        <div className="card p-0" data-testid={T.lowStockList}>
-          <div className="px-4 py-3 border-b border-[#E5E7EB]">
-            <div className="flex items-center gap-1.5"><AlertTriangle size={13} strokeWidth={1.5} className="text-[#9A3412]" /><div className="section-title text-[13px]">Low Stock Alerts</div></div>
-            <div className="text-[11px] text-[#737373] mt-0.5">Sub-categories at or below their Catalog threshold.</div>
+        <section className="rounded-[18px] border border-[#E4E2DB] bg-white overflow-hidden shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)]" data-testid={T.lowStockList}>
+          <div className="px-5 py-4 border-b border-[#E9E7E0]">
+            <div className="flex items-center gap-2"><div className="h-7 w-7 rounded-[9px] border border-[#E9D7C5] bg-[#FBF3EA] flex items-center justify-center"><AlertTriangle size={13} strokeWidth={1.5} className="text-[#A35F3C]" /></div><div className="font-display text-[14px] font-semibold text-[#20352E]">Low Stock Alerts</div></div>
+            <div className="text-[11px] text-[#7C837E] mt-2">Sub-categories at or below their Catalog threshold.</div>
           </div>
           {low_stock.length === 0 ? (
-            <div className="p-6 text-[12px] text-[#737373]">All sub-categories are well stocked.</div>
+            <div className="p-7 text-[12px] text-[#7C837E] text-center">All sub-categories are well stocked.</div>
           ) : (
-            <ul className="divide-y divide-[#F5F5F5]">
+            <ul className="divide-y divide-[#EEECE6]">
               {low_stock.slice(0, 6).map((p) => (
-                <li key={p.id} className="flex items-center gap-3 px-4 py-2.5">
-                  <div className="h-8 w-8 rounded-lg bg-[#FAFAFA] border border-[#E5E7EB] flex items-center justify-center flex-shrink-0"><Sparkles size={12} className="text-[#a3a3a3]" strokeWidth={1.5} /></div>
-                  <div className="flex-1 min-w-0"><div className="text-[12px] font-medium text-[#0A0A0A] truncate">{p.name}</div><div className="text-[10.5px] text-[#737373]">Threshold {p.low_stock_threshold}</div></div>
+                <li key={p.id} className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-[#FAF9F6]">
+                  <div className="h-8 w-8 rounded-[10px] bg-[#F7F5F0] border border-[#E5E2DA] flex items-center justify-center flex-shrink-0"><Sparkles size={12} className="text-[#9B7A40]" strokeWidth={1.5} /></div>
+                  <div className="flex-1 min-w-0"><div className="text-[12px] font-medium text-[#25312C] truncate">{p.name}</div><div className="text-[10.5px] text-[#858B86]">Threshold {p.low_stock_threshold}</div></div>
                   <div className="chip chip-warning flex-shrink-0 text-[10.5px]">{p.stock_qty} pcs</div>
                 </li>
               ))}
             </ul>
           )}
-        </div>
+        </section>
       </div>
     </div>
     </div>

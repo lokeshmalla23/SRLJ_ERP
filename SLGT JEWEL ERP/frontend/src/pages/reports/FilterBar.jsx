@@ -4,11 +4,11 @@ import { Filter, ChevronDown, Check } from "lucide-react";
 /** Sticky filter toolbar shell — each Quick Report / tab fills it with its own fields. */
 export function FilterBar({ children }) {
   return (
-    <div className="card mb-4 sticky top-0 z-10">
+    <div className="card !mb-4 !rounded-xl !border-[#D8D2C6] !bg-[#FFFDF9]/95 !p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_24px_rgba(38,52,43,0.04)] sticky top-0 z-10 backdrop-blur-sm">
       <div className="flex flex-wrap items-end gap-3">
-        <div className="flex items-center gap-1.5 text-[#525252] mb-0.5">
-          <Filter size={13} strokeWidth={1.5} />
-          <span className="text-[12px] font-medium">Filters</span>
+        <div className="mb-0.5 flex items-center gap-1.5 border-r border-[#E3DED4] pr-3 text-[#315C4A]">
+          <Filter size={13} strokeWidth={1.7} />
+          <span className="text-[11px] font-semibold uppercase tracking-[0.08em]">Filters</span>
         </div>
         {children}
       </div>
@@ -19,7 +19,7 @@ export function FilterBar({ children }) {
 export function FilterField({ label, children, className = "" }) {
   return (
     <div className={className}>
-      {label && <div className="text-[10px] uppercase tracking-[0.06em] text-[#a3a3a3] mb-1">{label}</div>}
+      {label && <div className="mb-1 text-[10px] font-semibold uppercase tracking-[0.07em] text-[#747B76]">{label}</div>}
       {children}
     </div>
   );
@@ -28,7 +28,7 @@ export function FilterField({ label, children, className = "" }) {
 export function FilterSelect({ label, value, onChange, options, placeholder = "All", className = "" }) {
   return (
     <FilterField label={label} className={className}>
-      <select className="input !py-1.5 !text-[12.5px] min-w-[140px]" value={value || ""} onChange={(e) => onChange(e.target.value)}>
+      <select className="input !min-w-[140px] !rounded-[9px] !border-[#CFC8BB] !py-1.5 !text-[12.5px] focus:!border-[#3D6B5B] focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]" value={value || ""} onChange={(e) => onChange(e.target.value)}>
         <option value="">{placeholder}</option>
         {options.map((o) => (
           <option key={o.id || o.value} value={o.id || o.value}>{o.name || o.label}</option>
@@ -85,18 +85,18 @@ export function FilterMultiSelect({ label, value, onChange, options, placeholder
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="input !py-1.5 !text-[12.5px] min-w-[140px] flex items-center justify-between gap-2 text-left"
+          className="input !min-w-[140px] !rounded-[9px] !border-[#CFC8BB] !py-1.5 !text-[12.5px] flex items-center justify-between gap-2 text-left focus:!border-[#3D6B5B] focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]"
         >
           <span className={selected.length ? "text-[#0A0A0A]" : "text-[#a3a3a3]"}>{summary}</span>
-          <ChevronDown size={13} strokeWidth={1.5} className="text-[#a3a3a3] shrink-0" />
+          <ChevronDown size={13} strokeWidth={1.7} className="shrink-0 text-[#747B76]" />
         </button>
         {open && (
-          <div className="absolute z-20 mt-1 w-full min-w-[180px] max-h-64 overflow-y-auto bg-white border border-[#E5E7EB] rounded-lg shadow-lg py-1">
+          <div className="absolute z-20 mt-1.5 w-full min-w-[180px] max-h-64 overflow-y-auto rounded-[10px] border border-[#D8D2C6] bg-[#FFFDF9] py-1 shadow-[0_14px_35px_rgba(37,49,41,0.14)]">
             {selected.length > 0 && (
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="w-full text-left px-3 py-1.5 text-[11.5px] text-[#991B1B] hover:bg-[#FEF2F2]"
+                className="w-full px-3 py-1.5 text-left text-[11.5px] font-medium text-[#9B3A3A] hover:bg-[#FBECEC]"
               >
                 Clear all
               </button>
@@ -107,9 +107,9 @@ export function FilterMultiSelect({ label, value, onChange, options, placeholder
               return (
                 <label
                   key={id}
-                  className="flex items-center gap-2 px-3 py-1.5 text-[12.5px] text-[#0A0A0A] hover:bg-[#F5F5F5] cursor-pointer"
+                  className="flex cursor-pointer items-center gap-2 px-3 py-1.5 text-[12.5px] text-[#24332B] hover:bg-[#F3F1EB]"
                 >
-                  <span className={`h-4 w-4 rounded border flex items-center justify-center shrink-0 ${checked ? "bg-[#0A0A0A] border-[#0A0A0A]" : "border-[#D4D4D4]"}`}>
+                  <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border ${checked ? "border-[#315C4A] bg-[#315C4A]" : "border-[#C8C1B5] bg-white"}`}>
                     {checked && <Check size={11} strokeWidth={2.5} className="text-white" />}
                   </span>
                   <input type="checkbox" className="hidden" checked={checked} onChange={() => toggle(id)} />
@@ -132,7 +132,7 @@ export function FilterInput({ label, value, onChange, placeholder, className = "
     <FilterField label={label} className={className}>
       <input
         type={type}
-        className="input !py-1.5 !text-[12.5px] min-w-[140px]"
+        className="input !min-w-[140px] !rounded-[9px] !border-[#CFC8BB] !py-1.5 !text-[12.5px] focus:!border-[#3D6B5B] focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]"
         value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

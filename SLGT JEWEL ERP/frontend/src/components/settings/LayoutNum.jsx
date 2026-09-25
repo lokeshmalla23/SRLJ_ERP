@@ -38,12 +38,12 @@ export default function LayoutNum({
   };
 
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       {label}
-      <div className="flex items-center gap-1 mt-1">
-        <button type="button" className="btn-secondary !px-2 !py-1 text-[13px]" disabled={disabled} onClick={() => nudge(-1)} aria-label="decrease">−</button>
+      <div className="mt-1 flex items-center gap-1">
+        <button type="button" className="btn-secondary !h-8 !w-8 !rounded-[8px] !p-0 text-[13px]" disabled={disabled} onClick={() => nudge(-1)} aria-label="decrease">−</button>
         <input
-          className="input text-center flex-1 min-w-0"
+          className="input min-w-0 flex-1 text-center !rounded-[8px] !border-[#C8D2C5] focus:!border-[#5F7D67] focus:!ring-2 focus:!ring-[#DCE7D8]"
           type="text"
           inputMode="decimal"
           disabled={disabled}
@@ -58,7 +58,7 @@ export default function LayoutNum({
           onBlur={() => { setFocused(false); commit(draft); }}
           onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
         />
-        <button type="button" className="btn-secondary !px-2 !py-1 text-[13px]" disabled={disabled} onClick={() => nudge(1)} aria-label="increase">+</button>
+        <button type="button" className="btn-secondary !h-8 !w-8 !rounded-[8px] !p-0 text-[13px]" disabled={disabled} onClick={() => nudge(1)} aria-label="increase">+</button>
         {suffix ? <span className="text-[11px] text-[#737373] w-8 shrink-0">{suffix}</span> : null}
       </div>
     </label>

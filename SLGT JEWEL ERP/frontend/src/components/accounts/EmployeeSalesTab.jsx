@@ -34,8 +34,8 @@ const PRESETS = [
   { label: "This month", from: () => `${today().slice(0, 8)}01`, to: () => today() },
 ];
 
-const METAL_ACCENTS = { gold: "#B49042", silver: "#8D9F87" };
-const METAL_FALLBACK_ACCENTS = ["#C08552", "#8D9F87", "#A0785A", "#7B8794"];
+const METAL_ACCENTS = { gold: "#B08A3A", silver: "#7D8882" };
+const METAL_FALLBACK_ACCENTS = ["#315C4A", "#7D8882", "#B08A3A", "#A7B3AD"];
 
 function metalAccent(name, index) {
   const key = String(name || "").trim().toLowerCase();
@@ -52,8 +52,8 @@ function MetalWeightCard({ metal, index = 0 }) {
   const rows = metal.rows || [];
   return (
     <div
-      className="bg-white rounded-2xl border p-4 overflow-hidden"
-      style={{ borderColor: "#E5E7EB", borderTop: `2px solid ${accent}` }}
+      className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4 overflow-hidden"
+      style={{ borderColor: "#D8D2C6", borderTop: `2px solid ${accent}` }}
     >
       <div className="flex items-center justify-between">
         <div className="text-[13.5px] font-semibold text-[#0A0A0A]">{metal.metal} sold</div>
@@ -78,10 +78,10 @@ function MetalWeightCard({ metal, index = 0 }) {
       </div>
 
       {rows.length > 0 && (
-        <div className="mt-3 rounded-lg border border-[#E5E7EB] overflow-hidden">
+        <div className="mt-3 rounded-lg border border-[#D8D2C6] overflow-hidden">
           <table className="w-full text-[11.5px]">
             <thead>
-              <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
+              <tr className="bg-[#FAFAFA] border-b border-[#D8D2C6]">
                 <th className="text-left px-2.5 py-1.5 font-semibold text-[#737373]">Purity</th>
                 <th className="text-right px-2.5 py-1.5 font-semibold text-[#737373]">Gross Wt</th>
                 <th className="text-right px-2.5 py-1.5 font-semibold text-[#737373]">Net Wt</th>
@@ -101,7 +101,7 @@ function MetalWeightCard({ metal, index = 0 }) {
               ))}
             </tbody>
             <tfoot>
-              <tr className="bg-[#FAFAFA] border-t border-[#E5E7EB]">
+              <tr className="bg-[#FAFAFA] border-t border-[#D8D2C6]">
                 <td className="px-2.5 py-1.5 font-semibold text-[#737373]">Total</td>
                 <td className="px-2.5 py-1.5 text-right tabular-nums font-semibold text-[#525252]">
                   {Number(metal.total_gross_weight || 0).toFixed(3)}
@@ -230,7 +230,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                 ["GST", fmtINR(detail.totals.gst)],
                 ["Avg ticket", fmtINR(detail.totals.avg_ticket)],
               ].map(([label, value]) => (
-                <div key={label} className="bg-white rounded-xl border p-3" style={{ borderColor: "#E5E7EB" }}>
+                <div key={label} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]" style={{ borderColor: "#D8D2C6" }}>
                   <div className="text-[11px] uppercase tracking-wide text-[#737373]">{label}</div>
                   <div className="text-lg font-semibold tabular-nums mt-0.5">{value}</div>
                 </div>
@@ -243,8 +243,8 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
               ))}
               {!(detail.metals || []).length && (
                 <div
-                  className="md:col-span-2 bg-white rounded-2xl border p-4 text-[13px] text-[#a3a3a3]"
-                  style={{ borderColor: "#E5E7EB" }}
+                  className="md:col-span-2 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4 text-[13px] text-[#a3a3a3]"
+                  style={{ borderColor: "#D8D2C6" }}
                 >
                   No metal sold by this employee in the selected dates
                 </div>
@@ -252,25 +252,25 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
             </div>
             <UnclassifiedNote unclassified={detail.unclassified} />
 
-            <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
+            <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
               <div className="text-xs font-semibold uppercase tracking-wide text-[#737373] mb-2">
                 Daily sales — {detail.employee?.name}
               </div>
               <SimpleBarChart
                 data={detailTrend}
                 xKey="name"
-                bars={[{ key: "sales", name: "Sales", color: "#B49042" }]}
+                bars={[{ key: "sales", name: "Sales", color: "#3D6B5B" }]}
                 height={240}
               />
             </div>
 
-            <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
-              <div className="px-4 py-3 border-b text-xs font-semibold uppercase tracking-wide text-[#737373]" style={{ borderColor: "#E5E7EB" }}>
+            <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
+              <div className="px-4 py-3 border-b text-xs font-semibold uppercase tracking-wide text-[#737373]" style={{ borderColor: "#D8D2C6" }}>
                 Invoices ({detail.invoices?.length || 0})
               </div>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+                  <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                     <th className="px-3 py-2">Date</th>
                     <th className="px-3 py-2">Invoice</th>
                     <th className="px-3 py-2">Customer</th>
@@ -280,7 +280,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                 </thead>
                 <tbody>
                   {(detail.invoices || []).map((inv) => (
-                    <tr key={inv.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                    <tr key={inv.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                       <td className="px-3 py-2 text-[12px]">{fmtDate(inv.date)}</td>
                       <td className="px-3 py-2 font-mono text-[12px]">{inv.invoice_no}</td>
                       <td className="px-3 py-2">
@@ -290,7 +290,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                         )}
                       </td>
                       <td className="px-3 py-2 text-right">{inv.item_count}</td>
-                      <td className="px-3 py-2 text-right font-semibold tabular-nums" style={{ color: "#B49042" }}>
+                      <td className="px-3 py-2 text-right font-semibold tabular-nums" style={{ color: "#3D6B5B" }}>
                         {fmtINR(inv.grand_total)}
                       </td>
                     </tr>
@@ -306,13 +306,13 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
               </table>
             </div>
 
-            <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
-              <div className="px-4 py-3 border-b text-xs font-semibold uppercase tracking-wide text-[#737373]" style={{ borderColor: "#E5E7EB" }}>
+            <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
+              <div className="px-4 py-3 border-b text-xs font-semibold uppercase tracking-wide text-[#737373]" style={{ borderColor: "#D8D2C6" }}>
                 Schemes registered ({detail.schemes?.length || 0})
               </div>
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+                  <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                     <th className="px-3 py-2">Start</th>
                     <th className="px-3 py-2">Customer</th>
                     <th className="px-3 py-2">Plan</th>
@@ -322,7 +322,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                 </thead>
                 <tbody>
                   {(detail.schemes || []).map((s) => (
-                    <tr key={s.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                    <tr key={s.id} className="border-t" style={{ borderColor: "#D8D2C6" }}>
                       <td className="px-3 py-2 text-[12px]">{fmtDate(s.date)}</td>
                       <td className="px-3 py-2">
                         <div className="text-[13px]">{s.customer_name}</div>
@@ -353,7 +353,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <Users size={16} className="text-[#B49042]" />
         <span className="text-sm font-medium text-[#0A0A0A]">Employee sales</span>
         <div className="flex gap-1 ml-2">
@@ -361,7 +361,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
             <button
               key={p.label}
               type="button"
-              className="text-[11px] px-2.5 py-1 rounded-full border border-[#E5E7EB] hover:border-[#B49042] text-[#525252]"
+              className="rounded-full border border-[#D8D2C6] bg-[#FFFDF9] px-2.5 py-1 text-[11px] text-[#59635D] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]"
               onClick={() => { setFrom(p.from()); setTo(p.to()); }}
             >
               {p.label}
@@ -387,7 +387,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
               ["Total sales", fmtINR(summary?.totals?.sales)],
               ["GST", fmtINR(summary?.totals?.gst)],
             ].map(([label, value]) => (
-              <div key={label} className="bg-white rounded-xl border p-3" style={{ borderColor: "#E5E7EB" }}>
+              <div key={label} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]" style={{ borderColor: "#D8D2C6" }}>
                 <div className="text-[11px] uppercase tracking-wide text-[#737373]">{label}</div>
                 <div className="text-lg font-semibold tabular-nums mt-0.5">{value}</div>
               </div>
@@ -395,7 +395,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
+            <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
               <div className="text-xs font-semibold uppercase tracking-wide text-[#737373] mb-2">
                 Sales by employee
               </div>
@@ -403,12 +403,12 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                 data={barData}
                 xKey="name"
                 bars={[
-                  { key: "sales", name: "Sales ₹", color: "#B49042" },
+                  { key: "sales", name: "Sales ₹", color: "#3D6B5B" },
                 ]}
                 height={260}
               />
             </div>
-            <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
+            <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
               <div className="text-xs font-semibold uppercase tracking-wide text-[#737373] mb-2">
                 Share of sales
               </div>
@@ -416,14 +416,14 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border p-4" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
             <div className="text-xs font-semibold uppercase tracking-wide text-[#737373] mb-2">
               Daily sales trend
             </div>
             <SimpleBarChart
               data={trendData}
               xKey="name"
-              bars={[{ key: "sales", name: "Sales", color: "#0A0A0A" }]}
+              bars={[{ key: "sales", name: "Sales", color: "#7D8882" }]}
               height={200}
             />
           </div>
@@ -448,10 +448,10 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
           </div>
           <UnclassifiedNote unclassified={summary?.unclassified} />
 
-          <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] overflow-hidden" style={{ borderColor: "#D8D2C6" }}>
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+                <tr className="bg-[#F1EEE7] text-left text-[12px] text-[#737373]">
                   <th className="px-4 py-2.5">Employee</th>
                   <th className="px-4 py-2.5 text-right">Bills</th>
                   <th className="px-4 py-2.5 text-right">Schemes</th>
@@ -471,7 +471,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
               </thead>
               <tbody>
                 {(summary?.data || []).map((r) => (
-                  <tr key={r.employee_id} className="border-t hover:bg-[#FAFAFA]" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={r.employee_id} className="border-t hover:bg-[#FAFAFA]" style={{ borderColor: "#D8D2C6" }}>
                     <td className="px-4 py-2.5">
                       <div className="font-medium text-[#0A0A0A]">{r.employee_name}</div>
                       {r.job_title && <div className="text-[11px] text-[#a3a3a3]">{r.job_title}</div>}
@@ -484,7 +484,7 @@ export default function EmployeeSalesTab({ includeHidden = false }) {
                     <td className="px-4 py-2.5 text-right tabular-nums text-[#525252]">
                       {Number(r.silver_net) > 0 ? fmtWeight(r.silver_net) : "—"}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-semibold tabular-nums" style={{ color: "#B49042" }}>
+                    <td className="px-4 py-2.5 text-right font-semibold tabular-nums" style={{ color: "#3D6B5B" }}>
                       {fmtINR(r.sales)}
                     </td>
                     <td className="px-4 py-2.5 text-right tabular-nums">{fmtINR(r.avg_ticket)}</td>

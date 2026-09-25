@@ -254,7 +254,7 @@ function Num(props) {
 
 function Text({ label, value, onChange, disabled, placeholder }) {
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       {label}
       <input
         className="input mt-1"
@@ -269,8 +269,8 @@ function Text({ label, value, onChange, disabled, placeholder }) {
 
 function Toggle({ label, checked, onChange, disabled }) {
   return (
-    <label className="flex items-center gap-2 text-[12.5px] text-[#0A0A0A] cursor-pointer">
-      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
+    <label className="flex cursor-pointer items-center gap-2 text-[12px] font-medium text-[#34463A]">
+      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} className="h-4 w-4 rounded border-[#C8D2C5] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35" />
       {label}
     </label>
   );
@@ -295,7 +295,7 @@ function TagSizeField({ width, height, onChange, disabled }) {
   };
 
   return (
-    <label className="block text-[12px] text-[#525252]">
+    <label className="block text-[11.5px] font-medium text-[#5F6F63]">
       Tag size (W × H)
       <div className="flex items-center gap-1 mt-1">
         <input
@@ -433,10 +433,10 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
                 type="button"
                 disabled={disabled}
                 onClick={() => onChange("__tag_size__", { w: p.w, h: p.h })}
-                className={`px-2.5 py-1 rounded-md text-[12px] border ${
+                className={`h-8 rounded-[8px] border px-2.5 text-[11.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:opacity-50 ${
                   active
-                    ? "border-[#0A0A0A] bg-[#0A0A0A] text-white"
-                    : "border-[#E5E7EB] bg-white text-[#0A0A0A] hover:bg-[#F4F4F5]"
+                    ? "border-[#244B39] bg-[#244B39] text-white"
+                    : "border-[#D5DDD2] bg-white text-[#4F6154] hover:border-[#AAB9A7] hover:bg-[#F6F8F3]"
                 }`}
               >
                 {p.w} × {p.h} mm
@@ -456,7 +456,7 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
           <Num label="Side padding" value={layout.pad_x_mm} onChange={(v) => onChange("pad_x_mm", v)} step={0.1} min={0} max={8} disabled={disabled} suffix="mm" />
           <Num label="Top/bottom pad" value={layout.pad_y_mm} onChange={(v) => onChange("pad_y_mm", v)} step={0.1} min={0} max={4} disabled={disabled} suffix="mm" />
         </div>
-        <label className="block text-[12px] text-[#525252]">
+        <label className="block text-[11.5px] font-medium text-[#5F6F63]">
           Media sensing (stops vertical drift on next labels)
           <select
             className="input mt-1"
@@ -494,7 +494,7 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
         <p className="text-[11px] text-[#737373]">
           If labels drift after the first print, keep Continuous and set Extra feed to the real space between tags (yours is 4 mm). Measure on the roll if needed.
         </p>
-        <label className="block text-[12px] text-[#525252]">
+        <label className="block text-[11.5px] font-medium text-[#5F6F63]">
           Font (BarTender typeface)
           <select
             className="input mt-1"
@@ -560,7 +560,7 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
           <Num label="Font pt (all lines)" value={wt.font_pt} onChange={(v) => onChange("__weights_font_pt__", v)} step={0.5} min={4} max={24} disabled={disabled} />
         </div>
         <Text label='Unit suffix (BarTender: " gms")' value={box.unit_suffix ?? " gms"} onChange={(v) => onChange("right.unit_suffix", v)} disabled={disabled} placeholder=" gms" />
-        <label className="block text-[12px] text-[#525252]">
+        <label className="block text-[11.5px] font-medium text-[#5F6F63]">
           Align
           <select className="input mt-1" disabled={disabled} value={box.align} onChange={(e) => onChange("right.align", e.target.value)}>
             <option value="left">Left</option>
@@ -570,7 +570,7 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
         <p className="text-[11px] text-[#737373]">Show, rename, and reorder each row.</p>
         <div className="space-y-2">
           {box.lines.map((line, idx) => (
-            <div key={line.id} className="border border-[#E5E7EB] rounded-md p-2">
+            <div key={line.id} className="rounded-[8px] border border-[#E0E5DD] bg-[#F8F9F5] p-2">
               <div className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -578,7 +578,7 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
                   disabled={disabled}
                   onChange={(e) => onChange(`right.lines.${line.id}.show`, e.target.checked)}
                 />
-                <span className="text-[12px] font-medium text-[#0A0A0A] w-[110px] shrink-0">{LINE_TITLES[line.id] || line.id}</span>
+                <span className="text-[12px] font-medium text-[#294236] w-[110px] shrink-0">{LINE_TITLES[line.id] || line.id}</span>
                 {line.id !== "shop_purity" ? (
                   <input
                     className="input flex-1"
@@ -589,10 +589,10 @@ function WidgetProps({ id, layout, onChange, canWrite }) {
                 ) : (
                   <span className="text-[11px] text-[#737373] flex-1">Auto from shop + purity</span>
                 )}
-                <button type="button" className="p-1 text-[#737373]" disabled={disabled || idx === 0} onClick={() => onChange("__move_line__", { id: line.id, dir: -1 })}>
+                <button type="button" className="rounded-[7px] p-1 text-[#748078] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:opacity-40" disabled={disabled || idx === 0} onClick={() => onChange("__move_line__", { id: line.id, dir: -1 })}>
                   <ChevronUp size={14} />
                 </button>
-                <button type="button" className="p-1 text-[#737373]" disabled={disabled || idx === box.lines.length - 1} onClick={() => onChange("__move_line__", { id: line.id, dir: 1 })}>
+                <button type="button" className="rounded-[7px] p-1 text-[#748078] transition-colors hover:bg-[#E9EFE7] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 disabled:opacity-40" disabled={disabled || idx === box.lines.length - 1} onClick={() => onChange("__move_line__", { id: line.id, dir: 1 })}>
                   <ChevronDown size={14} />
                 </button>
               </div>
@@ -700,7 +700,7 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
   };
 
   if (loading) {
-    return <p className="text-[13px] text-[#737373]">Loading barcode tag layout…</p>;
+    return <p className="rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] px-4 py-3 text-[12.5px] text-[#6F7C72]">Loading barcode tag layout…</p>;
   }
 
   const frozen = hasSavedLayout && !unlocked;
@@ -730,10 +730,10 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
   return (
     <div className="w-full">
       <PrintSettingsLockBanner frozen={frozen} />
-      <div className="sticky top-[7.25rem] z-[5] bg-white pb-3">
+      <div className="sticky top-[7.25rem] z-[5] bg-[#F7F5EE]/95 pb-3 backdrop-blur-sm">
         <div className="flex items-center justify-between gap-3 mb-2">
           <div className="min-w-0">
-            <h3 className="text-[16px] font-semibold text-[#0A0A0A]">Live Preview</h3>
+            <h3 className="font-display text-[15px] font-semibold text-[#294236]">Live Preview</h3>
             <p className="text-[12px] text-[#737373] mt-0.5">
               Template {layout.tag_w_mm} × {layout.tag_h_mm} mm · Page {pageSizeMm(layout).w} × {pageSizeMm(layout).h} mm.
               Click shop / barcode / a weight line.
@@ -742,7 +742,7 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
           </div>
           <DragModeToggle on={dragOn} onChange={setDragOn} disabled={!effectiveCanWrite} />
         </div>
-        <div className="w-full bg-[#E8E8EA] rounded-lg p-3">
+        <div className="w-full rounded-[10px] border border-[#D6DDD3] bg-[#ECEEE8] p-3">
           <BarcodeTagCanvas
             layout={layout}
             previewPng={previewPng}
@@ -755,11 +755,11 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
           />
           <div className="grid grid-cols-3 text-[11px] mt-2">
             <div className="text-left">
-              <span className="font-semibold text-[#0A0A0A]">Left {layout.left_mm} mm</span>
+              <span className="font-semibold text-[#294236]">Left {layout.left_mm} mm</span>
               <span className="text-[#737373]"> · Barcode</span>
             </div>
             <div className="text-center">
-              <span className="font-semibold text-[#0A0A0A]">Right {layout.right_mm} mm</span>
+              <span className="font-semibold text-[#294236]">Right {layout.right_mm} mm</span>
               <span className="text-[#737373]"> · Weights</span>
             </div>
             <div className="text-right">
@@ -770,8 +770,8 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
         </div>
       </div>
 
-      <div className="w-full bg-white border border-[#E5E7EB] rounded-lg overflow-hidden">
-        <div className="flex items-center gap-1.5 px-3 py-2 border-b border-[#E5E7EB] overflow-x-auto">
+      <div className="w-full overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]">
+        <div className="flex items-center gap-1.5 overflow-x-auto border-b border-[#DCE3D6] bg-[#F3F5EE] px-3 py-2">
           {optionChips.map((chip) => {
             const on = selected === chip.id;
             return (
@@ -779,10 +779,10 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
                 key={chip.id}
                 type="button"
                 onClick={() => setSelected(chip.id)}
-                className={`shrink-0 px-2.5 py-1.5 rounded-md text-[12.5px] border whitespace-nowrap ${
+                className={`h-8 shrink-0 whitespace-nowrap rounded-[8px] border px-2.5 text-[11.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
                   on
-                    ? "border-[#0A0A0A] bg-[#0A0A0A] text-white font-semibold"
-                    : "border-[#E5E7EB] bg-white text-[#525252] hover:bg-[#F4F4F5]"
+                    ? "border-[#244B39] bg-[#244B39] text-white"
+                    : "border-[#D5DDD2] bg-white text-[#526458] hover:border-[#AAB9A7] hover:bg-[#F8F9F5]"
                 }`}
               >
                 {chip.label}
@@ -793,7 +793,7 @@ export default function BarcodeLayoutEditor({ canWrite = false, unlocked = false
         <div className="px-4 pt-3 pb-4">
           <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
             <div className="min-w-0">
-              <h3 className="text-[15px] font-semibold text-[#0A0A0A]">{propsTitle}</h3>
+              <h3 className="font-display text-[14.5px] font-semibold text-[#294236]">{propsTitle}</h3>
               <p className="text-[12px] text-[#737373] mt-0.5">{tagHint}</p>
             </div>
             <DesignerActionBar

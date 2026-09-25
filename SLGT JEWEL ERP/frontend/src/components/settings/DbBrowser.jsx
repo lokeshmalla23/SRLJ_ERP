@@ -177,17 +177,17 @@ export default function DbBrowser({ open, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col bg-[#0f1115] text-[#e8eaed]"
+      className="fixed inset-0 z-[100] flex flex-col bg-[#151A16] text-[#E8EDE7]"
       data-testid="db-browser"
       role="dialog"
       aria-modal="true"
       aria-label="Database browser"
     >
-      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-[#2a2f3a] bg-[#161a22] px-4">
-        <Database size={16} className="text-[#7dd3fc]" strokeWidth={1.5} />
+      <div className="flex h-12 shrink-0 items-center gap-3 border-b border-[#334139] bg-[#1C241E] px-4">
+        <Database size={16} className="text-[#D0B15F]" strokeWidth={1.5} />
         <div className="min-w-0 flex-1">
           <div className="text-[13px] font-semibold tracking-wide">Database Browser</div>
-          <div className="text-[11px] text-[#9aa0a6]">
+          <div className="text-[11px] text-[#96A198]">
             Read-only · {dialect || "sql"} · Esc to close
           </div>
         </div>
@@ -197,7 +197,7 @@ export default function DbBrowser({ open, onClose }) {
             loadTables();
             if (activeTable) loadRows();
           }}
-          className="inline-flex items-center gap-1.5 rounded border border-[#2a2f3a] bg-[#1c212b] px-2.5 py-1.5 text-[12px] text-[#c9cdd3] hover:bg-[#252b38]"
+          className="inline-flex items-center gap-1.5 rounded-[7px] border border-[#334139] bg-[#202A22] px-2.5 py-1.5 text-[12px] text-[#C5CEC5] transition-colors hover:bg-[#29362C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#86A18D]/35"
           title="Refresh tables"
         >
           <RefreshCw size={12} strokeWidth={1.5} />
@@ -206,7 +206,7 @@ export default function DbBrowser({ open, onClose }) {
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-8 w-8 items-center justify-center rounded border border-[#2a2f3a] bg-[#1c212b] text-[#c9cdd3] hover:bg-[#252b38]"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-[7px] border border-[#334139] bg-[#202A22] text-[#C5CEC5] transition-colors hover:bg-[#29362C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#86A18D]/35"
           aria-label="Close"
         >
           <X size={14} strokeWidth={1.5} />
@@ -214,28 +214,28 @@ export default function DbBrowser({ open, onClose }) {
       </div>
 
       <div className="flex min-h-0 flex-1">
-        <aside className="flex w-[280px] shrink-0 flex-col border-r border-[#2a2f3a] bg-[#12151c]">
-          <div className="border-b border-[#2a2f3a] p-2">
+        <aside className="flex w-[280px] shrink-0 flex-col border-r border-[#334139] bg-[#111711]">
+          <div className="border-b border-[#334139] p-2">
             <div className="relative">
-              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#6b7280]" />
+              <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#718076]" />
               <input
                 value={tableFilter}
                 onChange={(e) => setTableFilter(e.target.value)}
                 placeholder="Filter tables…"
-                className="w-full rounded border border-[#2a2f3a] bg-[#1c212b] py-1.5 pl-7 pr-2 text-[12px] text-[#e8eaed] outline-none placeholder:text-[#6b7280] focus:border-[#3b82f6]"
+                className="w-full rounded-[7px] border border-[#334139] bg-[#202A22] py-1.5 pl-7 pr-2 text-[12px] text-[#E8EDE7] outline-none transition-colors placeholder:text-[#718076] focus:border-[#86A18D] focus:ring-2 focus:ring-[#86A18D]/15"
               />
             </div>
-            <div className="mt-1.5 px-0.5 text-[10px] text-[#6b7280]">
+            <div className="mt-1.5 px-0.5 text-[10px] text-[#718076]">
               {tables.length} table{tables.length === 1 ? "" : "s"}
             </div>
           </div>
           <div className="min-h-0 flex-1 overflow-y-auto p-1">
             {tablesLoading ? (
-              <div className="flex items-center gap-2 px-2 py-3 text-[12px] text-[#9aa0a6]">
+              <div className="flex items-center gap-2 px-2 py-3 text-[12px] text-[#96A198]">
                 <Loader2 size={14} className="animate-spin" /> Loading tables…
               </div>
             ) : filteredTables.length === 0 ? (
-              <div className="px-2 py-3 text-[12px] text-[#9aa0a6]">No tables</div>
+              <div className="px-2 py-3 text-[12px] text-[#96A198]">No tables</div>
             ) : (
               filteredTables.map((t) => {
                 const active = t.name === activeTable;
@@ -244,15 +244,15 @@ export default function DbBrowser({ open, onClose }) {
                     key={t.name}
                     type="button"
                     onClick={() => selectTable(t.name)}
-                    className={`mb-0.5 flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[12px] ${
+                    className={`mb-0.5 flex w-full items-center gap-2 rounded-[7px] px-2 py-1.5 text-left text-[12px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#86A18D]/35 ${
                       active
-                        ? "bg-[#1e3a5f] text-[#e8eaed]"
-                        : "text-[#c9cdd3] hover:bg-[#1c212b]"
+                        ? "bg-[#2C503A] text-[#E8EDE7]"
+                        : "text-[#C5CEC5] hover:bg-[#202A22]"
                     }`}
                   >
                     <Table2 size={12} className="shrink-0 opacity-70" strokeWidth={1.5} />
                     <span className="min-w-0 flex-1 truncate font-mono">{t.name}</span>
-                    <span className="shrink-0 tabular-nums text-[10px] text-[#9aa0a6]">
+                    <span className="shrink-0 tabular-nums text-[10px] text-[#96A198]">
                       {t.row_count == null ? "—" : Number(t.row_count).toLocaleString()}
                     </span>
                   </button>
@@ -263,28 +263,28 @@ export default function DbBrowser({ open, onClose }) {
         </aside>
 
         <main className="flex min-w-0 flex-1 flex-col">
-          <div className="flex flex-wrap items-center gap-2 border-b border-[#2a2f3a] bg-[#161a22] px-3 py-2">
-            <div className="font-mono text-[13px] font-semibold text-[#7dd3fc]">
+          <div className="flex flex-wrap items-center gap-2 border-b border-[#334139] bg-[#1C241E] px-3 py-2">
+            <div className="font-mono text-[13px] font-semibold text-[#D0B15F]">
               {activeTable || "—"}
             </div>
-            <div className="text-[11px] text-[#9aa0a6]">
+            <div className="text-[11px] text-[#96A198]">
               {total.toLocaleString()} total row{total === 1 ? "" : "s"}
               {search ? " · filtered" : ""}
               {columns.length ? ` · ${columns.length} columns` : ""}
             </div>
             <form onSubmit={runSearch} className="ml-auto flex min-w-[220px] max-w-md flex-1 items-center gap-2">
               <div className="relative flex-1">
-                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#6b7280]" />
+                <Search size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#718076]" />
                 <input
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   placeholder="Search all columns…"
-                  className="w-full rounded border border-[#2a2f3a] bg-[#1c212b] py-1.5 pl-7 pr-2 text-[12px] text-[#e8eaed] outline-none placeholder:text-[#6b7280] focus:border-[#3b82f6]"
+                  className="w-full rounded-[7px] border border-[#334139] bg-[#202A22] py-1.5 pl-7 pr-2 text-[12px] text-[#E8EDE7] outline-none transition-colors placeholder:text-[#718076] focus:border-[#86A18D] focus:ring-2 focus:ring-[#86A18D]/15"
                 />
               </div>
               <button
                 type="submit"
-                className="rounded border border-[#2a2f3a] bg-[#1c212b] px-3 py-1.5 text-[12px] hover:bg-[#252b38]"
+                className="rounded-[7px] border border-[#334139] bg-[#202A22] px-3 py-1.5 text-[12px] hover:bg-[#29362C]"
               >
                 Search
               </button>
@@ -296,7 +296,7 @@ export default function DbBrowser({ open, onClose }) {
                     setSearch("");
                     setOffset(0);
                   }}
-                  className="rounded border border-[#2a2f3a] px-2 py-1.5 text-[12px] text-[#9aa0a6] hover:bg-[#252b38]"
+                  className="rounded-[7px] border border-[#334139] px-2 py-1.5 text-[12px] text-[#96A198] hover:bg-[#29362C]"
                 >
                   Clear
                 </button>
@@ -306,17 +306,17 @@ export default function DbBrowser({ open, onClose }) {
 
           <div className="relative min-h-0 flex-1 overflow-auto">
             {rowsLoading ? (
-              <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0f1115]/70">
-                <Loader2 size={22} className="animate-spin text-[#7dd3fc]" />
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#151A16]/70">
+                <Loader2 size={22} className="animate-spin text-[#D0B15F]" />
               </div>
             ) : null}
             {!activeTable ? (
-              <div className="p-6 text-[13px] text-[#9aa0a6]">Select a table</div>
+              <div className="p-6 text-[13px] text-[#96A198]">Select a table</div>
             ) : (
               <table className="w-max border-collapse text-left text-[12px]">
                 <thead className="sticky top-0 z-[1]">
-                  <tr className="bg-[#1c212b]">
-                    <th className="sticky left-0 z-[2] w-12 border-b border-r border-[#2a2f3a] bg-[#1c212b] px-2 py-1.5 font-medium text-[#9aa0a6]">
+                  <tr className="bg-[#202A22]">
+                    <th className="sticky left-0 z-[2] w-12 border-b border-r border-[#334139] bg-[#202A22] px-2 py-1.5 font-medium text-[#96A198]">
                       #
                     </th>
                     {columns.map((col) => {
@@ -324,7 +324,7 @@ export default function DbBrowser({ open, onClose }) {
                       return (
                         <th
                           key={col.name}
-                          className="max-w-[220px] whitespace-nowrap border-b border-[#2a2f3a] px-2 py-1.5 font-medium text-[#c9cdd3]"
+                          className="max-w-[220px] whitespace-nowrap border-b border-[#334139] px-2 py-1.5 font-medium text-[#C5CEC5]"
                         >
                           <button
                             type="button"
@@ -334,7 +334,7 @@ export default function DbBrowser({ open, onClose }) {
                           >
                             <span className="truncate font-mono">{col.name}</span>
                             {sorted ? (
-                              <span className="shrink-0 text-[10px] text-[#7dd3fc]">{orderDir === "ASC" ? "▲" : "▼"}</span>
+                              <span className="shrink-0 text-[10px] text-[#D0B15F]">{orderDir === "ASC" ? "▲" : "▼"}</span>
                             ) : null}
                             {col.sensitive ? (
                               <span className="shrink-0 text-[9px] uppercase tracking-wide text-amber-400/80">masked</span>
@@ -350,7 +350,7 @@ export default function DbBrowser({ open, onClose }) {
                     <tr>
                       <td
                         colSpan={Math.max(columns.length + 1, 2)}
-                        className="px-3 py-8 text-center text-[13px] text-[#9aa0a6]"
+                        className="px-3 py-8 text-center text-[13px] text-[#96A198]"
                       >
                         No rows
                       </td>
@@ -358,11 +358,11 @@ export default function DbBrowser({ open, onClose }) {
                   ) : (
                     rows.map((row, i) => {
                       const odd = i % 2 === 0;
-                      const rowBg = odd ? "bg-[#12151c]" : "bg-[#0f1115]";
+                      const rowBg = odd ? "bg-[#111711]" : "bg-[#151A16]";
                       return (
-                        <tr key={i} className={`h-8 hover:bg-[#1a2230] ${rowBg}`}>
+                        <tr key={i} className={`h-8 hover:bg-[#1E2A21] ${rowBg}`}>
                           <td
-                            className={`sticky left-0 z-[1] whitespace-nowrap border-b border-r border-[#1c212b] px-2 py-0.5 tabular-nums text-[#6b7280] ${rowBg}`}
+                            className={`sticky left-0 z-[1] whitespace-nowrap border-b border-r border-[#202A22] px-2 py-0.5 tabular-nums text-[#718076] ${rowBg}`}
                           >
                             {offset + i + 1}
                           </td>
@@ -396,8 +396,8 @@ export default function DbBrowser({ open, onClose }) {
                                     });
                                   }
                                 }}
-                                className={`max-w-[220px] cursor-default overflow-hidden text-ellipsis whitespace-nowrap border-b border-[#1c212b] px-2 py-0.5 font-mono text-[11.5px] text-[#d1d5db] ${
-                                  selected ? "bg-[#1e3a5f] text-white" : ""
+                                className={`max-w-[220px] cursor-default overflow-hidden text-ellipsis whitespace-nowrap border-b border-[#202A22] px-2 py-0.5 font-mono text-[11.5px] text-[#D6DDD5] ${
+                                  selected ? "bg-[#2C503A] text-white" : ""
                                 }`}
                                 title={
                                   cell.kind === "null"
@@ -406,7 +406,7 @@ export default function DbBrowser({ open, onClose }) {
                                 }
                               >
                                 {cell.kind === "null" ? (
-                                  <span className="text-[#4b5563]">NULL</span>
+                                  <span className="text-[#5A685E]">NULL</span>
                                 ) : (
                                   previewText(cell.text)
                                 )}
@@ -423,10 +423,10 @@ export default function DbBrowser({ open, onClose }) {
           </div>
 
           {cellView ? (
-            <div className="flex max-h-[40%] min-h-[120px] shrink-0 flex-col border-t border-[#2a2f3a] bg-[#12151c]">
-              <div className="flex items-center gap-2 border-b border-[#2a2f3a] px-3 py-1.5">
-                <span className="font-mono text-[12px] text-[#7dd3fc]">{cellView.col}</span>
-                <span className="text-[11px] text-[#6b7280]">
+            <div className="flex max-h-[40%] min-h-[120px] shrink-0 flex-col border-t border-[#334139] bg-[#111711]">
+              <div className="flex items-center gap-2 border-b border-[#334139] px-3 py-1.5">
+                <span className="font-mono text-[12px] text-[#D0B15F]">{cellView.col}</span>
+                <span className="text-[11px] text-[#718076]">
                   row {offset + cellView.rowIndex + 1}
                   {cellView.kind === "null"
                     ? " · NULL"
@@ -444,7 +444,7 @@ export default function DbBrowser({ open, onClose }) {
                           toast.error("Copy failed");
                         }
                       }}
-                      className="rounded border border-[#2a2f3a] bg-[#1c212b] px-2 py-1 text-[11px] hover:bg-[#252b38]"
+                      className="rounded-[7px] border border-[#334139] bg-[#202A22] px-2 py-1 text-[11px] hover:bg-[#29362C]"
                     >
                       Copy
                     </button>
@@ -452,16 +452,16 @@ export default function DbBrowser({ open, onClose }) {
                   <button
                     type="button"
                     onClick={() => setCellView(null)}
-                    className="inline-flex h-6 w-6 items-center justify-center rounded border border-[#2a2f3a] text-[#9aa0a6] hover:bg-[#252b38]"
+                    className="inline-flex h-6 w-6 items-center justify-center rounded-[7px] border border-[#334139] text-[#96A198] hover:bg-[#29362C]"
                     aria-label="Close cell viewer"
                   >
                     <X size={12} strokeWidth={1.5} />
                   </button>
                 </div>
               </div>
-              <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap break-words p-3 font-mono text-[12px] text-[#e8eaed]">
+              <pre className="min-h-0 flex-1 overflow-auto whitespace-pre-wrap break-words p-3 font-mono text-[12px] text-[#E8EDE7]">
                 {cellView.kind === "null" ? (
-                  <span className="text-[#4b5563]">NULL</span>
+                  <span className="text-[#5A685E]">NULL</span>
                 ) : (
                   prettyCellText(cellView.text)
                 )}
@@ -469,13 +469,13 @@ export default function DbBrowser({ open, onClose }) {
             </div>
           ) : null}
 
-          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#2a2f3a] bg-[#161a22] px-3 py-2 text-[12px]">
-            <div className="text-[#9aa0a6]">
+          <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[#334139] bg-[#1C241E] px-3 py-2 text-[12px]">
+            <div className="text-[#96A198]">
               Showing {fromRow.toLocaleString()}–{toRow.toLocaleString()} of {total.toLocaleString()}
               {" · "}Page {page} / {pageCount}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <label className="flex items-center gap-1.5 text-[#9aa0a6]">
+              <label className="flex items-center gap-1.5 text-[#96A198]">
                 Rows
                 <select
                   value={pageSize}
@@ -483,7 +483,7 @@ export default function DbBrowser({ open, onClose }) {
                     setPageSize(Number(e.target.value));
                     setOffset(0);
                   }}
-                  className="rounded border border-[#2a2f3a] bg-[#1c212b] px-2 py-1 text-[#e8eaed] outline-none"
+                  className="rounded-[7px] border border-[#334139] bg-[#202A22] px-2 py-1 text-[#E8EDE7] outline-none"
                 >
                   {PAGE_SIZES.map((n) => (
                     <option key={n} value={n}>
@@ -496,7 +496,7 @@ export default function DbBrowser({ open, onClose }) {
                 type="button"
                 disabled={offset <= 0 || rowsLoading}
                 onClick={() => setOffset((o) => Math.max(0, o - pageSize))}
-                className="inline-flex items-center gap-1 rounded border border-[#2a2f3a] bg-[#1c212b] px-2.5 py-1 disabled:opacity-40 hover:bg-[#252b38]"
+                className="inline-flex items-center gap-1 rounded-[7px] border border-[#334139] bg-[#202A22] px-2.5 py-1 disabled:opacity-40 hover:bg-[#29362C]"
               >
                 <ChevronLeft size={14} /> Prev
               </button>
@@ -504,7 +504,7 @@ export default function DbBrowser({ open, onClose }) {
                 type="button"
                 disabled={offset + pageSize >= total || rowsLoading}
                 onClick={() => setOffset((o) => o + pageSize)}
-                className="inline-flex items-center gap-1 rounded border border-[#2a2f3a] bg-[#1c212b] px-2.5 py-1 disabled:opacity-40 hover:bg-[#252b38]"
+                className="inline-flex items-center gap-1 rounded-[7px] border border-[#334139] bg-[#202A22] px-2.5 py-1 disabled:opacity-40 hover:bg-[#29362C]"
               >
                 Next <ChevronRight size={14} />
               </button>

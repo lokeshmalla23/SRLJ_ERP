@@ -31,9 +31,9 @@ export default function StockFilters({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 mb-3 p-3 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB]">
+    <div className="flex flex-wrap items-center gap-2 mb-4 p-3 rounded-xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
       <div className="relative flex-1 min-w-[200px] max-w-md">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#89928C]" strokeWidth={1.5} />
         <input
           className="input pl-9"
           placeholder="Search item / barcode / tag…"
@@ -94,9 +94,10 @@ export default function StockFilters({
         className="max-w-[150px]"
       />
 
-      <label className="flex items-center gap-1.5 text-[12px] text-[#525252] px-2 select-none cursor-pointer">
+      <label className="flex items-center gap-1.5 text-[12px] text-[#4F5B54] px-2 select-none cursor-pointer">
         <input
           type="checkbox"
+          className="h-4 w-4 rounded border-[#BFC8C1] accent-[#214F3A]"
           checked={filters.show_completed}
           onChange={(e) => set("show_completed", e.target.checked)}
         />

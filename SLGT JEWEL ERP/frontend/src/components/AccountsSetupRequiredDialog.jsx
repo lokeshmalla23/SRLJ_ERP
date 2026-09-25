@@ -33,27 +33,27 @@ export default function AccountsSetupRequiredDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[95] flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.5)" }}
+      className="dialog-overlay fixed inset-0 z-[95] flex items-center justify-center p-4 backdrop-blur-[2px]"
+      style={{ background: "rgba(23, 32, 28, 0.46)" }}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose?.();
       }}
     >
-      <div className="w-full max-w-sm overflow-hidden rounded-xl bg-white shadow-2xl">
-        <div className="flex items-start gap-3 px-5 py-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100">
-            <ShieldAlert size={20} className="text-amber-700" strokeWidth={1.5} />
+      <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
+        <div className="flex items-start gap-3.5 border-b border-[#E2E7E2] bg-[linear-gradient(90deg,rgba(247,232,188,0.36),rgba(255,253,249,0.98)_48%)] px-5 py-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#EAD8B2] bg-[#F7E8BC]/65">
+            <ShieldAlert size={20} className="text-[#79591F]" strokeWidth={1.5} />
           </div>
           <div className="min-w-0">
-            <div className="text-[14px] font-semibold text-[#0A0A0A]">{title}</div>
-            <div className="mt-1 text-[13px] leading-5 text-[#525252] whitespace-pre-line">{message}</div>
+            <div className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#17201C]">{title}</div>
+            <div className="mt-1.5 whitespace-pre-line text-[13px] leading-5 text-[#6F7772]">{message}</div>
           </div>
         </div>
-        <div className="flex gap-2 border-t border-[#E5E7EB] px-5 py-3.5">
+        <div className="flex gap-2.5 border-t border-[#E2E7E2] bg-[#F7F9F6] px-5 py-3.5">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-md border border-[#E5E7EB] py-2 text-[13px] font-medium text-[#525252] hover:bg-[#FAFAFA]"
+            className="btn-secondary min-h-9 flex-1 px-3 focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
           >
             Cancel
           </button>
@@ -61,7 +61,7 @@ export default function AccountsSetupRequiredDialog({
             ref={actionRef}
             type="button"
             onClick={onGoToSetup}
-            className="flex-1 rounded-md bg-[#171A17] py-2 text-[13px] font-semibold text-white hover:bg-black"
+            className="btn-primary min-h-9 flex-1 px-3 focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
           >
             Complete Accounts Setup
           </button>

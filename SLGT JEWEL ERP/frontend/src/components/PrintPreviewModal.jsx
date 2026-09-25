@@ -37,23 +37,27 @@ export default function PrintPreviewModal({ html, title = "Print Preview", subti
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-white rounded-xl shadow-2xl flex flex-col w-full max-w-[920px] max-h-[92vh]">
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E5E7EB]">
+    <div className="dialog-overlay fixed inset-0 z-[60] flex items-center justify-center p-4 backdrop-blur-[2px]">
+      <div className="flex max-h-[92vh] w-full max-w-[920px] flex-col overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
+        <div className="flex shrink-0 items-center justify-between border-b border-[#E2E7E2] bg-[#FAF7EF] px-5 py-3.5">
           <div>
-            <p className="text-[14px] font-semibold">{title}</p>
-            <p className="text-[11px] text-[#737373]">
+            <p className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#17201C]">{title}</p>
+            <p className="mt-0.5 text-[11.5px] leading-4 text-[#6F7772]">
               {printing ? "Sending to printer…" : (subtitle || "Check before sending to printer")}
             </p>
           </div>
-          <button type="button" onClick={onClose} className="p-1.5 text-[#737373]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-[#6F7772] transition-colors hover:border-[#D3DCD5] hover:bg-[#FFFDF9] hover:text-[#214F3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#214F3A]/25"
+          >
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
 
-        <div className="flex-1 min-h-0 overflow-auto bg-[#D9D9D9] p-5">
+        <div className="min-h-0 flex-1 overflow-auto bg-[#EAE6DC] p-5">
           <div
-            className="mx-auto bg-white shadow-md"
+            className="mx-auto bg-white shadow-[0_12px_30px_rgba(74,64,46,0.18),0_0_0_1px_rgba(123,111,88,0.16)]"
             style={{ width: `${frameWidth}px` }}
           >
             <iframe
@@ -87,11 +91,20 @@ export default function PrintPreviewModal({ html, title = "Print Preview", subti
           </div>
         </div>
 
-        <div className="px-5 py-3.5 border-t border-[#E5E7EB] flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="btn-secondary text-[13px]">
+        <div className="flex shrink-0 justify-end gap-2 border-t border-[#E2E7E2] bg-[#F7F9F6] px-5 py-3.5">
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn-secondary min-h-9 text-[13px] focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
+          >
             {printing ? "Close" : "Cancel"}
           </button>
-          <button type="button" onClick={onPrint} className="btn-primary text-[13px]" disabled={printing}>
+          <button
+            type="button"
+            onClick={onPrint}
+            className="btn-primary min-h-9 text-[13px] focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
+            disabled={printing}
+          >
             {printing ? "Printing…" : "Print"}
           </button>
         </div>

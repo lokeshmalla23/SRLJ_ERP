@@ -66,6 +66,46 @@ const EMPTY = {
 
 const FALLBACK_GOLD_RATE = 6800; // ₹/g, 24K — used only until live rate loads
 
+// Presentation-only product workspace treatment.  This is intentionally kept
+// at the page root so every existing form section, dialog and action retains
+// its handlers, data-testids, fixed geometry and print helpers.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
 const STONE_TYPE_PRESETS = ["Diamond", "Ruby", "Emerald", "Pearl", "Sapphire", "Tanzanite", "Amethyst", "Topaz", "Opal", "Aquamarine"];
 
 // Mirrors Inventory.jsx's STATUS_META colors for the status chip on this page.
@@ -75,10 +115,10 @@ const DISPLAY_STATUS_META = {
   reserved: { label: "Reserved", chip: "bg-blue-50 text-blue-700 border-blue-200" },
   estimation: { label: "Estimation", chip: "bg-blue-50 text-blue-700 border-blue-200" },
   damaged: { label: "Damaged", chip: "bg-red-50 text-red-700 border-red-200" },
-  sold: { label: "Sold out", chip: "bg-[#F3F4F6] text-[#374151] border-[#E5E7EB]" },
-  discontinued: { label: "Discontinued", chip: "bg-[#F3F4F6] text-[#374151] border-[#E5E7EB]" },
-  deleted: { label: "Deleted", chip: "bg-[#F3F4F6] text-[#374151] border-[#E5E7EB]" },
-  deleted_p: { label: "Deleted P", chip: "bg-[#F3F4F6] text-[#374151] border-[#E5E7EB]" },
+  sold: { label: "Sold out", chip: "bg-[#F1F4ED] text-[#5F6D62] border-[#DCE3D6]" },
+  discontinued: { label: "Discontinued", chip: "bg-[#F1F4ED] text-[#5F6D62] border-[#DCE3D6]" },
+  deleted: { label: "Deleted", chip: "bg-[#F1F4ED] text-[#5F6D62] border-[#DCE3D6]" },
+  deleted_p: { label: "Deleted P", chip: "bg-[#F1F4ED] text-[#5F6D62] border-[#DCE3D6]" },
 };
 
 const EMPTY_STONE_ROW = { stone_type: "", count: 1, total_carat: 0, price: 0 };
@@ -264,8 +304,8 @@ function estimateCreatedProductPrice(product, goldRate, allRates = {}) {
 function OverviewRow({ label, value, mono }) {
   return (
     <div className="flex items-start justify-between gap-4 py-1.5">
-      <span className="text-[12.5px] text-[#737373]">{label}</span>
-      <span className={`text-[12.5px] text-[#0A0A0A] text-right ${mono ? "font-mono tabular-nums" : "font-medium"}`}>
+      <span className="text-[12.5px] text-[#6E786F]">{label}</span>
+      <span className={`text-[12.5px] text-[#2F3A32] text-right ${mono ? "font-mono tabular-nums" : "font-medium"}`}>
         {value ?? "—"}
       </span>
     </div>
@@ -281,15 +321,15 @@ function CreateReviewPanel({ product, price, tagNo }) {
     : (product.unit_code || null);
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E8E4DC] shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden">
-      <div className="px-4 py-4 border-b border-[#F0EDE6] bg-gradient-to-r from-[#FFFBEB] to-white">
+    <div className="bg-[#FFFDF8] rounded-[12px] border border-[#DCE3D6] shadow-[0_12px_30px_rgba(35,58,43,0.10)] overflow-hidden">
+      <div className="px-4 py-4 border-b border-[#E3E8E0] bg-[#FDFBF7]">
         <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#B49042]">Review before save</div>
-        <div className="text-[15px] font-semibold text-[#0A0A0A] mt-1 leading-snug">
+        <div className="text-[15px] font-semibold text-[#2F3A32] mt-1 leading-snug">
           Confirm product overview
         </div>
         <div className="flex items-end justify-between gap-2 mt-3">
           <div className="min-w-0">
-            <div className="text-[13px] font-semibold text-[#0A0A0A] truncate">{product.name || "Product"}</div>
+            <div className="text-[13px] font-semibold text-[#2F3A32] truncate">{product.name || "Product"}</div>
             <div className="flex flex-wrap gap-1 mt-1.5">
               {purityLabel && (
                 <span className="inline-flex px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-[#DCFCE7] text-[#166534]">{purityLabel}</span>
@@ -303,14 +343,14 @@ function CreateReviewPanel({ product, price, tagNo }) {
             </div>
           </div>
           <div className="text-right shrink-0">
-            <div className="text-[9px] uppercase tracking-[0.12em] font-semibold text-[#A3A3A3]">Tag No</div>
-            <div className="text-[18px] font-bold font-mono text-[#0A0A0A] tabular-nums leading-tight">#{tagNo || "—"}</div>
+            <div className="text-[9px] uppercase tracking-[0.12em] font-semibold text-[#8D998F]">Tag No</div>
+            <div className="text-[18px] font-bold font-mono text-[#2F3A32] tabular-nums leading-tight">#{tagNo || "—"}</div>
           </div>
         </div>
       </div>
 
       <div className="px-4 py-3 space-y-3 max-h-[min(70vh,640px)] overflow-y-auto">
-        <div className="rounded-xl border border-[#E8E4DC] bg-[#FAFAF8] px-3 py-2.5">
+        <div className="rounded-[10px] border border-[#DCE3D6] bg-[#F7F8F2] px-3 py-2.5">
           <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#B49042] mb-1.5">Product overview</div>
           <OverviewRow label="Category" value={product.category_name} />
           <OverviewRow label="Sub-category" value={product.subcategory_name} />
@@ -320,7 +360,7 @@ function CreateReviewPanel({ product, price, tagNo }) {
           <OverviewRow label="Stock" value={`${Number(product.stock_qty) || 0} pc`} mono />
           {(Number(product.gross_weight) > 0 || Number(product.net_weight) > 0) && (
             <>
-              <div className="border-t border-[#E8E4DC] my-1.5" />
+              <div className="border-t border-[#DCE3D6] my-1.5" />
               <OverviewRow label="Gross wt" value={`${Number(product.gross_weight || 0).toFixed(3)} g`} mono />
               <OverviewRow label="Net wt" value={`${Number(product.net_weight || 0).toFixed(3)} g`} mono />
               <OverviewRow label="Stone wt" value={`${Number(product.stone_weight || 0).toFixed(3)} g`} mono />
@@ -328,7 +368,7 @@ function CreateReviewPanel({ product, price, tagNo }) {
           )}
         </div>
 
-        <div className="rounded-xl border border-[#E8D5A8] bg-[#FFFBEB]/70 px-3 py-2.5">
+        <div className="rounded-[10px] border border-[#EADFBF] bg-[#FDFBF7] px-3 py-2.5">
           <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#B49042] mb-1.5">
             {price.mode === "piece" ? "Price summary" : "Estimated price"}
           </div>
@@ -336,7 +376,7 @@ function CreateReviewPanel({ product, price, tagNo }) {
             <OverviewRow label="Selling price" value={fmtINR(price.total)} mono />
           ) : (
             <>
-              <div className="text-[11px] text-[#737373] mb-1.5">
+              <div className="text-[11px] text-[#6E786F] mb-1.5">
                 Rate {fmtRatePerGram(price.effectiveRate || 0)}
                 {price.purityKey ? ` · ${price.purityKey.toUpperCase()}` : ""}
               </div>
@@ -349,7 +389,7 @@ function CreateReviewPanel({ product, price, tagNo }) {
             </>
           )}
           <div className="border-t border-[#E8D5A8] mt-2 pt-2 flex justify-between items-center">
-            <span className="text-[12.5px] font-semibold text-[#0A0A0A]">
+            <span className="text-[12.5px] font-semibold text-[#2F3A32]">
               {price.mode === "piece" ? "Total" : "Est. total"}
             </span>
             <span className="text-[16px] font-bold font-mono text-[#B49042] tabular-nums">
@@ -357,16 +397,16 @@ function CreateReviewPanel({ product, price, tagNo }) {
             </span>
           </div>
           {price.mode !== "piece" && (
-            <p className="text-[10.5px] text-[#a3a3a3] mt-1.5 leading-relaxed">
+            <p className="text-[10.5px] text-[#8D998F] mt-1.5 leading-relaxed">
               Final bill uses live gold rate at POS.
             </p>
           )}
         </div>
       </div>
 
-      <div className="px-4 py-3 border-t border-[#F0EDE6] bg-white">
-        <p className="text-[11.5px] text-[#737373] text-center leading-relaxed">
-          Use <span className="font-semibold text-[#0A0A0A]">Save product</span> in the bottom bar to confirm.
+      <div className="px-4 py-3 border-t border-[#E3E8E0] bg-[#FFFDF8]">
+        <p className="text-[11.5px] text-[#6E786F] text-center leading-relaxed">
+          Use <span className="font-semibold text-[#2F3A32]">Save product</span> in the bottom bar to confirm.
         </p>
       </div>
     </div>
@@ -435,31 +475,31 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
   };
 
   return (
-    <div className="max-w-[720px] mx-auto mt-6 mb-16 px-4">
-      <div className="bg-white rounded-2xl border border-[#E8E4DC] shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[720px] mx-auto mt-6 mb-16 px-4`}>
+      <div className="bg-[#FFFDF8] rounded-[12px] border border-[#DCE3D6] shadow-[0_12px_30px_rgba(35,58,43,0.10)] overflow-hidden">
         {/* Success banner */}
-        <div className="px-6 py-5 border-b border-[#F0EDE6] bg-gradient-to-r from-[#F0FDF4] to-white flex items-start gap-4">
+        <div className="px-6 py-5 border-b border-[#E3E8E0] bg-[#F1F4ED] flex items-start gap-4">
           <div className="w-11 h-11 rounded-full bg-[#16A34A] flex items-center justify-center shrink-0 shadow-[0_4px_14px_rgba(22,163,74,0.3)]">
             <Check size={22} strokeWidth={2.5} className="text-white" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-[18px] font-semibold text-[#0A0A0A] tracking-tight">Product created</div>
-            <div className="text-[13px] text-[#737373] mt-0.5">Added to inventory — review the overview below.</div>
+            <div className="text-[18px] font-semibold text-[#2F3A32] tracking-tight">Product created</div>
+            <div className="text-[13px] text-[#6E786F] mt-0.5">Added to inventory — review the overview below.</div>
           </div>
           <div className="text-right shrink-0">
-            <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#A3A3A3]">Tag No</div>
-            <div className="text-[22px] font-bold font-mono text-[#0A0A0A] tabular-nums leading-tight">#{tagNo}</div>
+            <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#8D998F]">Tag No</div>
+            <div className="text-[22px] font-bold font-mono text-[#2F3A32] tabular-nums leading-tight">#{tagNo}</div>
           </div>
         </div>
 
         <div className="p-6 space-y-5">
           {/* Identity */}
           <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F5E6C8] to-[#E8C87A] flex items-center justify-center shrink-0 border border-[#E8D5A8]">
+            <div className="w-12 h-12 rounded-[10px] bg-[#FDFBF7] flex items-center justify-center shrink-0 border border-[#EADFBF]">
               <Gem size={20} strokeWidth={1.5} className="text-[#8B6914]" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-[16px] font-semibold text-[#0A0A0A]">{product.name || "Product"}</div>
+              <div className="text-[16px] font-semibold text-[#2F3A32]">{product.name || "Product"}</div>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {purityLabel && (
                   <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#DCFCE7] text-[#166534]">{purityLabel}</span>
@@ -471,9 +511,9 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
                   <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#DBEAFE] text-[#1E40AF]">{unitLabel}</span>
                 )}
                 {product.subcategory_name ? (
-                  <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#F3F4F6] text-[#374151]">{product.subcategory_name}</span>
+                  <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#F1F4ED] text-[#5F6D62]">{product.subcategory_name}</span>
                 ) : product.category_name ? (
-                  <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#F3F4F6] text-[#374151]">{product.category_name}</span>
+                  <span className="inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#F1F4ED] text-[#5F6D62]">{product.category_name}</span>
                 ) : null}
               </div>
             </div>
@@ -481,7 +521,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Details */}
-            <div className="rounded-xl border border-[#E8E4DC] bg-[#FAFAF8] px-4 py-3">
+            <div className="rounded-xl border border-[#DCE3D6] bg-[#F7F8F2] px-4 py-3">
               <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#B49042] mb-2">Product overview</div>
               <OverviewRow label="Category" value={product.category_name} />
               <OverviewRow label="Sub-category" value={product.subcategory_name} />
@@ -491,7 +531,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
               <OverviewRow label="Stock" value={`${Number(product.stock_qty) || 0} pc`} mono />
               {(Number(product.gross_weight) > 0 || Number(product.net_weight) > 0) && (
                 <>
-                  <div className="border-t border-[#E8E4DC] my-2" />
+                  <div className="border-t border-[#DCE3D6] my-2" />
                   <OverviewRow label="Gross wt" value={`${Number(product.gross_weight || 0).toFixed(3)} g`} mono />
                   <OverviewRow label="Net wt" value={`${Number(product.net_weight || 0).toFixed(3)} g`} mono />
                   <OverviewRow label="Stone wt" value={`${Number(product.stone_weight || 0).toFixed(3)} g`} mono />
@@ -500,7 +540,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
             </div>
 
             {/* Price summary */}
-            <div className="rounded-xl border border-[#E8D5A8] bg-[#FFFBEB]/70 px-4 py-3">
+            <div className="rounded-[10px] border border-[#EADFBF] bg-[#FDFBF7] px-4 py-3">
               <div className="text-[10px] uppercase tracking-[0.12em] font-semibold text-[#B49042] mb-2">
                 {price.mode === "piece" ? "Price summary" : "Estimated price summary"}
               </div>
@@ -508,7 +548,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
                 <OverviewRow label="Selling price" value={fmtINR(price.total)} mono />
               ) : (
                 <>
-                  <div className="text-[11px] text-[#737373] mb-2">
+                  <div className="text-[11px] text-[#6E786F] mb-2">
                     Rate {fmtRatePerGram(price.effectiveRate || 0)}
                     {price.purityKey ? ` · ${price.purityKey.toUpperCase()}` : ""}
                   </div>
@@ -519,19 +559,19 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
                     <OverviewRow label="Stone" value={fmtINR(price.stonePrice)} mono />
                   )}
                   <div className="border-t border-[#E8D5A8] mt-2 pt-2 flex justify-between items-center">
-                    <span className="text-[13px] font-semibold text-[#0A0A0A]">Estimated total</span>
+                    <span className="text-[13px] font-semibold text-[#2F3A32]">Estimated total</span>
                     <span className="text-[18px] font-bold font-mono text-[#B49042] tabular-nums">
                       {fmtINR(price.total)}
                     </span>
                   </div>
-                  <p className="text-[11px] text-[#a3a3a3] mt-2 leading-relaxed">
+                  <p className="text-[11px] text-[#8D998F] mt-2 leading-relaxed">
                     Final bill uses live gold rate at POS.
                   </p>
                 </>
               )}
               {price.mode === "piece" && (
                 <div className="border-t border-[#E8D5A8] mt-2 pt-2 flex justify-between items-center">
-                  <span className="text-[13px] font-semibold text-[#0A0A0A]">Total</span>
+                  <span className="text-[13px] font-semibold text-[#2F3A32]">Total</span>
                   <span className="text-[18px] font-bold font-mono text-[#B49042] tabular-nums">
                     {fmtINR(price.total)}
                   </span>
@@ -541,12 +581,12 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
           </div>
 
           {/* Compact label + print status */}
-          <div className="rounded-xl border border-[#EEF0EE] bg-[#F7F8F7] p-3">
+          <div className="rounded-[10px] border border-[#DCE3D6] bg-[#F7F8F2] p-3">
             <div className="flex items-center justify-between mb-2">
-              <div className="text-[10px] uppercase tracking-[0.09em] font-semibold text-[#A3A3A3]">Label</div>
+              <div className="text-[10px] uppercase tracking-[0.09em] font-semibold text-[#8D998F]">Label</div>
               {printState === "printing" && (
-                <span className="text-[11px] text-[#737373] flex items-center gap-1.5">
-                  <span className="inline-block w-2.5 h-2.5 border-2 border-[#737373] border-t-transparent rounded-full animate-spin" />
+                <span className="text-[11px] text-[#6E786F] flex items-center gap-1.5">
+                  <span className="inline-block w-2.5 h-2.5 border-2 border-[#8D998F] border-t-transparent rounded-full animate-spin" />
                   Printing…
                 </span>
               )}
@@ -557,7 +597,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
           </div>
 
           {printState === "no_printer" && (
-            <div className="border border-amber-300 bg-amber-50 rounded-lg px-4 py-3 text-[11.5px] text-amber-700">
+            <div className="border border-[#EADFBF] bg-[#FDFBF7] rounded-[9px] px-4 py-3 text-[11.5px] text-[#8A6D2F]">
               Connect your label printer in Settings → Printers & Devices, then tap Print Label.
             </div>
           )}
@@ -583,7 +623,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
             </button>
             <button
               type="button"
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-[#16A34A] hover:bg-[#15803D] text-white text-[13px] font-semibold py-2.5 transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-2 rounded-[9px] bg-[#244B39] hover:bg-[#1D3B2E] text-white text-[13px] font-semibold py-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
               onClick={onInventory}
             >
               Go to Inventory
@@ -594,7 +634,7 @@ function SavedProductPanel({ product, shopName, onInventory, onAddAnother, goldR
           <div className="text-center">
             <button
               type="button"
-              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#16A34A] hover:text-[#15803D]"
+              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#244B39] hover:text-[#1D3B2E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               onClick={onAddAnother}
             >
               Add another product
@@ -628,35 +668,35 @@ function UpdatedBarcodeModal({ product, shopName, onClose }) {
   const handlePrintAgain = () => doPrint();
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-[460px] flex flex-col items-center gap-5 py-8 px-6 text-center" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 bg-[#20352A]/35 backdrop-blur-[2px] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="bg-[#FFFDF8] rounded-[14px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] w-full max-w-[460px] flex flex-col items-center gap-5 py-8 px-6 text-center" onClick={(e) => e.stopPropagation()}>
         <div className="flex flex-col items-center gap-2">
           <div className="w-11 h-11 rounded-full bg-[#F0FDF4] flex items-center justify-center">
             <Printer size={20} strokeWidth={1.5} className="text-[#16A34A]" />
           </div>
-          <div className="text-[15px] font-semibold text-[#0A0A0A]">Product Updated</div>
+          <div className="text-[15px] font-semibold text-[#2F3A32]">Product Updated</div>
           {printState === "confirm" && (
-            <div className="text-[12px] text-[#737373]">Print the updated barcode label?</div>
+            <div className="text-[12px] text-[#6E786F]">Print the updated barcode label?</div>
           )}
           {printState === "printing" && (
-            <div className="text-[12px] text-[#737373] flex items-center gap-1.5">
-              <span className="inline-block w-3 h-3 border-2 border-[#737373] border-t-transparent rounded-full animate-spin" />
+            <div className="text-[12px] text-[#6E786F] flex items-center gap-1.5">
+              <span className="inline-block w-3 h-3 border-2 border-[#8D998F] border-t-transparent rounded-full animate-spin" />
               Sending label to printer…
             </div>
           )}
           {printState === "done" && <div className="text-[12px] text-[#16A34A]">Printed successfully</div>}
           {printState === "no_printer" && <div className="text-[12px] text-amber-700">Label printer not connected</div>}
           {printState === "error" && <div className="text-[12px] text-red-600">Print failed</div>}
-          {printState === "skipped" && <div className="text-[12px] text-[#737373]">Label not printed</div>}
+          {printState === "skipped" && <div className="text-[12px] text-[#6E786F]">Label not printed</div>}
         </div>
 
         <div className="w-full flex flex-col items-center gap-2">
-          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373]">Label Preview</div>
+          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F]">Label Preview</div>
           <JewelleryTagPreview product={product} shopName={shopName} className="w-full max-w-[440px]" />
         </div>
 
         {printState === "no_printer" && (
-          <div className="w-full border border-amber-300 bg-amber-50 rounded-lg px-4 py-3 text-left text-[11.5px] text-amber-700">
+          <div className="w-full border border-[#EADFBF] bg-[#FDFBF7] rounded-[9px] px-4 py-3 text-left text-[11.5px] text-[#8A6D2F]">
             Connect your TSC TE244 and assign it in Settings → Printers &amp; Devices, then retry.
           </div>
         )}
@@ -1255,9 +1295,9 @@ export default function ProductForm() {
   };
 
   if (loading) return (
-    <div className="space-y-4">
+    <div className={`${TRADE_PAGE_CLASS} space-y-4`}>
       <PageLoadingBadge />
-      <div className="h-96 shimmer rounded-md" />
+      <div className="h-96 shimmer rounded-[10px]" />
     </div>
   );
 
@@ -1275,40 +1315,40 @@ export default function ProductForm() {
   const productTag = form.barcode || form.code || "";
 
   return (
-    <div className={`mx-auto pb-24 ${reviewOpen && !editing ? "max-w-[1280px]" : "max-w-[1100px]"}`}>
+    <div className={`${TRADE_PAGE_CLASS} mx-auto pb-24 ${reviewOpen && !editing ? "max-w-[1280px]" : "max-w-[1100px]"}`}>
       <button
         type="button"
         onClick={() => nav("/inventory")}
-        className="inline-flex items-center gap-1.5 text-[12.5px] text-[#737373] hover:text-[#0A0A0A] mb-5 transition-colors"
+        className="inline-flex items-center gap-1.5 text-[12.5px] text-[#6E786F] hover:text-[#244B39] mb-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
       >
         <ArrowLeft size={13} strokeWidth={1.5} /> Back to inventory
       </button>
 
       {/* Hero header */}
       <div
-        className="relative overflow-hidden rounded-2xl border border-[#E8E4DC] mb-5"
-        style={{ background: "linear-gradient(135deg, #FFFDF8 0%, #FFFFFF 45%, #F7F3EA 100%)" }}
+        className="relative overflow-hidden rounded-[12px] border border-[#DCE3D6] mb-5 shadow-[0_1px_2px_rgba(35,58,43,0.04)]"
+        style={{ background: "#FFFDF8" }}
       >
         <div
           className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full opacity-40"
-          style={{ background: "radial-gradient(circle, rgba(192,142,45,0.18) 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, rgba(180,144,66,0.10) 0%, transparent 70%)" }}
         />
         <div className="relative flex flex-wrap items-start justify-between gap-5 px-6 py-5">
           <div className="min-w-0 pt-0.5">
             <div className="text-[11px] uppercase tracking-[0.14em] font-semibold text-[#B49042] mb-1.5">
               Inventory
             </div>
-            <h2 className="font-display text-[26px] font-semibold text-[#0A0A0A] tracking-tight">
+            <h2 className="font-display text-[26px] font-semibold text-[#2F3A32] tracking-tight">
               {editing ? form.name || "Edit Product" : "New Product"}
             </h2>
-            <p className="text-[13px] text-[#737373] mt-1.5 max-w-xl leading-relaxed">
+            <p className="text-[13px] text-[#6E786F] mt-1.5 max-w-xl leading-relaxed">
               {editing
                 ? "Update weights, charges and stock. Price at billing uses the live gold rate."
                 : "Fill metal, identity and weights. Your tag stays reserved until you create the product."}
             </p>
             {editing && (
               <div className="mt-4 flex flex-wrap items-center gap-2.5">
-                <span className={`inline-flex items-center h-9 px-3 rounded-lg border text-[12.5px] font-medium ${DISPLAY_STATUS_META[form.status]?.chip || "bg-[#F3F4F6] text-[#374151] border-[#E5E7EB]"}`}>
+                <span className={`inline-flex items-center h-9 px-3 rounded-lg border text-[12.5px] font-medium ${DISPLAY_STATUS_META[form.status]?.chip || "bg-[#F1F4ED] text-[#5F6D62] border-[#DCE3D6]"}`}>
                   {DISPLAY_STATUS_META[form.status]?.label || form.status}
                 </span>
                 {can("inventory", "edit") && (form.status === "available" || form.status === "on_display") && (
@@ -1316,7 +1356,7 @@ export default function ProductForm() {
                     type="button"
                     onClick={toggleDisplayStatus}
                     disabled={displayBusy}
-                    className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg border border-[#E5E7EB] bg-white text-[12.5px] font-medium text-[#0A0A0A] hover:bg-[#FAFAFA] transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-[9px] border border-[#DCE3D6] bg-white text-[12.5px] font-medium text-[#2F3A32] hover:bg-[#F1F4ED] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors disabled:opacity-50"
                   >
                     {form.status === "on_display" ? <EyeOff size={13} strokeWidth={1.5} /> : <Eye size={13} strokeWidth={1.5} />}
                     {displayBusy ? "Updating…" : form.status === "on_display" ? "Remove from Display" : "Mark as On Display"}
@@ -1326,7 +1366,7 @@ export default function ProductForm() {
                   <button
                     type="button"
                     onClick={remove}
-                    className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg border border-[#FECACA] bg-white text-[12.5px] font-medium text-[#991B1B] hover:bg-[#FEF2F2] transition-colors"
+                    className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-[9px] border border-[#F1C7C4] bg-white text-[12.5px] font-medium text-[#9B3E3A] hover:bg-[#FEF3F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8B5B2] transition-colors"
                   >
                     <Trash2 size={13} strokeWidth={1.5} /> Delete product
                   </button>
@@ -1337,15 +1377,15 @@ export default function ProductForm() {
 
           <div className="shrink-0 text-right">
             <div
-              className="inline-flex flex-col items-end rounded-2xl border px-6 py-4 min-w-[180px]"
+              className="inline-flex flex-col items-end rounded-[10px] border px-6 py-4 min-w-[180px]"
               style={{
-                borderColor: "#E8D5A8",
-                background: "linear-gradient(160deg, #FFFBEB 0%, #FFFFFF 100%)",
-                boxShadow: "0 8px 24px rgba(180,144,66,0.08)",
+                borderColor: "#EADFBF",
+                background: "#FDFBF7",
+                boxShadow: "0 4px 14px rgba(180,144,66,0.08)",
               }}
             >
               <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#B49042]">Tag No</div>
-              <div className="text-[34px] leading-none font-semibold font-mono text-[#0A0A0A] mt-2 tabular-nums tracking-tight">
+              <div className="text-[34px] leading-none font-semibold font-mono text-[#2F3A32] mt-2 tabular-nums tracking-tight">
                 {productTag || "—"}
               </div>
               <div className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-[#166534] bg-[#DCFCE7] px-2 py-0.5 rounded-full">
@@ -1357,21 +1397,21 @@ export default function ProductForm() {
       </div>
 
       {!editing && restoredDraft && (
-        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-[#BBF7D0] bg-[#F0FDF4] px-4 py-3">
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-[10px] border border-[#CFE1D1] bg-[#EDF4EE] px-4 py-3">
           <div className="text-[12.5px] text-[#166534]">
             Draft restored with tag <span className="font-mono font-semibold">#{productTag || "—"}</span>
           </div>
           <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
-              className="text-[12px] font-medium text-[#166534] hover:underline"
+              className="text-[12px] font-medium text-[#356747] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               onClick={startFreshProduct}
             >
               Start fresh
             </button>
             <button
               type="button"
-              className="text-[12px] font-medium text-[#166534] hover:underline"
+              className="text-[12px] font-medium text-[#356747] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               onClick={() => setRestoredDraft(false)}
             >
               Dismiss
@@ -1451,7 +1491,7 @@ export default function ProductForm() {
                 <option value="">Select unit</option>
                 {catalog.units.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
               </select>
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">
+              <span className="block text-[11px] text-[#8D998F] mt-1">
                 Defaults to Gram for Gold. Piece shows Price. Tray shows tray stock. Other units show weight & making.
               </span>
             </F>
@@ -1516,7 +1556,7 @@ export default function ProductForm() {
         {/* ── Section 2b: Tray Information (Tray unit only) ── */}
         {isTrayUnit && (
         <FormSection title="Tray Information" hint="Tray unit only">
-          <p className="text-[12px] text-[#737373] mb-4">Enter total weight and number of pieces for this tray.</p>
+          <p className="text-[12px] text-[#6E786F] mb-4">Enter total weight and number of pieces for this tray.</p>
           <div className="grid grid-cols-2 gap-4">
             <F label="Total Weight (g)" required>
               <NumField
@@ -1529,7 +1569,7 @@ export default function ProductForm() {
                 placeholder="0.000"
                 required
               />
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Combined weight of all pieces</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Combined weight of all pieces</span>
             </F>
             <F label="No. of Pieces" required>
               <NumField
@@ -1539,7 +1579,7 @@ export default function ProductForm() {
                 onChange={(v) => set("stock_qty", v)}
                 required
               />
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Auto-reflected in Stock Qty</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Auto-reflected in Stock Qty</span>
             </F>
           </div>
         </FormSection>
@@ -1560,7 +1600,7 @@ export default function ProductForm() {
                 placeholder="0.000"
                 required
               />
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Total incl. stones</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Total incl. stones</span>
             </F>
             <F label="Net Weight / Gold Weight (g)" required>
               <NumField
@@ -1573,7 +1613,7 @@ export default function ProductForm() {
                 placeholder="0.000"
                 required
               />
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Pure gold used for pricing</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Pure gold used for pricing</span>
             </F>
             <F label="Stone Weight (g)" required>
               <NumField
@@ -1585,16 +1625,16 @@ export default function ProductForm() {
                 onChange={(v) => set("stone_weight", v)}
                 placeholder="0.000"
               />
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Weight of all stones (enter 0 if none)</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Weight of all stones (enter 0 if none)</span>
             </F>
             <div>
-              <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+              <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
                 Other Weight (g)
               </span>
-              <div className="input font-mono bg-[#F5F5F5] text-[#737373] cursor-default select-none">
+              <div className="input font-mono bg-[#F5F5F5] text-[#6E786F] cursor-default select-none">
                 {otherWeight.toFixed(3)}
               </div>
-              <span className="block text-[11px] text-[#a3a3a3] mt-1">Gross − Net − Stone</span>
+              <span className="block text-[11px] text-[#8D998F] mt-1">Gross − Net − Stone</span>
             </div>
           </div>
         </FormSection>
@@ -1616,16 +1656,16 @@ export default function ProductForm() {
           }
         >
           {(asArray(form.stone_details).length === 0) ? (
-            <div className="text-center py-8 text-[13px] text-[#a3a3a3] border border-dashed border-[#E5E7EB] rounded-md">
+            <div className="text-center py-8 text-[13px] text-[#8D998F] border border-dashed border-[#DCE3D6] rounded-[9px]">
               No stones added — click &quot;Add Stone&quot; to record stone details
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-[12.5px]">
                 <thead>
-                  <tr className="border-b border-[#E5E7EB]">
+                  <tr className="border-b border-[#DCE3D6]">
                     {["Stone Type", "Count", "Weight (g)", "Price (₹)", ""].map((h) => (
-                      <th key={h} className="text-left text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] pb-2 pr-3">
+                      <th key={h} className="text-left text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] pb-2 pr-3">
                         {h}
                       </th>
                     ))}
@@ -1667,7 +1707,7 @@ export default function ProductForm() {
                           onChange={(g) => setStoneField(idx, "total_carat", Math.round((g / GRAMS_PER_CARAT) * 10000) / 10000)}
                           placeholder="0.000"
                         />
-                        <span className="block text-[10.5px] text-[#a3a3a3] mt-1 font-mono">
+                        <span className="block text-[10.5px] text-[#8D998F] mt-1 font-mono">
                           = {carats.toFixed(3)} carat{carats === 1 ? "" : "s"}
                         </span>
                       </td>
@@ -1684,7 +1724,7 @@ export default function ProductForm() {
                         <button
                           type="button"
                           onClick={() => removeStoneRow(idx)}
-                          className="p-1 rounded hover:bg-[#FEF2F2] text-[#a3a3a3] hover:text-[#991B1B] transition-colors"
+                          className="p-1 rounded hover:bg-[#FEF2F2] text-[#8D998F] hover:text-[#991B1B] transition-colors"
                           title="Remove stone"
                         >
                           <X size={14} strokeWidth={1.5} />
@@ -1710,7 +1750,7 @@ export default function ProductForm() {
             <div className="space-y-4">
               {/* Making charge type toggle */}
               <div>
-                <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+                <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
                   Making Charge Type <span className="text-[#DC2626]">*</span>
                 </span>
                 <div className="flex gap-2">
@@ -1762,41 +1802,41 @@ export default function ProductForm() {
               </F>
             </div>
 
-            <div className="rounded-xl border border-[#E8D5A8] p-4 bg-[#FFFBEB]/60">
+            <div className="rounded-[10px] border border-[#EADFBF] p-4 bg-[#FDFBF7]">
               <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#B49042] mb-3">
                 Estimated Price Preview
               </div>
-              <div className="text-[12px] text-[#737373] mb-3">
+              <div className="text-[12px] text-[#6E786F] mb-3">
                 At {fmtRatePerGram(pricePreview.effectiveRate || goldRate)}
                 ({pricePreview.purityKey ? pricePreview.purityKey.toUpperCase() : "24K"} live rate)
               </div>
               <div className="space-y-1.5 text-[13px]">
                 <div className="flex justify-between">
-                  <span className="text-[#525252]">Metal Value</span>
-                  <span className="font-mono text-[#0A0A0A]">{fmtINR(pricePreview.goldValue, { decimals: 0 })}</span>
+                  <span className="text-[#5F6D62]">Metal Value</span>
+                  <span className="font-mono text-[#2F3A32]">{fmtINR(pricePreview.goldValue, { decimals: 0 })}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#525252]">Wastage ({form.wastage_pct}%)</span>
-                  <span className="font-mono text-[#0A0A0A]">{fmtINR(pricePreview.wastage, { decimals: 0 })}</span>
+                  <span className="text-[#5F6D62]">Wastage ({form.wastage_pct}%)</span>
+                  <span className="font-mono text-[#2F3A32]">{fmtINR(pricePreview.wastage, { decimals: 0 })}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-[#525252]">Making</span>
-                  <span className="font-mono text-[#0A0A0A]">{fmtINR(pricePreview.making, { decimals: 0 })}</span>
+                  <span className="text-[#5F6D62]">Making</span>
+                  <span className="font-mono text-[#2F3A32]">{fmtINR(pricePreview.making, { decimals: 0 })}</span>
                 </div>
                 {pricePreview.stonePrice > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-[#525252]">Stone Price</span>
-                    <span className="font-mono text-[#0A0A0A]">{fmtINR(pricePreview.stonePrice, { decimals: 0 })}</span>
+                    <span className="text-[#5F6D62]">Stone Price</span>
+                    <span className="font-mono text-[#2F3A32]">{fmtINR(pricePreview.stonePrice, { decimals: 0 })}</span>
                   </div>
                 )}
                 <div className="border-t border-[#E8D99A] pt-2 mt-2 flex justify-between font-semibold">
-                  <span className="text-[#0A0A0A]">Estimated Total</span>
+                  <span className="text-[#2F3A32]">Estimated Total</span>
                   <span className="font-mono text-[#B49042] text-[14px]">
                     {fmtINR(pricePreview.total, { decimals: 0 })}
                   </span>
                 </div>
               </div>
-              <p className="text-[11px] text-[#a3a3a3] mt-3 leading-relaxed">
+              <p className="text-[11px] text-[#8D998F] mt-3 leading-relaxed">
                 Actual price is calculated at billing using the live gold rate.
               </p>
             </div>
@@ -1855,7 +1895,7 @@ export default function ProductForm() {
                   value={form.purchase_cost_per_gram ?? ""}
                   onValueChange={(_, amount) => set("purchase_cost_per_gram", amount)}
                 />
-                <p className="text-[11px] text-[#a3a3a3] mt-1">
+                <p className="text-[11px] text-[#8D998F] mt-1">
                   {Number(form.purchase_cost_per_gram) > 0 && Number(form.tray_total_weight) > 0
                     ? `Tray value now: ${fmtINR(Number(form.purchase_cost_per_gram) * Number(form.tray_total_weight))} for ${formatWeight(form.tray_total_weight)} g left.`
                     : "COGS = cost per gram × weight sold."}
@@ -1873,13 +1913,13 @@ export default function ProductForm() {
                   required={!editing}
                 />
                 {isTrayUnit ? (
-                  <p className="text-[11px] text-[#a3a3a3] mt-1">
+                  <p className="text-[11px] text-[#8D998F] mt-1">
                     {Number(form.purchase_price) > 0 && Number(form.tray_total_weight) > 0
                       ? `= ${fmtINR(Number(form.purchase_price) / Number(form.tray_total_weight))}/g over ${formatWeight(form.tray_total_weight)} g. COGS is charged by weight sold.`
                       : "Amount paid for the whole tray. Divided by Tray Total Weight to get the cost per gram."}
                   </p>
                 ) : (
-                  <p className="text-[11px] text-[#a3a3a3] mt-1">
+                  <p className="text-[11px] text-[#8D998F] mt-1">
                     Cost of one piece — multiplied by quantity for stock value and COGS.
                   </p>
                 )}
@@ -1905,10 +1945,10 @@ export default function ProductForm() {
             )}
             {isTrayUnit ? (
               <F label="Stock Qty">
-                <div className="input font-mono bg-[#F5F5F5] text-[#737373] cursor-default select-none">
+                <div className="input font-mono bg-[#F5F5F5] text-[#6E786F] cursor-default select-none">
                   {form.stock_qty || 0}
                 </div>
-                <p className="text-[11px] text-[#a3a3a3] mt-1">
+                <p className="text-[11px] text-[#8D998F] mt-1">
                   Auto-filled from &quot;No. of Pieces&quot; in Tray Information above.
                 </p>
               </F>
@@ -1921,7 +1961,7 @@ export default function ProductForm() {
                   value={form.stock_qty}
                   onChange={(v) => set("stock_qty", v)}
                 />
-                <p className="text-[11px] text-[#737373] mt-1">
+                <p className="text-[11px] text-[#6E786F] mt-1">
                   Number of pieces in stock (use 1 for unique tagged jewellery). Low-stock alerts use the sub-category threshold from Catalog.
                 </p>
               </F>
@@ -1978,11 +2018,11 @@ export default function ProductForm() {
 
         {editing && statusHistory.length > 0 && (
           <FormSection title="Tag status history">
-            <ul className="text-[12.5px] space-y-1.5 text-[#525252]">
+            <ul className="text-[12.5px] space-y-1.5 text-[#5F6D62]">
               {statusHistory.map((h) => (
                 <li key={h.id} className="flex justify-between gap-3 border-b border-[#F5F5F5] pb-1">
                   <span>{h.from_status || "—"} → <strong>{h.to_status}</strong> · {h.reason || h.reference_type || ""}</span>
-                  <span className="text-[#a3a3a3] font-mono shrink-0">{h.created_at ? new Date(h.created_at).toLocaleString("en-IN") : ""}</span>
+                  <span className="text-[#8D998F] font-mono shrink-0">{h.created_at ? new Date(h.created_at).toLocaleString("en-IN") : ""}</span>
                 </li>
               ))}
             </ul>
@@ -1993,19 +2033,19 @@ export default function ProductForm() {
         <input type="hidden" name="stone_type_ids" value={JSON.stringify(form.stone_type_ids || [])} />
 
         {submitError && (
-          <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-300 rounded-lg">
+          <div className="flex items-center gap-3 p-4 bg-[#FEF3F2] border border-[#F1C7C4] rounded-[9px]">
             <AlertTriangle size={16} className="text-red-600 mt-0.5 shrink-0" />
             <div className="flex-1">
               <div className="text-[13px] font-semibold text-red-800 mb-0.5">Could not save product</div>
               <div className="text-[12.5px] text-red-700 font-mono whitespace-pre-wrap">{submitError}</div>
             </div>
-            <button type="button" onClick={() => setSubmitError(null)} className="text-red-400 hover:text-red-600">
+            <button type="button" onClick={() => setSubmitError(null)} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
               <X size={14} />
             </button>
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#E8E4DC] bg-white/95 backdrop-blur-sm md:left-64">
+        <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#DCE3D6] bg-[#FFFDF8]/95 backdrop-blur-sm md:left-64 shadow-[0_-4px_18px_rgba(35,58,43,0.06)]">
           <div className={`mx-auto px-8 py-3 flex items-center justify-between gap-3 ${reviewOpen && !editing ? "max-w-[1280px]" : "max-w-[1100px]"}`}>
             <button type="button" onClick={() => nav("/inventory")} className="btn-secondary">
               Cancel
@@ -2074,8 +2114,8 @@ export default function ProductForm() {
 
 function AttributeInput({ attr, value, onChange, onToggleMulti }) {
   const label = (
-    <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
-      {attr.name} {attr.unit && <span className="text-[#a3a3a3] normal-case tracking-normal">({attr.unit})</span>}
+    <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
+      {attr.name} {attr.unit && <span className="text-[#8D998F] normal-case tracking-normal">({attr.unit})</span>}
     </span>
   );
   const tid = `product-attr-${attr.code}`;
@@ -2121,15 +2161,15 @@ function AttributeInput({ attr, value, onChange, onToggleMulti }) {
     case "boolean":
       return (
         <label className="flex items-center gap-2 pt-6">
-          <input data-testid={tid} type="checkbox" className="h-4 w-4 rounded border-[#d4d4d8] text-[#0A0A0A]" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
-          <span className="text-[13px] text-[#0A0A0A]">{attr.name}</span>
+          <input data-testid={tid} type="checkbox" className="h-4 w-4 rounded border-[#d4d4d8] text-[#2F3A32]" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
+          <span className="text-[13px] text-[#2F3A32]">{attr.name}</span>
         </label>
       );
     case "color":
       return (
         <label className="block">
           {label}
-          <input data-testid={tid} type="color" className="h-9 w-full border border-[#E5E7EB] rounded-md" value={value || "#B49042"} onChange={(e) => onChange(e.target.value)} />
+          <input data-testid={tid} type="color" className="h-9 w-full border border-[#C8D4C7] rounded-[9px]" value={value || "#B49042"} onChange={(e) => onChange(e.target.value)} />
         </label>
       );
     case "image":
@@ -2178,8 +2218,8 @@ function MultiPicker({ options, value, onChange, placeholder }) {
   const toggle = (id) => onChange(value.includes(id) ? value.filter((x) => x !== id) : [...value, id]);
   return (
     <div>
-      <div className="flex flex-wrap gap-2 min-h-[42px] border border-[#E5E7EB] rounded-md p-2">
-        {options.length === 0 && <span className="text-[12px] text-[#a3a3a3] px-2 py-1">{placeholder}</span>}
+      <div className="flex flex-wrap gap-2 min-h-[42px] border border-[#C8D4C7] rounded-[9px] p-2">
+        {options.length === 0 && <span className="text-[12px] text-[#8D998F] px-2 py-1">{placeholder}</span>}
         {options.map((o) => {
           const on = value.includes(o.id);
           return (
@@ -2271,11 +2311,11 @@ function NumField({ value, onChange, maxDecimals, ...props }) {
 
 function FormSection({ title, hint, action, children }) {
   return (
-    <section className="rounded-xl border border-[#E8E4DC] bg-white overflow-hidden shadow-[0_1px_2px_rgba(10,10,10,0.03)]">
-      <div className="px-5 py-3 border-b border-[#F0EDE6] bg-[#FAFAF8] flex items-center justify-between gap-3">
+    <section className="rounded-[10px] border border-[#DCE3D6] bg-[#FFFDF8] overflow-hidden shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
+      <div className="px-5 py-3 border-b border-[#E3E8E0] bg-[#F7F8F2] flex items-center justify-between gap-3">
         <div className="min-w-0 flex items-baseline gap-2.5">
-          <h3 className="font-display text-[14px] font-semibold text-[#0A0A0A] truncate">{title}</h3>
-          {hint ? <span className="text-[11px] text-[#a3a3a3] shrink-0">{hint}</span> : null}
+          <h3 className="font-display text-[14px] font-semibold text-[#2F3A32] truncate">{title}</h3>
+          {hint ? <span className="text-[11px] text-[#8D998F] shrink-0">{hint}</span> : null}
         </div>
         {action || null}
       </div>
@@ -2287,10 +2327,10 @@ function FormSection({ title, hint, action, children }) {
 function F({ label, children, required, hint }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
         {label} {required && <span className="text-[#DC2626]">*</span>}
       </span>
-      {hint && <span className="block text-[11px] text-[#a3a3a3] mb-1.5 -mt-1">{hint}</span>}
+      {hint && <span className="block text-[11px] text-[#8D998F] mb-1.5 -mt-1">{hint}</span>}
       {children}
     </label>
   );

@@ -19,19 +19,19 @@ export const QUICK_REPORTS = [
 export default function QuickReportsGrid({ onSelect }) {
   return (
     <div>
-      <h3 className="text-[13px] font-semibold text-[#0A0A0A] mb-3">Quick Reports</h3>
+      <h3 className="mb-3 text-[13px] font-semibold tracking-[-0.01em] text-[#24332B]">Quick Reports</h3>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
         {QUICK_REPORTS.map(({ key, label, description, icon: Icon }) => (
           <button
             key={key}
             onClick={() => onSelect(key)}
-            className="card text-left hover:border-[#B49042] hover:shadow-md transition-all group"
+            className="card group text-left transition-all hover:!border-[#9EB2A6] hover:shadow-[0_10px_26px_rgba(42,71,55,0.09)]"
           >
-            <div className="h-9 w-9 rounded-md bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center mb-3 group-hover:bg-[#B49042]">
-              <Icon size={16} strokeWidth={1.5} className="text-[#B49042] group-hover:text-white" />
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-[9px] border border-[#D6E0D8] bg-[#EEF3EF] transition-colors group-hover:border-[#315C4A] group-hover:bg-[#315C4A]">
+              <Icon size={16} strokeWidth={1.6} className="text-[#315C4A] group-hover:text-white" />
             </div>
-            <div className="text-[13px] font-semibold text-[#0A0A0A]">{label}</div>
-            <div className="text-[11.5px] text-[#737373] mt-0.5">{description}</div>
+            <div className="text-[13px] font-semibold text-[#24332B]">{label}</div>
+            <div className="mt-1 text-[11.5px] leading-4 text-[#737B76]">{description}</div>
           </button>
         ))}
       </div>

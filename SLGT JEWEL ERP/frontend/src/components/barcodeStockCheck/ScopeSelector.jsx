@@ -1,6 +1,6 @@
 import { Layers, CheckCircle2 } from "lucide-react";
 
-const GOLD = "#B49042";
+const FOREST = "#214F3A";
 
 /**
  * "Stock Check Mode" — All Products vs. a single category. Each category
@@ -20,22 +20,22 @@ export default function ScopeSelector({ mode, onSelect, categories, categorySumm
       className={`shrink-0 flex items-center gap-1.5 pl-3.5 pr-3 py-1.5 rounded-full text-[12.5px] font-medium transition-colors border ${
         active
           ? "text-white shadow-sm border-transparent"
-          : "text-[#404040] bg-white border-[#E5E7EB] hover:border-[#D8CBA8] hover:bg-[#FBF8F1]"
+          : "text-[#4E5A53] bg-[#FFFDF9] border-[#E2E7E2] hover:border-[#CBDED2] hover:bg-[#F1F4F0]"
       }`}
-      style={active ? { background: GOLD } : undefined}
+      style={active ? { background: FOREST } : undefined}
     >
       <span>{label}</span>
       {complete ? (
         <CheckCircle2 size={13} strokeWidth={2} className={active ? "text-white" : "text-green-600"} />
       ) : badge != null ? (
-        <span className={`text-[10.5px] font-mono tabular-nums ${active ? "text-white/85" : "text-[#a3a3a3]"}`}>{badge}</span>
+        <span className={`text-[10.5px] font-mono tabular-nums ${active ? "text-white/85" : "text-[#89928C]"}`}>{badge}</span>
       ) : null}
     </button>
   );
 
   return (
     <div className="mb-5">
-      <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold text-[#a3a3a3] mb-2">
+      <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.1em] font-semibold text-[#89928C] mb-2">
         <Layers size={12} strokeWidth={1.5} />
         Stock Check Mode
       </div>
@@ -51,7 +51,7 @@ export default function ScopeSelector({ mode, onSelect, categories, categorySumm
               : null
           }
         />
-        <span className="h-5 w-px bg-[#E5E7EB] shrink-0" />
+        <span className="h-5 w-px bg-[#E2E7E2] shrink-0" />
         {categories.map((c) => {
           const s = summaryFor(c.id);
           return (

@@ -100,10 +100,10 @@ function AdminFlagSection({ flag, canWrite, unlocked, title, description, rowLab
   if (flag.enabled === null) return null;
   return (
     <SettingsSection title={title} description={description}>
-      <div className="border border-[#E5E7EB] rounded-lg overflow-hidden">
-        <div className="flex items-center justify-between gap-4 px-4 py-3 bg-white">
+      <div className="overflow-hidden rounded-[9px] border border-[#DCE3D6]">
+        <div className="flex items-center justify-between gap-4 bg-white px-4 py-3 transition-colors hover:bg-[#F8F9F5]">
           <div className="min-w-0">
-            <div className="text-[13px] font-medium text-[#0A0A0A]">{rowLabel}</div>
+            <div className="text-[13px] font-medium text-[#294236]">{rowLabel}</div>
             <div className="text-[11.5px] text-[#737373]">{flag.enabled ? onText : offText}</div>
           </div>
           <Switch
@@ -358,13 +358,13 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
           {enabledCount} module{enabledCount === 1 ? "" : "s"} enabled · {disabledCount} disabled
         </div>
         {canWrite && !unlocked && (
-          <div className="mb-4 flex items-center gap-2 rounded-md border border-[#E5E7EB] bg-[#F9FAFB] px-3 py-2 text-[12.5px] text-[#525252]">
-            <Lock size={13} strokeWidth={1.5} />
+          <div className="mb-4 flex items-center gap-2 rounded-[9px] border border-[#DCE3D6] bg-[#F5F7F1] px-3 py-2 text-[12px] text-[#5F6F63]">
+            <Lock size={13} className="text-[#6D7D71]" strokeWidth={1.7} />
             Locked — click this tab 5× to enter the password and make changes.
           </div>
         )}
         {canWrite && unlocked && (
-          <div className="mb-4 flex items-center justify-between gap-3 rounded-md border border-[#B49042]/30 bg-[#FDFBF7] px-3 py-2 text-[12.5px] text-[#7A5E26]">
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-[9px] border border-[#E2D2A6] bg-[#FBF7ED] px-3 py-2 text-[12px] text-[#755D25]">
             <span>Unlocked — make any changes you need, then click Update to lock again.</span>
             <button
               type="button"
@@ -387,13 +387,13 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
                 <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#a3a3a3] mb-2">
                   {section}
                 </div>
-                <div className="divide-y divide-[#F5F5F5] border border-[#E5E7EB] rounded-lg overflow-hidden">
+                <div className="divide-y divide-[#E6E9E2] overflow-hidden rounded-[9px] border border-[#DCE3D6]">
                   {items.map((f) => {
                     const enabled = features[f.key] !== false;
                     return (
-                      <div key={f.key} className="flex items-center justify-between gap-4 px-4 py-3 bg-white">
+                      <div key={f.key} className="flex items-center justify-between gap-4 bg-white px-4 py-3 transition-colors hover:bg-[#F8F9F5]">
                         <div className="min-w-0">
-                          <div className="text-[13px] font-medium text-[#0A0A0A]">{f.label}</div>
+                          <div className="text-[13px] font-medium text-[#294236]">{f.label}</div>
                           <div className="text-[11.5px] text-[#737373]">{f.description}</div>
                         </div>
                         <Switch
@@ -416,14 +416,14 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
           title="Old Gold / Old Silver Exchange"
           description="When ON, POS Billing and Estimation skip the weight × rate calculation — the cashier enters the exchange amount directly. When OFF (default), the amount is calculated automatically as weight × rate, same as today."
         >
-          <div className="divide-y divide-[#F5F5F5] border border-[#E5E7EB] rounded-lg overflow-hidden">
+          <div className="divide-y divide-[#E6E9E2] overflow-hidden rounded-[9px] border border-[#DCE3D6]">
             {[
               { metal: "gold", label: "Old Gold Exchange — Manual Mode" },
               { metal: "silver", label: "Old Silver Exchange — Manual Mode" },
             ].map(({ metal, label }) => (
-              <div key={metal} className="flex items-center justify-between gap-4 px-4 py-3 bg-white">
+              <div key={metal} className="flex items-center justify-between gap-4 bg-white px-4 py-3 transition-colors hover:bg-[#F8F9F5]">
                 <div className="min-w-0">
-                  <div className="text-[13px] font-medium text-[#0A0A0A]">{label}</div>
+                  <div className="text-[13px] font-medium text-[#294236]">{label}</div>
                   <div className="text-[11.5px] text-[#737373]">
                     {oldMetalManual[metal] ? "Manual — amount entered directly, no calculation." : "Automatic — amount = weight × rate."}
                   </div>
@@ -470,9 +470,9 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
               const isOpen = !!expanded[catKey];
               const items = itemsFor(cat.id);
               return (
-                <div key={cat.id} className="border border-[#E5E7EB] rounded-lg overflow-hidden">
+                <div key={cat.id} className="overflow-hidden rounded-[9px] border border-[#DCE3D6]">
                   <div
-                    className="flex items-center justify-between gap-4 px-4 py-3 bg-white cursor-pointer select-none"
+                    className="flex cursor-pointer select-none items-center justify-between gap-4 bg-white px-4 py-3 transition-colors hover:bg-[#F8F9F5]"
                     onClick={() => setExpanded((e) => ({ ...e, [catKey]: !e[catKey] }))}
                   >
                     <div className="flex items-center gap-1.5 min-w-0">
@@ -481,7 +481,7 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
                         strokeWidth={1.5}
                         className={`text-[#a3a3a3] transition-transform ${isOpen ? "rotate-90" : ""}`}
                       />
-                      <span className="text-[13px] font-medium text-[#0A0A0A]">{cat.label}</span>
+                      <span className="text-[13px] font-medium text-[#294236]">{cat.label}</span>
                       <span className="text-[11px] text-[#a3a3a3]">({items.length})</span>
                     </div>
                     {/* stopPropagation on a wrapper, not the Switch itself — Switch's
@@ -496,7 +496,7 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
                     </span>
                   </div>
                   {isOpen && (
-                    <div className="divide-y divide-[#F5F5F5] bg-[#FAFAFA] border-t border-[#E5E7EB]">
+                    <div className="divide-y divide-[#E6E9E2] border-t border-[#DCE3D6] bg-[#F5F7F1]">
                       {!catEnabled && (
                         <div className="pl-9 pr-4 py-2 text-[11.5px] text-[#a3a3a3] italic">
                           Category is off — sub-items are hidden regardless of their switch below. Turn the category
@@ -508,7 +508,7 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
                         const itemEnabled = sections[itemKey] !== false;
                         return (
                           <div key={item.id} className="flex items-center justify-between gap-4 pl-9 pr-4 py-2.5">
-                            <span className={`text-[12.5px] ${catEnabled ? "text-[#0A0A0A]" : "text-[#a3a3a3]"}`}>
+                            <span className={`text-[12.5px] ${catEnabled ? "text-[#294236]" : "text-[#a3a3a3]"}`}>
                               {item.label}
                             </span>
                             <Switch

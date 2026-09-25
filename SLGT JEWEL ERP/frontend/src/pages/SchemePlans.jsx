@@ -11,6 +11,45 @@ import { T } from "@/constants/testIds";
 import { useAuth } from "@/context/AuthContext";
 import useConfirm from "@/hooks/useConfirm";
 
+// Presentation-only scheme canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
+
 /** Preset scheme styles shown in the right panel */
 const SCHEME_STYLES = [
   {
@@ -52,9 +91,9 @@ function detectStyleKey(plan) {
 function styleBadge(plan) {
   const bonus = Number(plan.bonus_months || 0);
   if (bonus > 0) {
-    return { label: "Bonus Month", cls: "bg-amber-50 text-amber-800 border border-amber-200" };
+    return { label: "Bonus Month", cls: "bg-[#FDFBF7] text-[#8A6D2F] border border-[#EADFBF]" };
   }
-  return { label: "Standard", cls: "bg-sky-50 text-sky-800 border border-sky-200" };
+  return { label: "Standard", cls: "bg-[#F1F4ED] text-[#526B59] border border-[#D5E0D2]" };
 }
 
 export default function SchemePlans() {
@@ -96,7 +135,7 @@ export default function SchemePlans() {
   };
 
   return (
-    <div className="max-w-[1100px]">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1100px]`}>
       <PageHeader
         title="Scheme Management"
         subtitle="Define the gold saving scheme types your shop offers — members are enrolled under one of these."
@@ -129,10 +168,10 @@ export default function SchemePlans() {
           {rows.map((p) => {
             const badge = styleBadge(p);
             return (
-              <div key={p.id} className="card flex items-center justify-between gap-4">
+              <div key={p.id} className="card flex items-center justify-between gap-4 bg-[#FFFDF8] border-[#DCE3D6] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-semibold text-[14px] text-[#0A0A0A]">{p.name}</span>
+                    <span className="font-semibold text-[14px] text-[#244B39]">{p.name}</span>
                     <span className={`inline-flex items-center text-[10px] font-medium px-2 py-0.5 rounded-full ${badge.cls}`}>
                       {badge.label}
                     </span>
@@ -140,7 +179,7 @@ export default function SchemePlans() {
                       <span className="chip chip-neutral">Inactive</span>
                     )}
                   </div>
-                  <div className="text-[12px] text-[#737373] mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <div className="text-[12px] text-[#6E786F] mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
                     <span>
                       {p.duration_months} months
                       {p.bonus_months ? ` + ${p.bonus_months} bonus` : ""}
@@ -155,7 +194,7 @@ export default function SchemePlans() {
                     )}
                   </div>
                   {p.description && (
-                    <div className="text-[12px] text-[#a3a3a3] mt-1">{p.description}</div>
+                    <div className="text-[12px] text-[#8D998F] mt-1">{p.description}</div>
                   )}
                 </div>
 
@@ -164,14 +203,14 @@ export default function SchemePlans() {
                     <>
                       <button
                         onClick={() => { setEditingPlan(p); setOpenForm(true); }}
-                        className="text-[#525252] hover:text-[#0A0A0A] p-1.5"
+                        className="text-[#5F6D62] hover:text-[#244B39] p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                         title="Edit"
                       >
                         <Pencil size={14} strokeWidth={1.5} />
                       </button>
                       <button
                         onClick={() => toggleActive(p)}
-                        className="text-[#525252] hover:text-[#0A0A0A] p-1.5"
+                        className="text-[#5F6D62] hover:text-[#244B39] p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                         title={p.active ? "Deactivate" : "Activate"}
                       >
                         <Power size={14} strokeWidth={1.5} />
@@ -181,7 +220,7 @@ export default function SchemePlans() {
                   {can("gold_schemes", "delete") && (
                     <button
                       onClick={() => removePlan(p)}
-                      className="text-[#525252] hover:text-[#DC2626] p-1.5"
+                      className="text-[#5F6D62] hover:text-[#9B3E3A] p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8B5B2]"
                       title="Delete"
                     >
                       <Trash2 size={14} strokeWidth={1.5} />
@@ -288,23 +327,23 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-[#20352A]/30 backdrop-blur-[2px]" />
       <form
         onSubmit={save}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-slide-in-right"
+        className="relative w-full max-w-md bg-[#FFFDF8] h-full shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col animate-slide-in-right border-l border-[#DCE3D6]"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB] shrink-0">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#DCE3D6] shrink-0">
           <div>
-            <h2 className="text-[15px] font-semibold text-[#0A0A0A]">
+            <h2 className="text-[15px] font-semibold text-[#244B39]">
               {isEdit ? "Edit Scheme Type" : "New Scheme Type"}
             </h2>
-            <p className="text-[12px] text-[#737373] mt-0.5">
+            <p className="text-[12px] text-[#6E786F] mt-0.5">
               Choose plan style, then set duration and amount
             </p>
           </div>
-          <button type="button" onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] p-1">
+          <button type="button" onClick={onClose} className="text-[#6E786F] hover:text-[#244B39] p-1">
             <X size={18} strokeWidth={1.5} />
           </button>
         </div>
@@ -312,7 +351,7 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
         <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
           {/* Plan style tabs */}
           <section>
-            <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2.5">
+            <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F] mb-2.5">
               Plan Type
             </p>
             <div className="grid grid-cols-2 gap-2.5">
@@ -326,30 +365,30 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
                     onClick={() => applyStyle(s.key)}
                     className={`text-left rounded-xl border px-3.5 py-3 transition-colors ${
                       active
-                        ? "border-[#0A0A0A] bg-[#FAFAFA] ring-1 ring-[#0A0A0A]"
-                        : "border-[#E5E7EB] hover:border-[#d4d4d4] bg-white"
+                        ? "border-[#244B39] bg-[#F7F8F2] ring-1 ring-[#244B39]"
+                        : "border-[#DCE3D6] hover:border-[#d4d4d4] bg-white"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 mb-1.5">
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        active ? "bg-[#0A0A0A] text-white" : "bg-[#F5F5F5] text-[#737373]"
+                        active ? "bg-[#244B39] text-white" : "bg-[#F5F5F5] text-[#6E786F]"
                       }`}>
                         <Icon size={15} strokeWidth={1.75} />
                       </div>
-                      {active && <Check size={14} className="text-[#0A0A0A]" strokeWidth={2} />}
+                      {active && <Check size={14} className="text-[#244B39]" strokeWidth={2} />}
                     </div>
-                    <p className="text-[13px] font-semibold text-[#0A0A0A]">{s.label}</p>
-                    <p className="text-[11px] text-[#737373] mt-0.5 leading-snug">{s.short}</p>
+                    <p className="text-[13px] font-semibold text-[#244B39]">{s.label}</p>
+                    <p className="text-[11px] text-[#6E786F] mt-0.5 leading-snug">{s.short}</p>
                   </button>
                 );
               })}
             </div>
-            <p className="text-[11px] text-[#a3a3a3] mt-2 leading-relaxed">{style.description}</p>
+            <p className="text-[11px] text-[#8D998F] mt-2 leading-relaxed">{style.description}</p>
           </section>
 
           {/* Duration presets */}
           <section>
-            <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2.5">
+            <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F] mb-2.5">
               Duration
             </p>
             <div className="flex flex-wrap gap-2">
@@ -362,10 +401,10 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
                     key={`${opt.duration}-${opt.bonus}`}
                     type="button"
                     onClick={() => applyDurationOption(opt)}
-                    className={`px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors ${
+                    className={`px-3 py-1.5 rounded-[9px] text-[12px] font-medium border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${
                       selected
-                        ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                        : "bg-white text-[#525252] border-[#E5E7EB] hover:border-[#a3a3a3]"
+                        ? "bg-[#244B39] text-white border-[#244B39]"
+                        : "bg-white text-[#5F6D62] border-[#DCE3D6] hover:border-[#8D998F]"
                     }`}
                   >
                     {opt.label}
@@ -391,14 +430,14 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
                   min="0"
                   max="3"
                   disabled={styleKey === "standard"}
-                  className="input font-mono disabled:bg-[#F5F5F5] disabled:text-[#a3a3a3]"
+                  className="input font-mono disabled:bg-[#F5F5F5] disabled:text-[#8D998F]"
                   value={styleKey === "standard" ? 0 : form.bonus_months}
                   onChange={(e) => set("bonus_months", e.target.value)}
                 />
               </Field>
             </div>
-            <p className="text-[11px] text-[#737373] mt-2">
-              Maturity span: <span className="font-semibold text-[#0A0A0A]">{totalMonths || "—"} months</span>
+            <p className="text-[11px] text-[#6E786F] mt-2">
+              Maturity span: <span className="font-semibold text-[#244B39]">{totalMonths || "—"} months</span>
               {styleKey === "bonus" && Number(form.bonus_months) > 0
                 ? ` (${form.duration_months} paid + ${form.bonus_months} bonus)`
                 : " (no bonus)"}
@@ -454,7 +493,7 @@ function SchemePlanPanel({ plan, onClose, onSaved }) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2 shrink-0 bg-white">
+        <div className="px-6 py-4 border-t border-[#DCE3D6] flex items-center justify-end gap-2 shrink-0 bg-[#F7F8F2]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : isEdit ? "Save Changes" : "Create Scheme Type"}
@@ -486,7 +525,7 @@ function suggestName(duration, bonus, planType) {
 function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
         {label}
       </span>
       {children}

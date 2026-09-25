@@ -354,7 +354,7 @@ export default function ErpStatementTab({ includeHidden = false }) {
           type="button"
           onClick={() => setReportOpen(true)}
           disabled={!data}
-          className="inline-flex items-center gap-1 rounded-lg bg-[#B49042] px-3 py-1.5 text-xs font-medium text-white disabled:opacity-50"
+          className="inline-flex items-center gap-1 rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A] disabled:opacity-50"
         >
           <Printer className="h-3.5 w-3.5" /> Print Preview
         </button>
@@ -362,11 +362,11 @@ export default function ErpStatementTab({ includeHidden = false }) {
           type="button"
           onClick={() => setReportOpen(true)}
           disabled={!data}
-          className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 text-xs disabled:opacity-50"
+          className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 text-xs transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] disabled:opacity-50"
         >
           <Download className="h-3.5 w-3.5" /> Download
         </button>
-        <div className="inline-flex overflow-hidden rounded-lg border border-[#E5E7EB]">
+        <div className="inline-flex overflow-hidden rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9]">
           {ROW_FILTERS.map((f) => (
             <button
               key={f.id}
@@ -374,8 +374,8 @@ export default function ErpStatementTab({ includeHidden = false }) {
               onClick={() => setRowFilter(f.id)}
               className={`px-2.5 py-1.5 text-xs font-medium ${
                 rowFilter === f.id
-                  ? "bg-[#0A0A0A] text-white"
-                  : "bg-white text-[#525252] hover:bg-[#F9FAFB]"
+                  ? "bg-[#315C4A] text-white"
+                  : "bg-[#FFFDF9] text-[#59635D] hover:bg-[#F1F5F1]"
               }`}
             >
               {f.label}
@@ -394,13 +394,13 @@ export default function ErpStatementTab({ includeHidden = false }) {
       ) : null}
 
       {loading && !data ? (
-        <div className="flex items-center justify-center rounded-xl border border-dashed border-[#E5E7EB] bg-white p-10 text-sm text-[#737373]">
+        <div className="flex items-center justify-center rounded-xl border border-dashed border-[#D5CFC3] bg-[#FFFDF9] p-10 text-sm text-[#737B76]">
           <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading statement…
         </div>
       ) : (
-        <div className="overflow-auto rounded-xl border border-[#E5E7EB] bg-white">
+        <div className="overflow-auto rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
           <table className="min-w-full text-left text-xs">
-            <thead className="sticky top-0 bg-[#F9FAFB] text-[11px] uppercase tracking-wide text-[#737373]">
+            <thead className="sticky top-0 bg-[#F1EEE7] text-[11px] uppercase tracking-[0.06em] text-[#68716B] shadow-[0_1px_0_#DDD7CA]">
               <tr>
                 <th className="whitespace-nowrap px-3 py-2 font-medium">Date</th>
                 <th className="whitespace-nowrap px-3 py-2 font-medium">Customer ID</th>
@@ -420,8 +420,8 @@ export default function ErpStatementTab({ includeHidden = false }) {
                 return (
                 <tr
                   key={r.id}
-                  className={`border-t border-[#F3F4F6] hover:bg-[#FDFBF7] ${
-                    r.isOpening ? "bg-[#FDFBF7] font-medium" : ""
+                  className={`border-t border-[#E6E1D7] hover:bg-[#F7F5EF] ${
+                    r.isOpening ? "bg-[#FBF8F1] font-medium" : ""
                   }`}
                 >
                   <td className="whitespace-nowrap px-3 py-2 tabular-nums text-[#0A0A0A]">
@@ -478,7 +478,7 @@ export default function ErpStatementTab({ includeHidden = false }) {
             </tbody>
             {data ? (
               <tfoot>
-                <tr className="border-t-2 border-[#0A0A0A] bg-[#F9FAFB] font-semibold">
+                <tr className="border-t-2 border-[#315C4A] bg-[#EEF3EF] font-semibold text-[#24332B]">
                   <td className="px-3 py-2" colSpan={4}>
                     {rowFilter === "non_cash" ? "Old Gold Stock movement" : "Closing balance"} · {displayRows.filter((r) => !r.isOpening).length} transaction{displayRows.filter((r) => !r.isOpening).length === 1 ? "" : "s"}
                   </td>

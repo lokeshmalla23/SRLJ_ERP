@@ -61,7 +61,7 @@ function KindBadge({ kind }) {
   if (kind === "pure_metal") {
     return (
       <span
-        className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide"
+        className="inline-flex rounded-md border border-[#E7D9B5] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.07em]"
         style={{ background: "#FDF8EC", color: "#8A6D2F" }}
       >
         Pure Gold/Silver
@@ -70,8 +70,8 @@ function KindBadge({ kind }) {
   }
   return (
     <span
-      className="inline-flex px-2 py-0.5 rounded-md text-[10px] font-semibold uppercase tracking-wide"
-      style={{ background: "#F3F4F6", color: "#525252" }}
+      className="inline-flex rounded-md border border-[#DDE3DA] px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-[0.07em]"
+      style={{ background: "#F1F4EE", color: "#526458" }}
     >
       Jewellery
     </span>
@@ -132,8 +132,8 @@ export default function HiddenBills() {
   };
 
   return (
-    <div className={hiddenUnlockBleedClass(true)}>
-    <div className="max-w-6xl mx-auto space-y-4">
+    <div className={`${hiddenUnlockBleedClass(true)} !bg-[#F7F5EE] [box-shadow:inset_0_3px_0_0_#D8C89E] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#CDD6CA] [&_.btn-secondary]:!text-[#344A3C] [&_.btn-secondary:hover]:!border-[#9FAF9E] [&_.btn-secondary:hover]:!bg-white [&_.btn-secondary:focus-visible]:!ring-2 [&_.btn-secondary:focus-visible]:!ring-[#78917C]/35 [&_.input]:!rounded-[9px] [&_.input]:!border-[#C8D2C5] [&_.input:focus]:!border-[#5F7D67] [&_.input:focus]:!ring-2 [&_.input:focus]:!ring-[#DCE7D8]`}>
+    <div className="mx-auto w-full max-w-6xl space-y-4">
       <PageHeader
         title="Hidden Bills"
         subtitle="Owner-only · Jewellery & Pure Gold/Silver POS · excluded from normal records until unlocked"
@@ -144,13 +144,13 @@ export default function HiddenBills() {
         }
       />
 
-      <div className="flex items-center gap-2 text-[12px] text-[#737373] bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
-        <Shield size={14} className="text-amber-700 shrink-0" />
+      <div className="flex items-center gap-2 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-3 py-2 text-[12px] leading-relaxed text-[#755D25]">
+        <Shield size={14} className="shrink-0 text-[#9B7B36]" strokeWidth={1.7} />
         Works from both POS tabs (Jewellery and Pure Gold/Silver). Shows each bill&apos;s own date, salesperson, customer, items and payments.
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-2xl border px-4 py-3 space-y-3" style={{ borderColor: "#E5E7EB" }}>
+      <div className="space-y-3 rounded-[10px] border bg-[#FEFEFB] px-4 py-3 shadow-[0_1px_2px_rgba(36,55,45,0.04)]" style={{ borderColor: "#DCE3D6" }}>
         <div className="flex flex-wrap items-center gap-2">
           {[
             { id: "all", label: "All" },
@@ -161,11 +161,11 @@ export default function HiddenBills() {
               key={opt.id}
               type="button"
               onClick={() => setKindFilter(opt.id)}
-              className="px-3 py-1.5 rounded-lg text-[12px] font-medium border transition-colors"
+              className="h-8 rounded-[8px] border px-3 text-[11.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
               style={{
-                borderColor: kindFilter === opt.id ? "#0A0A0A" : "#E5E7EB",
-                background: kindFilter === opt.id ? "#0A0A0A" : "#fff",
-                color: kindFilter === opt.id ? "#fff" : "#525252",
+                borderColor: kindFilter === opt.id ? "#244B39" : "#D5DDD2",
+                background: kindFilter === opt.id ? "#244B39" : "#fff",
+                color: kindFilter === opt.id ? "#fff" : "#526458",
               }}
             >
               {opt.label}
@@ -212,7 +212,7 @@ export default function HiddenBills() {
           </button>
           <button
             type="button"
-            className="text-[12px] text-[#737373] hover:text-[#0A0A0A] underline"
+            className="rounded-[6px] px-1 py-0.5 text-[11.5px] font-semibold text-[#66766A] underline decoration-[#B8C5B6] underline-offset-2 transition-colors hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
             onClick={clearDates}
           >
             Show all
@@ -229,10 +229,10 @@ export default function HiddenBills() {
       {loading ? (
         <PageLoadingBadge />
       ) : (
-        <div className="bg-white rounded-2xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto rounded-[10px] border bg-[#FEFEFB] shadow-[0_1px_2px_rgba(36,55,45,0.04)]" style={{ borderColor: "#DCE3D6" }}>
+          <table className="w-full min-w-[780px] text-sm">
             <thead>
-              <tr className="bg-[#F9FAFB] text-left text-[12px] text-[#737373]">
+              <tr className="border-b border-[#DCE3D6] bg-[#F1F4EC] text-left text-[10.5px] font-bold uppercase tracking-[0.08em] text-[#66766A]">
                 <th className="px-3 py-2.5">Bill date</th>
                 <th className="px-3 py-2.5">Type</th>
                 <th className="px-3 py-2.5">Invoice</th>
@@ -246,9 +246,9 @@ export default function HiddenBills() {
               {filteredRows.map((inv) => {
                 const kind = billKind(inv);
                 return (
-                  <tr key={inv.id} className="border-t" style={{ borderColor: "#E5E7EB" }}>
+                  <tr key={inv.id} className="border-t transition-colors hover:bg-[#F7F9F4]" style={{ borderColor: "#E6E9E2" }}>
                     <td className="px-3 py-2">
-                      <div className="text-[13px] font-medium text-[#0A0A0A]">{formatBillDate(inv)}</div>
+                      <div className="text-[13px] font-medium text-[#294236]">{formatBillDate(inv)}</div>
                       <div className="text-[11px] text-[#a3a3a3] font-mono">
                         {formatBillTime(inv) || "—"}
                       </div>
@@ -279,7 +279,7 @@ export default function HiddenBills() {
               })}
               {!filteredRows.length && (
                 <tr>
-                  <td colSpan={7} className="px-3 py-10 text-center text-[#a3a3a3]">
+                  <td colSpan={7} className="bg-[#FAFBF8] px-3 py-12 text-center text-[12.5px] text-[#7A867D]">
                     No hidden bills{fromDate || toDate || kindFilter !== "all" ? " for this filter" : " yet"}
                   </td>
                 </tr>
@@ -290,9 +290,9 @@ export default function HiddenBills() {
       )}
 
       {selected && (
-        <div className="bg-white rounded-2xl border p-4 space-y-3" style={{ borderColor: "#E5E7EB" }}>
+        <div className="space-y-3 rounded-[10px] border bg-[#FEFEFB] p-4 shadow-[0_8px_24px_rgba(36,55,45,0.07)]" style={{ borderColor: "#C9D5C6" }}>
           <div className="flex items-center justify-between gap-2 flex-wrap">
-            <div className="font-semibold text-[#0A0A0A] flex items-center gap-2 flex-wrap">
+            <div className="font-semibold text-[#294236] flex items-center gap-2 flex-wrap">
               {selected.invoice_no}
               <KindBadge kind={billKind(selected)} />
               <span className="text-[12px] font-normal text-[#737373]">
@@ -318,7 +318,7 @@ export default function HiddenBills() {
             <div className="text-[11px] uppercase tracking-wide text-[#737373] mb-1">Items</div>
             <ul className="text-[13px] space-y-1">
               {asArray(selected.items).map((it, i) => (
-                <li key={i} className="flex justify-between border-b py-1" style={{ borderColor: "#F3F4F6" }}>
+                <li key={i} className="flex justify-between border-b py-1" style={{ borderColor: "#E6E9E2" }}>
                   <span>
                     {it.name || it.product_name || it.description || "Item"}
                     {" · "}

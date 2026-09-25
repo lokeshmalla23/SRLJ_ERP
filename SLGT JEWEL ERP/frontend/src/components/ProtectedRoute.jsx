@@ -7,22 +7,37 @@ import slgtLogo from "@/assets/slgt-logo.png";
 
 export function BrandedLoading() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-5 bg-white">
-      <div className="rounded-xl bg-black border border-[#E5E7EB] overflow-hidden shadow-sm animate-pulse">
-        <img
-          src={slgtLogo}
-          alt={APP_WINDOW_TITLE}
-          className="h-28 w-auto max-w-[260px] object-contain"
-        />
-      </div>
-      <div className="flex items-center gap-1.5">
-        {[0, 1, 2].map(i => (
-          <div
-            key={i}
-            className="h-2 w-2 rounded-full bg-[#B49042]"
-            style={{ animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }}
+    <div
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F8F4EA] px-6 py-10"
+      role="status"
+      aria-live="polite"
+    >
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[min(440px,90vw)] w-[min(440px,90vw)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#DCCBAA]/70"
+        style={{ background: "radial-gradient(circle, rgba(180, 144, 66, 0.10), rgba(248, 244, 234, 0) 68%)" }}
+        aria-hidden="true"
+      />
+      <div className="relative flex w-full max-w-[360px] flex-col items-center rounded-[26px] border border-[#DCCBAA] bg-[#FCFAF4]/95 px-7 py-7 text-center shadow-[0_20px_60px_rgba(23,63,50,0.12)]">
+        <div className="flex h-28 w-28 animate-pulse items-center justify-center overflow-hidden rounded-[22px] border border-[#B49042]/70 bg-[#173F32] shadow-[0_12px_28px_rgba(23,63,50,0.20)]">
+          <img
+            src={slgtLogo}
+            alt={APP_WINDOW_TITLE}
+            className="h-24 w-24 object-contain p-1 mix-blend-screen"
           />
-        ))}
+        </div>
+        <div className="mt-5 h-px w-16 bg-gradient-to-r from-transparent via-[#B49042] to-transparent" />
+        <div className="mt-4 font-display text-[15px] font-semibold tracking-[-0.01em] text-[#173F32]">
+          {APP_WINDOW_TITLE}
+        </div>
+        <div className="mt-4 flex items-center gap-1.5" aria-hidden="true">
+          {[0, 1, 2].map(i => (
+            <div
+              key={i}
+              className="h-2 w-2 rounded-full bg-[#B49042]"
+              style={{ animation: `bounce 1s ease-in-out ${i * 0.15}s infinite` }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

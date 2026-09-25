@@ -39,11 +39,11 @@ const VENDOR_TYPES = [
 ];
 
 const TYPE_BADGE = {
-  gold_supplier: "bg-amber-50 text-amber-700 border border-amber-200",
-  stone_supplier: "bg-blue-50 text-blue-700 border border-blue-200",
-  manufacturer: "bg-purple-50 text-purple-700 border border-purple-200",
-  karigar: "bg-emerald-50 text-emerald-700 border border-emerald-200",
-  other: "bg-gray-100 text-gray-600 border border-gray-200",
+  gold_supplier: "bg-[#FDFBF7] text-[#8A6D2F] border border-[#EADFBF]",
+  stone_supplier: "bg-[#F1F4ED] text-[#526B59] border border-[#D5E0D2]",
+  manufacturer: "bg-[#F2F0F7] text-[#6B5C82] border border-[#DDD7E8]",
+  karigar: "bg-[#EDF4EE] text-[#356747] border border-[#CFE1D1]",
+  other: "bg-[#F1F4ED] text-[#66736A] border border-[#DCE3D6]",
 };
 
 const TYPE_LABELS = {
@@ -64,7 +64,7 @@ const FILTER_PILLS = [
 ];
 
 const ORDER_STATUS_META = {
-  received: { label: "Received", cls: "bg-gray-100 text-gray-700 border border-gray-200" },
+  received: { label: "Received", cls: "bg-[#F1F4ED] text-[#5F6D62] border border-[#DCE3D6]" },
   karigar_assigned: { label: "Karigar Assigned", cls: "bg-blue-100 text-blue-700 border border-blue-200" },
   in_progress: { label: "In Progress", cls: "bg-amber-100 text-amber-700 border border-amber-200" },
   quality_check: { label: "Quality Check", cls: "bg-purple-100 text-purple-700 border border-purple-200" },
@@ -91,7 +91,46 @@ const EMPTY_FORM = {
   notes: "",
 };
 
-// ─── Helpers ────────────────────────────────────────────────────────────────────
+// Presentation-only trade-module canvas and control treatment.  Keep the
+// existing component APIs and handlers intact; these utilities only align the
+// page with the warm neutral shell used by the rest of the ERP.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
 
 function getInitials(name = "") {
   return name
@@ -103,14 +142,14 @@ function getInitials(name = "") {
 }
 
 const AVATAR_COLORS = [
-  "bg-amber-100 text-amber-700",
-  "bg-blue-100 text-blue-700",
-  "bg-purple-100 text-purple-700",
-  "bg-emerald-100 text-emerald-700",
-  "bg-rose-100 text-rose-700",
-  "bg-indigo-100 text-indigo-700",
-  "bg-teal-100 text-teal-700",
-  "bg-sky-100 text-sky-700",
+  "bg-[#FDFBF7] text-[#8A6D2F]",
+  "bg-[#F1F4ED] text-[#526B59]",
+  "bg-[#F2F0F7] text-[#6B5C82]",
+  "bg-[#EDF4EE] text-[#356747]",
+  "bg-[#F8EEEE] text-[#8A4A4A]",
+  "bg-[#EEF0F7] text-[#4F5D82]",
+  "bg-[#EAF4F1] text-[#356B60]",
+  "bg-[#EEF3F7] text-[#4B667A]",
 ];
 
 function avatarColor(name = "") {
@@ -121,16 +160,16 @@ function avatarColor(name = "") {
 
 // ─── Stat Card ──────────────────────────────────────────────────────────────────
 
-function StatCard({ icon: Icon, label, value, color = "text-[#0A0A0A]", sub }) {
+function StatCard({ icon: Icon, label, value, color = "text-[#2F3A32]", sub }) {
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-xl p-4 flex items-center gap-4">
-      <div className="w-10 h-10 rounded-lg bg-[#F9FAFB] flex items-center justify-center shrink-0">
-        <Icon size={18} strokeWidth={1.5} className="text-[#737373]" />
+    <div className="bg-[#FFFDF8] border border-[#DCE3D6] rounded-[10px] p-4 flex items-center gap-4 shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
+      <div className="w-10 h-10 rounded-[9px] bg-[#F1F4ED] border border-[#DCE3D6] flex items-center justify-center shrink-0">
+        <Icon size={18} strokeWidth={1.5} className="text-[#6E786F]" />
       </div>
       <div className="min-w-0">
-        <p className="text-[11px] text-[#737373] font-medium uppercase tracking-wide truncate">{label}</p>
+        <p className="text-[11px] text-[#6E786F] font-medium uppercase tracking-wide truncate">{label}</p>
         <p className={`text-xl font-semibold leading-tight ${color}`}>{value ?? "—"}</p>
-        {sub && <p className="text-[11px] text-[#a3a3a3] mt-0.5">{sub}</p>}
+        {sub && <p className="text-[11px] text-[#8D998F] mt-0.5">{sub}</p>}
       </div>
     </div>
   );
@@ -168,7 +207,7 @@ function StatusBadge({ status }) {
 function Field({ label, required, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-1.5">
+      <span className="block text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F] mb-1.5">
         {label}
         {required && <span className="text-red-500 ml-0.5">*</span>}
       </span>
@@ -177,7 +216,7 @@ function Field({ label, required, children }) {
   );
 }
 
-const IC = "w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-[13px] text-[#0A0A0A] bg-white placeholder-[#a3a3a3] focus:outline-none focus:border-[#0A0A0A] transition-colors";
+const IC = "w-full border border-[#C8D4C7] rounded-[9px] px-3 py-2 text-[13px] text-[#2F3A32] bg-white placeholder-[#9AA69C] focus:outline-none focus:border-[#66806B] focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)] transition-colors";
 
 // ─── Vendor Detail Panel ─────────────────────────────────────────────────────────
 
@@ -225,63 +264,63 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
     if (!value && value !== 0) return null;
     return (
       <div className="flex gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#F9FAFB] flex items-center justify-center shrink-0 mt-0.5">
-          <Icon size={14} strokeWidth={1.5} className="text-[#737373]" />
+        <div className="w-8 h-8 rounded-lg bg-[#F1F4ED] flex items-center justify-center shrink-0 mt-0.5">
+          <Icon size={14} strokeWidth={1.5} className="text-[#6E786F]" />
         </div>
         <div>
-          <p className="text-[11px] text-[#737373] font-medium uppercase tracking-wide">{label}</p>
-          <p className="text-[13px] text-[#0A0A0A] break-words">{value}</p>
+          <p className="text-[11px] text-[#6E786F] font-medium uppercase tracking-wide">{label}</p>
+          <p className="text-[13px] text-[#2F3A32] break-words">{value}</p>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-40 flex justify-end bg-[#20352A]/30 backdrop-blur-[2px]" onClick={onClose}>
       <div
-        className="relative w-full max-w-md bg-white h-full shadow-2xl overflow-y-auto flex flex-col"
+        className="relative w-full max-w-md bg-[#FFFDF8] h-full shadow-[0_18px_50px_rgba(35,58,43,0.18)] overflow-y-auto flex flex-col border-l border-[#DCE3D6]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
-          <h2 className="text-[15px] font-semibold text-[#0A0A0A]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#DCE3D6]">
+          <h2 className="text-[15px] font-semibold text-[#2F3A32]">
             {isKarigar ? "Karigar Details" : "Vendor Details"}
           </h2>
-          <button onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] transition-colors">
+          <button onClick={onClose} className="text-[#6E786F] hover:text-[#2F3A32] transition-colors">
             <X size={18} strokeWidth={1.5} />
           </button>
         </div>
 
         {/* Profile */}
-        <div className="px-6 py-5 flex items-center gap-4 border-b border-[#E5E7EB] bg-[#F9FAFB]">
+        <div className="px-6 py-5 flex items-center gap-4 border-b border-[#DCE3D6] bg-[#F1F4ED]">
           <div className={`w-16 h-16 rounded-full flex items-center justify-center text-[20px] font-bold shrink-0 ${colorClass}`}>
             {initials}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[17px] font-semibold text-[#0A0A0A] truncate">{vendor.name}</p>
+            <p className="text-[17px] font-semibold text-[#2F3A32] truncate">{vendor.name}</p>
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               <TypeBadge type={vendor.type} />
               <StatusBadge status={vendor.status} />
             </div>
             {vendor.contact_person && (
-              <p className="text-[12px] text-[#737373] mt-1">Contact: {vendor.contact_person}</p>
+              <p className="text-[12px] text-[#6E786F] mt-1">Contact: {vendor.contact_person}</p>
             )}
           </div>
         </div>
 
         {/* Financial Summary */}
-        <div className="px-6 py-4 border-b border-[#E5E7EB] grid grid-cols-2 gap-3">
-          <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3">
-            <p className="text-[10px] text-[#737373] font-medium uppercase tracking-wide">Outstanding Balance</p>
+        <div className="px-6 py-4 border-b border-[#DCE3D6] grid grid-cols-2 gap-3">
+          <div className="bg-[#F1F4ED] border border-[#DCE3D6] rounded-xl p-3">
+            <p className="text-[10px] text-[#6E786F] font-medium uppercase tracking-wide">Outstanding Balance</p>
             <p className="text-[16px] font-semibold text-red-600 mt-0.5">
               {fmtINR(vendor.outstanding_balance || 0)}
             </p>
           </div>
-          <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3">
-            <p className="text-[10px] text-[#737373] font-medium uppercase tracking-wide">
+          <div className="bg-[#F1F4ED] border border-[#DCE3D6] rounded-xl p-3">
+            <p className="text-[10px] text-[#6E786F] font-medium uppercase tracking-wide">
               {isKarigar ? "Open Jobs" : "Total Purchases"}
             </p>
-            <p className="text-[16px] font-semibold text-[#0A0A0A] mt-0.5">
+            <p className="text-[16px] font-semibold text-[#2F3A32] mt-0.5">
               {isKarigar
                 ? (ordersLoading ? "…" : openCount)
                 : fmtINR(vendor.total_purchases || 0)}
@@ -291,24 +330,24 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
 
         {/* Assigned orders for karigar */}
         {isKarigar && (
-          <div className="px-6 py-4 border-b border-[#E5E7EB]">
+          <div className="px-6 py-4 border-b border-[#DCE3D6]">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373]">
+              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F]">
                 Assigned Orders
               </p>
-              <span className="text-[11px] text-[#a3a3a3]">
+              <span className="text-[11px] text-[#8D998F]">
                 {ordersLoading ? "Loading…" : `${assignedOrders.length} total`}
               </span>
             </div>
             {ordersLoading ? (
-              <div className="flex items-center gap-2 text-[12px] text-[#737373] py-4 justify-center">
+              <div className="flex items-center gap-2 text-[12px] text-[#6E786F] py-4 justify-center">
                 <Loader2 size={14} className="animate-spin" /> Loading orders…
               </div>
             ) : assignedOrders.length === 0 ? (
-              <div className="rounded-xl border border-dashed border-[#E5E7EB] bg-[#F9FAFB] px-4 py-6 text-center">
+              <div className="rounded-xl border border-dashed border-[#DCE3D6] bg-[#F1F4ED] px-4 py-6 text-center">
                 <ClipboardList size={20} className="mx-auto text-[#d4d4d4] mb-2" />
-                <p className="text-[13px] text-[#737373]">No orders assigned yet</p>
-                <p className="text-[11px] text-[#a3a3a3] mt-1">
+                <p className="text-[13px] text-[#6E786F]">No orders assigned yet</p>
+                <p className="text-[11px] text-[#8D998F] mt-1">
                   Assign this karigar from Orders → order details
                 </p>
               </div>
@@ -320,23 +359,23 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
                   return (
                     <div
                       key={o.id}
-                      className="rounded-xl border border-[#E5E7EB] bg-white px-3 py-2.5"
+                      className="rounded-xl border border-[#DCE3D6] bg-white px-3 py-2.5"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-1.5">
-                            <TypeIcon size={12} className="text-[#a3a3a3] shrink-0" />
-                            <span className="text-[12px] font-semibold text-[#0A0A0A] truncate">
+                            <TypeIcon size={12} className="text-[#8D998F] shrink-0" />
+                            <span className="text-[12px] font-semibold text-[#2F3A32] truncate">
                               {o.order_no}
                             </span>
-                            <span className="text-[10px] text-[#a3a3a3] shrink-0">
+                            <span className="text-[10px] text-[#8D998F] shrink-0">
                               {o.type === "repair" ? "Repair" : "Custom"}
                             </span>
                           </div>
-                          <p className="text-[12px] text-[#525252] mt-0.5 truncate">
+                          <p className="text-[12px] text-[#5F6D62] mt-0.5 truncate">
                             {o.customer_name}
                           </p>
-                          <p className="text-[11px] text-[#a3a3a3] mt-0.5 line-clamp-2">
+                          <p className="text-[11px] text-[#8D998F] mt-0.5 line-clamp-2">
                             {o.description}
                           </p>
                         </div>
@@ -345,7 +384,7 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
                         </span>
                       </div>
                       {o.delivery_date && (
-                        <p className="text-[10px] text-[#a3a3a3] mt-1.5">
+                        <p className="text-[10px] text-[#8D998F] mt-1.5">
                           Delivery: {fmtDate(o.delivery_date)}
                         </p>
                       )}
@@ -368,22 +407,22 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
           {/* Bank Details */}
           {(vendor.bank_name || vendor.account_no || vendor.ifsc_code) && (
             <div>
-              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2">Bank Details</p>
-              <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 space-y-1.5">
+              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F] mb-2">Bank Details</p>
+              <div className="bg-[#F1F4ED] border border-[#DCE3D6] rounded-xl p-3 space-y-1.5">
                 {vendor.bank_name && (
                   <div className="flex items-center gap-2">
-                    <Landmark size={12} strokeWidth={1.5} className="text-[#a3a3a3] shrink-0" />
-                    <span className="text-[12px] text-[#0A0A0A]">{vendor.bank_name}</span>
+                    <Landmark size={12} strokeWidth={1.5} className="text-[#8D998F] shrink-0" />
+                    <span className="text-[12px] text-[#2F3A32]">{vendor.bank_name}</span>
                   </div>
                 )}
                 {vendor.account_no && (
                   <div className="flex items-center gap-2">
-                    <CreditCard size={12} strokeWidth={1.5} className="text-[#a3a3a3] shrink-0" />
-                    <span className="text-[12px] font-mono text-[#0A0A0A]">{vendor.account_no}</span>
+                    <CreditCard size={12} strokeWidth={1.5} className="text-[#8D998F] shrink-0" />
+                    <span className="text-[12px] font-mono text-[#2F3A32]">{vendor.account_no}</span>
                   </div>
                 )}
                 {vendor.ifsc_code && (
-                  <p className="text-[11px] text-[#737373] font-mono">
+                  <p className="text-[11px] text-[#6E786F] font-mono">
                     IFSC: {vendor.ifsc_code}
                     {vendor.branch_name ? ` · ${vendor.branch_name}` : ""}
                   </p>
@@ -395,20 +434,20 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
           {/* Credit Terms */}
           {(vendor.credit_limit || vendor.credit_days) && (
             <div>
-              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2">Credit Terms</p>
-              <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-3 grid grid-cols-2 gap-3">
+              <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#6E786F] mb-2">Credit Terms</p>
+              <div className="bg-[#F1F4ED] border border-[#DCE3D6] rounded-xl p-3 grid grid-cols-2 gap-3">
                 {vendor.credit_limit != null && vendor.credit_limit !== "" && (
                   <div>
-                    <p className="text-[10px] text-[#737373] uppercase tracking-wide">Limit</p>
-                    <p className="text-[13px] font-medium text-[#0A0A0A]">
+                    <p className="text-[10px] text-[#6E786F] uppercase tracking-wide">Limit</p>
+                    <p className="text-[13px] font-medium text-[#2F3A32]">
                       {fmtINR(vendor.credit_limit)}
                     </p>
                   </div>
                 )}
                 {vendor.credit_days != null && vendor.credit_days !== "" && (
                   <div>
-                    <p className="text-[10px] text-[#737373] uppercase tracking-wide">Days</p>
-                    <p className="text-[13px] font-medium text-[#0A0A0A]">{vendor.credit_days} days</p>
+                    <p className="text-[10px] text-[#6E786F] uppercase tracking-wide">Days</p>
+                    <p className="text-[13px] font-medium text-[#2F3A32]">{vendor.credit_days} days</p>
                   </div>
                 )}
               </div>
@@ -419,10 +458,10 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-2">
+        <div className="px-6 py-4 border-t border-[#DCE3D6] flex items-center gap-2">
           <button
             onClick={onEdit}
-            className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#244B39] text-white rounded-[9px] hover:bg-[#1D3B2E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
           >
             <Edit2 size={13} strokeWidth={1.5} />
             Edit
@@ -430,7 +469,7 @@ function DetailPanel({ vendor, onClose, onEdit, onMarkInactive }) {
           {isActive && (
             <button
               onClick={onMarkInactive}
-              className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium border border-[#E5E7EB] text-[#737373] rounded-lg hover:border-red-200 hover:text-red-600 hover:bg-red-50 transition-colors ml-auto"
+              className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium border border-[#DCE3D6] text-[#6E786F] rounded-[9px] hover:border-red-200 hover:text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8B5B2] transition-colors ml-auto"
             >
               <AlertTriangle size={13} strokeWidth={1.5} />
               Mark Inactive
@@ -507,32 +546,32 @@ function VendorModal({ vendor, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#20352A]/35 backdrop-blur-[2px] px-4" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
+        className="bg-[#FFFDF8] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB] shrink-0">
-          <h2 className="text-[16px] font-semibold text-[#0A0A0A]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#DCE3D6] shrink-0">
+          <h2 className="text-[16px] font-semibold text-[#2F3A32]">
             {isEdit ? "Edit Vendor" : "Add Vendor"}
           </h2>
-          <button onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] transition-colors">
+          <button onClick={onClose} className="text-[#6E786F] hover:text-[#2F3A32] transition-colors">
             <X size={18} strokeWidth={1.5} />
           </button>
         </div>
 
         {/* Tabs */}
-        <div className="flex border-b border-[#E5E7EB] px-6 shrink-0">
+        <div className="flex border-b border-[#DCE3D6] px-6 shrink-0">
           {TABS.map((tab, i) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(i)}
-              className={`px-4 py-3 text-[13px] font-medium border-b-2 transition-colors -mb-px ${
+              className={`px-4 py-3 text-[13px] font-medium border-b-2 transition-colors -mb-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${
                 activeTab === i
-                  ? "border-[#0A0A0A] text-[#0A0A0A]"
-                  : "border-transparent text-[#737373] hover:text-[#0A0A0A]"
+                  ? "border-[#244B39] text-[#2F3A32]"
+                  : "border-transparent text-[#6E786F] hover:text-[#2F3A32]"
               }`}
             >
               {tab}
@@ -701,14 +740,14 @@ function VendorModal({ vendor, onClose, onSaved }) {
           </div>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center justify-between shrink-0">
+          <div className="px-6 py-4 border-t border-[#DCE3D6] flex items-center justify-between shrink-0">
             {/* Tab navigation */}
             <div className="flex gap-2">
               {activeTab > 0 && (
                 <button
                   type="button"
                   onClick={() => setActiveTab((t) => t - 1)}
-                  className="px-4 py-2 text-[13px] font-medium border border-[#E5E7EB] text-[#525252] rounded-lg hover:bg-[#F9FAFB] transition-colors"
+                  className="px-4 py-2 text-[13px] font-medium border border-[#DCE3D6] text-[#5F6D62] rounded-lg hover:bg-[#F1F4ED] transition-colors"
                 >
                   Back
                 </button>
@@ -717,7 +756,7 @@ function VendorModal({ vendor, onClose, onSaved }) {
                 <button
                   type="button"
                   onClick={() => setActiveTab((t) => t + 1)}
-                  className="flex items-center gap-1 px-4 py-2 text-[13px] font-medium border border-[#E5E7EB] text-[#525252] rounded-lg hover:bg-[#F9FAFB] transition-colors"
+                  className="flex items-center gap-1 px-4 py-2 text-[13px] font-medium border border-[#DCE3D6] text-[#5F6D62] rounded-lg hover:bg-[#F1F4ED] transition-colors"
                 >
                   Next
                   <ChevronRight size={13} strokeWidth={1.5} />
@@ -728,14 +767,14 @@ function VendorModal({ vendor, onClose, onSaved }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-[13px] font-medium border border-[#E5E7EB] text-[#525252] rounded-lg hover:bg-[#F9FAFB] transition-colors"
+                className="px-4 py-2 text-[13px] font-medium border border-[#DCE3D6] text-[#5F6D62] rounded-lg hover:bg-[#F1F4ED] transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={busy}
-                className="px-5 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] disabled:opacity-50 transition-colors"
+                className="px-5 py-2 text-[13px] font-medium bg-[#244B39] text-white rounded-lg hover:bg-[#1D3B2E] disabled:opacity-50 transition-colors"
               >
                 {busy ? "Saving…" : isEdit ? "Save Changes" : "Add Vendor"}
               </button>
@@ -846,18 +885,18 @@ export default function Vendors() {
     vendors.reduce((sum, v) => sum + Number(v.this_month_purchases || 0), 0);
 
   return (
-    <div className="max-w-[1400px]">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1400px]`}>
       {/* Page Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-[22px] font-semibold text-[#0A0A0A]">Vendors & Suppliers</h1>
-          <p className="text-[13px] text-[#737373] mt-0.5">
+          <h1 className="text-[22px] font-semibold text-[#2F3A32]">Vendors & Suppliers</h1>
+          <p className="text-[13px] text-[#6E786F] mt-0.5">
             Gold suppliers, stone merchants, karigars and manufacturers — all in one place.
           </p>
         </div>
         <button
           onClick={openAdd}
-          className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+          className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#244B39] text-white rounded-[9px] hover:bg-[#1D3B2E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
         >
           <Plus size={14} strokeWidth={1.5} />
           Add Vendor
@@ -886,9 +925,9 @@ export default function Vendors() {
       <div className="flex flex-wrap items-center gap-3 mb-5">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
           <input
-            className="w-full border border-[#E5E7EB] rounded-lg pl-9 pr-3 py-2 text-[13px] text-[#0A0A0A] bg-white placeholder-[#a3a3a3] focus:outline-none focus:border-[#0A0A0A] transition-colors"
+            className="w-full border border-[#C8D4C7] rounded-[9px] pl-9 pr-3 py-2 text-[13px] text-[#2F3A32] bg-white placeholder-[#9AA69C] focus:outline-none focus:border-[#66806B] focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)] transition-colors"
             placeholder="Search by name, mobile, GST…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -901,10 +940,10 @@ export default function Vendors() {
             <button
               key={p.value}
               onClick={() => setTypeFilter(p.value)}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-[9px] text-[12px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${
                 typeFilter === p.value
-                  ? "bg-[#0A0A0A] text-white"
-                  : "bg-[#F9FAFB] border border-[#E5E7EB] text-[#525252] hover:border-[#D1D5DB] hover:text-[#0A0A0A]"
+                  ? "bg-[#244B39] text-white"
+                  : "bg-[#F1F4ED] border border-[#DCE3D6] text-[#5F6D62] hover:border-[#AFC2AE] hover:text-[#244B39]"
               }`}
             >
               {p.label}
@@ -913,7 +952,7 @@ export default function Vendors() {
         </div>
 
         {/* Status toggle */}
-        <div className="flex items-center gap-1 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-0.5">
+        <div className="flex items-center gap-1 bg-[#F1F4ED] border border-[#DCE3D6] rounded-lg p-0.5">
           {[
             { value: "", label: "All" },
             { value: "active", label: "Active" },
@@ -924,8 +963,8 @@ export default function Vendors() {
               onClick={() => setStatusFilter(s.value)}
               className={`px-3 py-1.5 rounded-md text-[12px] font-medium transition-colors ${
                 statusFilter === s.value
-                  ? "bg-white text-[#0A0A0A] shadow-sm border border-[#E5E7EB]"
-                  : "text-[#737373] hover:text-[#0A0A0A]"
+                  ? "bg-white text-[#2F3A32] shadow-sm border border-[#DCE3D6]"
+                  : "text-[#6E786F] hover:text-[#2F3A32]"
               }`}
             >
               {s.label}
@@ -942,13 +981,13 @@ export default function Vendors() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-14 h-14 rounded-full bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center mb-4">
-            <Building2 size={22} strokeWidth={1.5} className="text-[#a3a3a3]" />
+          <div className="w-14 h-14 rounded-full bg-[#F1F4ED] border border-[#DCE3D6] flex items-center justify-center mb-4">
+            <Building2 size={22} strokeWidth={1.5} className="text-[#8D998F]" />
           </div>
-          <p className="text-[15px] font-medium text-[#0A0A0A]">
+          <p className="text-[15px] font-medium text-[#2F3A32]">
             {q || typeFilter || statusFilter !== "active" ? "No vendors match your filter" : "No vendors yet"}
           </p>
-          <p className="text-[13px] text-[#737373] mt-1">
+          <p className="text-[13px] text-[#6E786F] mt-1">
             {q || typeFilter || statusFilter !== "active"
               ? "Try adjusting your search or filters."
               : "Add your first vendor to get started."}
@@ -956,7 +995,7 @@ export default function Vendors() {
           {!q && !typeFilter && statusFilter === "active" && (
             <button
               onClick={openAdd}
-              className="mt-4 flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+              className="mt-4 flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#244B39] text-white rounded-lg hover:bg-[#1D3B2E] transition-colors"
             >
               <Plus size={14} strokeWidth={1.5} />
               Add Vendor
@@ -964,35 +1003,35 @@ export default function Vendors() {
           )}
         </div>
       ) : (
-        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
+        <div className="bg-[#FFFDF8] border border-[#DCE3D6] rounded-[10px] overflow-hidden shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#E5E7EB] bg-[#F9FAFB]">
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide">
+              <tr className="border-b border-[#DCE3D6] bg-[#F1F4ED]">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide">
                   Vendor Name
                 </th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide">
                   Type
                 </th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide hidden md:table-cell">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide hidden md:table-cell">
                   Contact
                 </th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide hidden lg:table-cell">
                   Mobile
                 </th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide hidden xl:table-cell">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide hidden xl:table-cell">
                   GST No
                 </th>
-                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide">
+                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide">
                   Outstanding
                 </th>
-                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide hidden lg:table-cell">
+                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide hidden lg:table-cell">
                   Total Purchases
                 </th>
-                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide hidden sm:table-cell">
+                <th className="text-left px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide hidden sm:table-cell">
                   Status
                 </th>
-                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#737373] uppercase tracking-wide">
+                <th className="text-right px-4 py-3 text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide">
                   Actions
                 </th>
               </tr>
@@ -1004,7 +1043,7 @@ export default function Vendors() {
                 return (
                   <tr
                     key={v.id}
-                    className={`border-b border-[#E5E7EB] last:border-0 hover:bg-[#F9FAFB] transition-colors cursor-pointer ${
+                    className={`border-b border-[#DCE3D6] last:border-0 hover:bg-[#F7F9F4] transition-colors cursor-pointer ${
                       idx % 2 === 0 ? "" : ""
                     }`}
                     onClick={() => setDetailVendor(v)}
@@ -1018,9 +1057,9 @@ export default function Vendors() {
                           {initials}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-[13px] font-medium text-[#0A0A0A] truncate max-w-[160px]">{v.name}</p>
+                          <p className="text-[13px] font-medium text-[#2F3A32] truncate max-w-[160px]">{v.name}</p>
                           {v.contact_person && (
-                            <p className="text-[11px] text-[#a3a3a3] truncate">{v.contact_person}</p>
+                            <p className="text-[11px] text-[#8D998F] truncate">{v.contact_person}</p>
                           )}
                         </div>
                       </div>
@@ -1033,7 +1072,7 @@ export default function Vendors() {
 
                     {/* Contact Person */}
                     <td className="px-4 py-3 hidden md:table-cell">
-                      <div className="text-[12px] text-[#525252] truncate max-w-[120px]">
+                      <div className="text-[12px] text-[#5F6D62] truncate max-w-[120px]">
                         {v.contact_person || "—"}
                       </div>
                     </td>
@@ -1041,21 +1080,21 @@ export default function Vendors() {
                     {/* Mobile */}
                     <td className="px-4 py-3 hidden lg:table-cell">
                       <div className="flex items-center gap-1.5">
-                        <Phone size={11} strokeWidth={1.5} className="text-[#a3a3a3] shrink-0" />
-                        <span className="font-mono text-[12px] text-[#525252]">{v.mobile || "—"}</span>
+                        <Phone size={11} strokeWidth={1.5} className="text-[#8D998F] shrink-0" />
+                        <span className="font-mono text-[12px] text-[#5F6D62]">{v.mobile || "—"}</span>
                       </div>
                     </td>
 
                     {/* GST */}
                     <td className="px-4 py-3 hidden xl:table-cell">
-                      <span className="font-mono text-[11.5px] text-[#737373]">{v.gst_number || "—"}</span>
+                      <span className="font-mono text-[11.5px] text-[#6E786F]">{v.gst_number || "—"}</span>
                     </td>
 
                     {/* Outstanding Balance */}
                     <td className="px-4 py-3 text-right">
                       <span
                         className={`font-mono text-[12.5px] font-medium tabular-nums ${
-                          Number(v.outstanding_balance || 0) > 0 ? "text-red-600" : "text-[#0A0A0A]"
+                          Number(v.outstanding_balance || 0) > 0 ? "text-red-600" : "text-[#2F3A32]"
                         }`}
                       >
                         {fmtINR(v.outstanding_balance || 0)}
@@ -1064,7 +1103,7 @@ export default function Vendors() {
 
                     {/* Total Purchases */}
                     <td className="px-4 py-3 text-right hidden lg:table-cell">
-                      <span className="font-mono text-[12.5px] text-[#0A0A0A] tabular-nums">
+                      <span className="font-mono text-[12.5px] text-[#2F3A32] tabular-nums">
                         {fmtINR(v.total_purchases || 0)}
                       </span>
                     </td>
@@ -1078,7 +1117,7 @@ export default function Vendors() {
                     <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
                       <button
                         onClick={() => openEdit(v)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium border border-[#E5E7EB] text-[#525252] rounded-lg hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium border border-[#DCE3D6] text-[#5F6D62] rounded-[8px] hover:border-[#66806B] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
                       >
                         <Edit2 size={11} strokeWidth={1.5} />
                         Edit
@@ -1091,8 +1130,8 @@ export default function Vendors() {
           </table>
 
           {/* Table Footer */}
-          <div className="px-4 py-2.5 border-t border-[#E5E7EB] bg-[#F9FAFB]">
-            <p className="text-[11px] text-[#a3a3a3]">
+          <div className="px-4 py-2.5 border-t border-[#DCE3D6] bg-[#F1F4ED]">
+            <p className="text-[11px] text-[#8D998F]">
               Showing {filtered.length} of {vendors.length} vendors
             </p>
           </div>

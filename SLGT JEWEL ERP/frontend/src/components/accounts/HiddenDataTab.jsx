@@ -12,10 +12,10 @@ import {
 } from "./accountsShared";
 
 const POCKETS = [
-  { id: "cash", label: "Cash", icon: Wallet, wrap: "border-emerald-200 bg-emerald-50", text: "text-emerald-800" },
-  { id: "bank", label: "Bank", icon: Landmark, wrap: "border-sky-200 bg-sky-50", text: "text-sky-800" },
-  { id: "upi", label: "UPI", icon: Smartphone, wrap: "border-violet-200 bg-violet-50", text: "text-violet-800" },
-  { id: "card", label: "Card", icon: CreditCard, wrap: "border-amber-200 bg-amber-50", text: "text-amber-900" },
+  { id: "cash", label: "Cash", icon: Wallet, wrap: "border-[#CBDAD0] bg-[#F1F6F2]", text: "text-[#315C4A]" },
+  { id: "bank", label: "Bank", icon: Landmark, wrap: "border-[#D8D2C6] bg-[#F4F2ED]", text: "text-[#59635D]" },
+  { id: "upi", label: "UPI", icon: Smartphone, wrap: "border-[#D8C28C] bg-[#FBF6E9]", text: "text-[#765A20]" },
+  { id: "card", label: "Card", icon: CreditCard, wrap: "border-[#CDD2CF] bg-[#F1F3F2]", text: "text-[#5F6863]" },
 ];
 
 export default function HiddenDataTab() {
@@ -52,7 +52,7 @@ export default function HiddenDataTab() {
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-violet-200 bg-violet-50/70 px-4 py-3">
+      <div className="rounded-xl border border-[#DDD6FE] bg-[#F7F5FC] px-4 py-3">
         <div className="flex items-start gap-2.5">
           <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
             <EyeOff size={15} />
@@ -113,7 +113,7 @@ export default function HiddenDataTab() {
           {POCKETS.map((p) => {
             const Icon = p.icon;
             return (
-              <div key={p.id} className="rounded-xl border border-[#EADFBF] bg-white p-3.5 shadow-sm">
+              <div key={p.id} className="rounded-xl border border-[#D8D2C6] bg-white p-3.5 shadow-sm">
                 <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-[#737373]">
                   <Icon size={13} className={p.text} />
                   {p.label} received
@@ -164,7 +164,7 @@ export default function HiddenDataTab() {
             </div>
           </div>
           <MiniStat label="Exchange bills" value={String(oldGold.bill_count || 0)} />
-          <div className="rounded-xl border border-[#EADFBF] bg-white p-3.5 shadow-sm">
+          <div className="rounded-xl border border-[#D8D2C6] bg-white p-3.5 shadow-sm">
             <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">Weight by purity</div>
             {loading && !data ? (
               <div className="mt-1 text-sm font-semibold text-[#171717]">…</div>
@@ -182,7 +182,7 @@ export default function HiddenDataTab() {
             )}
           </div>
         </div>
-        <div className="mt-3 rounded-2xl border border-[#EADFBF] bg-white p-4 shadow-sm">
+        <div className="mt-3 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
           <h4 className="mb-3 text-sm font-semibold text-[#171717]">Exchange bills</h4>
           <AccountsTable
             columns={[
@@ -213,7 +213,7 @@ export default function HiddenDataTab() {
             </div>
           </div>
           <MiniStat label="Exchange bills" value={String(oldSilver.bill_count || 0)} />
-          <div className="rounded-xl border border-[#EADFBF] bg-white p-3.5 shadow-sm">
+          <div className="rounded-xl border border-[#D8D2C6] bg-white p-3.5 shadow-sm">
             <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">Weight by purity</div>
             {loading && !data ? (
               <div className="mt-1 text-sm font-semibold text-[#171717]">…</div>
@@ -231,7 +231,7 @@ export default function HiddenDataTab() {
             )}
           </div>
         </div>
-        <div className="mt-3 rounded-2xl border border-[#EADFBF] bg-white p-4 shadow-sm">
+        <div className="mt-3 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
           <h4 className="mb-3 text-sm font-semibold text-[#171717]">Exchange bills</h4>
           <AccountsTable
             columns={[
@@ -249,7 +249,7 @@ export default function HiddenDataTab() {
         </div>
       </div>
 
-      <div className="rounded-2xl border border-[#EADFBF] bg-white p-4 shadow-sm">
+      <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-[#171717]">Hidden invoices</h3>
           {loading ? <Loader2 size={14} className="animate-spin text-violet-600" /> : null}
@@ -278,7 +278,7 @@ export default function HiddenDataTab() {
 
 function MiniStat({ label, value }) {
   return (
-    <div className="rounded-xl border border-[#EADFBF] bg-white px-3.5 py-3 shadow-sm">
+    <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] px-3.5 py-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
       <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">{label}</div>
       <div className="mt-1 text-sm font-semibold tabular-nums text-[#171717]">{value}</div>
     </div>

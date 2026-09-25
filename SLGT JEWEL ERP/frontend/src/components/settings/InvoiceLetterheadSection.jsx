@@ -13,7 +13,7 @@ import {
 function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">{label}</span>
+      <span className="mb-1.5 block text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#67766B]">{label}</span>
       {children}
     </label>
   );
@@ -124,7 +124,7 @@ export default function InvoiceLetterheadSection({ form, setField, disabled = fa
         <Field label="Letterhead Image">
           <div className="flex flex-wrap items-start gap-4">
             <div
-              className="rounded-md border border-[#E5E7EB] bg-[#FAFAFA] overflow-hidden flex items-center justify-center"
+              className="flex items-center justify-center overflow-hidden rounded-[9px] border border-[#C9D2C6] bg-[#F0F2EC] shadow-[0_1px_2px_rgba(36,55,45,0.06)]"
               style={{
                 width: previewW,
                 aspectRatio: `${paper.wMm} / ${paper.hMm}`,
@@ -172,7 +172,7 @@ export default function InvoiceLetterheadSection({ form, setField, disabled = fa
                 <p className="text-[12px] text-[#737373]">PNG, JPG or WebP. Maximum 5 MB.</p>
               )}
               {(aspectWarning || letterheadAspectWarning(lh.width_px, lh.height_px, lh.paper_size)) && (
-                <p className="text-[12px] text-amber-800 bg-amber-50 border border-amber-200 rounded-md px-2.5 py-1.5">
+                <p className="rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-2.5 py-1.5 text-[12px] text-[#755D25]">
                   {aspectWarning || letterheadAspectWarning(lh.width_px, lh.height_px, lh.paper_size)}
                 </p>
               )}

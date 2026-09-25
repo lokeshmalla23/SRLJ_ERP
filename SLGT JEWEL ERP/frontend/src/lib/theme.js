@@ -4,29 +4,39 @@
 
 export const colors = {
   // Brand
-  gold:       "#B49042",
-  goldLight:  "#FDFBF7",
-  goldBorder: "#EADFBF",
-  goldMuted:  "#F5D87A",
+  forest:      "#214F3A",
+  forestDark:  "#17382A",
+  champagne:   "#D9A441",
+  gold:        "#D9A441", // Backward-compatible alias; use champagne for new code.
+  goldLight:   "#F7E8BC",
+  goldBorder:  "#E8D6A6",
+  goldMuted:   "#C89434",
 
-  // Neutrals
-  ink:        "#0A0A0A",
-  subtle:     "#525252",
-  muted:      "#737373",
-  faint:      "#a3a3a3",
-  border:     "#E5E7EB",
-  surface:    "#F9FAFB",
-  white:      "#FFFFFF",
+  // Neutrals and surfaces
+  ink:         "#17201C",
+  subtle:      "#4E5A53",
+  muted:       "#6F7772",
+  faint:       "#89928C",
+  border:      "#E2E7E2",
+  surface:     "#F7F9F6",
+  cream:       "#FAF7EF",
+  silver:      "#EEF3F7",
+  slate:       "#64748B",
+  white:       "#FFFFFF",
 
   // Semantic
-  success:    "#16a34a",
-  successBg:  "#f0fdf4",
-  warning:    "#d97706",
-  warningBg:  "#fffbeb",
-  error:      "#dc2626",
-  errorBg:    "#fef2f2",
-  info:       "#2563eb",
-  infoBg:     "#eff6ff",
+  success:     "#2F6B4F",
+  successBg:   "#EAF2ED",
+  successLine: "#CBDED2",
+  warning:     "#8A651E",
+  warningBg:   "#FBF4E3",
+  warningLine: "#EAD8B2",
+  error:       "#9D4B47",
+  errorBg:     "#F9ECEA",
+  errorLine:   "#E8C9C5",
+  info:        "#52677A",
+  infoBg:      "#EEF3F7",
+  infoLine:    "#D5E0E8",
 
   /** Owner hidden-bills unlocked page wash */
   hiddenUnlockBg:   "#F6F4FB",
@@ -34,9 +44,9 @@ export const colors = {
 };
 
 export const typography = {
-  fontDisplay: "'Playfair Display', Georgia, serif",
-  fontBody:    "'Inter', system-ui, -apple-system, sans-serif",
-  fontMono:    "'JetBrains Mono', 'Fira Code', monospace",
+  fontDisplay: "'Cabinet Grotesk', 'Manrope', ui-sans-serif, system-ui, sans-serif",
+  fontBody:    "'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif",
+  fontMono:    "'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace",
 
   // Scale (rem)
   xs:   "0.6875rem", // 11px
@@ -107,19 +117,19 @@ export const endpoints = {
 // ── Status badge presets ──────────────────────────────────────────────────────
 export const statusColors = {
   // Generic
-  active:    { bg: "bg-green-100",   text: "text-green-700" },
-  inactive:  { bg: "bg-gray-100",    text: "text-gray-500"  },
-  draft:     { bg: "bg-gray-100",    text: "text-gray-600"  },
-  pending:   { bg: "bg-amber-100",   text: "text-amber-700" },
-  confirmed: { bg: "bg-blue-100",    text: "text-blue-700"  },
-  completed: { bg: "bg-green-100",   text: "text-green-700" },
-  cancelled: { bg: "bg-red-100",     text: "text-red-600"   },
-  sent:      { bg: "bg-blue-100",    text: "text-blue-700"  },
-  accepted:  { bg: "bg-green-100",   text: "text-green-700" },
-  expired:   { bg: "bg-red-100",     text: "text-red-600"   },
-  paid:      { bg: "bg-emerald-100", text: "text-emerald-700" },
-  unpaid:    { bg: "bg-red-100",     text: "text-red-600"   },
-  partial:   { bg: "bg-amber-100",   text: "text-amber-700" },
+  active:    { bg: "bg-[#EAF2ED]", text: "text-[#2F6B4F]" },
+  inactive:  { bg: "bg-[#F1F4F0]", text: "text-[#6F7772]" },
+  draft:     { bg: "bg-[#F1F4F0]", text: "text-[#52677A]" },
+  pending:   { bg: "bg-[#FBF4E3]", text: "text-[#8A651E]" },
+  confirmed: { bg: "bg-[#EEF3F7]", text: "text-[#52677A]" },
+  completed: { bg: "bg-[#EAF2ED]", text: "text-[#2F6B4F]" },
+  cancelled: { bg: "bg-[#F9ECEA]", text: "text-[#9D4B47]" },
+  sent:      { bg: "bg-[#EEF3F7]", text: "text-[#52677A]" },
+  accepted:  { bg: "bg-[#EAF2ED]", text: "text-[#2F6B4F]" },
+  expired:   { bg: "bg-[#F9ECEA]", text: "text-[#9D4B47]" },
+  paid:      { bg: "bg-[#EAF2ED]", text: "text-[#2F6B4F]" },
+  unpaid:    { bg: "bg-[#F9ECEA]", text: "text-[#9D4B47]" },
+  partial:   { bg: "bg-[#FBF4E3]", text: "text-[#8A651E]" },
 };
 
 // Helper: get badge classes for a status string

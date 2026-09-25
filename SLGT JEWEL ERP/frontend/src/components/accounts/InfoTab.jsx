@@ -14,12 +14,12 @@ import {
  * AccountsKpiCard's tone system elsewhere in Accounts, just with more hues so
  * Cash/UPI/Bank/Cheque/Old Gold read apart from each other at a glance. */
 const THEME = {
-  emerald: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", icon: "text-emerald-600", badge: "bg-emerald-100" },
-  violet: { bg: "bg-violet-50", border: "border-violet-200", text: "text-violet-700", icon: "text-violet-600", badge: "bg-violet-100" },
-  sky: { bg: "bg-sky-50", border: "border-sky-200", text: "text-sky-700", icon: "text-sky-600", badge: "bg-sky-100" },
-  amber: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", icon: "text-amber-600", badge: "bg-amber-100" },
-  gold: { bg: "bg-[#FBF3DE]", border: "border-[#E9D293]", text: "text-[#8A6D22]", icon: "text-[#B49042]", badge: "bg-[#F3E4B8]" },
-  slate: { bg: "bg-slate-50", border: "border-slate-200", text: "text-slate-700", icon: "text-slate-600", badge: "bg-slate-100" },
+  emerald: { bg: "bg-[#F1F6F2]", border: "border-[#CBDAD0]", text: "text-[#315C4A]", icon: "text-[#315C4A]", badge: "bg-[#DDE9E1]" },
+  violet: { bg: "bg-[#F7F5FC]", border: "border-[#DDD6FE]", text: "text-[#5B4B86]", icon: "text-[#67549A]", badge: "bg-[#EAE5F8]" },
+  sky: { bg: "bg-[#F4F2ED]", border: "border-[#D8D2C6]", text: "text-[#59635D]", icon: "text-[#59635D]", badge: "bg-[#E8E5DE]" },
+  amber: { bg: "bg-[#FBF6E9]", border: "border-[#D8C28C]", text: "text-[#765A20]", icon: "text-[#8A6A2D]", badge: "bg-[#F1E6CA]" },
+  gold: { bg: "bg-[#FBF6E9]", border: "border-[#D8C28C]", text: "text-[#765A20]", icon: "text-[#8A6A2D]", badge: "bg-[#F1E6CA]" },
+  slate: { bg: "bg-[#F1F3F2]", border: "border-[#CDD2CF]", text: "text-[#5F6863]", icon: "text-[#5F6863]", badge: "bg-[#E1E5E3]" },
 };
 
 function themeForMetal(metal) {
@@ -33,7 +33,7 @@ function themeForMetal(metal) {
 function SectionCard({ icon: Icon, theme = "gold", title, sub, right, children }) {
   const c = THEME[theme] || THEME.gold;
   return (
-    <div className="mb-6 rounded-2xl border border-[#EADFBF] bg-white p-4 shadow-sm">
+    <div className="mb-6 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${c.badge} ${c.border}`}>
@@ -189,7 +189,7 @@ function StockSection() {
           <select
             value={metalFilter}
             onChange={(e) => setMetalFilter(e.target.value)}
-            className="rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 text-xs"
+            className="rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
           >
             <option value="all">All metals</option>
             {metals.map((m) => (
@@ -296,7 +296,7 @@ function OldGoldSection() {
         <ColorKpiCard label="Weight (filtered)" value={`${Number(data?.summary?.filtered_weight || 0).toFixed(3)} g`} icon={Gem} theme="gold" />
         <ColorKpiCard label="Value (filtered)" value={fmtINR(data?.summary?.filtered_value)} icon={Wallet} theme="emerald" />
       </div>
-      <div className="overflow-hidden rounded-lg border border-[#EADFBF]">
+      <div className="overflow-hidden rounded-[10px] border border-[#D8D2C6]">
         <AccountsTable
           columns={[
             { key: "purity", label: "Purity" },

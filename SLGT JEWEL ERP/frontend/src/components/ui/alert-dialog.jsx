@@ -8,10 +8,10 @@ const AlertDialog = ({ open, onOpenChange, children }) => (
 );
 const AlertDialogTrigger = ({ children, onClick }) => <span onClick={onClick} style={{ cursor: "pointer" }}>{children}</span>;
 const AlertDialogPortal = ({ children }) => <>{children}</>;
-const AlertDialogOverlay = forwardRef(({ className, ...props }, ref) => <div ref={ref} className={cn(className)} {...props} />);
+const AlertDialogOverlay = forwardRef(({ className, ...props }, ref) => <div ref={ref} className={cn("fixed inset-0 bg-[#17382A]/45 backdrop-blur-[2px]", className)} {...props} />);
 AlertDialogOverlay.displayName = "AlertDialogOverlay";
 const AlertDialogContent = forwardRef(({ className, children, ...props }, ref) => (
-  <DialogContent ref={ref} className={cn(className)} {...props}>{children}</DialogContent>
+  <DialogContent ref={ref} className={cn("max-w-md", className)} {...props}>{children}</DialogContent>
 ));
 AlertDialogContent.displayName = "AlertDialogContent";
 const AlertDialogHeader = ({ className, children }) => <DialogHeader className={cn(className)}>{children}</DialogHeader>;

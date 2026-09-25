@@ -115,12 +115,12 @@ function Sidebar({ onRequestHiddenUnlock }) {
   return (
     <aside
       data-testid={T.sidebar}
-      className="w-64 border-r border-[#E5E7EB] bg-[#F9FAFB] fixed inset-y-0 left-0 flex flex-col"
+      className="fixed inset-y-0 left-0 flex w-64 flex-col border-r border-[#DCE3D6] bg-[#F2F4EC] shadow-[1px_0_0_rgba(42,65,50,0.02)]"
     >
-      <div className="h-16 border-b border-[#E5E7EB] flex items-center px-5 gap-3">
+      <div className="flex h-16 shrink-0 items-center border-b border-[#DCE3D6] px-4">
         <button
           type="button"
-          className="flex items-center gap-3 text-left min-w-0"
+          className="flex min-w-0 items-center gap-3 text-left"
           title={isOwner ? "Triple-tap to unlock Hidden Bills" : undefined}
           onClick={() => {
             if (!isOwner) return;
@@ -135,25 +135,25 @@ function Sidebar({ onRequestHiddenUnlock }) {
             ref.timer = setTimeout(() => { ref.count = 0; }, 450);
           }}
         >
-          <div className="h-10 w-10 rounded-md bg-black flex items-center justify-center flex-shrink-0 overflow-hidden border border-[#E5E7EB]">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#D2DCCB] bg-white p-0.5 shadow-[0_1px_2px_rgba(35,58,43,0.06)]">
             {logo ? (
-              <img src={logo} alt="" className="h-full w-full object-contain bg-white" />
+              <img src={logo} alt="" className="h-full w-full rounded-[9px] bg-white object-contain" />
             ) : (
-              <img src={slgtLogo} alt={APP_WINDOW_TITLE} className="h-full w-full object-contain" />
+              <img src={slgtLogo} alt={APP_WINDOW_TITLE} className="h-full w-full rounded-[9px] object-contain" />
             )}
           </div>
-          <div className="leading-tight min-w-0">
-            <div className="font-display text-[13px] font-semibold text-[#0A0A0A] leading-tight truncate" title={displayName}>
+          <div className="min-w-0 leading-tight">
+            <div className="truncate font-display text-[13px] font-semibold leading-tight text-[#24372D]" title={displayName}>
               {brandLine2 ? <>{brandLine1}<br />{brandLine2}</> : brandLine1}
             </div>
-            <div className="text-[10px] uppercase tracking-[0.14em] text-[#737373] truncate">
+            <div className="mt-0.5 truncate text-[9px] font-semibold uppercase tracking-[0.16em] text-[#78877A]">
               {tagline || "Jewellery ERP"}
             </div>
           </div>
         </button>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-3 px-3">
+      <nav className="flex-1 overflow-y-auto px-3 py-2.5">
         {Object.entries(grouped).map(([section, items]) => {
           const visible = items.filter((i) => {
             if (i.ownerOnly) {
@@ -165,8 +165,10 @@ function Sidebar({ onRequestHiddenUnlock }) {
           });
           if (visible.length === 0) return null;
           return (
-            <div key={section} className="mb-2">
-              <div className="side-label">{section}</div>
+            <div key={section} className="mb-1.5">
+              <div className="px-3 pb-1.5 pt-3.5 text-[9.5px] font-bold uppercase tracking-[0.16em] text-[#849183]">
+                {section}
+              </div>
               <div className="flex flex-col gap-0.5">
                 {visible.map((it) => {
                   const Icon = it.icon;
@@ -177,11 +179,14 @@ function Sidebar({ onRequestHiddenUnlock }) {
                       end={it.to === "/"}
                       data-testid={it.tid}
                       className={({ isActive }) =>
-                        `side-item ${isActive ? "active" : ""}`
+                        `side-item rounded-[9px] px-3 py-2 text-[12.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#78917C]/35 ${isActive
+                          ? "active bg-[#244B39] text-white shadow-[0_1px_2px_rgba(26,58,41,0.16)]"
+                          : "text-[#344138] hover:bg-[#E5EBDF] hover:text-[#203D2F]"
+                        }`
                       }
                     >
-                      <Icon size={16} strokeWidth={1.5} className="side-icon text-[#737373]" />
-                      <span>{it.label}</span>
+                      <Icon size={15} strokeWidth={1.8} className="side-icon text-current" />
+                      <span className="truncate">{it.label}</span>
                     </NavLink>
                   );
                 })}
@@ -191,24 +196,24 @@ function Sidebar({ onRequestHiddenUnlock }) {
         })}
       </nav>
 
-      <div className="border-t border-[#E5E7EB] p-3">
-        <div className="flex items-center gap-3 p-2 rounded-md">
-          <div className="h-9 w-9 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center font-display text-[13px]">
+      <div className="shrink-0 border-t border-[#DCE3D6] p-3">
+        <div className="flex items-center gap-2.5 rounded-xl px-2 py-2 transition-colors hover:bg-white/55">
+          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#2C4A3A] font-display text-[13px] font-semibold text-white shadow-sm">
             {(footerName || "?").slice(0, 1).toUpperCase()}
           </div>
-          <div className="flex-1 min-w-0 leading-tight">
-            <div className="text-[13px] font-medium text-[#0A0A0A] truncate">{footerName}</div>
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="truncate text-[12.5px] font-semibold text-[#2A3930]">{footerName}</div>
             {showRoleLine && (
-              <div className="text-[11px] text-[#737373] truncate">{roleLabel}</div>
+              <div className="mt-0.5 truncate text-[10.5px] text-[#768278]">{roleLabel}</div>
             )}
           </div>
           <button
             data-testid={T.sidebarLogout}
             onClick={logout}
-            className="text-[#737373] hover:text-[#0A0A0A] p-1.5 rounded-md hover:bg-white transition-colors"
+            className="rounded-lg p-1.5 text-[#748176] transition-colors hover:bg-[#E3EADD] hover:text-[#244B39]"
             aria-label="Logout"
           >
-            <LogOut size={15} strokeWidth={1.5} />
+            <LogOut size={15} strokeWidth={1.8} />
           </button>
         </div>
       </div>
@@ -251,30 +256,34 @@ function GlobalSearch() {
   const go = (path) => { navigate(path); setOpen(false); setQuery(""); setResults(null); };
 
   return (
-    <div ref={ref} className="relative">
-      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+    <div ref={ref} className="relative shrink-0">
+      <Search
+        size={14}
+        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7C897E]"
+        strokeWidth={1.8}
+      />
       <input
         placeholder="Search products, customers, invoices…"
-        className="input pl-9 w-80"
+        className="h-9 w-[240px] rounded-full border border-[#DDE1D7] bg-[#FCFCF8]/95 pl-9 pr-4 text-[12.5px] text-[#2D3D33] outline-none transition placeholder:text-[#9AA198] focus:border-[#8FA28E] focus:bg-white focus:ring-2 focus:ring-[#DCE7D8] xl:w-64"
         value={query}
         onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
         onFocus={() => setOpen(true)}
       />
       {open && (query || loading) && (
-        <div className="absolute top-full mt-1 w-full bg-white border border-[#E5E7EB] rounded-lg shadow-lg z-50 overflow-hidden">
-          {loading && <div className="px-4 py-3 text-[13px] text-[#737373]">Searching…</div>}
+        <div className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-xl border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_18px_45px_rgba(37,56,43,0.14)]">
+          {loading && <div className="px-4 py-3 text-[12.5px] text-[#778279]">Searching…</div>}
           {results && !loading && (
             <>
               {results.customers?.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] uppercase tracking-wider text-[#a3a3a3] bg-[#F9FAFB]">Customers</div>
+                  <div className="bg-[#F3F5EE] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7B887C]">Customers</div>
                   {results.customers.map((c) => (
                     <button key={c.id} onClick={() => go(`/customers/${c.id}`)}
-                      className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] flex items-center gap-3">
-                      <Users2 size={14} className="text-[#737373]" strokeWidth={1.5} />
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-[#F1F4ED]">
+                      <Users2 size={14} className="text-[#718173]" strokeWidth={1.7} />
                       <div>
-                        <div className="text-[13px] font-medium text-[#0A0A0A]">{c.name}</div>
-                        <div className="text-[11px] text-[#737373]">{c.mobile}</div>
+                        <div className="text-[12.5px] font-semibold text-[#2B3B31]">{c.name}</div>
+                        <div className="text-[10.5px] text-[#818A82]">{c.mobile}</div>
                       </div>
                     </button>
                   ))}
@@ -282,14 +291,14 @@ function GlobalSearch() {
               )}
               {results.products?.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] uppercase tracking-wider text-[#a3a3a3] bg-[#F9FAFB]">Products</div>
+                  <div className="bg-[#F3F5EE] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7B887C]">Products</div>
                   {results.products.map((p) => (
                     <button key={p.id} onClick={() => go(`/inventory/${p.id}`)}
-                      className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] flex items-center gap-3">
-                      <Boxes size={14} className="text-[#737373]" strokeWidth={1.5} />
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-[#F1F4ED]">
+                      <Boxes size={14} className="text-[#718173]" strokeWidth={1.7} />
                       <div>
-                        <div className="text-[13px] font-medium text-[#0A0A0A]">{p.name}</div>
-                        <div className="text-[11px] text-[#737373]">{p.code || p.barcode || ""}</div>
+                        <div className="text-[12.5px] font-semibold text-[#2B3B31]">{p.name}</div>
+                        <div className="text-[10.5px] text-[#818A82]">{p.code || p.barcode || ""}</div>
                       </div>
                     </button>
                   ))}
@@ -297,21 +306,21 @@ function GlobalSearch() {
               )}
               {results.invoices?.length > 0 && (
                 <div>
-                  <div className="px-3 py-1.5 text-[11px] uppercase tracking-wider text-[#a3a3a3] bg-[#F9FAFB]">Invoices</div>
+                  <div className="bg-[#F3F5EE] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.15em] text-[#7B887C]">Invoices</div>
                   {results.invoices.map((inv) => (
                     <button key={inv.id} onClick={() => go(`/customers?invoice=${inv.id}`)}
-                      className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] flex items-center gap-3">
-                      <LineChart size={14} className="text-[#737373]" strokeWidth={1.5} />
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-[#F1F4ED]">
+                      <LineChart size={14} className="text-[#718173]" strokeWidth={1.7} />
                       <div>
-                        <div className="text-[13px] font-medium text-[#0A0A0A]">{inv.invoice_no}</div>
-                        <div className="text-[11px] text-[#737373]">{inv.customer_name} · {fmtINR(inv.grand_total)}</div>
+                        <div className="text-[12.5px] font-semibold text-[#2B3B31]">{inv.invoice_no}</div>
+                        <div className="text-[10.5px] text-[#818A82]">{inv.customer_name} · {fmtINR(inv.grand_total)}</div>
                       </div>
                     </button>
                   ))}
                 </div>
               )}
               {!results.customers?.length && !results.products?.length && !results.invoices?.length && (
-                <div className="px-4 py-3 text-[13px] text-[#737373]">No results for "{query}"</div>
+                <div className="px-4 py-3 text-[12.5px] text-[#778279]">No results for "{query}"</div>
               )}
             </>
           )}
@@ -379,7 +388,7 @@ function NotificationBell() {
     out_of_stock:  "bg-red-100 text-red-700",
     scheme_due:    "bg-blue-100 text-blue-700",
     daily_closing: "bg-purple-100 text-purple-700",
-    info:          "bg-[#F3F4F6] text-[#525252]",
+    info:          "bg-[#EEF3EA] text-[#47604E]",
   };
 
   const typeLabel = {
@@ -388,50 +397,50 @@ function NotificationBell() {
   };
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative shrink-0">
       <button
         onClick={() => { setOpen((p) => !p); if (!open) load(); }}
-        className="btn-secondary relative"
+        className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[#DDE1D7] bg-[#FCFCF8]/95 text-[#34493B] shadow-sm transition hover:border-[#C5D1C2] hover:bg-white hover:text-[#244B39]"
         aria-label="Notifications"
       >
-        <Bell size={15} strokeWidth={1.5} />
+        <Bell size={15} strokeWidth={1.8} />
         {unread > 0 && (
-          <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-white text-[9px] flex items-center justify-center font-bold leading-none">
+          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#B6534D] text-[9px] font-bold leading-none text-white ring-2 ring-[#F7F5EE]">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-[340px] bg-white border border-[#E5E7EB] rounded-xl shadow-xl z-50 overflow-hidden">
+        <div className="absolute right-0 top-full z-50 mt-2 w-[340px] overflow-hidden rounded-2xl border border-[#DCE3D6] bg-[#FEFEFB] shadow-[0_20px_50px_rgba(37,56,43,0.16)]">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E7EB] bg-[#FAFAFA]">
+          <div className="flex items-center justify-between border-b border-[#E2E6DD] bg-[#F3F5EE] px-4 py-3">
             <div className="flex items-center gap-2">
-              <Bell size={13} strokeWidth={1.5} className="text-[#525252]" />
-              <span className="text-[13px] font-semibold text-[#0A0A0A]">Notifications</span>
+              <Bell size={14} strokeWidth={1.8} className="text-[#4E6655]" />
+              <span className="text-[12.5px] font-semibold text-[#2A3A30]">Notifications</span>
               {unread > 0 && (
-                <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">{unread}</span>
+                <span className="rounded-full bg-[#B6534D] px-1.5 py-0.5 text-[9px] font-bold leading-none text-white">{unread}</span>
               )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               {unread > 0 && (
-                <button onClick={markAllRead} className="text-[11px] text-[#525252] hover:text-[#0A0A0A] transition-colors">
+                <button onClick={markAllRead} className="text-[10.5px] font-semibold text-[#5F7063] transition-colors hover:text-[#244B39]">
                   Mark all read
                 </button>
               )}
-              <button onClick={() => setOpen(false)} className="text-[#a3a3a3] hover:text-[#0A0A0A] transition-colors">
-                <X size={14} />
+              <button onClick={() => setOpen(false)} className="rounded p-0.5 text-[#8B958D] transition-colors hover:bg-white/70 hover:text-[#2A3A30]">
+                <X size={14} strokeWidth={1.8} />
               </button>
             </div>
           </div>
 
           {/* List */}
-          <div className="max-h-[360px] overflow-y-auto divide-y divide-[#F3F4F6]">
+          <div className="max-h-[360px] divide-y divide-[#EDF0EA] overflow-y-auto">
             {items.length === 0 && (
               <div className="px-4 py-8 text-center">
-                <Bell size={24} strokeWidth={1} className="mx-auto text-[#D1D5DB] mb-2" />
-                <div className="text-[13px] text-[#737373]">All caught up!</div>
-                <div className="text-[11px] text-[#a3a3a3] mt-0.5">No new notifications</div>
+                <Bell size={24} strokeWidth={1.2} className="mx-auto mb-2 text-[#C5CEC3]" />
+                <div className="text-[12.5px] font-medium text-[#66736A]">All caught up!</div>
+                <div className="mt-0.5 text-[10.5px] text-[#949D95]">No new notifications</div>
               </div>
             )}
             {items.map((n) => {
@@ -442,45 +451,45 @@ function NotificationBell() {
               return (
                 <div
                   key={n.id}
-                  className={`group flex items-start gap-3 px-4 py-3 transition-colors hover:bg-[#F9FAFB] ${isUnread ? "bg-blue-50/30" : ""}`}
+                  className={`group flex items-start gap-3 px-4 py-3 transition-colors hover:bg-[#F4F6F0] ${isUnread ? "bg-[#F1F5ED]" : "bg-[#FEFEFB]"}`}
                 >
                   {/* Type dot */}
-                  <div className="flex-shrink-0 mt-0.5">
-                    <span className={`inline-block h-2 w-2 rounded-full mt-1.5 ${isUnread ? "bg-blue-500" : "bg-transparent"}`} />
+                  <div className="mt-0.5 flex-shrink-0">
+                    <span className={`mt-1.5 inline-block h-1.5 w-1.5 rounded-full ${isUnread ? "bg-[#3F6A52]" : "bg-transparent"}`} />
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${typeColors[n.type] || typeColors.info}`}>
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1 flex flex-wrap items-center gap-1.5">
+                      <span className={`rounded px-1.5 py-0.5 text-[9.5px] font-semibold ${typeColors[n.type] || typeColors.info}`}>
                         {typeLabel[n.type] || n.type}
                       </span>
-                      <span className="text-[10px] text-[#a3a3a3]">{fmtRelTime(n.createdAt)}</span>
+                      <span className="text-[9.5px] text-[#969F97]">{fmtRelTime(n.createdAt)}</span>
                     </div>
-                    <div className="text-[12.5px] font-semibold text-[#0A0A0A] leading-snug">{n.title}</div>
-                    <div className="text-[11.5px] text-[#737373] mt-0.5 leading-snug">{n.message}</div>
+                    <div className="text-[12px] font-semibold leading-snug text-[#2A3A30]">{n.title}</div>
+                    <div className="mt-0.5 text-[11px] leading-snug text-[#707B72]">{n.message}</div>
                     {stockQty != null && (
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${n.type === "out_of_stock" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"}`}>
+                      <div className="mt-1.5 flex items-center gap-2">
+                        <span className={`rounded-full px-1.5 py-0.5 text-[9.5px] font-medium ${n.type === "out_of_stock" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"}`}>
                           {n.type === "out_of_stock" ? "Out of stock" : `${stockQty} ${unit} remaining`}
                         </span>
                         {d.threshold != null && (
-                          <span className="text-[10px] text-[#a3a3a3]">reorder at {d.threshold}</span>
+                          <span className="text-[9.5px] text-[#969F97]">reorder at {d.threshold}</span>
                         )}
                       </div>
                     )}
                     {d.metal && (
-                      <div className="text-[10px] text-[#a3a3a3] mt-1 capitalize">{d.metal} · {d.form_type}</div>
+                      <div className="mt-1 text-[9.5px] capitalize text-[#969F97]">{d.metal} · {d.form_type}</div>
                     )}
                   </div>
 
                   {/* Delete */}
                   <button
                     onClick={() => deleteOne(n.id, isUnread)}
-                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-[#a3a3a3] hover:text-red-500 p-0.5"
+                    className="flex-shrink-0 p-0.5 text-[#9AA39B] opacity-0 transition hover:text-red-500 group-hover:opacity-100"
                     title="Dismiss"
                   >
-                    <Trash2 size={12} />
+                    <Trash2 size={12} strokeWidth={1.8} />
                   </button>
                 </div>
               );
@@ -489,7 +498,7 @@ function NotificationBell() {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="px-4 py-2 border-t border-[#E5E7EB] bg-[#FAFAFA] text-[10px] text-[#a3a3a3] text-center">
+            <div className="border-t border-[#E2E6DD] bg-[#F5F6F1] px-4 py-2 text-center text-[9.5px] text-[#929B93]">
               Showing {items.length} notification{items.length !== 1 ? "s" : ""} · Updates every 30s
             </div>
           )}
@@ -560,20 +569,24 @@ function Topbar() {
   };
 
   return (
-    <div className="h-16 border-b border-[#E5E7EB] bg-white/80 backdrop-blur-xl sticky top-0 z-20 flex items-center justify-between px-8">
-      <div className="flex items-center gap-4">
+    <div className="sticky top-0 z-20 flex min-h-16 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#E1E3D9] bg-[#F7F5EE]/95 px-5 py-2.5 backdrop-blur-xl xl:px-7">
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
         <h1
-          className="select-none font-display text-[18px] font-medium text-[#0A0A0A] tracking-tight"
+          className="max-w-[190px] truncate whitespace-nowrap font-display text-[18px] font-medium tracking-tight text-[#24372D] select-none xl:max-w-none"
           onClick={isDashboardRoute ? handleTitleClick : undefined}
           title={isDashboardRoute && isOwner && !dashHiddenUnlocked ? "Triple-click to unlock hidden bill figures" : undefined}
         >
           {title}
         </h1>
-        <span className="text-[11px] text-[#a3a3a3] font-mono">{fmtDateTime(now)}</span>
+        <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full border border-[#E0E2D8] bg-[#FCFCF8]/80 px-2.5 py-1 font-mono text-[9.5px] text-[#7D857E]">
+          {fmtDateTime(now)}
+        </span>
         {businessDate && (
           <span
-            className={`text-[11px] font-mono px-2 py-0.5 rounded-full ${
-              isBusinessDateStale ? "bg-red-50 text-red-700" : "bg-[#F5F5F4] text-[#737373]"
+            className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 py-1 font-mono text-[9.5px] ${
+              isBusinessDateStale
+                ? "border-red-200 bg-red-50 text-red-700"
+                : "border-[#D8E1D4] bg-[#EDF2E9] text-[#526757]"
             }`}
             title={
               isBusinessDateStale
@@ -588,14 +601,14 @@ function Topbar() {
           <button
             type="button"
             onClick={() => setDashHiddenUnlocked(false)}
-            className="flex items-center gap-1.5 rounded-full bg-[#B49042]/15 px-3 py-1.5 text-xs font-semibold text-[#B49042] hover:bg-[#B49042]/25"
+            className="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#B49042]/12 px-2.5 py-1 text-[10.5px] font-semibold text-[#987634] transition-colors hover:bg-[#B49042]/20"
             title="Hidden bill figures are included — click to lock again"
           >
             Hidden bills included · Lock
           </button>
         ) : null}
       </div>
-      <div className="flex items-center gap-3">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
         <GlobalSearch />
         <NotificationBell />
       </div>
@@ -931,7 +944,7 @@ export default function AppShell({ children }) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#F7F6F0]">
       <ApiLoadingBar />
       <Sidebar
         onRequestHiddenUnlock={() => {
@@ -943,11 +956,11 @@ export default function AppShell({ children }) {
         <ConnectivityBanner />
         <Topbar />
         {testMode && (
-          <div className="px-8 pt-4">
+          <div className="px-5 pt-4 xl:px-7">
             <TestModeBanner />
           </div>
         )}
-        <main className="p-8 fade-in">{children}</main>
+        <main className="min-h-[calc(100vh-4rem)] p-5 fade-in xl:p-7">{children}</main>
       </div>
       {pendingOwnership && (
         <AcceptOwnershipModal

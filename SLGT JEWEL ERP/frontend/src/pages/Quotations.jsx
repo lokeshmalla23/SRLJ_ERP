@@ -37,6 +37,45 @@ import { sortByOccurredAtDesc } from "@/lib/occurredAt";
 // ── Constants ─────────────────────────────────────────────────────────────────
 const GOLD = "#B49042";
 
+// Presentation-only trade-module canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
+
 const LIVE_RATE_FIELDS = [
   { label: "24K Gold", field: "gold_24k" },
   { label: "22K Gold", field: "gold_22k" },
@@ -49,30 +88,30 @@ function LiveRatesBanner({ rates }) {
   const gr = rates || {};
   return (
     <div
-      className="w-full rounded-2xl border border-[#FDE68A] px-6 py-4 flex items-center gap-6 overflow-x-auto"
-      style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)" }}
+      className="w-full rounded-[12px] border border-[#EADFBF] px-6 py-4 flex items-center gap-6 overflow-x-auto bg-[#FDFBF7] shadow-[0_1px_2px_rgba(117,87,30,0.05)]"
+      style={{ background: "#FDFBF7" }}
     >
       <div className="flex items-center gap-3 flex-shrink-0">
-        <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#D97706] flex items-center justify-center shadow-sm">
+        <div className="h-9 w-9 rounded-[9px] bg-[#B49042] flex items-center justify-center shadow-sm">
           <Coins size={16} strokeWidth={1.5} className="text-white" />
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-widest text-[#92400E] font-bold">Live Gold Rates</div>
+          <div className="text-[11px] uppercase tracking-widest text-[#8A6D2F] font-bold">Live Gold Rates</div>
           <div className="flex items-center gap-1 mt-0.5">
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
             </span>
-            <span className="text-[9.5px] text-[#78350F]/60">Today</span>
+            <span className="text-[9.5px] text-[#8A6D2F]/70">Today</span>
           </div>
         </div>
       </div>
       <div className="flex items-center flex-1">
         {LIVE_RATE_FIELDS.map(({ label, field }) => (
-          <div key={field} className="flex flex-col items-center gap-0 px-6 border-l border-[#FDE68A] first:border-l-0">
-            <div className="text-[10px] uppercase tracking-widest text-[#92400E] font-bold mb-1">{label}</div>
-            <span className="font-bold text-[18px] text-[#78350F] leading-none">{fmtINR(gr[field])}</span>
-            <div className="text-[9px] text-[#B45309]/60 uppercase tracking-wider mt-0.5">per gram</div>
+          <div key={field} className="flex flex-col items-center gap-0 px-6 border-l border-[#EADFBF] first:border-l-0">
+            <div className="text-[10px] uppercase tracking-widest text-[#8A6D2F] font-bold mb-1">{label}</div>
+            <span className="font-bold text-[18px] text-[#6F5720] leading-none">{fmtINR(gr[field])}</span>
+            <div className="text-[9px] text-[#A1844A] uppercase tracking-wider mt-0.5">per gram</div>
           </div>
         ))}
       </div>
@@ -145,13 +184,13 @@ function readImageAsDataUrl(file, maxEdge = 1280, quality = 0.72) {
 }
 
 const STATUS_META = {
-  draft:     { label: "Draft",      cls: "bg-gray-100 text-gray-600" },
+  draft:     { label: "Draft",      cls: "bg-[#F1F4ED] text-[#5F6D62]" },
   sent:      { label: "Sent",       cls: "bg-blue-100 text-blue-700" },
   accepted:  { label: "Finalized",  cls: "bg-green-100 text-green-700" },
   booked:    { label: "Booked",     cls: "bg-amber-100 text-amber-800" },
   converted: { label: "Converted",  cls: "bg-emerald-100 text-emerald-700" },
   expired:   { label: "Expired",    cls: "bg-red-100 text-red-600" },
-  cancelled: { label: "Cancelled",  cls: "bg-gray-100 text-gray-500" },
+  cancelled: { label: "Cancelled",  cls: "bg-[#F1F4ED] text-[#8D998F]" },
 };
 
 /** Full calcLineAmounts breakdown (goldValue/wastage/making/stone/line_total) for one
@@ -190,7 +229,7 @@ function PastQuotes({ quotes, onEdit, onBook, onAddAdvance, onPrint, onCancel, o
         </thead>
         <tbody>
           {quotes.length === 0 && (
-            <tr><td colSpan={7} className="table-td text-center text-[#737373] py-8">No estimations yet.</td></tr>
+            <tr><td colSpan={7} className="table-td text-center text-[#6E786F] py-8">No estimations yet.</td></tr>
           )}
           {quotes.map(q => {
             const sm = STATUS_META[q.status] || STATUS_META.draft;
@@ -205,8 +244,8 @@ function PastQuotes({ quotes, onEdit, onBook, onAddAdvance, onPrint, onCancel, o
                   {isPreAccountsQuotation(q) && <TestBadge className="ml-1.5 align-middle" />}
                 </td>
                 <td className="table-td">
-                  <div className="text-[13px] font-medium text-[#0A0A0A]">{q.customer_name}</div>
-                  <div className="text-[11px] text-[#737373]">{q.customer_mobile}</div>
+                  <div className="text-[13px] font-medium text-[#2F3A32]">{q.customer_name}</div>
+                  <div className="text-[11px] text-[#6E786F]">{q.customer_mobile}</div>
                   {q.status === "booked" && (
                     <div className="text-[10.5px] text-amber-700 mt-0.5">
                       Adv {fmtINR(q.advance_paid || 0)}
@@ -225,21 +264,21 @@ function PastQuotes({ quotes, onEdit, onBook, onAddAdvance, onPrint, onCancel, o
                     </div>
                   )}
                   {q.status === "expired" && Number(q.advance_paid) > 0 && (
-                    <div className="text-[10.5px] text-[#737373] mt-0.5">
+                    <div className="text-[10.5px] text-[#6E786F] mt-0.5">
                       Expired — stock released · advance kept as customer credit ({fmtINR(q.advance_paid)})
                     </div>
                   )}
                 </td>
-                <td className="table-td text-[12.5px] text-[#525252]">{q.items?.length || 0} items</td>
+                <td className="table-td text-[12.5px] text-[#5F6D62]">{q.items?.length || 0} items</td>
                 <td className="table-td text-right font-medium text-[13px]">{fmtINR(q.grand_total)}</td>
-                <td className="table-td text-[12px] text-[#525252]">{q.valid_until ? new Date(q.valid_until).toLocaleDateString("en-IN",{day:"2-digit",month:"short"}) : "—"}</td>
+                <td className="table-td text-[12px] text-[#5F6D62]">{q.valid_until ? new Date(q.valid_until).toLocaleDateString("en-IN",{day:"2-digit",month:"short"}) : "—"}</td>
                 <td className="table-td"><span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${sm.cls}`}>{sm.label}</span></td>
                 <td className="table-td text-right whitespace-nowrap">
                   <div className="inline-flex items-center gap-1.5 justify-end">
                     {canEdit && (
                       <button
                         type="button"
-                        className="px-2 py-1 rounded border border-[#E5E7EB] text-[11px] font-semibold text-[#525252] hover:border-[#0A0A0A] hover:text-[#0A0A0A]"
+                        className="px-2 py-1 rounded border border-[#DCE3D6] text-[11px] font-semibold text-[#5F6D62] hover:border-[#66806B] hover:text-[#244B39]"
                         onClick={() => onEdit(q)}
                       >
                         Edit
@@ -274,7 +313,7 @@ function PastQuotes({ quotes, onEdit, onBook, onAddAdvance, onPrint, onCancel, o
                     )}
                     <button
                       type="button"
-                      className="px-2 py-1 rounded border border-[#E5E7EB] text-[11px] font-semibold text-[#525252] hover:border-[#0A0A0A] hover:text-[#0A0A0A]"
+                      className="px-2 py-1 rounded border border-[#DCE3D6] text-[11px] font-semibold text-[#5F6D62] hover:border-[#66806B] hover:text-[#244B39]"
                       onClick={() => onPrint(q)}
                     >
                       Print
@@ -282,7 +321,7 @@ function PastQuotes({ quotes, onEdit, onBook, onAddAdvance, onPrint, onCancel, o
                     <button
                       type="button"
                       title="Delete estimation"
-                      className="p-1.5 rounded border border-[#E5E7EB] text-[#a3a3a3] hover:border-red-300 hover:bg-red-50 hover:text-red-600"
+                      className="p-1.5 rounded border border-[#DCE3D6] text-[#8D998F] hover:border-red-300 hover:bg-red-50 hover:text-red-600"
                       onClick={() => onDelete?.(q)}
                     >
                       <Trash2 size={13} strokeWidth={1.5} />
@@ -345,19 +384,19 @@ function BookAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#20352A]/35 backdrop-blur-[2px] flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF8] rounded-[14px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] w-full max-w-md">
+        <div className="p-5 border-b border-[#DCE3D6] flex items-center justify-between">
           <div>
             <div className="section-title">Take advance</div>
-            <div className="text-[12px] text-[#737373] mt-0.5 font-mono">{quote.quote_no} · {fmtINR(grand)}</div>
+            <div className="text-[12px] text-[#6E786F] mt-0.5 font-mono">{quote.quote_no} · {fmtINR(grand)}</div>
           </div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
         <div className="p-5 space-y-3">
-          <p className="text-[12.5px] text-[#525252]">
+          <p className="text-[12.5px] text-[#5F6D62]">
             Takes advance payment, locks gold rate/prices, and reserves unique tags for this customer.
             You can add more advance installments later while the booking is active. Customer pays the final balance in POS with this estimation ID.
             If the deadline passes without billing, stock is released and advance stays as customer credit. Use Cancel to refund all installments and unfreeze items.
@@ -370,11 +409,11 @@ function BookAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
             </div>
           )}
           <label className="block">
-            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1">Advance amount</span>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1">Advance amount</span>
             <MoneyInput className="input font-mono" min="1" step="1" required value={amount} onValueChange={setAmount} />
           </label>
           <label className="block">
-            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1">Payment mode</span>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1">Payment mode</span>
             <select className="input" value={mode} onChange={(e) => setMode(e.target.value)}>
               <option value="cash">Cash</option>
               <option value="upi">UPI</option>
@@ -383,14 +422,14 @@ function BookAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
             </select>
           </label>
           <label className="block">
-            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1">Deadline (days)</span>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1">Deadline (days)</span>
             <input className="input font-mono" type="number" min="1" max="90" value={days} onChange={(e) => setDays(e.target.value)} />
           </label>
-          <div className="text-[12px] text-[#737373]">
-            Remaining after advance: <span className="font-semibold text-[#0A0A0A]">{fmtINR(Math.max(0, grand - parseMoneyInput(amount)))}</span>
+          <div className="text-[12px] text-[#6E786F]">
+            Remaining after advance: <span className="font-semibold text-[#2F3A32]">{fmtINR(Math.max(0, grand - parseMoneyInput(amount)))}</span>
           </div>
         </div>
-        <div className="p-5 border-t border-[#E5E7EB] flex justify-end gap-2">
+        <div className="p-5 border-t border-[#DCE3D6] flex justify-end gap-2">
           <button type="button" className="btn-secondary" onClick={onClose} disabled={busy}>Cancel</button>
           <button type="submit" className="btn-primary" disabled={busy}>
             {busy ? "Saving…" : "Take advance & lock rate"}
@@ -439,21 +478,21 @@ function AddAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#20352A]/35 backdrop-blur-[2px] flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF8] rounded-[14px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] w-full max-w-md">
+        <div className="p-5 border-b border-[#DCE3D6] flex items-center justify-between">
           <div>
             <div className="section-title">Add advance</div>
-            <div className="text-[12px] text-[#737373] mt-0.5 font-mono">
+            <div className="text-[12px] text-[#6E786F] mt-0.5 font-mono">
               {quote.quote_no} · paid {fmtINR(paid)} · due {fmtINR(remaining)}
             </div>
           </div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
         <div className="p-5 space-y-3">
-          <p className="text-[12.5px] text-[#525252]">
+          <p className="text-[12.5px] text-[#5F6D62]">
             Collect another installment on this booked ornament. The tag stays reserved until the deadline.
             Final balance is collected in POS with this estimation number.
           </p>
@@ -469,24 +508,24 @@ function AddAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
             </div>
           )}
           {parts.length > 0 && (
-            <div className="rounded-md border border-[#E5E7EB] bg-[#FAFAFA] px-3 py-2">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1.5">Previous installments</div>
+            <div className="rounded-[9px] border border-[#DCE3D6] bg-[#F1F4ED] px-3 py-2">
+              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1.5">Previous installments</div>
               <ul className="space-y-1">
                 {parts.map((p, idx) => (
-                  <li key={p.advance_id || idx} className="flex justify-between text-[12px] text-[#525252]">
+                  <li key={p.advance_id || idx} className="flex justify-between text-[12px] text-[#5F6D62]">
                     <span>#{p.installment_no || idx + 1} · {(p.mode || "cash").replace("_", " ")}</span>
-                    <span className="font-mono font-semibold text-[#0A0A0A]">{fmtINR(p.amount)}</span>
+                    <span className="font-mono font-semibold text-[#2F3A32]">{fmtINR(p.amount)}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
           <label className="block">
-            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1">This installment</span>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1">This installment</span>
             <MoneyInput className="input font-mono" min="1" step="1" required value={amount} onValueChange={setAmount} />
           </label>
           <label className="block">
-            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#737373] mb-1">Payment mode</span>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold text-[#6E786F] mb-1">Payment mode</span>
             <select className="input" value={mode} onChange={(e) => setMode(e.target.value)}>
               <option value="cash">Cash</option>
               <option value="upi">UPI</option>
@@ -494,12 +533,12 @@ function AddAdvanceModal({ quote, onClose, onDone, onSetupRequired }) {
               <option value="bank_transfer">Bank transfer</option>
             </select>
           </label>
-          <div className="text-[12px] text-[#737373]">
-            After this: advance <span className="font-semibold text-[#0A0A0A]">{fmtINR(paid + parseMoneyInput(amount))}</span>
-            {" · "}still due <span className="font-semibold text-[#0A0A0A]">{fmtINR(Math.max(0, remaining - parseMoneyInput(amount)))}</span>
+          <div className="text-[12px] text-[#6E786F]">
+            After this: advance <span className="font-semibold text-[#2F3A32]">{fmtINR(paid + parseMoneyInput(amount))}</span>
+            {" · "}still due <span className="font-semibold text-[#2F3A32]">{fmtINR(Math.max(0, remaining - parseMoneyInput(amount)))}</span>
           </div>
         </div>
-        <div className="p-5 border-t border-[#E5E7EB] flex justify-end gap-2">
+        <div className="p-5 border-t border-[#DCE3D6] flex justify-end gap-2">
           <button type="button" className="btn-secondary" onClick={onClose} disabled={busy}>Cancel</button>
           <button type="submit" className="btn-primary" disabled={busy}>
             {busy ? "Saving…" : "Add installment"}
@@ -1227,16 +1266,16 @@ export default function Quotations() {
   ));
 
   return (
-    <div className="max-w-[1200px]">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1200px]`}>
 
       <PageHeader
         title="Estimations"
         subtitle="Scan a barcode, add items, print the estimation — done."
         actions={
-          <div className="flex items-center gap-1 border border-[#E5E7EB] rounded-lg overflow-hidden bg-white">
+          <div className="flex items-center gap-1 border border-[#DCE3D6] rounded-[10px] overflow-hidden bg-[#FFFDF8] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
             {[["new","New Estimation"],["history","History"]].map(([t,lbl]) => (
               <button key={t} onClick={() => setTab(t)}
-                className={`px-4 py-2 text-[13px] font-medium transition-colors ${tab === t ? "bg-[#0A0A0A] text-white" : "text-[#737373] hover:text-[#0A0A0A]"}`}>
+                className={`px-4 py-2 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${tab === t ? "bg-[#244B39] text-white" : "text-[#6E786F] hover:text-[#244B39]"}`}>
                 {lbl}
               </button>
             ))}
@@ -1250,12 +1289,12 @@ export default function Quotations() {
       {tab === "new" && (
         <div className="space-y-4">
           {editingQuoteId && (
-            <div className="flex items-center justify-between px-4 py-2.5 bg-blue-50 border border-blue-200 rounded-lg">
-              <div className="flex items-center gap-2 text-[13px] text-blue-800">
+            <div className="flex items-center justify-between px-4 py-2.5 bg-[#FDFBF7] border border-[#EADFBF] rounded-[9px]">
+              <div className="flex items-center gap-2 text-[13px] text-[#6F5720]">
                 <Pencil size={14} strokeWidth={1.5} />
                 Editing estimation <span className="font-mono font-medium">{editingQuoteNo}</span>
               </div>
-              <button className="text-[12px] text-blue-700 hover:text-blue-900 font-medium" onClick={cancelEdit}>
+              <button className="text-[12px] text-[#8A6D2F] hover:text-[#6F5720] font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E2C98C]" onClick={cancelEdit}>
                 Cancel edit
               </button>
             </div>
@@ -1268,15 +1307,15 @@ export default function Quotations() {
               {/* Customer */}
               <div className="card">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="text-[12px] font-semibold text-[#737373] uppercase tracking-wide">Customer (optional)</div>
+                  <div className="text-[12px] font-semibold text-[#6E786F] uppercase tracking-wide">Customer (optional)</div>
                   {!customer && (
                     <button
                       type="button"
                       onClick={openNewCustomer}
-                      className="flex items-center gap-1 text-[11.5px] font-semibold px-2.5 py-1 rounded-md border transition-colors"
+                      className="flex items-center gap-1 text-[11.5px] font-semibold px-2.5 py-1 rounded-[8px] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E2C98C]"
                       style={{ borderColor: GOLD, color: GOLD }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = GOLD; e.currentTarget.style.color = "white"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = GOLD; }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = "#244B39"; e.currentTarget.style.color = "white"; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#B49042"; }}
                     >
                       <UserPlus size={12} strokeWidth={1.5} /> New Customer
                     </button>
@@ -1285,21 +1324,21 @@ export default function Quotations() {
                 {customer ? (
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-full bg-[#0A0A0A] text-white flex items-center justify-center text-[14px] font-bold">
+                      <div className="h-9 w-9 rounded-full bg-[#244B39] text-white flex items-center justify-center text-[14px] font-bold">
                         {customer.name[0]}
                       </div>
                       <div>
-                        <div className="text-[13px] font-semibold text-[#0A0A0A]">{customer.name}</div>
-                        <div className="text-[11px] text-[#737373]">{customer.mobile}</div>
+                        <div className="text-[13px] font-semibold text-[#2F3A32]">{customer.name}</div>
+                        <div className="text-[11px] text-[#6E786F]">{customer.mobile}</div>
                       </div>
                     </div>
-                    <button onClick={() => { setCustomer(null); setCustSearch(""); }} className="text-[#737373] hover:text-red-500">
+                    <button onClick={() => { setCustomer(null); setCustSearch(""); }} className="text-[#6E786F] hover:text-red-500">
                       <X size={15} />
                     </button>
                   </div>
                 ) : (
                   <div className="relative">
-                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
                     <input
                       className="input pl-9"
                       placeholder="Search customer name or mobile…"
@@ -1316,24 +1355,24 @@ export default function Quotations() {
                       }}
                     />
                     {showCustDrop && custSearch.trim() && (
-                      <div className="absolute top-full mt-1 w-full bg-white border border-[#E5E7EB] rounded-lg shadow-lg z-30 overflow-hidden">
+                      <div className="absolute top-full mt-1 w-full bg-white border border-[#DCE3D6] rounded-lg shadow-lg z-30 overflow-hidden">
                         {custResults.map(c => (
-                          <button key={c.id} className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] flex items-center gap-3"
+                          <button key={c.id} className="w-full text-left px-4 py-2.5 hover:bg-[#F1F4ED] flex items-center gap-3"
                             onClick={() => { setCustomer(c); setCustSearch(""); setShowCustDrop(false); }}>
-                            <div className="h-7 w-7 rounded-full bg-[#E5E7EB] flex items-center justify-center text-[12px] font-bold text-[#525252]">{c.name[0]}</div>
+                            <div className="h-7 w-7 rounded-full bg-[#E8EFE5] flex items-center justify-center text-[12px] font-bold text-[#526B59]">{c.name[0]}</div>
                             <div>
                               <div className="text-[13px] font-medium">{c.name}</div>
-                              <div className="text-[11px] text-[#737373]">{c.mobile}</div>
+                              <div className="text-[11px] text-[#6E786F]">{c.mobile}</div>
                             </div>
                           </button>
                         ))}
                         {custSearched && custResults.length === 0 && (
-                          <div className="px-4 py-3 text-[12px] text-[#737373]">
+                          <div className="px-4 py-3 text-[12px] text-[#6E786F]">
                             No customer found for "{custSearch}".
                           </div>
                         )}
                         <button
-                          className="w-full text-left px-4 py-2.5 hover:bg-[#FDFBF7] flex items-center gap-2 text-[12.5px] font-medium text-[#B49042] border-t border-[#E5E7EB]"
+                          className="w-full text-left px-4 py-2.5 hover:bg-[#FDFBF7] flex items-center gap-2 text-[12.5px] font-medium text-[#B49042] border-t border-[#DCE3D6]"
                           onClick={openNewCustomer}
                         >
                           <UserPlus size={14} strokeWidth={1.5} /> Add "{custSearch}" as new customer
@@ -1346,9 +1385,9 @@ export default function Quotations() {
 
               {/* Salesperson — same search + dropdown pattern as POS Billing */}
               <div className="card" ref={empDropRef}>
-                <div className="text-[12px] font-semibold text-[#737373] uppercase tracking-wide mb-2">Sales Person</div>
+                <div className="text-[12px] font-semibold text-[#6E786F] uppercase tracking-wide mb-2">Sales Person</div>
                 <div className="relative">
-                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
                   <input
                     className="input pl-9 pr-8"
                     placeholder="Search salesperson…"
@@ -1378,26 +1417,26 @@ export default function Quotations() {
                     <button
                       type="button"
                       onClick={() => { setSalesperson(null); setEmpSearch(""); setEmpDropOpen(true); }}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#a3a3a3] hover:text-red-500"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8D998F] hover:text-red-500"
                     >
                       <X size={13} strokeWidth={1.5} />
                     </button>
                   )}
                   {empDropOpen && (
-                    <div className="absolute top-full mt-1 w-full bg-white border border-[#E5E7EB] rounded-lg shadow-lg z-30 overflow-hidden max-h-56 overflow-y-auto">
+                    <div className="absolute top-full mt-1 w-full bg-white border border-[#DCE3D6] rounded-lg shadow-lg z-30 overflow-hidden max-h-56 overflow-y-auto">
                       {employees.length === 0 ? (
-                        <div className="px-4 py-3 text-[12px] text-[#737373]">No employees found — add staff under Employees</div>
+                        <div className="px-4 py-3 text-[12px] text-[#6E786F]">No employees found — add staff under Employees</div>
                       ) : filteredEmployees.length === 0 ? (
-                        <div className="px-4 py-3 text-[12px] text-[#737373]">No matching salesperson</div>
+                        <div className="px-4 py-3 text-[12px] text-[#6E786F]">No matching salesperson</div>
                       ) : (
                         filteredEmployees.map((emp) => (
                           <button
                             key={emp.id}
                             type="button"
-                            className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] border-b border-[#F3F4F6] last:border-0"
+                            className="w-full text-left px-4 py-2.5 hover:bg-[#F1F4ED] border-b border-[#F3F4F6] last:border-0"
                             onClick={() => { setSalesperson(emp); setEmpSearch(""); setEmpDropOpen(false); }}
                           >
-                            <div className="text-[13px] font-medium text-[#0A0A0A]">
+                            <div className="text-[13px] font-medium text-[#2F3A32]">
                               {(emp.code || emp.employee_code) ? `${emp.code || emp.employee_code} | ` : ""}{emp.name}
                             </div>
                           </button>
@@ -1410,9 +1449,9 @@ export default function Quotations() {
 
               {/* Barcode scan / product search */}
               <div className="card">
-                <div className="text-[12px] font-semibold text-[#737373] uppercase tracking-wide mb-2">Add Items</div>
+                <div className="text-[12px] font-semibold text-[#6E786F] uppercase tracking-wide mb-2">Add Items</div>
                 <div className="relative">
-                  <ScanBarcode size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+                  <ScanBarcode size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
                   <input
                     ref={barcodeRef}
                     className="input pl-10 font-mono"
@@ -1429,24 +1468,24 @@ export default function Quotations() {
                     autoFocus
                   />
                   {showProdDrop && prodResults.length > 0 && (
-                    <div className="absolute top-full mt-1 w-full bg-white border border-[#E5E7EB] rounded-lg shadow-lg z-30 overflow-hidden">
+                    <div className="absolute top-full mt-1 w-full bg-white border border-[#DCE3D6] rounded-lg shadow-lg z-30 overflow-hidden">
                       {prodResults.map(p => (
-                        <button key={p.id} className="w-full text-left px-4 py-2.5 hover:bg-[#F9FAFB] flex items-center gap-3"
+                        <button key={p.id} className="w-full text-left px-4 py-2.5 hover:bg-[#F1F4ED] flex items-center gap-3"
                           onClick={() => { addProduct(p); setBarcodeInput(""); }}>
-                          <div className="h-8 w-8 bg-[#F9FAFB] rounded-md border border-[#E5E7EB] flex items-center justify-center">
+                          <div className="h-8 w-8 bg-[#F1F4ED] rounded-[8px] border border-[#DCE3D6] flex items-center justify-center">
                             <Sparkles size={12} className="text-[#d4d4d8]" strokeWidth={1} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-[13px] font-medium text-[#0A0A0A] truncate">{p.name}</div>
-                            <div className="text-[11px] text-[#737373]">{p.code} · {p.purity_name} · {p.gross_weight}g gross</div>
+                            <div className="text-[13px] font-medium text-[#2F3A32] truncate">{p.name}</div>
+                            <div className="text-[11px] text-[#6E786F]">{p.code} · {p.purity_name} · {p.gross_weight}g gross</div>
                           </div>
-                          <span className="text-[11px] font-mono text-[#a3a3a3]">{p.barcode}</span>
+                          <span className="text-[11px] font-mono text-[#8D998F]">{p.barcode}</span>
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
-                <p className="text-[11px] text-[#a3a3a3] mt-1.5">Press Enter to add first result, or click to select. Barcode auto-adds directly.</p>
+                <p className="text-[11px] text-[#8D998F] mt-1.5">Press Enter to add first result, or click to select. Barcode auto-adds directly.</p>
               </div>
 
               {/* Items table */}
@@ -1477,8 +1516,8 @@ export default function Quotations() {
                         <Fragment key={it._id}>
                           <tr className="table-row">
                             <td className="table-td">
-                              <div className="text-[13px] font-medium text-[#0A0A0A]">{it.product_name}</div>
-                              <div className="text-[11px] text-[#737373]">{it.code}</div>
+                              <div className="text-[13px] font-medium text-[#2F3A32]">{it.product_name}</div>
+                              <div className="text-[11px] text-[#6E786F]">{it.code}</div>
                               {it.is_tray && (
                                 <div className="text-[10px] text-amber-700 font-medium mt-0.5">
                                   Tray · {it.tray_stock_qty} pcs · {formatWeight(it.tray_total_weight)}g avail
@@ -1494,9 +1533,9 @@ export default function Quotations() {
                                       const pieces = Math.max(1, (it.tray_pieces_sold || 1) - 1);
                                       updateItem(it._id, "tray_pieces_sold", pieces);
                                       updateItem(it._id, "qty", pieces);
-                                    }} className="h-5 w-5 rounded border border-[#E5E7EB] text-[#525252] hover:bg-[#F9FAFB] text-[12px] font-medium flex items-center justify-center">−</button>
+                                    }} className="h-5 w-5 rounded border border-[#DCE3D6] text-[#5F6D62] hover:bg-[#F1F4ED] text-[12px] font-medium flex items-center justify-center">−</button>
                                     <input type="text" inputMode="decimal" min="1" step="1" max={it.tray_stock_qty}
-                                      className="w-10 text-center border border-[#E5E7EB] rounded text-[11px] py-0.5 font-mono"
+                                      className="w-10 text-center border border-[#DCE3D6] rounded text-[11px] py-0.5 font-mono"
                                       value={it.tray_pieces_sold || 1}
                                       onChange={(e) => {
                                         const pieces = Math.max(1, Math.min(it.tray_stock_qty || 1, Math.round(Number(e.target.value)) || 1));
@@ -1507,7 +1546,7 @@ export default function Quotations() {
                                       const pieces = Math.min(it.tray_stock_qty || 1, (it.tray_pieces_sold || 1) + 1);
                                       updateItem(it._id, "tray_pieces_sold", pieces);
                                       updateItem(it._id, "qty", pieces);
-                                    }} className="h-5 w-5 rounded border border-[#E5E7EB] text-[#525252] hover:bg-[#F9FAFB] text-[12px] font-medium flex items-center justify-center">+</button>
+                                    }} className="h-5 w-5 rounded border border-[#DCE3D6] text-[#5F6D62] hover:bg-[#F1F4ED] text-[12px] font-medium flex items-center justify-center">+</button>
                                   </div>
                                 </td>
                                 <td className="table-td text-right">
@@ -1546,7 +1585,7 @@ export default function Quotations() {
                                       onValueChange={(_, n) => updateItem(it._id, "rate_override", n)}
                                     />
                                     <button type="button" onClick={() => updateItem(it._id, "rate_override", null)}
-                                      className="text-[#a3a3a3] hover:text-red-600" title="Reset to market rate">
+                                      className="text-[#8D998F] hover:text-red-600" title="Reset to market rate">
                                       <X size={10} strokeWidth={1.5} />
                                     </button>
                                   </div>
@@ -1554,7 +1593,7 @@ export default function Quotations() {
                                   <button type="button" className="flex items-center gap-1 hover:opacity-80 ml-auto" title="Override rate"
                                     onClick={() => updateItem(it._id, "rate_override", rate || 0)}>
                                     <span>{rate != null ? fmtINR(rate, { decimals: 0 }) : "—"}</span>
-                                    <Pencil size={9} strokeWidth={1.5} className="text-[#a3a3a3]" />
+                                    <Pencil size={9} strokeWidth={1.5} className="text-[#8D998F]" />
                                   </button>
                                 )
                               ) : (
@@ -1566,11 +1605,11 @@ export default function Quotations() {
                               <div className="flex items-center gap-1 justify-end">
                                 {canEditPricing && (
                                   <button type="button" onClick={() => setExpandedItem(isExpanded ? null : it._id)}
-                                    className="text-[#737373] hover:text-[#0A0A0A] p-1" title="Edit pricing">
+                                    className="text-[#6E786F] hover:text-[#244B39] p-1" title="Edit pricing">
                                     <Pencil size={13} strokeWidth={1.5} />
                                   </button>
                                 )}
-                                <button onClick={() => removeItem(it._id)} className="text-[#737373] hover:text-red-500 p-1" title="Remove">
+                                <button onClick={() => removeItem(it._id)} className="text-[#6E786F] hover:text-red-500 p-1" title="Remove">
                                   <X size={13} strokeWidth={1.5} />
                                 </button>
                               </div>
@@ -1578,7 +1617,7 @@ export default function Quotations() {
                           </tr>
                           {isExpanded && canEditPricing && (
                             <tr>
-                              <td colSpan={7} className="px-4 py-3 bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                              <td colSpan={7} className="px-4 py-3 bg-[#F1F4ED] border-b border-[#DCE3D6]">
                                 <div className="max-w-sm space-y-1.5">
                                   <BreakRow
                                     label={`Wastage (${it.wastage_pct}%)`}
@@ -1603,7 +1642,7 @@ export default function Quotations() {
                                     editable
                                     onChange={(_, n) => updateItem(it._id, "stone_charges", n)}
                                   />
-                                  <div className="border-t border-[#E5E7EB] pt-1 flex justify-between font-semibold text-[13px] text-[#0A0A0A]">
+                                  <div className="border-t border-[#DCE3D6] pt-1 flex justify-between font-semibold text-[13px] text-[#2F3A32]">
                                     <span>Unit Price</span>
                                     <span>{fmtINR(amounts.unit_price)}</span>
                                   </div>
@@ -1620,7 +1659,7 @@ export default function Quotations() {
               )}
 
               {items.length === 0 && (
-                <div className="text-center py-10 text-[#a3a3a3] text-[13px] border-2 border-dashed border-[#E5E7EB] rounded-lg">
+                <div className="text-center py-10 text-[#8D998F] text-[13px] border-2 border-dashed border-[#DCE3D6] rounded-lg">
                   <ScanBarcode size={28} className="mx-auto mb-2 text-[#d4d4d8]" strokeWidth={1} />
                   Scan a barcode or search a product above to add items
                 </div>
@@ -1631,12 +1670,12 @@ export default function Quotations() {
             <div className="space-y-3 sticky top-24">
 
               {/* Live receipt preview card */}
-              <div className="rounded-xl border border-[#E5E7EB] overflow-hidden bg-white shadow-sm">
+              <div className="rounded-[10px] border border-[#DCE3D6] overflow-hidden bg-[#FFFDF8] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
                 {/* Card header + print */}
-                <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-[#F1F4ED] border-b border-[#DCE3D6]">
                   <div>
-                    <span className="text-[11px] font-semibold text-[#737373] uppercase tracking-wide">Estimation Preview</span>
-                    <span className="ml-2 text-[10px] text-[#a3a3a3] font-mono">
+                    <span className="text-[11px] font-semibold text-[#6E786F] uppercase tracking-wide">Estimation Preview</span>
+                    <span className="ml-2 text-[10px] text-[#8D998F] font-mono">
                       {isThermalPreview ? `${printConfig.layout?.paper_width_mm || 80}mm` : "A5"}
                     </span>
                   </div>
@@ -1661,8 +1700,8 @@ export default function Quotations() {
                 </div>
 
                 {/* Discount in preview panel */}
-                <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#E5E7EB] bg-white">
-                  <span className="text-[12.5px] text-[#525252]">Discount ₹</span>
+                <div className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-[#DCE3D6] bg-white">
+                  <span className="text-[12.5px] text-[#5F6D62]">Discount ₹</span>
                   <MoneyInput
                     min={0}
                     className="input no-spinner w-28 text-right py-1.5 text-[12.5px]"
@@ -1673,7 +1712,7 @@ export default function Quotations() {
                 </div>
 
                 {/* Old Metal Exchange calculator — informational only, never reduces the estimate total */}
-                <div className="border-b border-[#E5E7EB] bg-white">
+                <div className="border-b border-[#DCE3D6] bg-white">
                   <button
                     type="button"
                     className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left"
@@ -1684,21 +1723,21 @@ export default function Quotations() {
                       else setOldGold((g) => ({ ...g, active: true }));
                     }}
                   >
-                    <span className="text-[12.5px] text-[#525252]">Old Gold Exchange</span>
-                    <span className="text-[12.5px] font-medium tabular-nums" style={{ color: oldGoldValue > 0 ? "#B45309" : "#a3a3a3" }}>
+                    <span className="text-[12.5px] text-[#5F6D62]">Old Gold Exchange</span>
+                    <span className="text-[12.5px] font-medium tabular-nums" style={{ color: oldGoldValue > 0 ? "#8A6D2F" : "#8D998F" }}>
                       {oldGoldValue > 0 ? fmtINR(oldGoldValue) : (oldGoldOpen ? "Enter details" : "+ Add")}
                     </span>
                   </button>
                   {oldGoldOpen && (
-                    <div className="px-4 pb-3 bg-amber-50/60 space-y-1.5">
+                    <div className="px-4 pb-3 bg-[#FDFBF7] space-y-1.5">
                       <div className="flex gap-1.5">
                         <div className="flex-1">
-                          <label className="text-[11px] text-amber-700 mb-0.5 block">Weight (g)</label>
+                          <label className="text-[11px] text-[#8A6D2F] mb-0.5 block">Weight (g)</label>
                           <WeightInput placeholder="0.000" className="input !py-1 !text-[12px] font-mono w-full"
                             value={oldGold.weight} onValueChange={(raw) => setOldGold((g) => ({ ...g, weight: raw }))} />
                         </div>
                         <div className="flex-1">
-                          <label className="text-[11px] text-amber-700 mb-0.5 block">Purity</label>
+                          <label className="text-[11px] text-[#8A6D2F] mb-0.5 block">Purity</label>
                           <input type="text" list="estimation-old-gold-purity" placeholder="e.g. 18.5K"
                             className="input !py-1 !text-[12px] w-full"
                             value={oldGold.purity} onChange={(e) => setOldGold((g) => ({ ...g, purity: e.target.value }))} />
@@ -1707,7 +1746,7 @@ export default function Quotations() {
                           </datalist>
                         </div>
                         <div className="flex-1">
-                          <label className="text-[11px] text-amber-700 mb-0.5 block">
+                          <label className="text-[11px] text-[#8A6D2F] mb-0.5 block">
                             {oldMetalManual.gold ? "Amount (₹)" : "Rate/g"}
                           </label>
                           <MoneyInput placeholder={oldMetalManual.gold ? "0.00" : goldRate} className="input !py-1 !text-[12px] font-mono w-full"
@@ -1723,7 +1762,7 @@ export default function Quotations() {
                   )}
                 </div>
 
-                <div className="border-b border-[#E5E7EB] bg-white">
+                <div className="border-b border-[#DCE3D6] bg-white">
                   <button
                     type="button"
                     className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left"
@@ -1734,21 +1773,21 @@ export default function Quotations() {
                       else setOldSilver((g) => ({ ...g, active: true }));
                     }}
                   >
-                    <span className="text-[12.5px] text-[#525252]">Old Silver Exchange</span>
-                    <span className="text-[12.5px] font-medium tabular-nums" style={{ color: oldSilverValue > 0 ? "#334155" : "#a3a3a3" }}>
+                    <span className="text-[12.5px] text-[#5F6D62]">Old Silver Exchange</span>
+                    <span className="text-[12.5px] font-medium tabular-nums" style={{ color: oldSilverValue > 0 ? "#526B59" : "#8D998F" }}>
                       {oldSilverValue > 0 ? fmtINR(oldSilverValue) : (oldSilverOpen ? "Enter details" : "+ Add")}
                     </span>
                   </button>
                   {oldSilverOpen && (
-                    <div className="px-4 pb-3 bg-slate-50/80 space-y-1.5">
+                    <div className="px-4 pb-3 bg-[#F1F4ED] space-y-1.5">
                       <div className="flex gap-1.5">
                         <div className="flex-1">
-                          <label className="text-[11px] text-slate-600 mb-0.5 block">Weight (g)</label>
+                          <label className="text-[11px] text-[#6E786F] mb-0.5 block">Weight (g)</label>
                           <WeightInput placeholder="0.000" className="input !py-1 !text-[12px] font-mono w-full"
                             value={oldSilver.weight} onValueChange={(raw) => setOldSilver((g) => ({ ...g, weight: raw }))} />
                         </div>
                         <div className="flex-1">
-                          <label className="text-[11px] text-slate-600 mb-0.5 block">Purity</label>
+                          <label className="text-[11px] text-[#6E786F] mb-0.5 block">Purity</label>
                           <input type="text" list="estimation-old-silver-purity" placeholder="e.g. 925"
                             className="input !py-1 !text-[12px] w-full"
                             value={oldSilver.purity} onChange={(e) => setOldSilver((g) => ({ ...g, purity: e.target.value }))} />
@@ -1757,7 +1796,7 @@ export default function Quotations() {
                           </datalist>
                         </div>
                         <div className="flex-1">
-                          <label className="text-[11px] text-slate-600 mb-0.5 block">
+                          <label className="text-[11px] text-[#6E786F] mb-0.5 block">
                             {oldMetalManual.silver ? "Amount (₹)" : "Rate/g"}
                           </label>
                           <MoneyInput placeholder={oldMetalManual.silver ? "0.00" : silverRate} className="input !py-1 !text-[12px] font-mono w-full"
@@ -1765,7 +1804,7 @@ export default function Quotations() {
                         </div>
                       </div>
                       {oldSilverValue > 0 && (
-                        <div className="flex justify-between text-[11.5px] font-semibold text-slate-700">
+                        <div className="flex justify-between text-[11.5px] font-semibold text-[#526B59]">
                           <span>Calculated Value</span><span>{fmtINR(oldSilverValue)}</span>
                         </div>
                       )}
@@ -1774,8 +1813,8 @@ export default function Quotations() {
                 </div>
 
                 {/* Scrollable paper-strip area */}
-                <div className="bg-[#D9D9D9] flex justify-center py-4 px-3" style={{ maxHeight: 520, overflowY: "auto" }}>
-                  <div className="bg-white shadow-md overflow-hidden" style={{ width: previewBoxW, height: previewBoxH }}>
+                <div className="bg-[#E4E8E0] flex justify-center py-4 px-3" style={{ maxHeight: 520, overflowY: "auto" }}>
+                  <div className="bg-white shadow-[0_8px_20px_rgba(35,58,43,0.14)] overflow-hidden" style={{ width: previewBoxW, height: previewBoxH }}>
                     <iframe
                       key={livePreviewHtml}
                       srcDoc={livePreviewHtml}
@@ -1810,15 +1849,15 @@ export default function Quotations() {
               {/* Compact totals + save actions */}
               <div className="card space-y-3">
                 <div className="space-y-1.5 text-[13px]">
-                  <div className="flex justify-between text-[#525252]">
+                  <div className="flex justify-between text-[#5F6D62]">
                     <span>Subtotal</span><span>{fmtINR(subtotal)}</span>
                   </div>
                   {Number(discAmt) > 0 && (
-                    <div className="flex justify-between text-[#525252]">
+                    <div className="flex justify-between text-[#5F6D62]">
                       <span>Discount</span><span className="text-green-700">− {fmtINR(discAmt)}</span>
                     </div>
                   )}
-                  <div className="flex justify-between text-[15px] font-bold text-[#0A0A0A] border-t border-[#E5E7EB] pt-2">
+                  <div className="flex justify-between text-[15px] font-bold text-[#2F3A32] border-t border-[#DCE3D6] pt-2">
                     <span>Grand Total</span><span>{fmtINR(grandTotal)}</span>
                   </div>
                 </div>
@@ -1832,7 +1871,7 @@ export default function Quotations() {
 
                 <div className="space-y-2 pt-1">
                   <button
-                    className="w-full justify-center text-[12.5px] font-medium rounded-lg py-2.5 flex items-center gap-1.5 bg-[#25D366] text-white hover:bg-[#1FAE55] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="w-full justify-center text-[12.5px] font-medium rounded-[9px] py-2.5 flex items-center gap-1.5 bg-[#244B39] text-white hover:bg-[#1D3B2E] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
                     onClick={sendViaWhatsApp}
                     disabled={sendingWhatsApp || !items.length || !customer}
                     title={!customer ? "Select or add a customer first" : "Send via WhatsApp"}
@@ -1840,12 +1879,12 @@ export default function Quotations() {
                     <MessageCircle size={14} strokeWidth={1.5} /> {sendingWhatsApp ? "Sending…" : "Send via WhatsApp"}
                   </button>
                   {editingQuoteNo && (
-                    <div className="text-center text-[11px] text-[#737373] pt-1">
-                      Est No: <span className="font-mono font-semibold text-[#0A0A0A]">{editingQuoteNo}</span>
+                    <div className="text-center text-[11px] text-[#6E786F] pt-1">
+                      Est No: <span className="font-mono font-semibold text-[#2F3A32]">{editingQuoteNo}</span>
                       <span className="block text-[10px] mt-0.5">Enter this number in POS to load the bill</span>
                     </div>
                   )}
-                  <p className="text-center text-[10.5px] text-[#a3a3a3] pt-0.5">
+                  <p className="text-center text-[10.5px] text-[#8D998F] pt-0.5">
                     Save stores the estimation. Print saves and prints the detailed A5 slip.
                   </p>
                   <button
@@ -1867,7 +1906,7 @@ export default function Quotations() {
         <div>
           <div className="flex items-center gap-3 mb-4">
             <div className="relative flex-1 max-w-md">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
               <input className="input pl-9" placeholder="Search customer or quote number…" value={histSearch} onChange={e => setHistSearch(e.target.value)} />
             </div>
             <button className="btn-secondary" onClick={loadHistory}><RefreshCw size={14} strokeWidth={1.5} /></button>
@@ -1928,72 +1967,72 @@ export default function Quotations() {
       {/* New customer — same left drawer as POS Billing */}
       {newCustOpen && (
         <div className="fixed inset-0 z-[60] flex">
-          <div className="absolute inset-0 bg-black/35" onClick={() => !newCustSaving && setNewCustOpen(false)} />
+          <div className="absolute inset-0 bg-[#20352A]/35 backdrop-blur-[2px]" onClick={() => !newCustSaving && setNewCustOpen(false)} />
           <aside
-            className="relative h-full w-full max-w-[380px] bg-white shadow-2xl border-r border-[#E5E7EB] flex flex-col animate-in slide-in-from-left duration-200"
+            className="relative h-full w-full max-w-[380px] bg-[#FFFDF8] shadow-[0_18px_50px_rgba(35,58,43,0.18)] border-r border-[#DCE3D6] flex flex-col animate-in slide-in-from-left duration-200"
             style={{ animation: "quoteCustSlide 180ms ease-out" }}
           >
             <style>{`@keyframes quoteCustSlide { from { transform: translateX(-100%); } to { transform: translateX(0); } }`}</style>
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E7EB] flex-shrink-0">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#DCE3D6] flex-shrink-0">
               <div>
-                <div className="text-[14px] font-semibold text-[#0A0A0A]">New Customer</div>
+                <div className="text-[14px] font-semibold text-[#2F3A32]">New Customer</div>
                 <div className="text-[11px] text-[#8A857C]">Saved to list and selected for this quote</div>
               </div>
               <button
                 type="button"
                 disabled={newCustSaving}
                 onClick={() => setNewCustOpen(false)}
-                className="h-8 w-8 rounded-md border border-[#E5E7EB] flex items-center justify-center text-[#8A857C] hover:border-[#B49042] hover:text-[#B49042]"
+                className="h-8 w-8 rounded-[8px] border border-[#DCE3D6] flex items-center justify-center text-[#8A857C] hover:border-[#66806B] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               >
                 <X size={15} strokeWidth={1.5} />
               </button>
             </div>
             <form onSubmit={saveNewCustomer} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Name <span style={{ color: GOLD }}>*</span></span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Name <span style={{ color: GOLD }}>*</span></span>
                 <input
                   autoFocus
                   required
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] outline-none focus:border-[#66806B]"
                   value={newCustForm.name}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, name: e.target.value }))}
                   placeholder="Customer name"
                 />
               </label>
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Mobile <span style={{ color: GOLD }}>*</span></span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Mobile <span style={{ color: GOLD }}>*</span></span>
                 <input
                   required
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] font-mono outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] font-mono outline-none focus:border-[#66806B]"
                   value={newCustForm.mobile}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, mobile: e.target.value }))}
                   placeholder="10-digit mobile"
                 />
               </label>
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Email</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Email</span>
                 <input
                   type="email"
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] outline-none focus:border-[#66806B]"
                   value={newCustForm.email}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, email: e.target.value }))}
                   placeholder="optional"
                 />
               </label>
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Address</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Address</span>
                 <textarea
                   rows={3}
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] resize-none outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] resize-none outline-none focus:border-[#66806B]"
                   value={newCustForm.address}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, address: e.target.value }))}
                   placeholder="Full address"
                 />
               </label>
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">PAN Number</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">PAN Number</span>
                 <input
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] font-mono uppercase outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] font-mono uppercase outline-none focus:border-[#66806B]"
                   value={newCustForm.pan_number}
                   maxLength={10}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, pan_number: e.target.value.toUpperCase() }))}
@@ -2001,11 +2040,11 @@ export default function Quotations() {
                 />
               </label>
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Aadhaar Number</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Aadhaar Number</span>
                 <input
                   type="text"
                   inputMode="numeric"
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] font-mono outline-none focus:border-[#B49042]"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] font-mono outline-none focus:border-[#66806B]"
                   value={newCustForm.aadhaar_number}
                   maxLength={12}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, aadhaar_number: e.target.value.replace(/\D/g, "").slice(0, 12) }))}
@@ -2015,7 +2054,7 @@ export default function Quotations() {
 
               {/* PAN card image */}
               <div>
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">PAN Card Image</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">PAN Card Image</span>
                 <input
                   ref={panGalleryRef}
                   type="file"
@@ -2034,20 +2073,20 @@ export default function Quotations() {
                 <button
                   type="button"
                   onClick={() => setPanSourceOpen(true)}
-                  className="mt-1 w-full relative rounded-lg border border-dashed border-[#D6D0C6] bg-[#FCFAF6] hover:border-[#B49042] transition-colors overflow-hidden"
+                  className="mt-1 w-full relative rounded-[10px] border border-dashed border-[#C8D4C7] bg-[#F7F8F2] hover:border-[#B49042] transition-colors overflow-hidden"
                   style={{ minHeight: 140 }}
                 >
                   {newCustForm.pan_image ? (
                     <>
                       <img src={newCustForm.pan_image} alt="PAN card" className="w-full h-40 object-cover" />
-                      <span className="absolute bottom-2 left-2 right-2 text-[11px] text-white bg-black/55 rounded px-2 py-1 text-center">
+                      <span className="absolute bottom-2 left-2 right-2 text-[11px] text-white bg-[#20352A]/75 rounded px-2 py-1 text-center">
                         Tap to change photo
                       </span>
                     </>
                   ) : (
                     <div className="flex flex-col items-center justify-center gap-2 py-8 text-[#8A857C]">
                       <Camera size={22} strokeWidth={1.5} style={{ color: GOLD }} />
-                      <div className="text-[12.5px] font-medium text-[#1A1A1A]">Add PAN card photo</div>
+                      <div className="text-[12.5px] font-medium text-[#2F3A32]">Add PAN card photo</div>
                       <div className="text-[11px]">Camera or gallery</div>
                     </div>
                   )}
@@ -2065,20 +2104,20 @@ export default function Quotations() {
 
               <div className="grid grid-cols-2 gap-3">
                 <label className="block">
-                  <span className="text-[12px] uppercase tracking-wide text-[#737373]">Date of Birth</span>
+                  <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Date of Birth</span>
                   <input
                     type="date"
-                    className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] outline-none focus:border-[#B49042]"
+                    className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] outline-none focus:border-[#66806B]"
                     value={newCustForm.dob}
                     max={new Date().toISOString().slice(0, 10)}
                     onChange={(e) => setNewCustForm((f) => ({ ...f, dob: e.target.value }))}
                   />
                 </label>
                 <label className="block">
-                  <span className="text-[12px] uppercase tracking-wide text-[#737373]">Anniversary</span>
+                  <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Anniversary</span>
                   <input
                     type="date"
-                    className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] outline-none focus:border-[#B49042]"
+                    className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] outline-none focus:border-[#66806B]"
                     value={newCustForm.anniversary}
                     onChange={(e) => setNewCustForm((f) => ({ ...f, anniversary: e.target.value }))}
                   />
@@ -2086,9 +2125,9 @@ export default function Quotations() {
               </div>
 
               <label className="block">
-                <span className="text-[12px] uppercase tracking-wide text-[#737373]">Tag</span>
+                <span className="text-[12px] uppercase tracking-wide text-[#6E786F]">Tag</span>
                 <select
-                  className="mt-1 w-full border border-[#E5E7EB] rounded-md px-2.5 py-2 text-[13px] outline-none focus:border-[#B49042] bg-white"
+                  className="mt-1 w-full border border-[#C8D4C7] rounded-[9px] px-2.5 py-2 text-[13px] outline-none focus:border-[#66806B] bg-white"
                   value={newCustForm.tag}
                   onChange={(e) => setNewCustForm((f) => ({ ...f, tag: e.target.value }))}
                 >
@@ -2098,12 +2137,12 @@ export default function Quotations() {
                 </select>
               </label>
             </form>
-            <div className="flex-shrink-0 flex gap-2 px-4 py-3 border-t border-[#E5E7EB] bg-[#FCFAF6]">
+            <div className="flex-shrink-0 flex gap-2 px-4 py-3 border-t border-[#DCE3D6] bg-[#F7F8F2]">
               <button
                 type="button"
                 disabled={newCustSaving}
                 onClick={() => { setPanSourceOpen(false); setNewCustOpen(false); }}
-                className="flex-1 py-2 rounded-md border border-[#E5E7EB] text-[13px] text-[#525252] hover:border-[#0A0A0A]"
+                className="flex-1 py-2 rounded-[9px] border border-[#DCE3D6] text-[13px] text-[#5F6D62] hover:border-[#66806B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               >
                 Cancel
               </button>
@@ -2112,7 +2151,7 @@ export default function Quotations() {
                 disabled={newCustSaving}
                 onClick={saveNewCustomer}
                 className="flex-1 py-2 rounded-md text-[13px] font-semibold text-white disabled:opacity-60"
-                style={{ background: GOLD }}
+                style={{ background: "#244B39" }}
               >
                 {newCustSaving ? "Saving…" : "Save Customer"}
               </button>
@@ -2122,42 +2161,42 @@ export default function Quotations() {
           {/* Camera / Gallery chooser */}
           {panSourceOpen && (
             <div className="absolute inset-0 z-[70] flex items-end sm:items-center justify-center p-4">
-              <div className="absolute inset-0 bg-black/40" onClick={() => setPanSourceOpen(false)} />
-              <div className="relative w-full max-w-sm bg-white rounded-xl shadow-2xl overflow-hidden">
-                <div className="px-4 py-3 border-b border-[#E5E7EB]">
-                  <div className="text-[14px] font-semibold text-[#0A0A0A]">Add PAN card image</div>
+              <div className="absolute inset-0 bg-[#20352A]/35 backdrop-blur-[2px]" onClick={() => setPanSourceOpen(false)} />
+              <div className="relative w-full max-w-sm bg-[#FFFDF8] rounded-[12px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] overflow-hidden">
+                <div className="px-4 py-3 border-b border-[#DCE3D6]">
+                  <div className="text-[14px] font-semibold text-[#2F3A32]">Add PAN card image</div>
                   <div className="text-[11.5px] text-[#8A857C]">Choose camera or gallery</div>
                 </div>
                 <div className="p-3 space-y-2">
                   <button
                     type="button"
-                    className="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-[#E5E7EB] hover:border-[#B49042] hover:bg-[#FCFAF6] text-left"
+                    className="w-full flex items-center gap-3 px-3 py-3 rounded-[10px] border border-[#DCE3D6] hover:border-[#AFC2AE] hover:bg-[#F1F4ED] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                     onClick={() => panCameraRef.current?.click()}
                   >
-                    <span className="h-9 w-9 rounded-full flex items-center justify-center" style={{ background: "#FCFAF6" }}>
+                    <span className="h-9 w-9 rounded-full flex items-center justify-center" style={{ background: "#F1F4ED" }}>
                       <Camera size={16} style={{ color: GOLD }} strokeWidth={1.6} />
                     </span>
                     <span>
-                      <span className="block text-[13px] font-medium text-[#0A0A0A]">Camera</span>
+                      <span className="block text-[13px] font-medium text-[#2F3A32]">Camera</span>
                       <span className="block text-[11px] text-[#8A857C]">Take a new photo</span>
                     </span>
                   </button>
                   <button
                     type="button"
-                    className="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-[#E5E7EB] hover:border-[#B49042] hover:bg-[#FCFAF6] text-left"
+                    className="w-full flex items-center gap-3 px-3 py-3 rounded-[10px] border border-[#DCE3D6] hover:border-[#AFC2AE] hover:bg-[#F1F4ED] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                     onClick={() => panGalleryRef.current?.click()}
                   >
-                    <span className="h-9 w-9 rounded-full flex items-center justify-center" style={{ background: "#FCFAF6" }}>
+                    <span className="h-9 w-9 rounded-full flex items-center justify-center" style={{ background: "#F1F4ED" }}>
                       <ImageIcon size={16} style={{ color: GOLD }} strokeWidth={1.6} />
                     </span>
                     <span>
-                      <span className="block text-[13px] font-medium text-[#0A0A0A]">Gallery</span>
+                      <span className="block text-[13px] font-medium text-[#2F3A32]">Gallery</span>
                       <span className="block text-[11px] text-[#8A857C]">Pick from photos</span>
                     </span>
                   </button>
                   <button
                     type="button"
-                    className="w-full py-2.5 text-[13px] text-[#737373] hover:text-[#0A0A0A]"
+                    className="w-full py-2.5 text-[13px] text-[#6E786F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                     onClick={() => setPanSourceOpen(false)}
                   >
                     Cancel

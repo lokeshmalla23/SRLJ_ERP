@@ -9,7 +9,7 @@ import { generateDraftReceiptHTML } from "@/lib/draftReceipt";
 function StatusBadge({ status }) {
   if (status === "pending") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-100 text-amber-700">
+      <span className="chip chip-warning">
         <Clock size={10} />
         Waiting to sync
       </span>
@@ -17,7 +17,7 @@ function StatusBadge({ status }) {
   }
   if (status === "conflict") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-red-100 text-red-700">
+      <span className="chip chip-danger">
         <AlertCircle size={10} />
         Needs Attention
       </span>
@@ -25,7 +25,7 @@ function StatusBadge({ status }) {
   }
   if (status === "promoted") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-green-100 text-green-700">
+      <span className="chip chip-success">
         <CheckCircle2 size={10} />
         Invoiced
       </span>
@@ -33,13 +33,13 @@ function StatusBadge({ status }) {
   }
   if (status === "cancelled") {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
+      <span className="chip chip-neutral">
         <XCircle size={10} />
         Cancelled
       </span>
     );
   }
-  return <span className="text-[11px] text-gray-400">{status}</span>;
+  return <span className="chip chip-neutral">{status}</span>;
 }
 
 function itemSummary(items) {
@@ -113,54 +113,64 @@ export default function PendingSales({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl mx-4 overflow-hidden flex flex-col max-h-[85vh]">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#17201C]/45 backdrop-blur-sm">
+      <div className="mx-4 flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
+        <div className="flex shrink-0 items-center justify-between border-b border-[#E2E7E2] bg-[linear-gradient(90deg,rgba(247,232,188,0.24),rgba(255,253,249,0.96)_42%)] px-6 py-4">
           <div>
-            <h2 className="text-[15px] font-semibold text-[#0A0A0A]">Pending Sales</h2>
-            <p className="text-[12px] text-[#737373] mt-0.5">Drafts saved while host was offline</p>
+            <h2 className="font-display text-[16px] font-semibold tracking-[-0.012em] text-[#17201C]">Pending Sales</h2>
+            <p className="mt-0.5 text-[12px] text-[#6F7772]">Drafts saved while host was offline</p>
           </div>
-          <button onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] p-1.5 rounded-md hover:bg-[#F9FAFB]">
+          <button
+            onClick={onClose}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-[#6F7772] transition-colors hover:border-[#D3DCD5] hover:bg-[#FFFDF9] hover:text-[#214F3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#214F3A]/25"
+          >
             <XCircle size={16} />
           </button>
         </div>
 
-        <div className="overflow-y-auto flex-1">
+        <div className="min-h-0 flex-1 overflow-y-auto bg-[#FFFDF9]">
           {loading && (
-            <div className="px-6 py-8 text-center text-[13px] text-[#737373]">Loading…</div>
+            <div className="m-5 flex min-h-[200px] items-center justify-center rounded-xl border border-[#D3DCD5] bg-[#F7F9F6] px-6 py-8 text-center text-[13px] font-medium text-[#6F7772]">
+              Loading…
+            </div>
           )}
           {!loading && drafts.length === 0 && (
-            <div className="px-6 py-8 text-center text-[13px] text-[#737373]">No pending sales</div>
+            <div className="m-5 flex min-h-[200px] items-center justify-center rounded-xl border border-dashed border-[#D3DCD5] bg-[#FAF7EF] px-6 py-8 text-center text-[13px] font-medium text-[#6F7772]">
+              No pending sales
+            </div>
           )}
           {!loading && drafts.length > 0 && (
             <table className="w-full text-[13px]">
               <thead>
-                <tr className="border-b border-[#E5E7EB] bg-[#F9FAFB]">
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wider text-[#737373] font-medium">Time</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wider text-[#737373] font-medium">Customer</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wider text-[#737373] font-medium">Items</th>
-                  <th className="text-right px-4 py-3 text-[11px] uppercase tracking-wider text-[#737373] font-medium">Total</th>
-                  <th className="text-left px-4 py-3 text-[11px] uppercase tracking-wider text-[#737373] font-medium">Status</th>
+                <tr className="border-b border-[#E2E7E2] bg-[#F1F4F0]">
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.065em] text-[#6F7772]">Time</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.065em] text-[#6F7772]">Customer</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.065em] text-[#6F7772]">Items</th>
+                  <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-[0.065em] text-[#6F7772]">Total</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.065em] text-[#6F7772]">Status</th>
                   <th className="px-4 py-3"></th>
                 </tr>
               </thead>
               <tbody>
                 {drafts.map((d) => (
                   <>
-                    <tr key={d.id} className="border-b border-[#F3F4F6] hover:bg-[#FAFAFA]">
-                      <td className="px-4 py-3 text-[#525252]">
+                    <tr
+                      key={d.id}
+                      className="border-b border-[#E2E7E2] transition-colors hover:bg-[#F7F9F6] focus-within:bg-[#FBF4E3]/60"
+                    >
+                      <td className="whitespace-nowrap px-4 py-3 text-[#4F5A54]">
                         {d.created_at ? new Date(d.created_at).toLocaleString("en-IN", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) : "—"}
                       </td>
-                      <td className="px-4 py-3 text-[#525252]">{d.customer_id ? `#${d.customer_id}` : "Walk-in"}</td>
-                      <td className="px-4 py-3 text-[#525252]">{itemSummary(d.items)}</td>
-                      <td className="px-4 py-3 text-right font-medium text-[#0A0A0A]">{fmtINR(d.total)}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-[#4F5A54]">{d.customer_id ? `#${d.customer_id}` : "Walk-in"}</td>
+                      <td className="px-4 py-3 text-[#4F5A54]">{itemSummary(d.items)}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-right font-semibold tabular-nums text-[#17201C]">{fmtINR(d.total)}</td>
                       <td className="px-4 py-3"><StatusBadge status={d.status} /></td>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-2 justify-end">
+                        <div className="flex items-center justify-end gap-1.5">
                           {(d.status === "pending" || d.status === "conflict") && (
                             <button
                               onClick={() => printDraft(d)}
-                              className="text-[12px] text-[#737373] hover:text-[#0A0A0A]"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#D3DCD5] bg-[#FFFDF9] text-[#6F7772] transition-colors hover:border-[#AEBBB2] hover:bg-[#F1F4F0] hover:text-[#214F3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#214F3A]/25"
                               title="Print draft receipt"
                             >
                               <Printer size={13} />
@@ -170,7 +180,7 @@ export default function PendingSales({ onClose }) {
                             <button
                               disabled={busyId === d.id}
                               onClick={() => cancel(d.id)}
-                              className="text-[12px] text-red-500 hover:text-red-700 disabled:opacity-50"
+                              className="rounded-lg border border-transparent px-2 py-1.5 text-[12px] font-semibold text-[#9D4B47] transition-colors hover:border-[#E8C9C5] hover:bg-[#F9ECEA] hover:text-[#843D3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D4B47]/20 disabled:cursor-not-allowed disabled:opacity-50"
                             >
                               Cancel
                             </button>
@@ -180,21 +190,21 @@ export default function PendingSales({ onClose }) {
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => replaceItem(d)}
-                                className="text-[12px] text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                                className="rounded-lg border border-transparent px-2 py-1.5 text-[12px] font-semibold text-[#214F3A] transition-colors hover:border-[#CBD8CF] hover:bg-[#EAF2ED] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#214F3A]/20 disabled:cursor-not-allowed disabled:opacity-50"
                               >
                                 Replace Item
                               </button>
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => recalculate(d.id)}
-                                className="text-[12px] text-amber-600 hover:text-amber-800 disabled:opacity-50"
+                                className="rounded-lg border border-transparent px-2 py-1.5 text-[12px] font-semibold text-[#8A651E] transition-colors hover:border-[#EAD8B2] hover:bg-[#FBF4E3] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8A651E]/20 disabled:cursor-not-allowed disabled:opacity-50"
                               >
                                 Recalculate
                               </button>
                               <button
                                 disabled={busyId === d.id}
                                 onClick={() => cancel(d.id)}
-                                className="text-[12px] text-red-500 hover:text-red-700 disabled:opacity-50"
+                                className="rounded-lg border border-transparent px-2 py-1.5 text-[12px] font-semibold text-[#9D4B47] transition-colors hover:border-[#E8C9C5] hover:bg-[#F9ECEA] hover:text-[#843D3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#9D4B47]/20 disabled:cursor-not-allowed disabled:opacity-50"
                               >
                                 Cancel
                               </button>
@@ -204,8 +214,8 @@ export default function PendingSales({ onClose }) {
                       </td>
                     </tr>
                     {d.status === "conflict" && d.conflict_reason && (
-                      <tr key={`${d.id}-reason`} className="bg-red-50 border-b border-[#F3F4F6]">
-                        <td colSpan={6} className="px-4 py-2 text-[12px] text-red-700">
+                      <tr key={`${d.id}-reason`} className="border-b border-[#E8C9C5] bg-[#F9ECEA]">
+                        <td colSpan={6} className="px-4 py-2.5 text-[12px] font-medium leading-5 text-[#843D3A]">
                           Conflict: {d.conflict_reason}
                         </td>
                       </tr>

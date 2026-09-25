@@ -70,19 +70,19 @@ export default function QuickReportShell({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#DED8CC] pb-3">
         <div className="flex items-center gap-3">
           {onBack && (
-            <button onClick={onBack} className="text-[#737373] hover:text-[#0A0A0A]">
+            <button onClick={onBack} className="flex h-8 w-8 items-center justify-center rounded-[9px] border border-[#D8D2C6] bg-[#FFFDF9] text-[#5E6861] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]">
               <ArrowLeft size={16} strokeWidth={1.5} />
             </button>
           )}
           <div>
-            <div className="text-[15px] font-display font-semibold text-[#0A0A0A]">{title}</div>
+            <div className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#24332B]">{title}</div>
             {description && <div className="text-[12px] text-[#737373] mt-0.5">{description}</div>}
           </div>
         </div>
-        <button className="btn-secondary" onClick={openReport} disabled={preparing}>
+        <button className="btn-secondary !rounded-[9px] !border-[#D2CCBF] !bg-[#FFFDF9] hover:!border-[#9EB2A6] hover:!bg-[#F1F5F1]" onClick={openReport} disabled={preparing}>
           <FileText size={13} strokeWidth={1.5} /> {preparing ? "Preparing…" : "Print Summary"}
         </button>
       </div>
@@ -100,7 +100,7 @@ export default function QuickReportShell({
         emptyMessage={emptyMessage}
         rowKey={rowKey}
         footer={totals ? (
-          <tr className="table-row font-semibold bg-[#FAFAFA]">
+          <tr className="table-row bg-[#F1EEE7] font-semibold">
             {columns.map((c, i) => (
               <td key={c.key} className={`table-td ${c.align === "right" ? "text-right tabular-nums" : ""}`}>
                 {i === 0 ? "TOTAL" : formatTotalCell(c, totals[c.key])}

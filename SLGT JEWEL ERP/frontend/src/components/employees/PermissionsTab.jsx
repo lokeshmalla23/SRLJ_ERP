@@ -58,10 +58,10 @@ function ResetPasswordButton({ userId, userName, isSuperAdmin }) {
 
   if (justSet) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-[12.5px] text-emerald-900">
+      <div className="flex flex-wrap items-center gap-2 rounded-[9px] border border-[#C8D8C6] bg-[#EAF1E8] px-3 py-2 text-[12px] text-[#315E48]">
         <KeyRound size={13} strokeWidth={1.5} />
         New password for {userName}: <span className="font-mono font-semibold">{justSet}</span>
-        <button type="button" className="ml-1 underline" onClick={() => setJustSet(null)}>Done</button>
+        <button type="button" className="ml-1 rounded-[6px] px-1.5 py-0.5 font-semibold underline underline-offset-2 transition-colors hover:bg-white/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35" onClick={() => setJustSet(null)}>Done</button>
       </div>
     );
   }
@@ -75,7 +75,7 @@ function ResetPasswordButton({ userId, userName, isSuperAdmin }) {
   }
 
   return (
-    <div className="border border-[#E5E7EB] rounded-lg p-3 bg-[#F9FAFB] flex flex-wrap items-end gap-2">
+    <div className="flex flex-wrap items-end gap-2 rounded-[9px] border border-[#DCE3D6] bg-[#F5F7F1] p-3">
       <label className="block">
         <span className="block text-[10.5px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-1">New password</span>
         <div className="relative">
@@ -86,7 +86,7 @@ function ResetPasswordButton({ userId, userName, isSuperAdmin }) {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Min 6 characters"
           />
-          <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 text-[#a3a3a3]" onClick={() => setShow((s) => !s)}>
+          <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-[6px] p-0.5 text-[#7C897F] transition-colors hover:bg-[#EDF2EA] hover:text-[#315E48] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35" onClick={() => setShow((s) => !s)}>
             {show ? <EyeOff size={13} /> : <Eye size={13} />}
           </button>
         </div>
@@ -140,14 +140,14 @@ function RecoveryTools({ users }) {
       description="Visible only to the ERP Administrator login — for support calls when a shop has locked itself out of a secret."
       tone="emphasis"
     >
-      <div className="flex items-start gap-2 mb-4 text-[12px] text-[#92400E] bg-[#FFFBEB] border border-[#FDE68A] rounded-md px-3 py-2">
+      <div className="mb-4 flex items-start gap-2 rounded-[9px] border border-[#E7D5AA] bg-[#FBF7ED] px-3 py-2 text-[12px] leading-relaxed text-[#755D25]">
         <ShieldAlert size={14} strokeWidth={1.5} className="mt-0.5 shrink-0" />
         Login passwords are one-way encrypted and can never be shown — only reset ("Reset Password" above). Usernames aren't encrypted, so they can be looked up below; the Hidden Bill PIN is the only password-type secret stored in plain form, recoverable the same way.
       </div>
 
       <div className="mb-5">
-        <div className="text-[12.5px] font-semibold text-[#0A0A0A] mb-2">Shop logins (usernames only)</div>
-        <div className="table-shell">
+        <div className="text-[12.5px] font-semibold text-[#294236] mb-2">Shop logins (usernames only)</div>
+        <div className="table-shell overflow-x-auto [&_table]:min-w-[640px]">
           <table className="w-full">
             <thead>
               <tr className="table-head-row">
@@ -172,7 +172,7 @@ function RecoveryTools({ users }) {
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="text-[13px] text-[#0A0A0A]">
+        <div className="text-[13px] text-[#294236]">
           <span className="font-medium">Hidden Bill password:</span>{" "}
           {!revealed ? (
             <span className="text-[#a3a3a3]">hidden</span>
@@ -237,9 +237,9 @@ export default function PermissionsTab({ canWrite = false }) {
 
   if (!meta) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-4">
         <PageLoadingBadge />
-        <div className="h-64 shimmer rounded-md" />
+        <div className="shimmer h-64 rounded-[9px]" />
       </div>
     );
   }
@@ -282,9 +282,9 @@ export default function PermissionsTab({ canWrite = false }) {
   return (
     <SettingsTabFrame>
       {loadError && (
-        <div className="mb-1 text-[12.5px] text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+        <div className="mb-1 flex items-center rounded-[9px] border border-red-200 bg-red-50 px-3 py-2 text-[12px] text-red-700">
           {loadError}
-          <button type="button" className="ml-2 underline" onClick={load}>Retry</button>
+          <button type="button" className="ml-2 rounded-[6px] px-1.5 py-0.5 font-semibold underline underline-offset-2 transition-colors hover:bg-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/30" onClick={load}>Retry</button>
         </div>
       )}
       <SettingsSection
@@ -316,7 +316,7 @@ export default function PermissionsTab({ canWrite = false }) {
 
       {selectedUser ? (
         <>
-          <div className="table-shell">
+          <div className="table-shell overflow-x-auto [&_table]:min-w-[640px]">
             <table className="w-full">
               <thead>
                 <tr className="table-head-row">
@@ -339,7 +339,7 @@ export default function PermissionsTab({ canWrite = false }) {
                             disabled={owner || !canWrite}
                             checked={checked}
                             onChange={() => toggle(m, a)}
-                            className="h-4 w-4 rounded border-[#d4d4d8] text-[#0A0A0A] focus:ring-[#B49042]"
+                            className="h-4 w-4 rounded border-[#BFCABD] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35"
                           />
                         </td>
                       );
@@ -351,8 +351,8 @@ export default function PermissionsTab({ canWrite = false }) {
           </div>
 
           {/* POS billing modes — show Jewellery / Pure Metal independently */}
-          <div className="mt-5 rounded-xl border border-[#E6E2DA] bg-[#FCFAF6] p-4">
-            <div className="text-[13px] font-semibold text-[#0A0A0A]">POS billing modes</div>
+          <div className="mt-5 rounded-[10px] border border-[#D8E0D5] bg-[#F2F6EF] p-4">
+            <div className="text-[13px] font-semibold text-[#294236]">POS billing modes</div>
             <div className="text-[12px] text-[#737373] mt-0.5 mb-3">
               Choose which POS screens this login can open. Enable both, or only one.
             </div>
@@ -363,18 +363,18 @@ export default function PermissionsTab({ canWrite = false }) {
                 return (
                   <label
                     key={act}
-                    className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border bg-white cursor-pointer ${
-                      checked ? "border-[#C08E2D]" : "border-[#E5E7EB]"
-                    } ${owner || !canWrite ? "opacity-70 cursor-default" : ""}`}
+                    className={`flex cursor-pointer items-center gap-2.5 rounded-[9px] border px-3.5 py-2.5 transition-colors focus-within:ring-2 focus-within:ring-[#78917C]/35 ${
+                      checked ? "border-[#9FB39D] bg-[#EAF1E8]" : "border-[#DCE3D6] bg-white hover:border-[#B9C7B7]"
+                    } ${owner || !canWrite ? "cursor-default opacity-70" : ""}`}
                   >
                     <input
                       type="checkbox"
                       disabled={owner || !canWrite}
                       checked={checked}
                       onChange={() => toggle("pos", act)}
-                      className="h-4 w-4 rounded border-[#d4d4d8] text-[#0A0A0A] focus:ring-[#B49042]"
+                      className="h-4 w-4 rounded border-[#BFCABD] accent-[#315E48] focus:ring-2 focus:ring-[#78917C]/35"
                     />
-                    <span className="text-[13px] font-medium text-[#0A0A0A]">{label}</span>
+                    <span className="text-[13px] font-medium text-[#294236]">{label}</span>
                   </label>
                 );
               })}
@@ -390,7 +390,7 @@ export default function PermissionsTab({ canWrite = false }) {
           )}
         </>
       ) : (
-        <div className="text-[13px] text-[#737373] py-8 text-center">
+        <div className="rounded-[9px] border border-dashed border-[#C8D3C5] bg-[#F8F9F5] px-4 py-8 text-center text-[12.5px] text-[#748078]">
           {users.length === 0
             ? "No login users found. Create a user under Employees first."
             : "Select a person to manage their access permissions."}

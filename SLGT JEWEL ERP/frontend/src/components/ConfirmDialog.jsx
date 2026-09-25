@@ -37,24 +37,24 @@ export default function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.5)" }}
+      className="dialog-overlay fixed inset-0 z-[90] flex items-center justify-center p-4 backdrop-blur-[2px]"
+      style={{ background: "rgba(23, 32, 28, 0.46)" }}
       onMouseDown={(e) => { if (e.target === e.currentTarget) onCancel?.(); }}
     >
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden">
+      <div className="w-full max-w-sm overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
         {title && (
-          <div className="px-5 py-3.5 border-b border-[#E5E7EB]">
-            <div className="text-[14px] font-semibold text-[#0A0A0A]">{title}</div>
+          <div className="border-b border-[#E2E7E2] bg-[#FAF7EF] px-5 py-3.5">
+            <div className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#17201C]">{title}</div>
           </div>
         )}
-        <div className="px-5 py-4 text-[13px] text-[#404040] whitespace-pre-line">{message}</div>
-        <div className="flex gap-2 px-5 py-3.5 border-t border-[#E5E7EB]">
+        <div className="whitespace-pre-line bg-[#FFFDF9] px-5 py-4 text-[13px] leading-5 text-[#4F5A54]">{message}</div>
+        <div className="flex gap-2.5 border-t border-[#E2E7E2] bg-[#F7F9F6] px-5 py-3.5">
           <button
             ref={cancelRef}
             type="button"
             disabled={busy}
             onClick={onCancel}
-            className="flex-1 py-2 rounded-md border border-[#E5E7EB] text-[13px] font-medium text-[#525252] hover:border-[#0A0A0A] disabled:opacity-60"
+            className="btn-secondary min-h-9 flex-1 px-3 disabled:cursor-not-allowed disabled:opacity-55 focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
           >
             {cancelLabel}
           </button>
@@ -63,8 +63,10 @@ export default function ConfirmDialog({
             type="button"
             disabled={busy}
             onClick={onConfirm}
-            className={`flex-1 py-2 rounded-md text-[13px] font-semibold text-white disabled:opacity-60 ${
-              danger ? "bg-red-600 hover:bg-red-700" : "bg-[#0A0A0A] hover:bg-[#262626]"
+            className={`min-h-9 flex-1 disabled:cursor-not-allowed disabled:opacity-55 focus-visible:ring-2 focus-visible:ring-offset-2 ${
+              danger
+                ? "btn-danger focus-visible:ring-[#9D4B47]/25"
+                : "btn-primary focus-visible:ring-[#214F3A]/25"
             }`}
           >
             {busy ? "Please wait…" : confirmLabel}

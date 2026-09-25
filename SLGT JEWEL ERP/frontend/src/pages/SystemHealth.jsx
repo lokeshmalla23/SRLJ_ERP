@@ -37,16 +37,16 @@ const AUTHORITY_META = {
 
 function StatusDot({ colorClass }) {
   return (
-    <span className={`inline-block h-2.5 w-2.5 rounded-full flex-shrink-0 ${colorClass}`} />
+    <span className={`inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full ring-4 ring-[#EEF1EA] ${colorClass}`} />
   );
 }
 
 function HealthCard({ title, icon: Icon, children, action }) {
   return (
-    <div className="border border-[#E5E7EB] rounded-xl bg-white p-5 flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.11em] font-semibold text-[#737373]">
-          {Icon && <Icon size={14} strokeWidth={1.75} />}
+    <div className="flex flex-col gap-4 rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-5 shadow-[0_1px_2px_rgba(36,55,45,0.04)] transition-colors hover:border-[#C5D1C3]">
+      <div className="flex items-center justify-between gap-2 border-b border-[#E5E9E2] pb-3">
+        <div className="flex items-center gap-2 text-[9.5px] font-bold uppercase tracking-[0.13em] text-[#68786C]">
+          {Icon && <Icon size={14} className="text-[#315E48]" strokeWidth={1.8} />}
           {title}
         </div>
         {action}
@@ -112,7 +112,7 @@ function HostConnectionCard({ isDesktop, authorityState, hostConnState }) {
     <HealthCard title="Host Connection" icon={Icon}>
       <div className="flex items-center gap-2.5">
         <StatusDot colorClass={dot} />
-        <span className="text-[15px] font-semibold text-[#0A0A0A]">{label}</span>
+        <span className="text-[15px] font-semibold text-[#294236]">{label}</span>
       </div>
       <p className="text-[13px] text-[#737373] leading-relaxed">{description}</p>
     </HealthCard>
@@ -181,11 +181,11 @@ export default function SystemHealth() {
   const isReady = dbStatus?.ok === true || dbStatus?.status === "ok" || dbStatus?.ready === true;
 
   return (
-    <div className="max-w-[1200px] pb-10">
+    <div className="w-full max-w-[1200px] pb-10">
       <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <h2 className="font-display text-[20px] font-semibold text-[#0A0A0A] tracking-tight flex items-center gap-2">
-            <Activity size={20} strokeWidth={1.75} />
+          <h2 className="flex items-center gap-2 font-display text-[20px] font-semibold tracking-[-0.02em] text-[#294236]">
+            <Activity size={20} className="text-[#315E48]" strokeWidth={1.8} />
             System Health
           </h2>
           <p className="text-[13px] text-[#737373] mt-0.5">
@@ -196,13 +196,13 @@ export default function SystemHealth() {
       </div>
 
       {!isDesktop && (
-        <div className="border border-amber-200 bg-amber-50 text-amber-900 rounded-xl p-4 text-[13px] mb-4">
+        <div className="mb-4 rounded-[10px] border border-[#E7D5AA] bg-[#FBF7ED] p-4 text-[12.5px] leading-relaxed text-[#755D25]">
           System health details are available in the desktop app only.
         </div>
       )}
 
       {isDesktop && appInfo?.run?.parityWarnings?.length ? (
-        <div className="border border-amber-200 bg-amber-50 text-amber-900 rounded-xl p-4 text-[13px] mb-4 space-y-1">
+        <div className="mb-4 space-y-1 rounded-[10px] border border-[#E7D5AA] bg-[#FBF7ED] p-4 text-[12.5px] leading-relaxed text-[#755D25]">
           <p className="font-semibold">Local vs installed app</p>
           {appInfo.run.parityWarnings.map((w) => (
             <p key={w}>{w}</p>
@@ -229,7 +229,7 @@ export default function SystemHealth() {
         <HealthCard title="Authority" icon={Activity}>
           <div className="flex items-center gap-2.5">
             <StatusDot colorClass={meta.dot} />
-            <span className="text-[15px] font-semibold text-[#0A0A0A]">{meta.label}</span>
+            <span className="text-[15px] font-semibold text-[#294236]">{meta.label}</span>
           </div>
           <p className="text-[13px] text-[#737373] leading-relaxed">{meta.description}</p>
         </HealthCard>
@@ -242,7 +242,7 @@ export default function SystemHealth() {
               <button
                 type="button"
                 onClick={openLogs}
-                className="text-[11px] font-semibold text-[#9B7B36] hover:underline inline-flex items-center gap-1"
+                className="inline-flex items-center gap-1 rounded-[7px] px-1.5 py-1 text-[10.5px] font-semibold text-[#8A6D2F] transition-colors hover:bg-[#F5EEDC] hover:text-[#6F5723] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B49042]/30"
               >
                 <FolderOpen size={12} /> Open logs
               </button>
@@ -251,7 +251,7 @@ export default function SystemHealth() {
         >
           <div className="flex items-center gap-2.5">
             <StatusDot colorClass={isReady ? "bg-emerald-500" : "bg-red-500"} />
-            <span className={`text-[15px] font-semibold ${isReady ? "text-[#0A0A0A]" : "text-red-600"}`}>
+            <span className={`text-[15px] font-semibold ${isReady ? "text-[#294236]" : "text-red-600"}`}>
               {isReady ? "Ready (SQLite on this PC)" : "Error"}
             </span>
           </div>

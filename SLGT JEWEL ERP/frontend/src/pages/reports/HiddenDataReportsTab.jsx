@@ -17,10 +17,10 @@ import { fmtINR, fmtWeight } from "@/lib/format";
 import PrintSummaryButton from "@/pages/reports/PrintSummaryButton";
 
 const POCKETS = [
-  { id: "cash", label: "Cash", icon: Wallet, wrap: "border-emerald-200 bg-emerald-50", text: "text-emerald-800" },
-  { id: "bank", label: "Bank", icon: Landmark, wrap: "border-sky-200 bg-sky-50", text: "text-sky-800" },
-  { id: "upi", label: "UPI", icon: Smartphone, wrap: "border-violet-200 bg-violet-50", text: "text-violet-800" },
-  { id: "card", label: "Card", icon: CreditCard, wrap: "border-amber-200 bg-amber-50", text: "text-amber-900" },
+  { id: "cash", label: "Cash", icon: Wallet, wrap: "border-[#CBDAD0] bg-[#F1F6F2]", text: "text-[#315C4A]" },
+  { id: "bank", label: "Bank", icon: Landmark, wrap: "border-[#D8D2C6] bg-[#F4F2ED]", text: "text-[#59635D]" },
+  { id: "upi", label: "UPI", icon: Smartphone, wrap: "border-[#D8C28C] bg-[#FBF6E9]", text: "text-[#765A20]" },
+  { id: "card", label: "Card", icon: CreditCard, wrap: "border-[#CDD2CF] bg-[#F1F3F2]", text: "text-[#5F6863]" },
 ];
 
 const SECTIONS = [
@@ -133,7 +133,7 @@ export default function HiddenDataReportsTab({ from, to, setFrom, setTo }) {
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl border border-violet-200 bg-violet-50/70 px-4 py-3">
+      <div className="rounded-xl border border-[#DDD6FE] bg-[#F7F5FC] px-4 py-3">
         <div className="flex items-start gap-2.5">
           <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-700">
             <EyeOff size={15} />
@@ -147,7 +147,7 @@ export default function HiddenDataReportsTab({ from, to, setFrom, setTo }) {
         </div>
       </div>
 
-      <div className="card mb-0">
+      <div className="card mb-0 !rounded-xl !border-[#D8D2C6] !bg-[#FBF8F1] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9]">
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-[12.5px] font-medium text-[#525252]">Date range</span>
           <input type="date" className="input max-w-[170px]" value={from} onChange={(e) => setFrom(e.target.value)} />
@@ -190,16 +190,16 @@ export default function HiddenDataReportsTab({ from, to, setFrom, setTo }) {
               </div>
             );
           })}
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-3.5 shadow-sm">
+          <div className="rounded-xl border border-[#D8C28C] bg-[#FBF6E9] p-3.5 shadow-sm">
             <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-[#737373]">
               <Coins size={13} className="text-amber-800" />
               Old gold
             </div>
-            <div className="mt-1 text-lg font-semibold tabular-nums text-amber-900">
+            <div className="mt-1 text-lg font-semibold tabular-nums text-[#765A20]">
               {loading && !data ? "…" : fmtINR(oldGold.value || receipts.old_gold)}
             </div>
           </div>
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3.5 shadow-sm">
+          <div className="rounded-xl border border-[#CDD2CF] bg-[#F1F3F2] p-3.5 shadow-sm">
             <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-[#737373]">
               <Coins size={13} className="text-slate-700" />
               Old silver
@@ -220,7 +220,7 @@ export default function HiddenDataReportsTab({ from, to, setFrom, setTo }) {
         tone="silver"
       />
 
-      <div className="overflow-x-auto rounded-xl border border-[#EADFBF] bg-[#FDFBF7] px-2 py-2">
+      <div className="overflow-x-auto rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] px-2 py-2">
         <div className="flex min-w-max flex-wrap gap-1.5">
           {SECTIONS.map((s) => (
             <button
@@ -229,8 +229,8 @@ export default function HiddenDataReportsTab({ from, to, setFrom, setTo }) {
               onClick={() => setSection(s.id)}
               className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[12px] font-medium transition-colors ${
                 section === s.id
-                  ? "bg-violet-700 text-white shadow-sm"
-                  : "border border-[#E5E7EB] bg-white text-[#525252] hover:border-violet-400 hover:text-violet-700"
+                  ? "border border-[#315C4A] bg-[#315C4A] text-white shadow-sm"
+                  : "border border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1] hover:text-[#315C4A]"
               }`}
             >
               {s.label}
@@ -531,13 +531,13 @@ function HiddenOldGoldSummary({
             {loading ? "…" : fmtINR(oldGold?.value)}
           </div>
         </div>
-        <div className="rounded-xl border border-[#EADFBF] bg-white p-3.5 shadow-sm">
+        <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
           <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">Exchange bills</div>
           <div className="mt-1 text-lg font-semibold tabular-nums text-[#171717]">
             {loading ? "…" : String(oldGold?.bill_count || 0)}
           </div>
         </div>
-        <div className="rounded-xl border border-[#EADFBF] bg-white p-3.5 shadow-sm">
+        <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
           <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">Weight by purity</div>
           {loading ? (
             <div className="mt-1 text-lg font-semibold text-[#171717]">…</div>
@@ -561,12 +561,12 @@ function HiddenOldGoldSummary({
 
 function Kpi({ label, value, icon: Icon }) {
   return (
-    <div className="card">
+    <div className="card !rounded-xl !border-[#D8D2C6] !bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
       <div className="flex items-start justify-between">
         <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373]">{label}</div>
         {Icon ? (
-          <div className="flex h-7 w-7 items-center justify-center rounded-md border border-violet-200 bg-violet-50">
-            <Icon size={14} strokeWidth={1.5} className="text-violet-700" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-[8px] border border-[#D8D2C6] bg-[#F1F5F1]">
+            <Icon size={14} strokeWidth={1.5} className="text-[#315C4A]" />
           </div>
         ) : null}
       </div>
@@ -586,7 +586,7 @@ function ReportTable({ headers, rows, render, empty }) {
     );
   }
   return (
-    <div className="table-shell overflow-x-auto">
+    <div className="table-shell overflow-x-auto !rounded-xl !border-[#D8D2C6] shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
       <table className="w-full min-w-[700px]">
         <thead>
           <tr className="table-head-row">

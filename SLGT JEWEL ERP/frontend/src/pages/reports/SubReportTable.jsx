@@ -31,18 +31,18 @@ export default function SubReportTable({ title, description, endpoint, params = 
 
   return (
     <div className="mb-8">
-      <div className="flex items-center justify-between mb-3 mt-6">
+      <div className="mb-3 mt-7 flex items-end justify-between gap-3 border-b border-[#DED8CC] pb-2.5">
         <div>
-          <h3 className="text-[13px] font-semibold text-[#0A0A0A]">{title}</h3>
-          {description && <div className="text-[11.5px] text-[#737373] mt-0.5">{description}</div>}
+          <h3 className="text-[13px] font-semibold tracking-[-0.01em] text-[#24332B]">{title}</h3>
+          {description && <div className="mt-0.5 text-[11.5px] text-[#737B76]">{description}</div>}
         </div>
-        <button className="btn-secondary !py-1 !text-[11.5px]" onClick={() => setModalOpen(true)}>
+        <button className="btn-secondary !rounded-[9px] !border-[#D2CCBF] !bg-[#FFFDF9] !py-1 !text-[11.5px] hover:!border-[#9EB2A6] hover:!bg-[#F1F5F1]" onClick={() => setModalOpen(true)}>
           <FileText size={12} strokeWidth={1.5} /> Print Summary
         </button>
       </div>
       {extraNode}
       {typeof chart === "function" && !query.isLoading ? (
-        <div className="card mb-4 p-4">{chart(rows, totals)}</div>
+        <div className="card mb-4 !rounded-xl !border-[#D8D2C6] !bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">{chart(rows, totals)}</div>
       ) : null}
       <DataTable
         columns={visibleColumns}

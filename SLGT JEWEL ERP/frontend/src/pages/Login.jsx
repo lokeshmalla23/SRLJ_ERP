@@ -12,21 +12,30 @@ import slgtLogo from "@/assets/slgt-logo.png";
 
 function BrandMark({ light = false }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="h-12 w-12 rounded-md flex items-center justify-center overflow-hidden flex-shrink-0 bg-white border border-[#E5E7EB]">
-        <img src={slgtLogo} alt="SLGT" className="h-full w-full object-contain p-0.5" />
+    <div className="flex items-center gap-3.5">
+      <div
+        className={`flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-[14px] border bg-white shadow-[0_6px_20px_rgba(16,36,26,0.12)] ${
+          light ? "border-white/25" : "border-[#D8CBA9]"
+        }`}
+      >
+        <img src={slgtLogo} alt={APP_BRAND_LINE1} className="h-full w-full object-contain p-1" />
       </div>
       <div className="min-w-0">
         <div
-          className={`font-display text-[15px] font-semibold tracking-tight leading-tight ${
-            light ? "text-white" : "text-[#0A0A0A]"
+          className={`truncate font-display text-[15px] font-semibold leading-tight tracking-[-0.02em] ${
+            light ? "text-white" : "text-[#173B2A]"
           }`}
           title={APP_WINDOW_TITLE}
         >
           {APP_BRAND_LINE1}
         </div>
-        <div className={`text-[12px] font-medium tracking-tight ${light ? "text-[#E8C87A]" : "text-[#525252]"}`}>
-          {APP_BRAND_LINE2}
+        <div
+          className={`mt-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] ${
+            light ? "text-[#DCC487]" : "text-[#85642C]"
+          }`}
+        >
+          <span>{APP_BRAND_LINE2}</span>
+          <span className={`h-px w-4 ${light ? "bg-white/45" : "bg-[#B49042]"}`} />
         </div>
       </div>
     </div>
@@ -162,7 +171,7 @@ function LoginMusic() {
           setMuted(el.muted);
         }}
         title={muted ? "Unmute music" : "Mute music"}
-        className="fixed top-4 right-4 z-20 h-9 w-9 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/45 transition-colors"
+        className="fixed right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-[#071C13]/60 text-white shadow-[0_6px_20px_rgba(7,28,19,0.18)] backdrop-blur-sm transition-colors hover:bg-[#071C13]/80 focus:outline-none focus:ring-2 focus:ring-[#D7BB70]/70"
       >
         {muted ? <VolumeX size={16} strokeWidth={1.5} /> : <Volume2 size={16} strokeWidth={1.5} />}
       </button>
@@ -301,8 +310,14 @@ const CONNECTING_STATES = new Set([
 
 function ConnectionDot({ ok, label }) {
   return (
-    <div className="flex items-center gap-2 text-[12px] text-[#525252]">
-      <span className={`h-2 w-2 rounded-full ${ok ? "bg-emerald-500" : "bg-amber-400"}`} />
+    <div
+      className={`inline-flex w-fit items-center gap-2 rounded-full border px-2.5 py-1 text-[10.5px] font-semibold tracking-[0.02em] ${
+        ok
+          ? "border-[#C8D8CE] bg-white/75 text-[#2E6047]"
+          : "border-[#E4D3A8] bg-[#FCF8ED] text-[#876528]"
+      }`}
+    >
+      <span className={`h-1.5 w-1.5 rounded-full ${ok ? "bg-[#397657]" : "bg-[#B48935]"}`} />
       {label}
     </div>
   );
@@ -310,13 +325,13 @@ function ConnectionDot({ ok, label }) {
 
 function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect, probing, busy, onProbe }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {discoveredHosts.length > 0 && (
         <div>
-          <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-1.5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">
             Found on network
           </p>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {discoveredHosts.map((h) => {
               const addr = h.candidate_urls?.[0]
                 || (h.rinfo_address ? `http://${h.rinfo_address}:${h.api_port || 8080}` : null)
@@ -328,13 +343,15 @@ function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect
                   type="button"
                   disabled={busy}
                   onClick={() => onConnect(addr)}
-                  className="w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-lg border border-[#E5E7EB] bg-white hover:bg-[#F9FAFB] text-left text-[13px] font-medium text-[#0A0A0A] disabled:opacity-50"
+                  className="flex w-full items-center justify-between gap-2 rounded-[12px] border border-[#DDD6C9] bg-white/75 px-3.5 py-3 text-left text-[12.5px] font-semibold text-[#243A2F] shadow-[0_1px_2px_rgba(30,45,36,0.04)] transition-colors hover:border-[#91A99B] hover:bg-[#FCFBF7] focus:outline-none focus:ring-2 focus:ring-[#315E48]/20 disabled:opacity-50"
                 >
-                  <span className="flex items-center gap-2">
-                    <Wifi size={13} className="text-emerald-500 shrink-0" />
-                    {label}
+                  <span className="flex min-w-0 items-center gap-2">
+                    <Wifi size={14} className="shrink-0 text-[#397657]" />
+                    <span className="truncate">{label}</span>
                   </span>
-                  <span className="text-[11px] font-mono text-[#9CA3AF] truncate">{addr !== label ? addr : ""}</span>
+                  <span className="truncate font-mono text-[10px] font-normal text-[#918A7E]">
+                    {addr !== label ? addr : ""}
+                  </span>
                 </button>
               );
             })}
@@ -343,13 +360,13 @@ function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect
       )}
 
       <div>
-        <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-1.5">
+        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">
           Enter Main PC address manually
         </p>
         <div className="flex gap-2">
           <input
             type="text"
-            className="input flex-1 text-[13px]"
+            className="input h-11 min-w-0 flex-1 rounded-[10px] border-[#D7D0C3] bg-white px-3.5 text-[13px] text-[#1E2F26] shadow-[0_1px_2px_rgba(32,43,36,0.04)] placeholder:text-[#A29C90] focus:border-[#2F5D46] focus:shadow-[0_0_0_3px_rgba(47,93,70,0.14)]"
             placeholder="http://192.168.1.10:8080"
             value={manualUrl}
             onChange={(e) => onManualUrl(e.target.value)}
@@ -361,7 +378,7 @@ function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect
             type="button"
             disabled={busy || !manualUrl.trim()}
             onClick={() => onConnect(manualUrl.trim())}
-            className="px-3 py-2 rounded-lg bg-[#0A0A0A] text-white text-[12px] font-semibold disabled:opacity-40"
+            className="h-11 shrink-0 rounded-[10px] border border-[#1E4A36] bg-[#214F3A] px-4 text-[12px] font-semibold text-white shadow-[0_5px_14px_rgba(33,79,58,0.15)] transition-colors hover:bg-[#173D2C] focus:outline-none focus:ring-2 focus:ring-[#214F3A]/30 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Connect
           </button>
@@ -372,7 +389,7 @@ function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect
         type="button"
         onClick={onProbe}
         disabled={probing || busy}
-        className="w-full flex items-center justify-center gap-2 text-[12px] text-[#737373] hover:text-[#0A0A0A] py-1"
+        className="flex w-full items-center justify-center gap-2 py-1 text-[11.5px] font-medium text-[#777269] transition-colors hover:text-[#28523D] focus:outline-none focus:ring-2 focus:ring-[#315E48]/15 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <RefreshCw size={12} className={probing ? "animate-spin" : ""} />
         {probing ? "Scanning…" : "Scan network again"}
@@ -383,11 +400,11 @@ function HostDiscoveryPanel({ discoveredHosts, manualUrl, onManualUrl, onConnect
 
 function SearchingMainPc({ onRetry, retrying, discoveredHosts, manualUrl, onManualUrl, onConnect, probing, busy, onProbe }) {
   return (
-    <div className="mt-6 space-y-4">
-      <div className="rounded-lg px-4 py-3 border bg-blue-50 border-blue-200 text-center">
-        <RefreshCw size={18} className="mx-auto text-blue-400 mb-1.5 animate-spin" />
-        <p className="text-[13px] font-semibold text-blue-800">Searching for the Main PC on your local network…</p>
-        <p className="text-[11.5px] text-blue-600 mt-1">Keep this computer on the same network as the Main PC.</p>
+    <div className="mt-6 space-y-5">
+      <div className="rounded-[14px] border border-[#D6E0D7] bg-white/70 px-4 py-3.5 text-center shadow-[0_8px_24px_rgba(30,49,38,0.05)]">
+        <RefreshCw size={18} className="mx-auto mb-2 animate-spin text-[#A57E31]" />
+        <p className="text-[13px] font-semibold text-[#294D3B]">Searching for the Main PC on your local network…</p>
+        <p className="mt-1 text-[11.5px] leading-relaxed text-[#6E746F]">Keep this computer on the same network as the Main PC.</p>
       </div>
       <HostDiscoveryPanel
         discoveredHosts={discoveredHosts}
@@ -407,13 +424,13 @@ function MainPcUnavailable({ onRetry, retrying, discoveredHosts, manualUrl, onMa
   // HOST_NOT_FOUND   = no UDP response at all (wrong network or app not running).
   const isUnreachable = errorCode === "HOST_UNREACHABLE" || discoveredHosts.length > 0;
   return (
-    <div className="mt-6 space-y-4">
-      <div className="rounded-lg px-4 py-3 border bg-red-50 border-red-200 text-center">
-        <WifiOff size={20} className="mx-auto text-red-400 mb-1.5" />
-        <p className="text-[13px] font-semibold text-red-800">
+    <div className="mt-6 space-y-5">
+      <div className="rounded-[14px] border border-[#E6CEC7] bg-[#FDF7F5] px-4 py-3.5 text-center shadow-[0_8px_24px_rgba(76,38,30,0.04)]">
+        <WifiOff size={20} className="mx-auto mb-2 text-[#A95C4D]" />
+        <p className="text-[13px] font-semibold text-[#793C32]">
           {isUnreachable ? "Main PC found but can’t connect" : "Main PC not found"}
         </p>
-        <p className="text-[11.5px] text-red-600 mt-1">
+        <p className="mt-1 text-[11.5px] leading-relaxed text-[#925E56]">
           {isUnreachable
             ? "The Main PC is visible on the network but the connection was blocked. On the Main PC, allow port 8080 in Windows Firewall (TCP, inbound)."
             : "Make sure both PCs are on the same local network, or enter the address below."}
@@ -435,56 +452,67 @@ function MainPcUnavailable({ onRetry, retrying, discoveredHosts, manualUrl, onMa
 function WaitingApproval({ deviceName, shopName, declined, onRequestAgain, busy }) {
   return (
     <div className="mt-6 space-y-4">
-      <div className={`rounded-lg px-4 py-4 border ${declined ? "bg-red-50 border-red-200" : "bg-amber-50 border-amber-200"}`}>
+      <div
+        className={`rounded-[14px] border px-4 py-4 ${
+          declined ? "border-[#E6CEC7] bg-[#FDF7F5]" : "border-[#E5D6B0] bg-[#FCF8EE]"
+        }`}
+      >
         {declined ? (
           <>
-            <p className="text-[14px] font-semibold text-red-900">Access request declined</p>
-            <p className="text-[12px] text-red-700 mt-1">
+            <p className="text-[14px] font-semibold text-[#793C32]">Access request declined</p>
+            <p className="mt-1 text-[12px] leading-relaxed text-[#925E56]">
               Ask the owner or administrator on the Main PC to allow this computer, then request access again.
             </p>
           </>
         ) : (
           <>
-            <div className="flex items-center gap-2 mb-2">
-              <Clock size={16} className="text-amber-700" />
-              <p className="text-[14px] font-semibold text-amber-950">Device approval required</p>
+            <div className="mb-2 flex items-center gap-2">
+              <Clock size={16} className="text-[#9A742C]" />
+              <p className="text-[14px] font-semibold text-[#5D4B26]">Device approval required</p>
             </div>
-            <p className="text-[12.5px] text-amber-900">
+            <p className="text-[12.5px] leading-relaxed text-[#76643A]">
               This computer needs approval from the Main PC before it can access the ERP.
             </p>
           </>
         )}
       </div>
-      <div className="border border-[#E5E7EB] rounded-lg px-4 py-3 text-[13px] space-y-2">
+      <div className="space-y-2.5 rounded-[12px] border border-[#DDD6C9] bg-white/70 px-4 py-3.5 text-[12.5px]">
         <div className="flex justify-between gap-3">
-          <span className="text-[#737373]">Device</span>
-          <span className="font-medium text-right">{deviceName || "This PC"}</span>
+          <span className="text-[#817B71]">Device</span>
+          <span className="text-right font-semibold text-[#2A4035]">{deviceName || "This PC"}</span>
         </div>
         {shopName && (
           <div className="flex justify-between gap-3">
-            <span className="text-[#737373]">Shop</span>
-            <span className="font-medium text-right">{shopName}</span>
+            <span className="text-[#817B71]">Shop</span>
+            <span className="text-right font-semibold text-[#2A4035]">{shopName}</span>
           </div>
         )}
         <div className="flex justify-between gap-3">
-          <span className="text-[#737373]">Status</span>
-          <span className="font-medium">{declined ? "Declined" : "Waiting for approval"}</span>
+          <span className="text-[#817B71]">Status</span>
+          <span className={`text-right font-semibold ${declined ? "text-[#934B3F]" : "text-[#8A682A]"}`}>
+            {declined ? "Declined" : "Waiting for approval"}
+          </span>
         </div>
       </div>
       {declined ? (
-        <button type="button" onClick={onRequestAgain} disabled={busy} className="btn-primary w-full py-2.5">
+        <button
+          type="button"
+          onClick={onRequestAgain}
+          disabled={busy}
+          className="inline-flex w-full items-center justify-center rounded-[10px] border border-[#1E4A36] bg-[#214F3A] px-4 py-2.5 text-[12.5px] font-semibold text-white shadow-[0_6px_16px_rgba(33,79,58,0.16)] transition-colors hover:bg-[#173D2C] focus:outline-none focus:ring-2 focus:ring-[#214F3A]/30 focus:ring-offset-2 focus:ring-offset-[#F8F4EC] disabled:cursor-not-allowed disabled:opacity-50"
+        >
           {busy ? "Requesting…" : "Request Access Again"}
         </button>
       ) : (
         <>
-          <p className="text-[11.5px] text-center text-[#737373]">
+          <p className="text-center text-[11.5px] leading-relaxed text-[#777269]">
             On the Main PC open Settings → Devices and choose Allow Device.
           </p>
           <button
             type="button"
             onClick={onRequestAgain}
             disabled={busy}
-            className="w-full py-2.5 text-[13px] font-medium rounded-lg border border-[#E5E7EB] bg-white hover:bg-[#FAFAFA] disabled:opacity-50"
+            className="w-full rounded-[10px] border border-[#D5CCBC] bg-white/75 py-2.5 text-[12.5px] font-semibold text-[#315B45] transition-colors hover:border-[#AEBBAF] hover:bg-white focus:outline-none focus:ring-2 focus:ring-[#315E48]/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {busy ? "Sending…" : "Send request again"}
           </button>
@@ -497,13 +525,18 @@ function WaitingApproval({ deviceName, shopName, declined, onRequestAgain, busy 
 function DeviceRevoked({ onRequestAgain, busy }) {
   return (
     <div className="mt-6 space-y-4">
-      <div className="rounded-lg px-4 py-4 border bg-red-50 border-red-200 text-center">
-        <p className="text-[13px] font-semibold text-red-800">This device is no longer authorized.</p>
-        <p className="text-[11.5px] text-red-600 mt-1">
+      <div className="rounded-[14px] border border-[#E6CEC7] bg-[#FDF7F5] px-4 py-4 text-center shadow-[0_8px_24px_rgba(76,38,30,0.04)]">
+        <p className="text-[13px] font-semibold text-[#793C32]">This device is no longer authorized.</p>
+        <p className="mt-1 text-[11.5px] leading-relaxed text-[#925E56]">
           Ask the owner or administrator to approve this computer.
         </p>
       </div>
-      <button type="button" onClick={onRequestAgain} disabled={busy} className="btn-primary w-full py-2.5">
+      <button
+        type="button"
+        onClick={onRequestAgain}
+        disabled={busy}
+        className="inline-flex w-full items-center justify-center rounded-[10px] border border-[#1E4A36] bg-[#214F3A] px-4 py-2.5 text-[12.5px] font-semibold text-white shadow-[0_6px_16px_rgba(33,79,58,0.16)] transition-colors hover:bg-[#173D2C] focus:outline-none focus:ring-2 focus:ring-[#214F3A]/30 focus:ring-offset-2 focus:ring-offset-[#F8F4EC] disabled:cursor-not-allowed disabled:opacity-50"
+      >
         {busy ? "Requesting…" : "Request Access"}
       </button>
     </div>
@@ -529,7 +562,7 @@ function LoginForm({
     >
       {connectedLabel && <ConnectionDot ok label={connectedLabel} />}
       {isHost && (
-        <div className="rounded-lg bg-[#F0FDF4] border border-[#BBF7D0] px-3 py-2 text-[12px] text-[#15803D]">
+        <div className="rounded-[10px] border border-[#D6E0D7] border-l-[3px] border-l-[#B49042] bg-[#F4F8F3] px-3.5 py-2.5 text-[11.5px] font-medium leading-relaxed text-[#315B45]">
           {needsOwner
             ? "First time on this Main PC — create the owner account below"
             : "This PC is the Main PC"}
@@ -538,9 +571,9 @@ function LoginForm({
       {needsOwner && (
         <>
           <div>
-            <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">Shop name</label>
+            <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">Shop name</label>
             <input
-              className="input"
+              className="input h-11 rounded-[10px] border-[#D7D0C3] bg-white px-3.5 text-[13px] text-[#1E2F26] shadow-[0_1px_2px_rgba(32,43,36,0.04)] placeholder:text-[#A29C90] focus:border-[#2F5D46] focus:shadow-[0_0_0_3px_rgba(47,93,70,0.14)]"
               value={shopName}
               onChange={(e) => setShopName(e.target.value)}
               placeholder="Your jewellery shop"
@@ -548,9 +581,9 @@ function LoginForm({
             />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">Your name</label>
+            <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">Your name</label>
             <input
-              className="input"
+              className="input h-11 rounded-[10px] border-[#D7D0C3] bg-white px-3.5 text-[13px] text-[#1E2F26] shadow-[0_1px_2px_rgba(32,43,36,0.04)] placeholder:text-[#A29C90] focus:border-[#2F5D46] focus:shadow-[0_0_0_3px_rgba(47,93,70,0.14)]"
               value={ownerName}
               onChange={(e) => setOwnerName(e.target.value)}
               placeholder="Shop Owner"
@@ -559,13 +592,13 @@ function LoginForm({
         </>
       )}
       <div>
-        <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">Email</label>
+        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">Email</label>
         <div className="relative">
-          <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" />
+          <Mail size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9A8A62]" />
           <input
             data-testid={T.loginEmail}
             type={needsOwner ? "email" : "text"}
-            className="input pl-9"
+            className="input h-11 rounded-[10px] border-[#D7D0C3] bg-white pl-10 pr-3.5 text-[13px] text-[#1E2F26] shadow-[0_1px_2px_rgba(32,43,36,0.04)] focus:border-[#2F5D46] focus:shadow-[0_0_0_3px_rgba(47,93,70,0.14)]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -574,13 +607,13 @@ function LoginForm({
         </div>
       </div>
       <div>
-        <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">Password</label>
+        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.15em] text-[#777269]">Password</label>
         <div className="relative">
-          <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" />
+          <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9A8A62]" />
           <input
             data-testid={T.loginPassword}
             type="password"
-            className="input pl-9"
+            className="input h-11 rounded-[10px] border-[#D7D0C3] bg-white pl-10 pr-3.5 text-[13px] text-[#1E2F26] shadow-[0_1px_2px_rgba(32,43,36,0.04)] focus:border-[#2F5D46] focus:shadow-[0_0_0_3px_rgba(47,93,70,0.14)]"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -589,31 +622,39 @@ function LoginForm({
         </div>
       </div>
       {error && (
-        <div data-testid={T.loginError} className="text-[12.5px] text-[#991B1B] bg-[#FEF2F2] border border-[#FECACA] px-3 py-2 rounded-md">
+        <div
+          data-testid={T.loginError}
+          className="rounded-[10px] border border-[#E7C8C3] bg-[#FDF5F3] px-3.5 py-2.5 text-[12px] leading-relaxed text-[#873B32]"
+        >
           {error}
         </div>
       )}
-      <button data-testid={T.loginSubmit} type="submit" disabled={busy} className="btn-primary w-full py-2.5">
+      <button
+        data-testid={T.loginSubmit}
+        type="submit"
+        disabled={busy}
+        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-[10px] border border-[#1E4A36] bg-[#214F3A] px-4 text-[12.5px] font-semibold text-white shadow-[0_8px_20px_rgba(33,79,58,0.18)] transition-colors hover:bg-[#173D2C] focus:outline-none focus:ring-2 focus:ring-[#214F3A]/30 focus:ring-offset-2 focus:ring-offset-[#F8F4EC] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+      >
         {busy
           ? (needsOwner ? "Setting up…" : "Signing in…")
           : (needsOwner ? "Create owner & sign in" : "Sign in")}
-        <ArrowRight size={14} />
+        <ArrowRight size={15} />
       </button>
       {!needsOwner && (
-        <div className="text-center pt-1">
+        <div className="pt-1 text-center">
           <button
             type="button"
             data-testid={T.loginForgotPassword}
             onClick={() => setShowForgotHelp((v) => !v)}
-            className="text-[12px] text-[#2563EB] hover:text-[#1D4ED8] underline underline-offset-2"
+            className="text-[11.5px] font-semibold text-[#2E6248] underline decoration-[#B8C8BE] underline-offset-4 transition-colors hover:text-[#1C4934] hover:decoration-[#6F8C7B] focus:outline-none focus:ring-2 focus:ring-[#315E48]/15"
           >
             Forgot Password?
           </button>
           {showForgotHelp && (
-            <div className="mt-3 text-left rounded-lg px-3 py-2.5 bg-[#F5F5F4] border border-[#E5E5E5] text-[12px] text-[#525252] leading-relaxed">
+            <div className="mt-3 rounded-[10px] border border-[#DDD4C3] bg-white/70 px-3.5 py-3 text-left text-[11.5px] leading-relaxed text-[#5D5A52]">
               Please contact your ERP administrator to reset your login credentials.
-              <div className="mt-1.5 font-medium text-[#404040]">
-                Company: SLGT Marketing ERP<br />
+              <div className="mt-1.5 font-semibold text-[#334A3D]">
+                Company: {APP_BRAND_LINE1} ERP<br />
                 Contact: +91 85005 01823
               </div>
             </div>
@@ -1171,7 +1212,7 @@ export default function Login() {
             <button
               type="button"
               onClick={switchToClient}
-              className="mt-4 w-full text-[12px] text-[#737373] hover:text-[#0A0A0A] underline-offset-2 hover:underline"
+              className="mt-5 w-full rounded-[8px] py-1.5 text-[11.5px] font-medium text-[#777269] transition-colors hover:text-[#28523D] hover:underline hover:underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#315E48]/15"
             >
               This is a staff PC — connect to Main PC
             </button>
@@ -1201,7 +1242,7 @@ export default function Login() {
           <button
             type="button"
             onClick={switchToHost}
-            className="mt-4 w-full text-[12px] text-[#737373] hover:text-[#0A0A0A] underline-offset-2 hover:underline"
+            className="mt-5 w-full rounded-[8px] py-1.5 text-[11.5px] font-medium text-[#777269] transition-colors hover:text-[#28523D] hover:underline hover:underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#315E48]/15"
           >
             This is the Main PC — sign in here
           </button>
@@ -1220,7 +1261,7 @@ export default function Login() {
           <button
             type="button"
             onClick={switchToHost}
-            className="mt-4 w-full text-[12px] text-[#737373] hover:text-[#0A0A0A] underline-offset-2 hover:underline"
+            className="mt-5 w-full rounded-[8px] py-1.5 text-[11.5px] font-medium text-[#777269] transition-colors hover:text-[#28523D] hover:underline hover:underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#315E48]/15"
           >
             This is the Main PC — sign in here
           </button>
@@ -1253,7 +1294,7 @@ export default function Login() {
         <button
           type="button"
           onClick={switchToHost}
-          className="mt-4 w-full text-[12px] text-[#737373] hover:text-[#0A0A0A] underline-offset-2 hover:underline"
+          className="mt-5 w-full rounded-[8px] py-1.5 text-[11.5px] font-medium text-[#777269] transition-colors hover:text-[#28523D] hover:underline hover:underline-offset-4 focus:outline-none focus:ring-2 focus:ring-[#315E48]/15"
         >
           This is the Main PC — sign in here
         </button>
@@ -1262,9 +1303,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-5 login-bg">
+    <div className="grid min-h-screen grid-cols-1 bg-[#F8F4EC] text-[#203128] lg:grid-cols-5">
       <LoginMusic />
-      <div className="hidden lg:flex lg:col-span-3 relative overflow-hidden border-r border-[#0B1220]">
+      <div className="relative hidden min-h-screen overflow-hidden border-r border-[#173D2C]/35 lg:col-span-3 lg:flex">
         <div
           className="absolute inset-0"
           style={{
@@ -1274,32 +1315,43 @@ export default function Login() {
           }}
           aria-hidden
         />
-        {/* Soft left veil so copy stays readable over the velvet */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#06101F]/88 via-[#06101F]/55 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#06101F]/45 via-transparent to-[#06101F]/25" />
-        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
+        {/* A restrained forest veil preserves the jewellery while anchoring the copy. */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(90deg, rgba(5, 24, 15, 0.68) 0%, rgba(5, 28, 17, 0.46) 50%, rgba(5, 28, 17, 0.18) 100%)",
+            boxShadow: "inset 0 0 120px rgba(3, 20, 12, 0.18)",
+          }}
+          aria-hidden
+        />
+        <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-14">
           <BrandMark light />
-          <div className="max-w-xl">
-            <h1 className="font-display text-[40px] leading-[1.05] font-semibold text-white tracking-tight drop-shadow-[0_2px_24px_rgba(0,0,0,0.35)]">
+          <div className="max-w-lg pb-4">
+            <div className="mb-6 h-px w-12 bg-[#C8A760]" />
+            <h1 className="font-display text-[44px] font-semibold leading-[1.04] tracking-[-0.035em] text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.32)] xl:text-[50px]">
               Approve the PC once. Staff just sign in.
             </h1>
-            <p className="text-[14px] text-[#D6D0C4] mt-6 max-w-md leading-relaxed">
+            <p className="mt-6 max-w-md text-[14px] leading-7 text-white/75">
               New computers appear on the Main PC for approval. After that, anyone with an account signs in with email and password — roles come from their account, not the device.
             </p>
           </div>
-          <div className="text-[11px] text-[#A8A29A] font-mono">© {new Date().getFullYear()} SLGT</div>
+          <div className="font-mono text-[10px] tracking-[0.04em] text-white/50">
+            © {new Date().getFullYear()} {APP_BRAND_LINE1}
+          </div>
         </div>
       </div>
 
-      <div className="lg:col-span-2 flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
-          <div className="mb-6">
+      <div className="flex min-h-screen items-center justify-center bg-[#F8F4EC] px-6 py-8 sm:px-10 lg:col-span-2 lg:px-10 xl:px-14">
+        <div className="w-full max-w-[410px]">
+          <div className="mb-8">
             <BrandMark />
           </div>
-          <div className="text-[10px] uppercase tracking-[0.18em] text-[#737373] font-semibold mb-3">Sign in</div>
-          <h2 className="font-display text-[26px] font-semibold text-[#0A0A0A] tracking-tight">
-            {needsOwner && pcMode === "host" ? "Set up Main PC." : "Welcome back."}
-          </h2>
+          <div className="border-l-2 border-[#B49042] pl-4 sm:pl-5">
+            <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[#86662E]">Sign in</div>
+            <h2 className="font-display text-[32px] font-semibold leading-tight tracking-[-0.03em] text-[#173B2A]">
+              {needsOwner && pcMode === "host" ? "Set up Main PC." : "Welcome back."}
+            </h2>
+          </div>
           {renderBody()}
         </div>
       </div>

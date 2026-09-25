@@ -54,13 +54,52 @@ const PAYMENT_MODES = [
 ];
 
 const STATUS_CONFIG = {
-  draft: { bg: "#F3F4F6", color: "#6B7280", label: "Draft" },
+  draft: { bg: "#F1F4ED", color: "#6B7280", label: "Draft" },
   received: { bg: "#DBEAFE", color: "#1D4ED8", label: "Received" },
   partially_paid: { bg: "#FEF3C7", color: "#B45309", label: "Partially Paid" },
   paid: { bg: "#D1FAE5", color: "#065F46", label: "Paid" },
 };
 
 const GOLD = "#B49042";
+
+// Presentation-only trade-module canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
 
 function newItemRow(type) {
   return {
@@ -95,26 +134,26 @@ function Modal({ open, onClose, title, children, wide = false, extraWide = false
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.45)" }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#20352A]/35 backdrop-blur-[2px]"
+      style={{ background: "rgba(32,53,42,0.35)" }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
-        className={`bg-white rounded-2xl shadow-xl flex flex-col ${widthClass}`}
+        className={`bg-[#FFFDF8] rounded-[14px] shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col border border-[#DCE3D6] ${widthClass}`}
         style={{ maxHeight: "92vh" }}
       >
         <div
           className="flex items-center justify-between px-6 py-4 border-b flex-shrink-0"
-          style={{ borderColor: "#E5E7EB" }}
+          style={{ borderColor: "#DCE3D6" }}
         >
-          <h2 className="font-semibold text-base" style={{ color: "#0A0A0A" }}>
+          <h2 className="font-semibold text-base" style={{ color: "#2F3A32" }}>
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-1 rounded-[8px] hover:bg-[#F1F4ED] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors"
           >
-            <X size={18} style={{ color: "#737373" }} />
+            <X size={18} style={{ color: "#6E786F" }} />
           </button>
         </div>
         <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
@@ -126,7 +165,7 @@ function Modal({ open, onClose, title, children, wide = false, extraWide = false
 function Field({ label, children, required }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium" style={{ color: "#737373" }}>
+      <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
         {label}
         {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
@@ -152,7 +191,7 @@ function TypeBadge({ type }) {
   return (
     <span
       className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
-      style={{ background: "#F3F4F6", color: "#374151" }}
+      style={{ background: "#F1F4ED", color: "#5F6D62" }}
     >
       {t ? t.label : type || "—"}
     </span>
@@ -162,20 +201,20 @@ function TypeBadge({ type }) {
 function SummaryCard({ label, value, icon: Icon, color }) {
   return (
     <div
-      className="bg-white rounded-xl border p-4 flex items-start gap-3"
-      style={{ borderColor: "#E5E7EB" }}
+      className="bg-[#FFFDF8] rounded-[10px] border p-4 flex items-start gap-3 shadow-[0_1px_2px_rgba(35,58,43,0.04)]"
+      style={{ borderColor: "#DCE3D6" }}
     >
       <div
-        className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+        className="w-9 h-9 rounded-[9px] border border-[#DCE3D6] flex items-center justify-center flex-shrink-0"
         style={{ background: `${color}18` }}
       >
         <Icon size={18} style={{ color }} />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-medium mb-0.5" style={{ color: "#737373" }}>
+        <p className="text-xs font-medium mb-0.5" style={{ color: "#6E786F" }}>
           {label}
         </p>
-        <p className="text-lg font-bold tabular-nums leading-tight" style={{ color: "#0A0A0A" }}>
+        <p className="text-lg font-bold tabular-nums leading-tight" style={{ color: "#2F3A32" }}>
           {value}
         </p>
       </div>
@@ -203,10 +242,10 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
             { label: "Status", value: <StatusBadge status={purchase.status} /> },
           ].map(({ label, value }) => (
             <div key={label}>
-              <p className="text-xs font-medium mb-1" style={{ color: "#737373" }}>
+              <p className="text-xs font-medium mb-1" style={{ color: "#6E786F" }}>
                 {label}
               </p>
-              <div className="text-sm font-medium" style={{ color: "#0A0A0A" }}>
+              <div className="text-sm font-medium" style={{ color: "#2F3A32" }}>
                 {value}
               </div>
             </div>
@@ -217,20 +256,20 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
         <div>
           <p
             className="text-xs font-semibold uppercase tracking-wide mb-2"
-            style={{ color: "#737373" }}
+            style={{ color: "#6E786F" }}
           >
             Items
           </p>
-          <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#DCE3D6" }}>
             <table className="w-full text-sm">
               <thead>
-                <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+                <tr style={{ background: "#F1F4ED", borderBottom: "1px solid #DCE3D6" }}>
                   {["Description", "Qty", "Weight(g)", "Purity", "Rate/g", "Unit Price", "Amount"].map(
                     (h) => (
                       <th
                         key={h}
                         className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide"
-                        style={{ color: "#737373" }}
+                        style={{ color: "#6E786F" }}
                       >
                         {h}
                       </th>
@@ -241,7 +280,7 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
               <tbody>
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-3 py-6 text-center text-sm" style={{ color: "#737373" }}>
+                    <td colSpan={7} className="px-3 py-6 text-center text-sm" style={{ color: "#6E786F" }}>
                       No items recorded.
                     </td>
                   </tr>
@@ -250,30 +289,30 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
                     <tr
                       key={item.id || idx}
                       style={{
-                        borderBottom: idx < items.length - 1 ? "1px solid #E5E7EB" : "none",
+                        borderBottom: idx < items.length - 1 ? "1px solid #DCE3D6" : "none",
                       }}
                     >
-                      <td className="px-3 py-2.5 font-medium" style={{ color: "#0A0A0A" }}>
+                      <td className="px-3 py-2.5 font-medium" style={{ color: "#2F3A32" }}>
                         {item.description || "—"}
                       </td>
-                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#5F6D62" }}>
                         {item.qty ?? "—"}
                       </td>
-                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#5F6D62" }}>
                         {item.weight_g ?? "—"}
                       </td>
-                      <td className="px-3 py-2.5" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5" style={{ color: "#5F6D62" }}>
                         {item.purity || "—"}
                       </td>
-                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#5F6D62" }}>
                         {item.rate_per_g ? fmtINR(item.rate_per_g) : "—"}
                       </td>
-                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5 tabular-nums" style={{ color: "#5F6D62" }}>
                         {item.unit_price ? fmtINR(item.unit_price) : "—"}
                       </td>
                       <td
                         className="px-3 py-2.5 font-semibold tabular-nums"
-                        style={{ color: "#0A0A0A" }}
+                        style={{ color: "#2F3A32" }}
                       >
                         {fmtINR(item.amount)}
                       </td>
@@ -295,14 +334,14 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
                 value: purchase.gst_amount,
               },
             ].map(({ label, value }) => (
-              <div key={label} className="flex justify-between text-sm" style={{ color: "#737373" }}>
+              <div key={label} className="flex justify-between text-sm" style={{ color: "#6E786F" }}>
                 <span>{label}</span>
                 <span className="tabular-nums">{fmtINR(value)}</span>
               </div>
             ))}
             <div
               className="flex justify-between text-sm font-bold pt-1 border-t mt-1"
-              style={{ borderColor: "#E5E7EB", color: "#0A0A0A" }}
+              style={{ borderColor: "#DCE3D6", color: "#2F3A32" }}
             >
               <span>Grand Total</span>
               <span className="tabular-nums">{fmtINR(purchase.grand_total)}</span>
@@ -326,34 +365,34 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
           <div className="flex items-center justify-between mb-2">
             <p
               className="text-xs font-semibold uppercase tracking-wide"
-              style={{ color: "#737373" }}
+              style={{ color: "#6E786F" }}
             >
               Payment History
             </p>
             {["draft", "received", "partially_paid"].includes(purchase.status) && (
               <button
                 className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                style={{ background: GOLD, color: "#fff" }}
+                style={{ background: "#244B39", color: "#fff" }}
                 onClick={() => onAddPayment(purchase)}
               >
                 + Add Payment
               </button>
             )}
           </div>
-          <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#E5E7EB" }}>
+          <div className="rounded-xl border overflow-hidden" style={{ borderColor: "#DCE3D6" }}>
             {payments.length === 0 ? (
-              <div className="py-6 text-center text-sm" style={{ color: "#737373" }}>
+              <div className="py-6 text-center text-sm" style={{ color: "#6E786F" }}>
                 No payments recorded yet.
               </div>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+                  <tr style={{ background: "#F1F4ED", borderBottom: "1px solid #DCE3D6" }}>
                     {["Date", "Mode", "Amount", "Reference", "Notes"].map((h) => (
                       <th
                         key={h}
                         className="px-3 py-2.5 text-left text-xs font-semibold uppercase tracking-wide"
-                        style={{ color: "#737373" }}
+                        style={{ color: "#6E786F" }}
                       >
                         {h}
                       </th>
@@ -365,13 +404,13 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
                     <tr
                       key={p.id || idx}
                       style={{
-                        borderBottom: idx < payments.length - 1 ? "1px solid #E5E7EB" : "none",
+                        borderBottom: idx < payments.length - 1 ? "1px solid #DCE3D6" : "none",
                       }}
                     >
-                      <td className="px-3 py-2.5 text-xs" style={{ color: "#737373" }}>
+                      <td className="px-3 py-2.5 text-xs" style={{ color: "#6E786F" }}>
                         {fmtDate(invoiceOccurredAt(p))}
                       </td>
-                      <td className="px-3 py-2.5 capitalize" style={{ color: "#374151" }}>
+                      <td className="px-3 py-2.5 capitalize" style={{ color: "#5F6D62" }}>
                         {p.payment_mode || p.mode || "—"}
                       </td>
                       <td
@@ -380,10 +419,10 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
                       >
                         {fmtINR(p.amount)}
                       </td>
-                      <td className="px-3 py-2.5 text-xs" style={{ color: "#737373" }}>
+                      <td className="px-3 py-2.5 text-xs" style={{ color: "#6E786F" }}>
                         {p.reference || "—"}
                       </td>
-                      <td className="px-3 py-2.5 text-xs" style={{ color: "#737373" }}>
+                      <td className="px-3 py-2.5 text-xs" style={{ color: "#6E786F" }}>
                         {p.notes || "—"}
                       </td>
                     </tr>
@@ -397,9 +436,9 @@ function PurchaseDetailModal({ purchase, onClose, onAddPayment }) {
         {purchase.notes && (
           <div
             className="rounded-xl p-4 text-sm"
-            style={{ background: "#F9FAFB", color: "#374151", borderColor: "#E5E7EB", border: "1px solid #E5E7EB" }}
+            style={{ background: "#F1F4ED", color: "#5F6D62", borderColor: "#DCE3D6", border: "1px solid #DCE3D6" }}
           >
-            <span className="font-medium" style={{ color: "#737373" }}>Notes: </span>
+            <span className="font-medium" style={{ color: "#6E786F" }}>Notes: </span>
             {purchase.notes}
           </div>
         )}
@@ -656,11 +695,11 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
 
       {/* Filters */}
       <div
-        className="bg-white rounded-xl border p-4 flex flex-wrap items-end gap-3"
-        style={{ borderColor: "#E5E7EB" }}
+        className="bg-[#FFFDF8] rounded-[10px] border p-4 flex flex-wrap items-end gap-3 shadow-[0_1px_2px_rgba(35,58,43,0.04)]"
+        style={{ borderColor: "#DCE3D6" }}
       >
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium" style={{ color: "#737373" }}>
+          <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
             From
           </label>
           <input
@@ -671,7 +710,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium" style={{ color: "#737373" }}>
+          <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
             To
           </label>
           <input
@@ -682,7 +721,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium" style={{ color: "#737373" }}>
+          <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
             Vendor
           </label>
           <select
@@ -699,7 +738,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium" style={{ color: "#737373" }}>
+          <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
             Type
           </label>
           <select
@@ -716,7 +755,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-medium" style={{ color: "#737373" }}>
+          <label className="text-xs font-medium" style={{ color: "#6E786F" }}>
             Status
           </label>
           <select
@@ -742,12 +781,12 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
 
       {/* Table */}
       <div
-        className="bg-white rounded-xl border overflow-hidden"
-        style={{ borderColor: "#E5E7EB" }}
+        className="bg-[#FFFDF8] rounded-[10px] border overflow-hidden shadow-[0_1px_2px_rgba(35,58,43,0.04)]"
+        style={{ borderColor: "#DCE3D6" }}
       >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ background: "#F9FAFB", borderBottom: "1px solid #E5E7EB" }}>
+            <tr style={{ background: "#F1F4ED", borderBottom: "1px solid #DCE3D6" }}>
               {[
                 "PO No.",
                 "Date",
@@ -763,7 +802,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
                 <th
                   key={h}
                   className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide"
-                  style={{ color: "#737373" }}
+                  style={{ color: "#6E786F" }}
                 >
                   {h}
                 </th>
@@ -780,7 +819,7 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
               </tr>
             ) : purchases.length === 0 ? (
               <tr>
-                <td colSpan={10} className="text-center py-14" style={{ color: "#737373" }}>
+                <td colSpan={10} className="text-center py-14" style={{ color: "#6E786F" }}>
                   No purchases found.
                 </td>
               </tr>
@@ -789,29 +828,29 @@ function PurchaseListTab({ vendors, onNewPurchase }) {
                 <tr
                   key={p.id}
                   onClick={() => handleRowClick(p)}
-                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="hover:bg-[#F7F9F4] transition-colors cursor-pointer"
                   style={{
-                    borderBottom: idx < purchases.length - 1 ? "1px solid #E5E7EB" : "none",
+                    borderBottom: idx < purchases.length - 1 ? "1px solid #DCE3D6" : "none",
                   }}
                 >
                   <td className="px-4 py-3 font-mono text-xs font-medium" style={{ color: GOLD }}>
                     {p.po_number || `PO-${p.id?.slice(0, 6) || idx + 1}`}
                   </td>
-                  <td className="px-4 py-3 text-xs" style={{ color: "#737373" }}>
+                  <td className="px-4 py-3 text-xs" style={{ color: "#6E786F" }}>
                     {fmtDate(p.purchase_date)}
                   </td>
-                  <td className="px-4 py-3 font-medium" style={{ color: "#0A0A0A" }}>
+                  <td className="px-4 py-3 font-medium" style={{ color: "#2F3A32" }}>
                     {p.vendor_name || "—"}
                   </td>
                   <td className="px-4 py-3">
                     <TypeBadge type={p.purchase_type} />
                   </td>
-                  <td className="px-4 py-3 tabular-nums text-center" style={{ color: "#374151" }}>
+                  <td className="px-4 py-3 tabular-nums text-center" style={{ color: "#5F6D62" }}>
                     {p.item_count ?? (p.items?.length ?? "—")}
                   </td>
                   <td
                     className="px-4 py-3 font-semibold tabular-nums"
-                    style={{ color: "#0A0A0A" }}
+                    style={{ color: "#2F3A32" }}
                   >
                     {fmtINR(p.grand_total)}
                   </td>
@@ -913,7 +952,7 @@ function ItemRow({ item, type, onChange, onRemove, showRemove }) {
 
   const inputCls =
     "w-full border rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-offset-0 transition-shadow";
-  const inputStyle = { borderColor: "#E5E7EB" };
+  const inputStyle = { borderColor: "#DCE3D6" };
 
   return (
     <tr>
@@ -1004,7 +1043,7 @@ function ItemRow({ item, type, onChange, onRemove, showRemove }) {
           <button
             type="button"
             onClick={onRemove}
-            className="p-1 rounded hover:bg-red-50 transition-colors"
+            className="p-1 rounded-[8px] hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8B5B2] transition-colors"
           >
             <Trash2 size={14} className="text-red-400" />
           </button>
@@ -1095,16 +1134,16 @@ function NewPurchaseTab({ vendors, onSaved }) {
   };
 
   const inputCls =
-    "w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-0 transition-shadow";
-  const inputStyle = { borderColor: "#E5E7EB" };
+    "w-full border rounded-[9px] px-3 py-2 text-sm text-[#2F3A32] bg-white placeholder-[#9AA69C] focus:outline-none focus:border-[#66806B] focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)] transition-shadow";
+  const inputStyle = { borderColor: "#C8D4C7" };
 
   return (
     <div className="max-w-5xl mx-auto flex flex-col gap-5">
       {/* Header section */}
-      <div className="bg-white rounded-xl border p-5" style={{ borderColor: "#E5E7EB" }}>
+      <div className="bg-[#FFFDF8] rounded-[10px] border shadow-[0_1px_2px_rgba(35,58,43,0.04)] p-5" style={{ borderColor: "#DCE3D6" }}>
         <h3
           className="text-xs font-semibold uppercase tracking-wide mb-4"
-          style={{ color: "#737373" }}
+          style={{ color: "#6E786F" }}
         >
           Purchase Details
         </h3>
@@ -1143,11 +1182,11 @@ function NewPurchaseTab({ vendors, onSaved }) {
                     key={t.value}
                     type="button"
                     onClick={() => handleTypeChange(t.value)}
-                    className="px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all border"
+                    className="px-2.5 py-1.5 rounded-[9px] text-xs font-medium transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
                     style={{
-                      background: active ? GOLD : "#F9FAFB",
-                      color: active ? "#fff" : "#374151",
-                      borderColor: active ? GOLD : "#E5E7EB",
+                      background: active ? "#244B39" : "#F1F4ED",
+                      color: active ? "#fff" : "#5F6D62",
+                      borderColor: active ? "#244B39" : "#DCE3D6",
                     }}
                   >
                     {t.label}
@@ -1160,19 +1199,19 @@ function NewPurchaseTab({ vendors, onSaved }) {
       </div>
 
       {/* Items section */}
-      <div className="bg-white rounded-xl border p-5" style={{ borderColor: "#E5E7EB" }}>
+      <div className="bg-[#FFFDF8] rounded-[10px] border shadow-[0_1px_2px_rgba(35,58,43,0.04)] p-5" style={{ borderColor: "#DCE3D6" }}>
         <div className="flex items-center justify-between mb-4">
           <h3
             className="text-xs font-semibold uppercase tracking-wide"
-            style={{ color: "#737373" }}
+            style={{ color: "#6E786F" }}
           >
             Items
           </h3>
           <button
             type="button"
             onClick={addItem}
-            className="text-xs font-medium px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors border"
-            style={{ background: "#F9FAFB", color: "#374151", borderColor: "#E5E7EB" }}
+            className="text-xs font-medium px-3 py-1.5 rounded-[9px] flex items-center gap-1 transition-colors border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] hover:bg-[#E8EFE5]"
+            style={{ background: "#F1F4ED", color: "#5F6D62", borderColor: "#DCE3D6" }}
           >
             <Plus size={12} />
             Add Item
@@ -1182,7 +1221,7 @@ function NewPurchaseTab({ vendors, onSaved }) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr style={{ borderBottom: "1px solid #E5E7EB" }}>
+              <tr style={{ borderBottom: "1px solid #DCE3D6" }}>
                 {[
                   { label: "Description", w: "min-w-[160px]" },
                   { label: "Qty", w: "w-20" },
@@ -1196,7 +1235,7 @@ function NewPurchaseTab({ vendors, onSaved }) {
                   <th
                     key={label}
                     className={`px-2 py-2 text-left text-xs font-semibold uppercase tracking-wide ${w}`}
-                    style={{ color: "#737373" }}
+                    style={{ color: "#6E786F" }}
                   >
                     {label}
                   </th>
@@ -1222,23 +1261,23 @@ function NewPurchaseTab({ vendors, onSaved }) {
       {/* Totals + Payment section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Totals */}
-        <div className="bg-white rounded-xl border p-5" style={{ borderColor: "#E5E7EB" }}>
+        <div className="bg-[#FFFDF8] rounded-[10px] border shadow-[0_1px_2px_rgba(35,58,43,0.04)] p-5" style={{ borderColor: "#DCE3D6" }}>
           <h3
             className="text-xs font-semibold uppercase tracking-wide mb-4"
-            style={{ color: "#737373" }}
+            style={{ color: "#6E786F" }}
           >
             Totals
           </h3>
           <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-sm" style={{ color: "#737373" }}>
+            <div className="flex justify-between text-sm" style={{ color: "#6E786F" }}>
               <span>Subtotal</span>
-              <span className="tabular-nums font-medium" style={{ color: "#0A0A0A" }}>
+              <span className="tabular-nums font-medium" style={{ color: "#2F3A32" }}>
                 {fmtINR(subtotal)}
               </span>
             </div>
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm" style={{ color: "#737373" }}>
+                <span className="text-sm" style={{ color: "#6E786F" }}>
                   GST
                 </span>
                 <input
@@ -1247,21 +1286,21 @@ function NewPurchaseTab({ vendors, onSaved }) {
                   max="100"
                   step="0.5"
                   className="border rounded px-2 py-1 text-sm w-16 tabular-nums text-center"
-                  style={{ borderColor: "#E5E7EB" }}
+                  style={{ borderColor: "#DCE3D6" }}
                   value={form.gst_percent}
                   onChange={(e) => setForm({ ...form, gst_percent: e.target.value })}
                 />
-                <span className="text-sm" style={{ color: "#737373" }}>
+                <span className="text-sm" style={{ color: "#6E786F" }}>
                   %
                 </span>
               </div>
-              <span className="tabular-nums text-sm font-medium" style={{ color: "#0A0A0A" }}>
+              <span className="tabular-nums text-sm font-medium" style={{ color: "#2F3A32" }}>
                 {fmtINR(gstAmt)}
               </span>
             </div>
             <div
               className="flex justify-between font-bold text-base pt-2 border-t"
-              style={{ borderColor: "#E5E7EB", color: "#0A0A0A" }}
+              style={{ borderColor: "#DCE3D6", color: "#2F3A32" }}
             >
               <span>Grand Total</span>
               <span className="tabular-nums" style={{ color: GOLD }}>
@@ -1272,10 +1311,10 @@ function NewPurchaseTab({ vendors, onSaved }) {
         </div>
 
         {/* Payment */}
-        <div className="bg-white rounded-xl border p-5" style={{ borderColor: "#E5E7EB" }}>
+        <div className="bg-[#FFFDF8] rounded-[10px] border shadow-[0_1px_2px_rgba(35,58,43,0.04)] p-5" style={{ borderColor: "#DCE3D6" }}>
           <h3
             className="text-xs font-semibold uppercase tracking-wide mb-4"
-            style={{ color: "#737373" }}
+            style={{ color: "#6E786F" }}
           >
             Initial Payment (Optional)
           </h3>
@@ -1323,10 +1362,10 @@ function NewPurchaseTab({ vendors, onSaved }) {
 
       {/* Save buttons */}
       <div
-        className="bg-white rounded-xl border p-4 flex items-center justify-between"
-        style={{ borderColor: "#E5E7EB" }}
+        className="bg-[#FFFDF8] rounded-[10px] border shadow-[0_1px_2px_rgba(35,58,43,0.04)] p-4 flex items-center justify-between"
+        style={{ borderColor: "#DCE3D6" }}
       >
-        <p className="text-sm" style={{ color: "#737373" }}>
+        <p className="text-sm" style={{ color: "#6E786F" }}>
           Grand Total:{" "}
           <span className="font-bold text-base" style={{ color: GOLD }}>
             {fmtINR(grandTotal)}
@@ -1348,8 +1387,8 @@ function NewPurchaseTab({ vendors, onSaved }) {
           </button>
           <button
             type="button"
-            className="text-sm flex items-center gap-1.5 px-4 py-2 rounded-lg font-medium transition-colors"
-            style={{ background: GOLD, color: "#fff" }}
+            className="text-sm flex items-center gap-1.5 px-4 py-2 rounded-[9px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
+            style={{ background: "#244B39", color: "#fff" }}
             onClick={() => handleSave("received")}
             disabled={saving}
           >
@@ -1389,18 +1428,18 @@ export default function Purchases() {
   };
 
   return (
-    <div className="flex flex-col h-full" style={{ background: "#F9FAFB", minHeight: "100vh" }}>
+    <div className={`${TRADE_PAGE_CLASS} flex flex-col h-full`} style={{ minHeight: "100vh" }}>
       {/* Page header */}
       <div
-        className="bg-white border-b px-6 pt-6 pb-0"
-        style={{ borderColor: "#E5E7EB" }}
+        className="bg-[#FFFDF8] border-b px-6 pt-6 pb-0"
+        style={{ borderColor: "#DCE3D6" }}
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-bold" style={{ color: "#0A0A0A" }}>
+            <h1 className="text-xl font-bold" style={{ color: "#2F3A32" }}>
               Purchases
             </h1>
-            <p className="text-sm mt-0.5" style={{ color: "#737373" }}>
+            <p className="text-sm mt-0.5" style={{ color: "#6E786F" }}>
               Manage vendor purchases — gold bullion, finished goods, karigar work &amp; more
             </p>
           </div>
@@ -1416,9 +1455,9 @@ export default function Purchases() {
                 onClick={() => setActiveTab(id)}
                 className="flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors"
                 style={{
-                  color: active ? "#0A0A0A" : "#737373",
-                  background: active ? "#F9FAFB" : "transparent",
-                  borderBottom: active ? `2px solid ${GOLD}` : "2px solid transparent",
+                  color: active ? "#244B39" : "#6E786F",
+                  background: active ? "#F1F4ED" : "transparent",
+                  borderBottom: active ? "2px solid #244B39" : "2px solid transparent",
                 }}
               >
                 <Icon size={15} />

@@ -3,9 +3,10 @@
 import { useCompany } from "@/context/CompanyContext";
 import slgtLogo from "@/assets/slgt-logo.png";
 import { APP_WINDOW_TITLE } from "@/lib/appBrand";
+import { cn } from "@/lib/utils";
 
 function Box({ className = "" }) {
-  return <div className={`shimmer rounded ${className}`} />;
+  return <div className={cn("shimmer rounded-lg", className)} />;
 }
 
 // ── Brand badge — small shop-name + spinner marker shown above skeletons ─────
@@ -13,7 +14,7 @@ export function PageLoadingBadge() {
   const { displayName, logo } = useCompany();
   return (
     <div className="inline-flex items-center gap-2.5">
-      <div className="h-7 w-7 rounded-lg bg-black flex items-center justify-center animate-pulse flex-shrink-0 overflow-hidden">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#D9C48C] bg-[#214F3A] animate-pulse">
         {logo ? (
           <img src={logo} alt="" className="h-full w-full object-contain bg-white" />
         ) : (
@@ -21,10 +22,10 @@ export function PageLoadingBadge() {
         )}
       </div>
       <div className="leading-tight">
-        <div className="font-display text-[12.5px] font-semibold text-[#0A0A0A]">
+        <div className="font-display text-[12.5px] font-semibold text-[#17201C]">
           {displayName}
         </div>
-        <div className="text-[9.5px] uppercase tracking-[0.14em] text-gray-400">
+        <div className="text-[9.5px] uppercase tracking-[0.14em] text-[#8A9690]">
           Loading…
         </div>
       </div>
@@ -40,7 +41,7 @@ export function TableSkeleton({ rows = 7, cols = 5 }) {
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={i}
-          className="flex items-center gap-4 px-4 py-3 border-b border-gray-100"
+          className="flex items-center gap-4 border-b border-[#E2E7E2] px-5 py-3.5"
           style={{ opacity: 1 - i * 0.08 }}
         >
           {Array.from({ length: cols }).map((_, j) => (
@@ -60,13 +61,13 @@ export function TableSkeleton({ rows = 7, cols = 5 }) {
 export function CardGridSkeleton({ count = 8, cols = 4 }) {
   return (
     <div
-      className="grid gap-4"
+      className="grid gap-5"
       style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
     >
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-xl border border-gray-200 p-4 space-y-3"
+          className="space-y-3 rounded-[14px] border border-[#E2E7E2] bg-white p-5 shadow-[0_1px_2px_rgba(23,32,28,0.03)]"
           style={{ opacity: 1 - i * 0.04 }}
         >
           <Box className="h-36 w-full rounded-lg" />
@@ -83,13 +84,13 @@ export function CardGridSkeleton({ count = 8, cols = 4 }) {
 export function KPISkeleton({ count = 4 }) {
   return (
     <div
-      className="grid gap-4"
+      className="grid gap-5"
       style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}
     >
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-xl border border-gray-200 p-5 space-y-3"
+          className="space-y-3 rounded-[14px] border border-[#E2E7E2] bg-white p-5 shadow-[0_1px_2px_rgba(23,32,28,0.03)]"
         >
           <div className="flex justify-between items-start">
             <Box className="h-3 w-24" />
@@ -110,7 +111,7 @@ export function ListSkeleton({ rows = 6 }) {
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-4"
+          className="flex items-center gap-4 rounded-[14px] border border-[#E2E7E2] bg-white p-4 shadow-[0_1px_2px_rgba(23,32,28,0.03)]"
           style={{ opacity: 1 - i * 0.08 }}
         >
           <Box className="h-10 w-10 rounded-full flex-shrink-0" />
@@ -130,9 +131,9 @@ export function FormSkeleton({ fields = 6 }) {
   return (
     <div className="space-y-5 max-w-2xl">
       {Array.from({ length: fields }).map((_, i) => (
-        <div key={i} className="space-y-1.5">
+        <div key={i} className="space-y-2">
           <Box className="h-3 w-28" />
-          <Box className="h-10 w-full rounded-lg" />
+          <Box className="h-10 w-full" />
         </div>
       ))}
     </div>
@@ -141,5 +142,5 @@ export function FormSkeleton({ fields = 6 }) {
 
 // ── Section shimmer — generic full-width placeholder ────────────────────────
 export function SectionSkeleton({ height = "h-96" }) {
-  return <div className={`${height} shimmer rounded-xl w-full`} />;
+  return <div className={`${height} shimmer w-full rounded-[14px] border border-[#E2E7E2]`} />;
 }

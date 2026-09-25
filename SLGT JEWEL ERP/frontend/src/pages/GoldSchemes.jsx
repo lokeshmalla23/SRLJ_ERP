@@ -31,6 +31,44 @@ import { useAuth } from "@/context/AuthContext";
 import { useBusinessDate } from "@/context/BusinessDateContext";
 import DuplicateCustomerDialog, { dupInfo } from "@/components/customers/DuplicateCustomerDialog";
 
+// Presentation-only scheme canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 const TODAY = new Date();
@@ -407,7 +445,7 @@ export default function GoldSchemes() {
   const toggleQuick = (key) => setQuickFilter((prev) => (prev === key ? "" : key));
 
   return (
-    <div className="max-w-[1400px]">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1400px]`}>
       <PageHeader
         title="Gold Saving Schemes"
         subtitle="Track monthly gold commitments — collections, maturity and redemption."
@@ -468,9 +506,9 @@ export default function GoldSchemes() {
       </div>
 
       {/* ── Filter bar ─────────────────────────────────────────────────────────── */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
+      <div className="flex flex-wrap items-center gap-2 mb-4 p-3 rounded-[10px] border border-[#DCE3D6] bg-[#FFFDF8] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" strokeWidth={1.5} />
           <input
             className="input pl-9 text-[13px]"
             placeholder="Search by name or mobile…"
@@ -575,7 +613,7 @@ export default function GoldSchemes() {
       )}
 
       {!loading && filtered.length > 0 && (
-        <div className="flex items-center justify-between mt-3 text-[12px] text-[#737373]">
+        <div className="flex items-center justify-between mt-3 text-[12px] text-[#6E786F]">
           <button
             type="button"
             className="btn-secondary !py-1.5 !px-3 disabled:opacity-40"
@@ -640,24 +678,24 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
   const pct = s.duration_months > 0 ? Math.min((s.months_paid / s.duration_months) * 100, 100) : 0;
 
   // Next due color
-  let dueCls = "text-[#525252]";
+  let dueCls = "text-[#5F6D62]";
   let dueLabel = s.next_due_date ? fmtDate(s.next_due_date) : "—";
   if (s.is_overdue) dueCls = "text-[#DC2626] font-semibold";
   else if (s.is_due_this_month) dueCls = "text-[#D97706] font-medium";
 
   return (
     <tr
-      className="table-row cursor-pointer hover:bg-[#FAFAF9]"
+      className="table-row cursor-pointer hover:bg-[#F7F9F4]"
       onClick={onDetail}
     >
       {/* S.No */}
-      <td className="table-td font-mono text-[13px] text-[#525252]">{s.serial_no ?? "—"}</td>
+      <td className="table-td font-mono text-[13px] text-[#5F6D62]">{s.serial_no ?? "—"}</td>
 
       {/* Customer */}
       <td className="table-td">
-        <div className="font-mono text-[10px] text-[#a3a3a3]">{fmtCustomerCode(s.customer_serial_no)}</div>
+        <div className="font-mono text-[10px] text-[#8D998F]">{fmtCustomerCode(s.customer_serial_no)}</div>
         <div className="font-medium text-[13px]">{s.customer_name}</div>
-        <div className="font-mono text-[11px] text-[#a3a3a3]">{s.customer_mobile}</div>
+        <div className="font-mono text-[11px] text-[#8D998F]">{s.customer_mobile}</div>
       </td>
 
       {/* Plan */}
@@ -666,7 +704,7 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
         {(s.scheme_type === "swarnakala" || s.plan_type === "weight") ? (
           <div className="text-[11px] text-[#B49042]">Gold Saving</div>
         ) : (
-          <div className="text-[11px] text-[#737373]">
+          <div className="text-[11px] text-[#6E786F]">
             Cash Saving{s.bonus_months > 0 ? ` · ${s.duration_months}+${s.bonus_months}` : ""}
           </div>
         )}
@@ -680,13 +718,13 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
       {/* Progress */}
       <td className="table-td">
         <div className="flex items-center gap-2 min-w-[120px]">
-          <div className="h-1.5 flex-1 bg-[#F1F1F1] rounded-full overflow-hidden">
+          <div className="h-1.5 flex-1 bg-[#E7ECE4] rounded-full overflow-hidden">
             <div
               className="h-full bg-[#B49042] rounded-full transition-all"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <span className="text-[11.5px] font-mono text-[#525252] shrink-0">
+          <span className="text-[11.5px] font-mono text-[#5F6D62] shrink-0">
             {s.months_paid}/{s.duration_months}
           </span>
         </div>
@@ -702,7 +740,7 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
         {s.status === "active" ? (
           <span className={`font-mono text-[12px] ${dueCls}`}>{dueLabel}</span>
         ) : (
-          <span className="text-[#a3a3a3] text-[12px]">—</span>
+          <span className="text-[#8D998F] text-[12px]">—</span>
         )}
       </td>
 
@@ -715,17 +753,17 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
       <td className="table-td">
         {s.maturity_date ? (
           <div>
-            <div className="font-mono text-[12px] text-[#525252]">
+            <div className="font-mono text-[12px] text-[#5F6D62]">
               {fmtDate(s.maturity_date)}
             </div>
             {s.status === "active" && (
-              <div className={`text-[11px] mt-0.5 ${s.is_maturing_this_month ? "text-[#B49042] font-medium" : "text-[#a3a3a3]"}`}>
+              <div className={`text-[11px] mt-0.5 ${s.is_maturing_this_month ? "text-[#B49042] font-medium" : "text-[#8D998F]"}`}>
                 {s.is_maturing_this_month ? "Matures this month!" : `${s.months_left}m left`}
               </div>
             )}
           </div>
         ) : (
-          <span className="text-[#a3a3a3]">—</span>
+          <span className="text-[#8D998F]">—</span>
         )}
       </td>
 
@@ -741,7 +779,7 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
         ) : (
           <button
             onClick={onDetail}
-            className="text-[#a3a3a3] hover:text-[#0A0A0A] p-1"
+            className="text-[#8D998F] hover:text-[#244B39] p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
             title="View details"
           >
             <ChevronRight size={14} strokeWidth={1.5} />
@@ -764,22 +802,22 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#20352A]/30 backdrop-blur-[2px]" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative z-10 bg-white w-full max-w-xl h-full overflow-y-auto shadow-2xl flex flex-col">
+      <div className="relative z-10 bg-[#FFFDF8] w-full max-w-xl h-full overflow-y-auto shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col border-l border-[#DCE3D6]">
         {/* Header */}
-        <div className="p-5 border-b border-[#E5E7EB] flex items-start justify-between sticky top-0 bg-white z-10">
+        <div className="p-5 border-b border-[#DCE3D6] flex items-start justify-between sticky top-0 bg-[#FFFDF8] z-10">
           <div>
-            <div className="font-display text-[17px] font-semibold text-[#0A0A0A]">
+            <div className="font-display text-[17px] font-semibold text-[#2F3A32]">
               {s.customer_name}
               {s.serial_no != null && (
-                <span className="ml-2 font-mono text-[12px] font-normal text-[#a3a3a3]">
+                <span className="ml-2 font-mono text-[12px] font-normal text-[#8D998F]">
                   #{s.serial_no}
                 </span>
               )}
             </div>
-            <div className="font-mono text-[12px] text-[#a3a3a3] mt-0.5">{s.customer_mobile}</div>
+            <div className="font-mono text-[12px] text-[#8D998F] mt-0.5">{s.customer_mobile}</div>
           </div>
           <div className="flex items-center gap-2">
             {s.status === "active" && canCreate && (
@@ -792,16 +830,16 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
                 <Gift size={12} strokeWidth={1.5} /> Mark as Redeemed
               </button>
             )}
-            <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A] p-1">
+            <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
               <X size={16} strokeWidth={1.5} />
             </button>
           </div>
         </div>
 
         {/* Scheme summary */}
-        <div className="p-5 border-b border-[#E5E7EB] space-y-4">
+        <div className="p-5 border-b border-[#DCE3D6] space-y-4">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-[15px] text-[#0A0A0A]">{s.plan_name}</span>
+            <span className="font-semibold text-[15px] text-[#2F3A32]">{s.plan_name}</span>
             <StatusBadge status={s.status} />
             {s.is_overdue && (
               <span className="chip" style={{ background: "#FEF2F2", color: "#DC2626", borderColor: "#FECACA" }}>
@@ -837,24 +875,24 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
 
           {/* Gold accumulation — gold schemes only */}
           {isGold && totalGrams > 0 && (
-            <div className="bg-[#FDFBF7] border border-[#EADFBF] rounded-md p-3 space-y-1.5">
+            <div className="bg-[#FDFBF7] border border-[#EADFBF] rounded-[9px] p-3 space-y-1.5">
               <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#B49042] mb-1">
                 Gold Accumulation
               </div>
               <div className="flex justify-between text-[12.5px]">
-                <span className="text-[#525252]">Total Grams Accumulated</span>
-                <span className="font-mono font-semibold text-[#0A0A0A]">{totalGrams.toFixed(3)}g</span>
+                <span className="text-[#5F6D62]">Total Grams Accumulated</span>
+                <span className="font-mono font-semibold text-[#2F3A32]">{totalGrams.toFixed(3)}g</span>
               </div>
               {currentValue !== null && (
                 <div className="flex justify-between text-[12.5px]">
-                  <span className="text-[#525252]">Current Value</span>
+                  <span className="text-[#5F6D62]">Current Value</span>
                   <span className="font-mono font-semibold text-[#B49042]">
                     {fmtINR(Math.round(currentValue))}
                   </span>
                 </div>
               )}
               {currentGoldRate && (
-                <div className="text-[11px] text-[#a3a3a3] mt-0.5">
+                <div className="text-[11px] text-[#8D998F] mt-0.5">
                   At current rate {fmtRatePerGram(currentGoldRate)}
                 </div>
               )}
@@ -863,7 +901,7 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
 
           {/* Progress bar */}
           <div>
-            <div className="flex justify-between text-[11.5px] text-[#737373] mb-1.5">
+            <div className="flex justify-between text-[11.5px] text-[#6E786F] mb-1.5">
               <span>{s.months_paid} of {s.duration_months} months paid</span>
               <span>{Math.round(pct)}%</span>
             </div>
@@ -899,7 +937,7 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
           )}
 
           {s.notes && (
-            <div className="bg-[#FAFAF9] rounded-md p-3 text-[12.5px] text-[#525252] border border-[#E5E7EB]">
+            <div className="bg-[#F7F8F2] rounded-md p-3 text-[12.5px] text-[#5F6D62] border border-[#DCE3D6]">
               {s.notes}
             </div>
           )}
@@ -909,7 +947,7 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
         <div className="flex-1 p-5">
           <div className="section-title mb-3">Payment History</div>
           {asArray(s.payments).length === 0 ? (
-            <div className="text-[13px] text-[#a3a3a3] py-6 text-center">No payments recorded yet.</div>
+            <div className="text-[13px] text-[#8D998F] py-6 text-center">No payments recorded yet.</div>
           ) : (
             <table className="w-full text-[12.5px]">
               <thead>
@@ -926,19 +964,19 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
               <tbody>
                 {asArray(s.payments).map((p, i) => (
                   <tr key={p.id || i} className="table-row">
-                    <td className="table-td text-[#a3a3a3] font-mono">{i + 1}</td>
+                    <td className="table-td text-[#8D998F] font-mono">{i + 1}</td>
                     <td className="table-td font-mono">{fmtDate(invoiceOccurredAt(p))}</td>
                     <td className="table-td text-right font-medium tabular-nums">{fmtINR(p.amount)}</td>
-                    <td className="table-td text-right font-mono text-[11.5px] text-[#525252]">
+                    <td className="table-td text-right font-mono text-[11.5px] text-[#5F6D62]">
                       {p.gold_rate_at_payment ? fmtINR(p.gold_rate_at_payment, { decimals: 0 }) : "—"}
                     </td>
                     <td className="table-td text-right font-mono text-[11.5px] text-[#8A6D2F] font-semibold">
                       {p.grams_credited ? `${Number(p.grams_credited).toFixed(3)}g` : "—"}
                     </td>
                     <td className="table-td">
-                      <span className="capitalize text-[#525252]">{p.mode || "—"}</span>
+                      <span className="capitalize text-[#5F6D62]">{p.mode || "—"}</span>
                     </td>
-                    <td className="table-td text-[#a3a3a3] font-mono text-[11px]">
+                    <td className="table-td text-[#8D998F] font-mono text-[11px]">
                       {p.reference || "—"}
                     </td>
                   </tr>
@@ -1133,14 +1171,14 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-[#20352A]/35 backdrop-blur-[2px] flex items-center justify-center p-4">
       <form
         onSubmit={save}
-        className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+        className="bg-[#FFFDF8] rounded-[14px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] w-full max-w-lg max-h-[90vh] overflow-y-auto"
       >
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between sticky top-0 bg-white z-10">
+        <div className="p-5 border-b border-[#DCE3D6] flex items-center justify-between sticky top-0 bg-[#FFFDF8] z-10">
           <div className="section-title">New Gold Scheme</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -1148,7 +1186,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
         <div className="p-5 space-y-4">
           {/* Employee */}
           <div ref={empWrap} className="relative">
-            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
               Registered by (employee)
             </div>
             <input
@@ -1170,16 +1208,16 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
               </div>
             )}
             {empOpen && filteredEmployees.length > 0 && (
-              <ul className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-[#E5E7EB] bg-white shadow-lg">
+              <ul className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-[9px] border border-[#DCE3D6] bg-[#FFFDF8] shadow-[0_12px_28px_rgba(35,58,43,0.12)]">
                 {filteredEmployees.map((emp) => (
                   <li key={emp.id}>
                     <button
                       type="button"
-                      className="w-full text-left px-3 py-2 text-[13px] hover:bg-[#FAFAFA]"
+                      className="w-full text-left px-3 py-2 text-[13px] hover:bg-[#F1F4ED] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#B8CBB9]"
                       onClick={() => pickEmployee(emp)}
                     >
-                      <div className="font-medium text-[#0A0A0A]">{emp.name}</div>
-                      <div className="text-[11px] text-[#737373]">
+                      <div className="font-medium text-[#2F3A32]">{emp.name}</div>
+                      <div className="text-[11px] text-[#6E786F]">
                         {[emp.job_title, emp.mobile].filter(Boolean).join(" · ") || "Staff"}
                       </div>
                     </button>
@@ -1191,17 +1229,17 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
 
           {/* Customer selection */}
           <div>
-            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
               Customer
             </div>
             <div className="flex gap-2 mb-3">
               <button
                 type="button"
                 onClick={() => setCustomerMode("existing")}
-                className={`px-3 py-1.5 text-[12px] rounded-md border transition-colors ${
+                className={`px-3 py-1.5 text-[12px] rounded-[9px] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${
                   customerMode === "existing"
-                    ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                    : "border-[#E5E7EB] text-[#525252] hover:border-[#0A0A0A]"
+                    ? "bg-[#244B39] text-white border-[#244B39]"
+                    : "border-[#DCE3D6] text-[#5F6D62] hover:border-[#66806B]"
                 }`}
               >
                 Existing Customer
@@ -1209,10 +1247,10 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
               <button
                 type="button"
                 onClick={() => setCustomerMode("walkin")}
-                className={`px-3 py-1.5 text-[12px] rounded-md border transition-colors ${
+                className={`px-3 py-1.5 text-[12px] rounded-[9px] border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${
                   customerMode === "walkin"
-                    ? "bg-[#0A0A0A] text-white border-[#0A0A0A]"
-                    : "border-[#E5E7EB] text-[#525252] hover:border-[#0A0A0A]"
+                    ? "bg-[#244B39] text-white border-[#244B39]"
+                    : "border-[#DCE3D6] text-[#5F6D62] hover:border-[#66806B]"
                 }`}
               >
                 Walk-in / New
@@ -1222,7 +1260,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
             {customerMode === "existing" ? (
               <div ref={custWrap} className="relative space-y-1">
                 <div className="relative">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8D998F]" />
                   <input
                     className="input text-[13px] pl-9"
                     placeholder="Search customer by name or mobile…"
@@ -1231,7 +1269,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
                     onFocus={() => { if (custResults.length) setCustOpen(true); }}
                   />
                 </div>
-                {custSearching && <div className="text-[11px] text-[#a3a3a3]">Searching…</div>}
+                {custSearching && <div className="text-[11px] text-[#8D998F]">Searching…</div>}
                 {selectedCustomer && (
                   <div className="text-[12px] text-emerald-700">
                     Selected: <span className="font-semibold">{selectedCustomer.name}</span>
@@ -1239,16 +1277,16 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
                   </div>
                 )}
                 {custOpen && custResults.length > 0 && (
-                  <ul className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-md border border-[#E5E7EB] bg-white shadow-lg">
+                  <ul className="absolute z-20 mt-1 w-full max-h-48 overflow-y-auto rounded-[9px] border border-[#DCE3D6] bg-[#FFFDF8] shadow-[0_12px_28px_rgba(35,58,43,0.12)]">
                     {custResults.map((c) => (
                       <li key={c.id}>
                         <button
                           type="button"
-                          className="w-full text-left px-3 py-2 text-[13px] hover:bg-[#FAFAFA]"
+                          className="w-full text-left px-3 py-2 text-[13px] hover:bg-[#F1F4ED] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#B8CBB9]"
                           onClick={() => pickCustomer(c)}
                         >
-                          <div className="font-medium text-[#0A0A0A]">{c.name}</div>
-                          <div className="text-[11px] font-mono text-[#737373]">{c.mobile || "—"}</div>
+                          <div className="font-medium text-[#2F3A32]">{c.name}</div>
+                          <div className="text-[11px] font-mono text-[#6E786F]">{c.mobile || "—"}</div>
                         </button>
                       </li>
                     ))}
@@ -1293,7 +1331,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
               ))}
             </select>
             {schemePlans.length === 0 && (
-              <div className="text-[11.5px] text-[#a3a3a3] mt-1.5">
+              <div className="text-[11.5px] text-[#8D998F] mt-1.5">
                 No scheme types defined yet — set them up under Programs → Scheme Management.
               </div>
             )}
@@ -1372,11 +1410,11 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
                 <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#B49042]">
                   Maturity Credit (after {form.duration_months} payments)
                 </div>
-                <div className="font-display text-[20px] font-semibold text-[#0A0A0A] mt-0.5">
+                <div className="font-display text-[20px] font-semibold text-[#2F3A32] mt-0.5">
                   {fmtINR(maturityValue)}
                 </div>
               </div>
-              <div className="text-[11.5px] text-[#737373] text-right">
+              <div className="text-[11.5px] text-[#6E786F] text-right">
                 <div>{form.duration_months} × {fmtINR(form.monthly_amount)} paid</div>
                 <div>+ {form.bonus_months} × {fmtINR(form.monthly_amount)} bonus</div>
               </div>
@@ -1398,7 +1436,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
           </F>
         </div>
 
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2 sticky bottom-0 bg-white">
+        <div className="p-4 border-t border-[#DCE3D6] flex items-center justify-end gap-2 sticky bottom-0 bg-[#FFFDF8]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" disabled={busy} className="btn-primary">
             {busy ? "Creating…" : "Create Scheme"}
@@ -1495,22 +1533,22 @@ function PayModal({ scheme, onClose, onDone }) {
     Number(scheme.monthly_amount || 0) * (Number(scheme.duration_months || 0) + bonus);
 
   return (
-    <div className="fixed inset-0 z-[60] bg-black/40 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] bg-[#20352A]/35 backdrop-blur-[2px] flex items-center justify-center p-4">
       <form
         onSubmit={save}
-        className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-sm"
+        className="bg-[#FFFDF8] rounded-[14px] border border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)] w-full max-w-sm"
       >
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+        <div className="p-5 border-b border-[#DCE3D6] flex items-center justify-between">
           <div>
             <div className="section-title">Add Payment</div>
-            <div className="text-[12px] text-[#737373] mt-0.5">
+            <div className="text-[12px] text-[#6E786F] mt-0.5">
               {scheme.customer_name} · {scheme.plan_name}
               <span className="ml-1.5 text-[11px] text-[#B49042]">
                 ({goldMode ? "Gold Saving" : "Cash Saving"})
               </span>
             </div>
           </div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -1518,7 +1556,7 @@ function PayModal({ scheme, onClose, onDone }) {
         <div className="p-5 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <F label="Payment Date">
-              <div className="input bg-[#F5F5F5] text-[#525252] flex items-center cursor-not-allowed" title="Always the shop's current transaction date">
+              <div className="input bg-[#F5F5F5] text-[#5F6D62] flex items-center cursor-not-allowed" title="Always the shop's current transaction date">
                 {fmtDate(form.date)}
               </div>
             </F>
@@ -1560,14 +1598,14 @@ function PayModal({ scheme, onClose, onDone }) {
                 <div className="bg-[#FDFBF7] border border-[#EADFBF] rounded-md p-3 text-[12.5px] text-[#8A6D2F]">
                   <span className="font-semibold">Gold stored this payment: </span>
                   <span className="font-mono font-semibold">{gramsPreview}g</span>
-                  <span className="text-[11px] text-[#a3a3a3] ml-2">
+                  <span className="text-[11px] text-[#8D998F] ml-2">
                     ({fmtINR(parseMoneyInput(form.amount))} ÷ {fmtRatePerGram(parseMoneyInput(form.gold_rate))})
                   </span>
                 </div>
               )}
             </>
           ) : (
-            <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-md p-3 text-[12px] text-[#525252]">
+            <div className="bg-[#F1F4ED] border border-[#DCE3D6] rounded-md p-3 text-[12px] text-[#5F6D62]">
               Cash saving — no gold rate needed. After {scheme.duration_months} paid months
               {bonus > 0 ? `, maturity credit is ${fmtINR(maturityPreview)} (includes ${bonus} bonus month)` : ""}.
             </div>
@@ -1593,7 +1631,7 @@ function PayModal({ scheme, onClose, onDone }) {
           </F>
 
           {/* Mini scheme status */}
-          <div className="bg-[#F9FAFB] rounded-md p-3 text-[12px] text-[#525252] border border-[#E5E7EB]">
+          <div className="bg-[#F1F4ED] rounded-[9px] p-3 text-[12px] text-[#5F6D62] border border-[#DCE3D6]">
             <div className="flex justify-between mb-1">
               <span>Months paid so far</span>
               <span className="font-mono font-medium">{scheme.months_paid} / {scheme.duration_months}</span>
@@ -1605,7 +1643,7 @@ function PayModal({ scheme, onClose, onDone }) {
           </div>
         </div>
 
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#DCE3D6] flex items-center justify-end gap-2 bg-[#F7F8F2]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Record Payment"}
@@ -1622,9 +1660,9 @@ function KpiCard({ label, value, icon: Icon, accent, danger }) {
   const text = value == null ? "—" : String(value);
   const long = text.length > 10;
   return (
-    <div className="card min-w-0 overflow-hidden">
+    <div className="card min-w-0 overflow-hidden bg-[#FFFDF8] border-[#DCE3D6] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
       <div className="flex items-center justify-between gap-2 min-w-0">
-        <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#737373] truncate">
+        <div className="text-[10.5px] uppercase tracking-[0.11em] font-semibold text-[#6E786F] truncate">
           {label}
         </div>
         {Icon && (
@@ -1634,13 +1672,13 @@ function KpiCard({ label, value, icon: Icon, accent, danger }) {
                 ? "bg-[#FEF2F2] border-[#FECACA]"
                 : accent
                 ? "bg-[#FDFBF7] border-[#EADFBF]"
-                : "bg-[#F9FAFB] border-[#E5E7EB]"
+                : "bg-[#F1F4ED] border-[#DCE3D6]"
             }`}
           >
             <Icon
               size={14}
               strokeWidth={1.5}
-              className={danger ? "text-[#DC2626]" : accent ? "text-[#B49042]" : "text-[#525252]"}
+              className={danger ? "text-[#DC2626]" : accent ? "text-[#B49042]" : "text-[#5F6D62]"}
             />
           </div>
         )}
@@ -1648,7 +1686,7 @@ function KpiCard({ label, value, icon: Icon, accent, danger }) {
       <div
         className={`font-display font-semibold mt-3 leading-tight tracking-tight tabular-nums break-all ${
           long ? "text-[16px] sm:text-[18px]" : "text-[22px] sm:text-[26px]"
-        } ${danger ? "text-[#DC2626]" : "text-[#0A0A0A]"}`}
+        } ${danger ? "text-[#DC2626]" : "text-[#2F3A32]"}`}
         title={text}
       >
         {text}
@@ -1694,20 +1732,20 @@ function StatusBadge({ status }) {
 function QuickBtn({ label, active, onClick, color }) {
   const colorMap = {
     amber: active
-      ? "bg-[#FFFBEB] text-[#D97706] border-[#FCD34D]"
-      : "border-[#E5E7EB] text-[#737373] hover:border-[#D97706] hover:text-[#D97706]",
+      ? "bg-[#FDFBF7] text-[#8A6D2F] border-[#EADFBF]"
+      : "border-[#DCE3D6] text-[#6E786F] hover:border-[#AFC2AE] hover:text-[#244B39]",
     red: active
-      ? "bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]"
-      : "border-[#E5E7EB] text-[#737373] hover:border-[#DC2626] hover:text-[#DC2626]",
+      ? "bg-[#FEF3F2] text-[#9B3E3A] border-[#F1C7C4]"
+      : "border-[#DCE3D6] text-[#6E786F] hover:border-[#E8B5B2] hover:text-[#9B3E3A]",
     gold: active
       ? "bg-[#FDFBF7] text-[#B49042] border-[#EADFBF]"
-      : "border-[#E5E7EB] text-[#737373] hover:border-[#B49042] hover:text-[#B49042]",
+      : "border-[#DCE3D6] text-[#6E786F] hover:border-[#B49042] hover:text-[#B49042]",
   };
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1.5 text-[12px] rounded-md border font-medium transition-colors ${colorMap[color] || colorMap.gold}`}
+      className={`px-3 py-1.5 text-[12px] rounded-[9px] border font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] ${colorMap[color] || colorMap.gold}`}
     >
       {label}
     </button>
@@ -1717,10 +1755,10 @@ function QuickBtn({ label, active, onClick, color }) {
 function InfoRow({ label, value, bold, accent }) {
   return (
     <div>
-      <div className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#a3a3a3] mb-0.5">{label}</div>
+      <div className="text-[11px] uppercase tracking-[0.08em] font-semibold text-[#8D998F] mb-0.5">{label}</div>
       <div
         className={`text-[13px] ${bold ? "font-semibold" : ""} ${
-          accent ? "text-[#B49042]" : "text-[#0A0A0A]"
+          accent ? "text-[#B49042]" : "text-[#2F3A32]"
         }`}
       >
         {value}
@@ -1732,7 +1770,7 @@ function InfoRow({ label, value, bold, accent }) {
 function F({ label, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
         {label}
       </span>
       {children}

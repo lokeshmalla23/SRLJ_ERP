@@ -179,12 +179,12 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
     // A4 sheet: 210×297mm. Preview uses mm so the sheet matches print paper.
     const sheetWidth = wide ? "297mm" : "210mm";
     return (
-      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1C2621]/70 backdrop-blur-sm">
         <div
-          className="bg-white rounded-xl shadow-2xl flex flex-col"
+          className="flex flex-col rounded-xl border border-white/20 bg-[#FFFDF9] shadow-[0_24px_70px_rgba(20,31,25,0.28)]"
           style={{ width: wide ? "min(98vw, 1200px)" : "min(94vw, 900px)", maxHeight: "94vh" }}
         >
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E5E7EB] flex-shrink-0">
+          <div className="flex flex-shrink-0 items-center justify-between border-b border-[#DDD7CA] bg-[#FFFDF9] px-5 py-3.5">
             <div>
               <p className="text-[14px] font-semibold text-[#0A0A0A]">{reportName} — Print Preview</p>
               <p className="text-[11px] text-[#737373] mt-0.5">
@@ -199,7 +199,7 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
               <X size={16} strokeWidth={1.5} />
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto bg-[#D9D9D9] p-5">
+          <div className="flex-1 overflow-y-auto bg-[#D8D5CE] p-5">
             {pdfGenerating ? (
               <div className="flex items-center justify-center gap-2 text-[13px] text-[#525252] py-24">
                 <RefreshCw size={15} strokeWidth={1.5} className="animate-spin" /> Generating PDF preview…
@@ -230,7 +230,7 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
               </div>
             )}
           </div>
-          <div className="flex-shrink-0 px-5 py-3.5 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+          <div className="flex flex-shrink-0 items-center justify-end gap-2 border-t border-[#DDD7CA] bg-[#FFFDF9] px-5 py-3.5 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-white">
             {directPreview ? null : (
               <button onClick={() => setPreviewHtml(null)} className="btn-secondary" disabled={printing || downloading}>
                 Back
@@ -263,8 +263,8 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
 
   if (directPreview) {
     return (
-      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50">
-        <div className="rounded-xl bg-white px-6 py-4 text-sm text-[#525252] shadow-xl">
+      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#1C2621]/50 backdrop-blur-[2px]">
+        <div className="rounded-xl border border-[#DDD7CA] bg-[#FFFDF9] px-6 py-4 text-sm text-[#59635D] shadow-[0_18px_50px_rgba(20,31,25,0.20)]">
           Generating preview…
         </div>
       </div>
@@ -272,18 +272,18 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-md" onClick={(e) => e.stopPropagation()}>
-        <div className="flex items-center justify-between p-5 border-b border-[#E5E7EB]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1C2621]/50 p-4 backdrop-blur-[2px]" onClick={onClose}>
+      <div className="w-full max-w-md rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_22px_60px_rgba(20,31,25,0.22)]" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between border-b border-[#DDD7CA] bg-[#FBF8F1] px-5 py-4">
           <div className="text-[15px] font-display font-semibold text-[#0A0A0A]">Print Summary</div>
           <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
             <X size={18} strokeWidth={1.5} />
           </button>
         </div>
 
-        <div className="p-5 space-y-5 max-h-[70vh] overflow-y-auto">
+        <div className="max-h-[70vh] space-y-5 overflow-y-auto p-5">
           <div>
-            <div className="text-[10.5px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-1">Report Name</div>
+            <div className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1">Report Name</div>
             <div className="text-[14px] font-medium text-[#0A0A0A]">{reportName}</div>
             <div className="text-[11.5px] text-[#a3a3a3] mt-0.5">{rows.length} record{rows.length === 1 ? "" : "s"}</div>
           </div>
@@ -346,7 +346,7 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
                 { key: "showSignature", label: "Show Signature Section" },
               ].map((o) => (
                 <label key={o.key} className="flex items-center gap-2 text-[12.5px] text-[#0A0A0A] cursor-pointer">
-                  <input type="checkbox" checked={options[o.key]} onChange={() => toggleOption(o.key)} className="accent-[#B49042]" />
+                  <input type="checkbox" checked={options[o.key]} onChange={() => toggleOption(o.key)} className="accent-[#315C4A]" />
                   {o.label}
                 </label>
               ))}
@@ -354,7 +354,7 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
           </FieldGroup>
         </div>
 
-        <div className="flex items-center justify-end gap-2 p-5 border-t border-[#E5E7EB]">
+        <div className="flex items-center justify-end gap-2 border-t border-[#DDD7CA] bg-[#FBF8F1] p-4 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-white">
           <button className="btn-secondary" onClick={onClose} disabled={busy}>Cancel</button>
           <button className="btn-primary" onClick={generate} disabled={busy}>
             {outputType === "print" ? <Printer size={13} strokeWidth={1.5} /> : <FileSpreadsheet size={13} strokeWidth={1.5} />}
@@ -369,7 +369,7 @@ export default function ReportViewModal({ open, onClose, reportName, columns, ro
 function FieldGroup({ label, children }) {
   return (
     <div>
-      <div className="text-[10.5px] uppercase tracking-[0.08em] font-semibold text-[#737373] mb-2">{label}</div>
+      <div className="text-[10.5px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-2">{label}</div>
       {children}
     </div>
   );
@@ -385,7 +385,7 @@ function RadioRow({ name, value, onChange, options }) {
             name={name}
             checked={value === o.value}
             onChange={() => onChange(o.value)}
-            className="accent-[#B49042]"
+            className="accent-[#315C4A]"
           />
           {o.label}
         </label>

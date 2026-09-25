@@ -593,7 +593,7 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
 
   return (
     <div>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] px-3.5 py-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
         <div className="flex items-center gap-3">
           {!embedded && onBack ? (
             <button type="button" onClick={onBack} className="text-[#737373] hover:text-[#0A0A0A]">
@@ -614,24 +614,24 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
         <div className="flex flex-wrap items-end gap-2">
           {!isOccasionReport ? (
             <>
-              <label className="text-[11px] text-[#737373]">
+              <label className="text-[10.5px] font-medium uppercase tracking-[0.05em] text-[#707973]">
                 From
-                <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="ml-1 rounded border px-2 py-1 text-xs" />
+                <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
               </label>
-              <label className="text-[11px] text-[#737373]">
+              <label className="text-[10.5px] font-medium uppercase tracking-[0.05em] text-[#707973]">
                 To
-                <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="ml-1 rounded border px-2 py-1 text-xs" />
+                <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
               </label>
             </>
           ) : (
             <div className="text-[11px] text-[#737373]">This calendar month · today's matches pinned at the top</div>
           )}
-          <button type="button" onClick={load} className="rounded-lg bg-[#0A0A0A] px-3 py-1.5 text-xs text-white">
+          <button type="button" onClick={load} className="rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A]">
             {loading ? <Loader2 className="inline h-3.5 w-3.5 animate-spin" /> : "Refresh"}
           </button>
           <button
             type="button"
-            className="btn-secondary inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs"
+            className="btn-secondary inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-3 py-1.5 text-xs hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
             onClick={() => setModalOpen(true)}
             disabled={!parsed.rows.length}
           >
@@ -641,13 +641,13 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
       </div>
 
       {isOccasionReport && todayRows.length ? (
-        <div className="mb-4 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-4">
+        <div className="mb-4 rounded-xl border border-[#DDD7CA] bg-[#FBF8F1] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
           <div className="mb-3 text-[12px] font-semibold uppercase tracking-widest text-[#B49042]">
             {occasionDateKey === "anniversary" ? "Today's anniversaries" : "Today's birthdays"}
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
             {todayRows.map((row) => (
-              <div key={row.id || `${row.mobile}-${row[occasionDateKey]}`} className="rounded-lg border border-[#EADFBF] bg-white px-3 py-2.5">
+              <div key={row.id || `${row.mobile}-${row[occasionDateKey]}`} className="rounded-[9px] border border-[#D8D2C6] bg-[#FFFDF9] px-3 py-2.5">
                 <div className="text-[13px] font-semibold text-[#0A0A0A]">{row.name || "—"}</div>
                 <div className="mt-0.5 text-[12px] text-[#525252]">{row.mobile || "—"} · {fmtDate(row[occasionDateKey])}</div>
               </div>
@@ -659,22 +659,22 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
       {parsed.kpis?.length ? (
         <div className="mb-4 grid grid-cols-2 gap-2 lg:grid-cols-4">
           {parsed.kpis.map((k) => (
-            <div key={k.label} className="rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
-              <div className="text-[10px] uppercase tracking-wide text-[#737373]">{k.label}</div>
-              <div className="mt-1 text-sm font-semibold tabular-nums">{k.value}</div>
+            <div key={k.label} className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#707973]">{k.label}</div>
+              <div className="mt-1 text-sm font-semibold tabular-nums text-[#24332B]">{k.value}</div>
             </div>
           ))}
         </div>
       ) : null}
 
-      <div className="overflow-auto rounded-xl border border-[#E5E7EB] bg-white">
+      <div className="overflow-auto rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
         {loading ? (
           <div className="p-8 text-center text-sm text-[#737373]">Loading…</div>
         ) : !parsed.rows.length ? (
           <div className="p-8 text-center text-sm text-[#737373]">No data for this period</div>
         ) : (
           <table className="min-w-full text-left text-xs">
-            <thead className="bg-[#F9FAFB] text-[11px] uppercase text-[#737373]">
+            <thead className="bg-[#F1EEE7] text-[11px] uppercase tracking-[0.06em] text-[#68716B] shadow-[0_1px_0_#DDD7CA]">
               <tr>
                 {showSno ? <th className="px-3 py-2 font-medium">S.No</th> : null}
                 {visibleColumns.map((c) => (
@@ -684,7 +684,7 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
             </thead>
             <tbody>
               {parsed.rows.map((r, i) => (
-                <tr key={r.id || i} className={`border-t ${r.is_today ? "border-[#EADFBF] bg-[#FDFBF7] font-medium" : "border-[#F3F4F6]"}`}>
+                <tr key={r.id || i} className={`border-t transition-colors hover:bg-[#F7F5EF] ${r.is_today ? "border-[#D8C28C] bg-[#FBF8F1] font-medium" : "border-[#E6E1D7]"}`}>
                   {showSno ? <td className="px-3 py-2 tabular-nums text-[#737373]">{i + 1}</td> : null}
                   {visibleColumns.map((c) => (
                     <td key={c.key} className={`px-3 py-2 tabular-nums ${c.align === "right" ? "text-right" : ""}`}>{cell(c, r)}</td>
@@ -694,7 +694,7 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
             </tbody>
             {parsed.summaryKeys?.length && tableTotals ? (
               <tfoot>
-                <tr className="border-t-2 border-[#111] bg-[#FAFAFA] font-semibold">
+                <tr className="border-t-2 border-[#315C4A] bg-[#EEF3EF] font-semibold text-[#24332B]">
                   {showSno ? <td className="px-3 py-2">TOTAL</td> : null}
                   {visibleColumns.map((c, i) => (
                     <td key={c.key} className={`px-3 py-2 tabular-nums ${c.align === "right" ? "text-right" : ""}`}>

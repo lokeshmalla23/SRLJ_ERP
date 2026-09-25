@@ -63,14 +63,14 @@ function getInitials(name = "") {
 }
 
 const AVATAR_COLORS = [
-  "bg-violet-100 text-violet-700",
-  "bg-sky-100 text-sky-700",
-  "bg-emerald-100 text-emerald-700",
-  "bg-amber-100 text-amber-700",
-  "bg-rose-100 text-rose-700",
-  "bg-indigo-100 text-indigo-700",
-  "bg-teal-100 text-teal-700",
-  "bg-pink-100 text-pink-700",
+  "bg-[#E7EFE8] text-[#315E48]",
+  "bg-[#EEF1E8] text-[#526B57]",
+  "bg-[#F5EEDC] text-[#8A6D2F]",
+  "bg-[#E8EEF0] text-[#4E6570]",
+  "bg-[#F1E8E1] text-[#8A5A43]",
+  "bg-[#E9ECE3] text-[#5E684E]",
+  "bg-[#E4EEE9] text-[#3F6A5A]",
+  "bg-[#F0EAE3] text-[#795E4B]",
 ];
 
 function avatarColor(name = "") {
@@ -80,15 +80,15 @@ function avatarColor(name = "") {
 }
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
-function StatCard({ icon: Icon, label, value, color = "text-[#0A0A0A]" }) {
+function StatCard({ icon: Icon, label, value, color = "text-[#294236]" }) {
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-xl p-4 flex items-center gap-4">
-      <div className="w-10 h-10 rounded-lg bg-[#F9FAFB] flex items-center justify-center shrink-0">
-        <Icon size={18} strokeWidth={1.5} className="text-[#737373]" />
+    <div className="relative flex items-center gap-3.5 overflow-hidden rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-4 shadow-[0_1px_2px_rgba(36,55,45,0.04)] before:absolute before:inset-x-0 before:top-0 before:h-0.5 before:bg-[#B49042]">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[9px] border border-[#D3DDD1] bg-[#EDF2EA] text-[#315E48]">
+        <Icon size={18} strokeWidth={1.7} />
       </div>
       <div>
-        <p className="text-[11px] text-[#737373] font-medium uppercase tracking-wide">{label}</p>
-        <p className={`text-2xl font-semibold ${color}`}>{value ?? "—"}</p>
+        <p className="text-[9.5px] font-bold uppercase tracking-[0.12em] text-[#77847A]">{label}</p>
+        <p className={`font-display text-[22px] font-semibold leading-tight ${color}`}>{value ?? "—"}</p>
       </div>
     </div>
   );
@@ -103,7 +103,7 @@ function EmployeeCard({ emp, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white border border-[#E5E7EB] rounded-xl p-5 cursor-pointer hover:shadow-md hover:border-[#D1D5DB] transition-all"
+      className="cursor-pointer rounded-[10px] border border-[#DCE3D6] bg-[#FEFEFB] p-5 shadow-[0_1px_2px_rgba(36,55,45,0.04)] transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-[#AFC1AD] hover:shadow-[0_8px_22px_rgba(36,55,45,0.08)]"
     >
       <div className="flex items-start gap-3 mb-4">
         <div
@@ -112,14 +112,14 @@ function EmployeeCard({ emp, onClick }) {
           {initials}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-semibold text-[#0A0A0A] truncate">{emp.name}</p>
+          <p className="text-[14px] font-semibold text-[#294236] truncate">{emp.name}</p>
           <p className="text-[12px] text-[#737373] truncate">{emp.job_title || "—"}</p>
         </div>
         <span
           className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-full ${
             isActive
-              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-              : "bg-red-50 text-red-600 border border-red-200"
+              ? "border border-[#C8D8C6] bg-[#EAF1E8] text-[#315E48]"
+              : "border border-[#E8CBC5] bg-[#FFF3F1] text-[#A34A42]"
           }`}
         >
           {isActive ? "Active" : "Inactive"}
@@ -168,46 +168,46 @@ function DetailPanel({ emp, onClose, onEdit, onDelete }) {
     const Icon = icon;
     return (
       <div className="flex gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#F9FAFB] flex items-center justify-center shrink-0 mt-0.5">
+        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] border border-[#DCE3D6] bg-[#F2F5EF]">
           <Icon size={14} strokeWidth={1.5} className="text-[#737373]" />
         </div>
         <div>
           <p className="text-[11px] text-[#737373] font-medium uppercase tracking-wide">{label}</p>
-          <p className="text-[13px] text-[#0A0A0A]">{value}</p>
+          <p className="text-[13px] text-[#294236]">{value}</p>
         </div>
       </div>
     );
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-40 flex justify-end bg-[#1A261F]/30 backdrop-blur-[2px]" onClick={onClose}>
       <div
-        className="relative w-full max-w-md bg-white h-full shadow-2xl overflow-y-auto flex flex-col"
+        className="relative flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-[#D4DDD1] bg-[#FEFEFB] shadow-[-18px_0_50px_rgba(27,43,34,0.16)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
-          <h2 className="text-[15px] font-semibold text-[#0A0A0A]">Employee Details</h2>
-          <button onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] transition-colors">
-            <X size={18} strokeWidth={1.5} />
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#DCE3D6] bg-[#F3F5EE]/95 px-6 py-4 backdrop-blur-sm">
+          <h2 className="font-display text-[15px] font-semibold text-[#294236]">Employee Details</h2>
+          <button onClick={onClose} className="rounded-[8px] p-1.5 text-[#748078] transition-colors hover:bg-white hover:text-[#294236] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35">
+            <X size={18} strokeWidth={1.7} />
           </button>
         </div>
 
         {/* Profile */}
-        <div className="px-6 py-6 flex items-center gap-4 border-b border-[#E5E7EB] bg-[#F9FAFB]">
+        <div className="flex items-center gap-4 border-b border-[#DCE3D6] bg-[#F0F4EC] px-6 py-6">
           <div
             className={`w-16 h-16 rounded-full flex items-center justify-center text-[20px] font-bold shrink-0 ${colorClass}`}
           >
             {initials}
           </div>
           <div className="min-w-0">
-            <p className="text-[18px] font-semibold text-[#0A0A0A]">{emp.name}</p>
+            <p className="text-[18px] font-semibold text-[#294236]">{emp.name}</p>
             <p className="text-[13px] text-[#737373]">{emp.job_title || "No title"}</p>
             <span
               className={`mt-1 inline-block text-[11px] font-medium px-2 py-0.5 rounded-full ${
                 isActive
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                  : "bg-red-50 text-red-600 border border-red-200"
+                  ? "border border-[#C8D8C6] bg-[#EAF1E8] text-[#315E48]"
+                  : "border border-[#E8CBC5] bg-[#FFF3F1] text-[#A34A42]"
               }`}
             >
               {isActive ? "Active" : "Inactive"}
@@ -228,17 +228,17 @@ function DetailPanel({ emp, onClose, onEdit, onDelete }) {
         </div>
 
         {/* Actions */}
-        <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-2">
+        <div className="px-6 py-4 border-t border-[#DCE3D6] flex items-center gap-2">
           <button
             onClick={onEdit}
-            className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+            className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-4 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2"
           >
             <Edit2 size={13} strokeWidth={1.5} />
             Edit
           </button>
           <button
             onClick={onDelete}
-            className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors ml-auto"
+            className="ml-auto inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#E5C8C2] bg-white px-4 text-[12.5px] font-semibold text-[#A34A42] transition-colors hover:border-[#D39D91] hover:bg-[#FFF3F1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B6534D]/25"
           >
             <Trash2 size={13} strokeWidth={1.5} />
             Delete
@@ -363,29 +363,29 @@ function EmployeeModal({ emp, onClose, onSaved }) {
     }
   };
 
-  const labelClass = "block text-[12px] font-medium text-[#525252] mb-1";
+  const labelClass = "mb-1 block text-[11px] font-semibold text-[#5F6F63]";
   const inputClass =
-    "w-full border border-[#E5E7EB] rounded-lg px-3 py-2 text-[13px] text-[#0A0A0A] bg-white placeholder-[#a3a3a3] focus:outline-none focus:border-[#0A0A0A] transition-colors";
+    "w-full rounded-[9px] border border-[#C8D2C5] bg-white px-3 py-2 text-[12.5px] text-[#294236] placeholder-[#9AA39B] transition-colors focus:border-[#5F7D67] focus:outline-none focus:ring-2 focus:ring-[#DCE7D8] disabled:bg-[#F1F2ED]";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1A261F]/45 px-4 backdrop-blur-[2px]" onClick={onClose}>
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-[10px] border border-[#D4DDD1] bg-[#FEFEFB] shadow-[0_24px_60px_rgba(27,43,34,0.24)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E7EB]">
-          <h2 className="text-[16px] font-semibold text-[#0A0A0A]">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#DCE3D6] bg-[#F3F5EE]/95 px-6 py-4 backdrop-blur-sm">
+          <h2 className="font-display text-[15px] font-semibold text-[#294236]">
             {isEdit ? "Edit Employee" : "Add Employee"}
           </h2>
-          <button onClick={onClose} className="text-[#737373] hover:text-[#0A0A0A] transition-colors">
-            <X size={18} strokeWidth={1.5} />
+          <button onClick={onClose} className="rounded-[8px] p-1.5 text-[#748078] transition-colors hover:bg-white hover:text-[#294236] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35">
+            <X size={18} strokeWidth={1.7} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="px-6 py-6 space-y-5">
           {/* Row 1: Name + Mobile */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className={labelClass}>
                 Name <span className="text-red-500">*</span>
@@ -434,7 +434,7 @@ function EmployeeModal({ emp, onClose, onSaved }) {
           </div>
 
           {/* Row 3: Job Title + Department */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className={labelClass}>Job Title</label>
               <input
@@ -460,7 +460,7 @@ function EmployeeModal({ emp, onClose, onSaved }) {
           </div>
 
           {/* Row 4: Salary + Join Date */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className={labelClass}>Salary (₹ / month)</label>
               <MoneyInput
@@ -492,9 +492,9 @@ function EmployeeModal({ emp, onClose, onSaved }) {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer text-[13px] font-medium transition-colors ${
                     form.status === s
                       ? s === "active"
-                        ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                        : "border-red-300 bg-red-50 text-red-600"
-                      : "border-[#E5E7EB] text-[#737373] hover:border-[#D1D5DB]"
+                        ? "border-[#8FAA90] bg-[#EAF1E8] text-[#315E48]"
+                        : "border-[#DCA69B] bg-[#FFF3F1] text-[#A34A42]"
+                      : "border-[#DCE3D6] bg-white text-[#6B786F] hover:border-[#B8C5B6] hover:bg-[#F8F9F5]"
                   }`}
                 >
                   <input
@@ -553,16 +553,16 @@ function EmployeeModal({ emp, onClose, onSaved }) {
 
           {/* Login Account */}
           {!isEdit && (
-            <div className="border border-[#E5E7EB] rounded-xl p-4 space-y-4 bg-[#F9FAFB]">
+            <div className="space-y-4 rounded-[10px] border border-[#DCE3D6] bg-[#F5F7F1] p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-[13px] font-semibold text-[#0A0A0A]">Login Account</div>
+                  <div className="text-[13px] font-semibold text-[#294236]">Login Account</div>
                   <div className="text-[11.5px] text-[#737373] mt-0.5">Create system access for this employee</div>
                 </div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <div
                     onClick={() => setCreateLogin((v) => !v)}
-                    className={`w-10 h-5 rounded-full transition-colors relative ${createLogin ? "bg-[#0A0A0A]" : "bg-[#E5E7EB]"}`}
+                    className={`relative h-5 w-10 rounded-full transition-colors ${createLogin ? "bg-[#244B39]" : "bg-[#D5DBD2]"}`}
                   >
                     <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${createLogin ? "translate-x-5" : "translate-x-0.5"}`} />
                   </div>
@@ -570,7 +570,7 @@ function EmployeeModal({ emp, onClose, onSaved }) {
               </div>
 
               {createLogin && (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div>
                     <label className={labelClass}>Role</label>
                     <select
@@ -602,8 +602,8 @@ function EmployeeModal({ emp, onClose, onSaved }) {
                     />
                   </div>
                   <div className="col-span-2">
-                    <div className="text-[11.5px] text-[#737373] bg-white border border-[#E5E7EB] rounded-lg px-3 py-2">
-                      Login email will be: <span className="font-mono font-medium text-[#0A0A0A]">{form.email || "— fill the Email field above —"}</span>
+                    <div className="text-[11.5px] text-[#737373] bg-white border border-[#DCE3D6] rounded-lg px-3 py-2">
+                      Login email will be: <span className="font-mono font-medium text-[#294236]">{form.email || "— fill the Email field above —"}</span>
                     </div>
                   </div>
                 </div>
@@ -616,14 +616,14 @@ function EmployeeModal({ emp, onClose, onSaved }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-[13px] font-medium border border-[#E5E7EB] text-[#525252] rounded-lg hover:bg-[#F9FAFB] transition-colors"
+              className="h-9 rounded-[9px] border border-[#CDD6CA] bg-white px-4 text-[12.5px] font-semibold text-[#526458] transition-colors hover:border-[#9FAF9E] hover:bg-[#F7F9F4] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={busy}
-              className="px-5 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] disabled:opacity-50 transition-colors"
+              className="h-9 rounded-[9px] border border-[#244B39] bg-[#244B39] px-5 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {busy ? "Saving…" : isEdit ? "Save Changes" : "Add Employee"}
             </button>
@@ -741,16 +741,16 @@ export default function Employees() {
   const deptCount = summary?.departments ?? new Set(employees.map((e) => e.department).filter(Boolean)).size;
 
   return (
-    <div className="max-w-[1400px]">
+    <div className="w-full max-w-[1400px] [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#244B39] [&_.btn-primary]:!bg-[#244B39] [&_.btn-primary:hover]:!bg-[#173D2C] [&_.btn-primary:focus-visible]:!ring-2 [&_.btn-primary:focus-visible]:!ring-[#315E48]/30 [&_.btn-primary:focus-visible]:!ring-offset-2 [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#CDD6CA] [&_.btn-secondary:hover]:!border-[#9FAF9E] [&_.btn-secondary:hover]:!bg-[#F7F9F4] [&_.btn-secondary:focus-visible]:!ring-2 [&_.btn-secondary:focus-visible]:!ring-[#78917C]/35 [&_.input]:!rounded-[9px] [&_.input]:!border-[#C8D2C5] [&_.input:focus]:!border-[#5F7D67] [&_.input:focus]:!ring-2 [&_.input:focus]:!ring-[#DCE7D8] [&_.table-shell]:!border-[#DCE3D6] [&_.table-head-row]:!border-[#D9E0D6] [&_.table-head-row]:!bg-[#F3F5EE] [&_.table-th]:!text-[#66766A] [&_.table-td]:!border-[#E6E9E2] [&_.table-row:hover_.table-td]:!bg-[#F5F7F1]">
       {/* Page Title Row */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-[22px] font-semibold text-[#0A0A0A]">Employees</h1>
+          <h1 className="font-display text-[21px] font-semibold tracking-[-0.02em] text-[#294236]">Employees</h1>
           <div className="flex items-center gap-3 mt-1">
-            <span className="text-[12px] text-[#737373] bg-[#F9FAFB] border border-[#E5E7EB] rounded-full px-2.5 py-0.5">
+            <span className="rounded-full border border-[#DCE3D6] bg-[#F5F7F1] px-2.5 py-1 text-[10.5px] font-semibold text-[#66746A]">
               Total: {totalCount}
             </span>
-            <span className="text-[12px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5">
+            <span className="rounded-full border border-[#C8D8C6] bg-[#EAF1E8] px-2.5 py-1 text-[10.5px] font-semibold text-[#315E48]">
               Active: {activeCount}
             </span>
           </div>
@@ -758,7 +758,7 @@ export default function Employees() {
         {activeTab === "list" && (
           <button
             onClick={openAdd}
-            className="flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+            className="inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-4 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2"
           >
             <Plus size={14} strokeWidth={1.5} />
             Add Employee
@@ -767,7 +767,7 @@ export default function Employees() {
       </div>
 
       {canViewPermissions && (
-        <div className="flex items-center gap-1 mb-6 border-b border-[#E5E7EB]">
+        <div className="mb-6 flex w-fit items-center gap-1 rounded-[10px] border border-[#DCE3D6] bg-[#F1F3ED] p-1">
           {[
             { id: "list", label: "Employees", icon: Users },
             { id: "permissions", label: "Permissions", icon: ShieldCheck },
@@ -779,10 +779,10 @@ export default function Employees() {
                 key={t.id}
                 type="button"
                 onClick={() => setActiveTab(t.id)}
-                className={`flex items-center gap-2 px-3.5 py-2.5 text-[12.5px] font-medium border-b-2 transition-colors ${
+                className={`flex items-center gap-2 rounded-[8px] px-3.5 py-2 text-[12px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
                   isActive
-                    ? "text-[#0A0A0A] border-[#0A0A0A]"
-                    : "text-[#737373] border-transparent hover:text-[#0A0A0A]"
+                    ? "bg-[#244B39] text-white shadow-[0_1px_2px_rgba(26,58,41,0.16)]"
+                    : "text-[#65736A] hover:bg-white hover:text-[#315E48]"
                 }`}
               >
                 <Icon size={14} strokeWidth={1.5} />
@@ -808,9 +808,9 @@ export default function Employees() {
       {/* Search + Filter Row */}
       <div className="flex flex-wrap items-center gap-3 mb-5">
         <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#a3a3a3]" strokeWidth={1.5} />
+          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#7C897F]" strokeWidth={1.7} />
           <input
-            className="w-full border border-[#E5E7EB] rounded-lg pl-9 pr-3 py-2 text-[13px] text-[#0A0A0A] bg-white placeholder-[#a3a3a3] focus:outline-none focus:border-[#0A0A0A] transition-colors"
+            className="w-full rounded-[9px] border border-[#C8D2C5] bg-white py-2 pl-9 pr-3 text-[12.5px] text-[#294236] placeholder-[#9AA39B] transition-colors focus:border-[#5F7D67] focus:outline-none focus:ring-2 focus:ring-[#DCE7D8]"
             placeholder="Search name, mobile, email…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
@@ -823,10 +823,10 @@ export default function Employees() {
             <button
               key={d}
               onClick={() => setDeptFilter(d)}
-              className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${
+              className={`h-8 rounded-[8px] border px-3 text-[11.5px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#78917C]/35 ${
                 deptFilter === d
-                  ? "bg-[#0A0A0A] text-white"
-                  : "bg-[#F9FAFB] border border-[#E5E7EB] text-[#525252] hover:border-[#D1D5DB] hover:text-[#0A0A0A]"
+                  ? "border-[#244B39] bg-[#244B39] text-white"
+                  : "border-[#DCE3D6] bg-[#F5F7F1] text-[#5F6F63] hover:border-[#B4C2B2] hover:bg-white hover:text-[#315E48]"
               }`}
             >
               {d}
@@ -842,11 +842,11 @@ export default function Employees() {
           <CardGridSkeleton count={8} cols={4} />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-14 h-14 rounded-full bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center mb-4">
-            <Users size={22} strokeWidth={1.5} className="text-[#a3a3a3]" />
+        <div className="flex flex-col items-center justify-center rounded-[10px] border border-dashed border-[#C7D2C4] bg-[#F8F9F5] px-6 py-20 text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-[10px] border border-[#D6DED3] bg-[#EEF2EA] text-[#6D7D71]">
+            <Users size={22} strokeWidth={1.5} />
           </div>
-          <p className="text-[15px] font-medium text-[#0A0A0A]">
+          <p className="text-[15px] font-medium text-[#294236]">
             {q || deptFilter !== "All" ? "No employees match your filter" : "No employees yet"}
           </p>
           <p className="text-[13px] text-[#737373] mt-1">
@@ -857,7 +857,7 @@ export default function Employees() {
           {!q && deptFilter === "All" && (
             <button
               onClick={openAdd}
-              className="mt-4 flex items-center gap-2 px-4 py-2 text-[13px] font-medium bg-[#0A0A0A] text-white rounded-lg hover:bg-[#262626] transition-colors"
+              className="mt-4 inline-flex h-9 items-center gap-2 rounded-[9px] border border-[#244B39] bg-[#244B39] px-4 text-[12.5px] font-semibold text-white transition-colors hover:bg-[#173D2C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#315E48]/30 focus-visible:ring-offset-2"
             >
               <Plus size={14} strokeWidth={1.5} />
               Add Employee

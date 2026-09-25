@@ -31,12 +31,12 @@ import { AccountsKpiCard, fmtINR, today } from "./accountsShared";
 function StepHeading({ number, icon: Icon, title, description, optional = false }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F5EEDC] text-[#9A762E]">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-[#D6E0D8] bg-[#EEF3EF] text-[#315C4A]">
         <Icon size={17} strokeWidth={1.8} />
       </div>
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#B49042]">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8A6A2D]">
             Step {number}
           </span>
           {optional ? (
@@ -58,7 +58,7 @@ function MoneyField({ icon: Icon, label, hint, value, onChange, disabled, badge 
       className={`block rounded-xl border p-3.5 transition ${
         disabled
           ? "border-emerald-200 bg-emerald-50/40"
-          : "border-[#E5E7EB] bg-white hover:border-[#D8C89F] focus-within:border-[#B49042] focus-within:ring-2 focus-within:ring-[#B49042]/10"
+          : "border-[#D8D2C6] bg-white hover:border-[#9EB2A6] focus-within:border-[#315C4A] focus-within:ring-2 focus-within:ring-[#315C4A]/10"
       }`}
     >
       <span className="flex items-center justify-between gap-2">
@@ -242,7 +242,7 @@ export default function OpeningSetupTab({ onComplete }) {
   if (status?.setup_complete) {
     const saved = status.opening_saved || {};
     return (
-      <div className="min-h-full bg-[#F8F7F3] pb-8">
+      <div className="min-h-full bg-[#F4F1EA] pb-8">
         <section className="relative overflow-hidden rounded-2xl bg-[#171A17] px-5 py-6 text-white shadow-sm sm:px-7">
           <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-emerald-500/20 blur-3xl" />
           <div className="relative">
@@ -278,7 +278,7 @@ export default function OpeningSetupTab({ onComplete }) {
   const remaining = Array.isArray(status?.remaining_steps) ? status.remaining_steps : [];
 
   return (
-    <div className="min-h-full bg-[#F8F7F3] pb-8">
+    <div className="min-h-full bg-[#F4F1EA] pb-8">
       <section className="relative overflow-hidden rounded-2xl bg-[#171A17] px-5 py-6 text-white shadow-sm sm:px-7">
         <div className="absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[#B49042]/20 blur-3xl" />
         <div className="relative flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
@@ -441,7 +441,7 @@ export default function OpeningSetupTab({ onComplete }) {
                 type="checkbox"
                 checked={confirmed}
                 onChange={(e) => setConfirmed(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[#C8B77F] text-[#B49042]"
+                className="mt-0.5 h-4 w-4 rounded border-[#9EB2A6] accent-[#315C4A]"
               />
               <span className="text-[13px] leading-5 text-[#404040]">
                 I have verified these balances as of <strong>{cutoverDate}</strong> and understand
@@ -450,7 +450,7 @@ export default function OpeningSetupTab({ onComplete }) {
             </label>
             <button
               type="button"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#171A17] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-black disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-[10px] border border-[#315C4A] bg-[#315C4A] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#244A3A] disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
               onClick={save}
               disabled={saving || loading || !confirmed}
             >
@@ -483,7 +483,7 @@ export default function OpeningSetupTab({ onComplete }) {
                 </div>
               ))}
             </dl>
-            <div className="mt-4 rounded-xl bg-[#F8F7F3] p-3 text-[11px] leading-5 text-[#737373]">
+            <div className="mt-4 rounded-xl bg-[#F4F1EA] p-3 text-[11px] leading-5 text-[#737373]">
               Effective from <strong className="text-[#404040]">{cutoverDate}</strong>
             </div>
           </div>

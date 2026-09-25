@@ -76,6 +76,45 @@ const STATUS_CHIP_CLASS = {
   sent: "chip chip-success",
 };
 
+// Presentation-only trade-module canvas and control treatment.
+const TRADE_PAGE_CLASS = [
+  "text-[#2F3A32]",
+  "[&_.btn-primary]:rounded-[9px]",
+  "[&_.btn-primary]:bg-[#244B39]",
+  "[&_.btn-primary]:border-[#244B39]",
+  "[&_.btn-primary]:hover:bg-[#1D3B2E]",
+  "[&_.btn-primary]:focus-visible:ring-2",
+  "[&_.btn-primary]:focus-visible:ring-[#B8CBB9]",
+  "[&_.btn-secondary]:rounded-[9px]",
+  "[&_.btn-secondary]:border-[#D3DDD1]",
+  "[&_.btn-secondary]:text-[#2F4939]",
+  "[&_.btn-secondary]:hover:border-[#AFC2AE]",
+  "[&_.btn-secondary]:hover:bg-[#F1F4ED]",
+  "[&_.btn-accent]:rounded-[9px]",
+  "[&_.btn-accent]:bg-[#244B39]",
+  "[&_.btn-accent]:border-[#244B39]",
+  "[&_.btn-accent]:hover:bg-[#1D3B2E]",
+  "[&_.input]:rounded-[9px]",
+  "[&_.input]:border-[#C8D4C7]",
+  "[&_.input]:focus:border-[#66806B]",
+  "[&_.input]:focus:shadow-[0_0_0_3px_rgba(102,128,107,0.14)]",
+  "[&_.card]:rounded-[10px]",
+  "[&_.card]:border-[#DCE3D6]",
+  "[&_.card]:bg-[#FFFDF8]",
+  "[&_.card]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-shell]:rounded-[10px]",
+  "[&_.table-shell]:border-[#DCE3D6]",
+  "[&_.table-shell]:shadow-[0_1px_2px_rgba(35,58,43,0.04)]",
+  "[&_.table-head-row]:bg-[#F1F4ED]",
+  "[&_.table-head-row]:border-[#DCE3D6]",
+  "[&_.table-th]:text-[#607063]",
+  "[&_.table-td]:border-[#E3E8E0]",
+  "[&_.table-row:hover_.table-td]:bg-[#F7F9F4]",
+  "[&_h2]:text-[#2F3A32]",
+  "[&_h2+p]:text-[#6E786F]",
+].join(" ");
+
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 export default function Promotions() {
   const [campaigns, setCampaigns] = useState([]);
@@ -143,7 +182,7 @@ export default function Promotions() {
   };
 
   return (
-    <div className="max-w-[1400px]">
+    <div className={`${TRADE_PAGE_CLASS} max-w-[1400px]`}>
       <PageHeader
         title="Promotions & Marketing"
         subtitle="Create WhatsApp campaigns for your customers — birthdays, festivals, scheme reminders and more."
@@ -204,14 +243,14 @@ export default function Promotions() {
                     <td className="table-td">
                       <span className={TYPE_CHIP_CLASS[c.type] || "chip chip-neutral"}>{typeLabel}</span>
                     </td>
-                    <td className="table-td text-[#525252]">{segLabel}</td>
+                    <td className="table-td text-[#5F6D62]">{segLabel}</td>
                     <td className="table-td text-right font-mono tabular-nums">
                       {c.total_recipients > 0 ? c.total_recipients : "—"}
                     </td>
                     <td className="table-td">
                       <span className={STATUS_CHIP_CLASS[c.status] || "chip chip-neutral"}>{c.status}</span>
                     </td>
-                    <td className="table-td text-[#737373] font-mono text-[12px]">{fmtDate(c.created_at)}</td>
+                    <td className="table-td text-[#6E786F] font-mono text-[12px]">{fmtDate(c.created_at)}</td>
                     <td className="table-td text-right">
                       <div className="flex items-center justify-end gap-2">
                         {c.status === "draft" && (
@@ -387,23 +426,23 @@ function CreateCampaignPanel({ onClose, onCreated }) {
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 z-40 bg-black/30"
+        className="fixed inset-0 z-40 bg-[#20352A]/30"
         onClick={onClose}
         aria-hidden="true"
       />
       {/* Panel */}
-      <div className="fixed inset-y-0 right-0 z-50 flex flex-col bg-white border-l border-[#E5E7EB] shadow-2xl"
+      <div className="fixed inset-y-0 right-0 z-50 flex flex-col bg-[#FFFDF8] border-l border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)]"
         style={{ width: "520px" }}
       >
         {/* Header */}
-        <div className="h-16 border-b border-[#E5E7EB] flex items-center justify-between px-6 flex-shrink-0">
+        <div className="h-16 border-b border-[#DCE3D6] flex items-center justify-between px-6 flex-shrink-0 bg-[#FFFDF8]">
           <div>
             <div className="section-title">New Campaign</div>
-            <div className="text-[11px] text-[#737373] mt-0.5">
+            <div className="text-[11px] text-[#6E786F] mt-0.5">
               Step {step} of 4 — {["Choose Type", "Select Audience", "Compose Message", "Review & Send"][step - 1]}
             </div>
           </div>
-          <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A] transition-colors">
+          <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -415,7 +454,7 @@ function CreateCampaignPanel({ onClose, onCreated }) {
               <div
                 className="h-7 w-7 rounded-full flex items-center justify-center text-[11px] font-semibold transition-all"
                 style={{
-                  background: s <= step ? "#0A0A0A" : "#F3F4F6",
+                  background: s <= step ? "#244B39" : "#F1F4ED",
                   color: s <= step ? "white" : "#9CA3AF",
                 }}
               >
@@ -424,7 +463,7 @@ function CreateCampaignPanel({ onClose, onCreated }) {
               {s < 4 && (
                 <div
                   className="h-px w-10 transition-all"
-                  style={{ background: s < step ? "#0A0A0A" : "#E5E7EB" }}
+                  style={{ background: s < step ? "#244B39" : "#DCE3D6" }}
                 />
               )}
             </div>
@@ -473,7 +512,7 @@ function CreateCampaignPanel({ onClose, onCreated }) {
         </div>
 
         {/* Footer */}
-        <div className="border-t border-[#E5E7EB] px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <div className="border-t border-[#DCE3D6] px-6 py-4 flex items-center justify-between flex-shrink-0 bg-[#F7F8F2]">
           <button
             onClick={() => setStep((s) => Math.max(1, s - 1))}
             disabled={step === 1}
@@ -512,7 +551,7 @@ function CreateCampaignPanel({ onClose, onCreated }) {
 function Step1TypeSelect({ types, selected, onSelect }) {
   return (
     <div>
-      <div className="text-[13px] text-[#525252] mb-4">Select the type of campaign you want to run.</div>
+      <div className="text-[13px] text-[#5F6D62] mb-4">Select the type of campaign you want to run.</div>
       <div className="grid grid-cols-2 gap-3">
         {types.map(({ value, label, icon: Icon, desc }) => {
           const isSelected = selected === value;
@@ -520,28 +559,28 @@ function Step1TypeSelect({ types, selected, onSelect }) {
             <button
               key={value}
               onClick={() => onSelect(value)}
-              className="text-left p-4 rounded-lg border transition-all"
+              className="text-left p-4 rounded-[10px] border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]"
               style={{
-                border: isSelected ? "1px solid #0A0A0A" : "1px solid #E5E7EB",
-                background: isSelected ? "#FAFAFA" : "white",
-                boxShadow: isSelected ? "0 0 0 3px rgba(10,10,10,0.06)" : "none",
+                border: isSelected ? "1px solid #244B39" : "1px solid #DCE3D6",
+                background: isSelected ? "#F1F4ED" : "white",
+                boxShadow: isSelected ? "0 0 0 3px rgba(36,75,57,0.10)" : "none",
               }}
             >
               <div
                 className="h-8 w-8 rounded-md flex items-center justify-center mb-3"
                 style={{
-                  background: isSelected ? "#0A0A0A" : "#F9FAFB",
-                  border: isSelected ? "none" : "1px solid #E5E7EB",
+                  background: isSelected ? "#244B39" : "#F1F4ED",
+                  border: isSelected ? "none" : "1px solid #DCE3D6",
                 }}
               >
                 <Icon
                   size={15}
                   strokeWidth={1.5}
-                  style={{ color: isSelected ? "#B49042" : "#737373" }}
+                  style={{ color: isSelected ? "#B49042" : "#6E786F" }}
                 />
               </div>
-              <div className="font-medium text-[13px] text-[#0A0A0A] mb-1">{label}</div>
-              <div className="text-[11.5px] text-[#737373] leading-relaxed">{desc}</div>
+              <div className="font-medium text-[13px] text-[#2F3A32] mb-1">{label}</div>
+              <div className="text-[11.5px] text-[#6E786F] leading-relaxed">{desc}</div>
             </button>
           );
         })}
@@ -554,17 +593,17 @@ function Step1TypeSelect({ types, selected, onSelect }) {
 function Step2Audience({ segments, selected, onSelect, segmentConfig, onSegmentConfigChange, preview, previewLoading, onPreview }) {
   return (
     <div>
-      <div className="text-[13px] text-[#525252] mb-4">Choose who should receive this campaign.</div>
+      <div className="text-[13px] text-[#5F6D62] mb-4">Choose who should receive this campaign.</div>
       <div className="flex flex-col gap-2 mb-5">
         {segments.map(({ value, label, icon: Icon, desc }) => {
           const isSelected = selected === value;
           return (
             <label
               key={value}
-              className="flex items-start gap-3 p-3.5 rounded-lg border cursor-pointer transition-all"
+              className="flex items-start gap-3 p-3.5 rounded-[10px] border cursor-pointer transition-all focus-within:ring-2 focus-within:ring-[#B8CBB9]"
               style={{
-                border: isSelected ? "1px solid #0A0A0A" : "1px solid #E5E7EB",
-                background: isSelected ? "#FAFAFA" : "white",
+                border: isSelected ? "1px solid #244B39" : "1px solid #DCE3D6",
+                background: isSelected ? "#F1F4ED" : "white",
               }}
             >
               <input
@@ -573,15 +612,15 @@ function Step2Audience({ segments, selected, onSelect, segmentConfig, onSegmentC
                 value={value}
                 checked={isSelected}
                 onChange={() => onSelect(value)}
-                className="mt-0.5 accent-[#0A0A0A]"
+                className="mt-0.5 accent-[#244B39]"
               />
               <div className="flex items-center gap-2.5 flex-1">
-                <div className="h-7 w-7 rounded-md bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center flex-shrink-0">
-                  <Icon size={13} strokeWidth={1.5} className="text-[#525252]" />
+                <div className="h-7 w-7 rounded-md bg-[#F1F4ED] border border-[#DCE3D6] flex items-center justify-center flex-shrink-0">
+                  <Icon size={13} strokeWidth={1.5} className="text-[#5F6D62]" />
                 </div>
                 <div className="flex-1">
-                  <div className="font-medium text-[13px] text-[#0A0A0A]">{label}</div>
-                  <div className="text-[11.5px] text-[#737373]">{desc}</div>
+                  <div className="font-medium text-[13px] text-[#2F3A32]">{label}</div>
+                  <div className="text-[11.5px] text-[#6E786F]">{desc}</div>
                 </div>
               </div>
             </label>
@@ -591,7 +630,7 @@ function Step2Audience({ segments, selected, onSelect, segmentConfig, onSegmentC
 
       {selected === "high_value" && (
         <div className="mb-4">
-          <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+          <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
             Minimum Purchase Amount (₹)
           </label>
           <MoneyInput
@@ -609,10 +648,10 @@ function Step2Audience({ segments, selected, onSelect, segmentConfig, onSegmentC
       </button>
 
       {preview && (
-        <div className="rounded-lg border border-[#E5E7EB] p-4 bg-[#F9FAFB]">
+        <div className="rounded-[10px] border border-[#DCE3D6] p-4 bg-[#F1F4ED] shadow-[0_1px_2px_rgba(35,58,43,0.04)]">
           <div className="flex items-center gap-2 mb-3">
             <Users size={14} strokeWidth={1.5} className="text-[#B49042]" />
-            <span className="font-semibold text-[13px] text-[#0A0A0A]">
+            <span className="font-semibold text-[13px] text-[#2F3A32]">
               {preview.count} customer{preview.count !== 1 ? "s" : ""} will receive this campaign
             </span>
           </div>
@@ -620,12 +659,12 @@ function Step2Audience({ segments, selected, onSelect, segmentConfig, onSegmentC
             <div className="flex flex-col gap-1.5">
               {preview.preview.map((c) => (
                 <div key={c.id} className="flex items-center justify-between text-[12.5px]">
-                  <span className="text-[#0A0A0A] font-medium">{c.name}</span>
-                  <span className="text-[#737373] font-mono">{c.mobile}</span>
+                  <span className="text-[#2F3A32] font-medium">{c.name}</span>
+                  <span className="text-[#6E786F] font-mono">{c.mobile}</span>
                 </div>
               ))}
               {preview.count > 5 && (
-                <div className="text-[11.5px] text-[#a3a3a3] mt-1">
+                <div className="text-[11.5px] text-[#8D998F] mt-1">
                   +{preview.count - 5} more…
                 </div>
               )}
@@ -650,9 +689,9 @@ function Step3Compose({ message, onMessageChange, textareaRef, onInsertVariable 
 
   return (
     <div>
-      <div className="text-[13px] text-[#525252] mb-4">Compose your message. Use variables to personalise it for each customer.</div>
+      <div className="text-[13px] text-[#5F6D62] mb-4">Compose your message. Use variables to personalise it for each customer.</div>
 
-      <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+      <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
         Message
       </label>
       <textarea
@@ -665,8 +704,8 @@ function Step3Compose({ message, onMessageChange, textareaRef, onInsertVariable 
         placeholder="Type your message here…"
       />
       <div className="flex items-center justify-between mt-1.5 mb-4">
-        <div className="text-[11px] text-[#a3a3a3]">Click a variable to insert it at cursor position</div>
-        <div className="text-[11px] text-[#a3a3a3] font-mono">{message.length} chars</div>
+        <div className="text-[11px] text-[#8D998F]">Click a variable to insert it at cursor position</div>
+        <div className="text-[11px] text-[#8D998F] font-mono">{message.length} chars</div>
       </div>
 
       {/* Variable chips */}
@@ -685,12 +724,12 @@ function Step3Compose({ message, onMessageChange, textareaRef, onInsertVariable 
       </div>
 
       {/* WhatsApp preview */}
-      <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+      <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
         Preview (sample data)
       </div>
       <div
         className="rounded-xl p-4 relative overflow-hidden"
-        style={{ background: "#ECE5DD", minHeight: "80px" }}
+        style={{ background: "#F1EDE5", minHeight: "80px" }}
       >
         <div
           className="inline-block rounded-xl px-4 py-3 text-[13.5px] leading-relaxed max-w-[90%] shadow-sm"
@@ -706,8 +745,8 @@ function Step3Compose({ message, onMessageChange, textareaRef, onInsertVariable 
           {preview || <span style={{ color: "#a3a3a3" }}>Your message preview will appear here…</span>}
         </div>
         <div className="flex items-center gap-1 mt-2">
-          <Smartphone size={11} className="text-[#737373]" strokeWidth={1.5} />
-          <span className="text-[10.5px] text-[#737373]">WhatsApp preview</span>
+          <Smartphone size={11} className="text-[#6E786F]" strokeWidth={1.5} />
+          <span className="text-[10.5px] text-[#6E786F]">WhatsApp preview</span>
         </div>
       </div>
     </div>
@@ -721,10 +760,10 @@ function Step4Review({ campaignName, onCampaignNameChange, selectedType, selecte
 
   return (
     <div>
-      <div className="text-[13px] text-[#525252] mb-5">Review your campaign details before sending.</div>
+      <div className="text-[13px] text-[#5F6D62] mb-5">Review your campaign details before sending.</div>
 
       <div className="mb-4">
-        <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
+        <label className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-1.5">
           Campaign Name
         </label>
         <input
@@ -735,7 +774,7 @@ function Step4Review({ campaignName, onCampaignNameChange, selectedType, selecte
         />
       </div>
 
-      <div className="rounded-lg border border-[#E5E7EB] divide-y divide-[#E5E7EB] mb-5">
+      <div className="rounded-lg border border-[#DCE3D6] divide-y divide-[#E3E8E0] mb-5">
         <SummaryRow label="Type" value={typeLabel} />
         <SummaryRow label="Segment" value={segLabel} />
         <SummaryRow
@@ -745,11 +784,11 @@ function Step4Review({ campaignName, onCampaignNameChange, selectedType, selecte
       </div>
 
       <div className="mb-4">
-        <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+        <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
           Message Preview
         </div>
         <div
-          className="rounded-lg border border-[#E5E7EB] p-4 text-[13px] leading-relaxed text-[#0A0A0A] bg-[#F9FAFB]"
+          className="rounded-lg border border-[#DCE3D6] p-4 text-[13px] leading-relaxed text-[#2F3A32] bg-[#F1F4ED]"
           style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
         >
           {message}
@@ -773,8 +812,8 @@ function Step4Review({ campaignName, onCampaignNameChange, selectedType, selecte
 function SummaryRow({ label, value }) {
   return (
     <div className="flex items-center justify-between px-4 py-3">
-      <span className="text-[11.5px] text-[#737373] font-medium uppercase tracking-[0.06em]">{label}</span>
-      <span className="text-[13px] font-medium text-[#0A0A0A]">{value}</span>
+      <span className="text-[11.5px] text-[#6E786F] font-medium uppercase tracking-[0.06em]">{label}</span>
+      <span className="text-[13px] font-medium text-[#2F3A32]">{value}</span>
     </div>
   );
 }
@@ -788,25 +827,25 @@ function CampaignDetailPanel({ data, onClose }) {
   return (
     <>
       <div
-        className="fixed inset-0 z-40 bg-black/30"
+        className="fixed inset-0 z-40 bg-[#20352A]/30"
         onClick={onClose}
         aria-hidden="true"
       />
       <div
-        className="fixed inset-y-0 right-0 z-50 flex flex-col bg-white border-l border-[#E5E7EB] shadow-2xl"
+        className="fixed inset-y-0 right-0 z-50 flex flex-col bg-[#FFFDF8] border-l border-[#DCE3D6] shadow-[0_18px_50px_rgba(35,58,43,0.18)]"
         style={{ width: "560px" }}
       >
         {/* Header */}
-        <div className="h-16 border-b border-[#E5E7EB] flex items-center justify-between px-6 flex-shrink-0">
+        <div className="h-16 border-b border-[#DCE3D6] flex items-center justify-between px-6 flex-shrink-0 bg-[#FFFDF8]">
           <div className="section-title">{campaign.name}</div>
-          <button onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A] transition-colors">
+          <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9] transition-colors">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-5">
           {/* Summary */}
-          <div className="rounded-lg border border-[#E5E7EB] divide-y divide-[#E5E7EB] mb-6">
+          <div className="rounded-lg border border-[#DCE3D6] divide-y divide-[#E3E8E0] mb-6">
             <SummaryRow label="Type" value={<span className={TYPE_CHIP_CLASS[campaign.type] || "chip chip-neutral"}>{typeLabel}</span>} />
             <SummaryRow label="Segment" value={segLabel} />
             <SummaryRow label="Status" value={<span className={STATUS_CHIP_CLASS[campaign.status] || "chip chip-neutral"}>{campaign.status}</span>} />
@@ -815,22 +854,22 @@ function CampaignDetailPanel({ data, onClose }) {
           </div>
 
           {/* Message preview */}
-          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2">
+          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-2">
             Message Template
           </div>
           <div
-            className="rounded-lg border border-[#E5E7EB] p-4 text-[13px] leading-relaxed text-[#0A0A0A] bg-[#F9FAFB] mb-6"
+            className="rounded-lg border border-[#DCE3D6] p-4 text-[13px] leading-relaxed text-[#2F3A32] bg-[#F1F4ED] mb-6"
             style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
           >
             {campaign.message_template}
           </div>
 
           {/* Recipient list */}
-          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-3">
+          <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6E786F] mb-3">
             Recipients ({messages.length})
           </div>
           {messages.length === 0 ? (
-            <div className="text-[13px] text-[#a3a3a3]">No recipients found.</div>
+            <div className="text-[13px] text-[#8D998F]">No recipients found.</div>
           ) : (
             <div className="table-shell">
               <table className="w-full">
@@ -845,7 +884,7 @@ function CampaignDetailPanel({ data, onClose }) {
                   {messages.map((m) => (
                     <tr key={m.id} className="table-row">
                       <td className="table-td font-medium">{m.customer_name}</td>
-                      <td className="table-td font-mono text-[12.5px] text-[#525252]">{m.mobile}</td>
+                      <td className="table-td font-mono text-[12.5px] text-[#5F6D62]">{m.mobile}</td>
                       <td className="table-td text-right">
                         <button
                           type="button"

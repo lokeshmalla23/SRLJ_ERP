@@ -40,6 +40,8 @@ import useEnterKeyNavigation from "@/hooks/useEnterKeyNavigation";
 import useBlockWheelOnFocusedFields from "@/hooks/useBlockWheelOnFocusedFields";
 import { installGlobalErrorHandlers } from "@/lib/globalErrors";
 import { useRealtime } from "@/hooks/useRealtime";
+import { APP_WINDOW_TITLE } from "@/lib/appBrand";
+import slgtLogo from "@/assets/slgt-logo.png";
 
 // "/" renders Dashboard when allowed; otherwise a shell landing so the sidebar stays available.
 function HomeRoute() {
@@ -92,48 +94,160 @@ function PosShell({ children }) {
 
 function BackendErrorScreen({ error, onRetry }) {
   return (
-    <div style={{
-      position: 'fixed', inset: 0, zIndex: 9999,
-      background: '#0a0a0a', color: '#fff',
-      display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'center',
-      padding: '2rem', fontFamily: 'Manrope, sans-serif',
-    }}>
-      <div style={{ maxWidth: 560, width: '100%' }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>⚠️</div>
-        <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#f87171' }}>
-          Backend failed to start
-        </h1>
-        <p style={{ fontSize: 14, color: '#a1a1aa', marginBottom: 24, lineHeight: 1.6 }}>
-          The local database service could not start. This usually means a schema error or missing file.
-          Check the logs below and contact support if needed.
-        </p>
-        <pre style={{
-          background: '#18181b', border: '1px solid #3f3f46',
-          borderRadius: 8, padding: '1rem', fontSize: 12,
-          color: '#fca5a5', overflowX: 'auto', whiteSpace: 'pre-wrap',
-          wordBreak: 'break-word', maxHeight: 240, overflowY: 'auto',
-          marginBottom: 24,
-        }}>
+    <div
+      role="alert"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        background:
+          "radial-gradient(circle at 50% 18%, rgba(220, 197, 140, 0.16), transparent 34%), linear-gradient(145deg, #173F32 0%, #102C24 100%)",
+        color: "#FCFAF4",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "clamp(1rem, 4vw, 2rem)",
+        fontFamily: "Manrope, sans-serif",
+        overflowY: "auto",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 600,
+          width: "100%",
+          background: "#FCFAF4",
+          color: "#173F32",
+          border: "1px solid rgba(220, 197, 140, 0.72)",
+          borderRadius: 20,
+          padding: "clamp(1.25rem, 4vw, 2rem)",
+          boxShadow: "0 24px 70px rgba(6, 24, 18, 0.32)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div
+            style={{
+              width: 52,
+              height: 52,
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              background: "#173F32",
+              border: "1px solid #B49042",
+              borderRadius: 14,
+              boxShadow: "0 8px 20px rgba(23, 63, 50, 0.18)",
+            }}
+          >
+            <img
+              src={slgtLogo}
+              alt=""
+              style={{ width: 38, height: 38, objectFit: "contain", padding: 2, mixBlendMode: "screen" }}
+            />
+          </div>
+          <div
+            style={{
+              color: "#7A6232",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              lineHeight: 1.4,
+            }}
+          >
+            {APP_WINDOW_TITLE}
+          </div>
+        </div>
+
+        <div
+          style={{
+            height: 1,
+            margin: "20px 0",
+            background: "linear-gradient(90deg, #D8C49A 0%, rgba(216, 196, 154, 0.18) 72%, transparent 100%)",
+          }}
+        />
+
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+          <div
+            style={{
+              width: 42,
+              height: 42,
+              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#F8ECE7",
+              color: "#984B3B",
+              border: "1px solid #E7C9BD",
+              borderRadius: 12,
+              fontSize: 20,
+              lineHeight: 1,
+            }}
+            aria-hidden="true"
+          >
+            ⚠
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, lineHeight: 1.3, color: "#173F32" }}>
+              Backend failed to start
+            </h1>
+            <p style={{ margin: "7px 0 0", fontSize: 13.5, color: "#5E6B63", lineHeight: 1.65 }}>
+              The local database service could not start. This usually means a schema error or missing file.
+              Check the logs below and contact support if needed.
+            </p>
+          </div>
+        </div>
+
+        <pre
+          style={{
+            background: "#173F32",
+            border: "1px solid #315C4A",
+            borderRadius: 12,
+            padding: "14px 16px",
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 12,
+            lineHeight: 1.55,
+            color: "#F2D8C9",
+            overflowX: "auto",
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+            maxHeight: 240,
+            overflowY: "auto",
+            margin: "20px 0 0",
+          }}
+        >
           {error || 'Unknown error'}
         </pre>
-        <div style={{ display: 'flex', gap: 12 }}>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 22 }}>
           <button
+            type="button"
             onClick={onRetry}
             style={{
-              background: '#fff', color: '#000', border: 'none',
-              borderRadius: 6, padding: '10px 20px', fontSize: 14,
-              fontWeight: 600, cursor: 'pointer',
+              background: "#173F32",
+              color: "#FCFAF4",
+              border: "1px solid #173F32",
+              borderRadius: 9,
+              padding: "10px 20px",
+              fontSize: 13,
+              fontWeight: 650,
+              cursor: "pointer",
+              boxShadow: "0 6px 16px rgba(23, 63, 50, 0.16)",
             }}
           >
             Retry
           </button>
           <button
+            type="button"
             onClick={() => window.electronAPI?.openLogsFolder?.() || window.jewelleryCRM?.openLogsFolder?.()}
             style={{
-              background: 'transparent', color: '#a1a1aa',
-              border: '1px solid #3f3f46', borderRadius: 6,
-              padding: '10px 20px', fontSize: 14, cursor: 'pointer',
+              background: "#F6F0E4",
+              color: "#315445",
+              border: "1px solid #D8C8A6",
+              borderRadius: 9,
+              padding: "10px 20px",
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
             }}
           >
             Open Logs Folder
@@ -188,11 +302,27 @@ function App() {
                 closeButton
                 toastOptions={{
                   style: {
-                    background: "#0A0A0A",
-                    color: "white",
-                    border: "1px solid #262626",
+                    "--normal-bg": "#FCFAF4",
+                    "--normal-border": "#DCCBAA",
+                    "--normal-text": "#173F32",
+                    "--normal-bg-hover": "#F6F0E4",
+                    "--normal-border-hover": "#C9B587",
+                    "--success-bg": "#EEF5F0",
+                    "--success-border": "#C8DCCD",
+                    "--success-text": "#24513F",
+                    "--info-bg": "#F4F3EA",
+                    "--info-border": "#D8D5BD",
+                    "--info-text": "#4D5E51",
+                    "--warning-bg": "#FBF5E8",
+                    "--warning-border": "#E7D3A7",
+                    "--warning-text": "#7A5E26",
+                    "--error-bg": "#FBF0EC",
+                    "--error-border": "#E9C8BC",
+                    "--error-text": "#8A3F32",
+                    "--border-radius": "10px",
                     fontFamily: "Manrope, sans-serif",
                     fontSize: "13px",
+                    boxShadow: "0 8px 28px rgba(23, 63, 50, 0.12)",
                   },
                 }}
               />

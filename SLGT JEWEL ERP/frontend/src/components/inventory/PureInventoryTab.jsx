@@ -117,25 +117,25 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-center justify-center p-4">
       <form
         onSubmit={save}
-        className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md"
+        className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-md"
         data-testid="pure-product-dialog"
       >
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
           <div>
             <div className="section-title">{editing ? "Edit Pure Product" : "Add Pure Product"}</div>
-            <div className="text-[12px] text-[#737373] mt-0.5">Coins & bulk pure stock</div>
+            <div className="text-[12px] text-[#6F7772] mt-0.5">Coins & bulk pure stock</div>
           </div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#17201C]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
 
         <div className="p-5 space-y-4">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
               Metal
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -150,8 +150,8 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   onClick={() => set("metal", m.key)}
                   className={`h-10 rounded-lg border text-[13px] font-medium transition-colors ${
                     form.metal === m.key
-                      ? "border-[#B49042] bg-[#FDFBF7] text-[#7a5e26]"
-                      : "border-[#E5E7EB] bg-white text-[#525252] hover:border-[#B49042]"
+                      ? "border-[#214F3A] bg-[#EAF2ED] text-[#17382A] shadow-[0_1px_2px_rgba(23,56,42,0.08)]"
+                      : "border-[#E2E7E2] bg-[#FFFDF9] text-[#6F7772] hover:border-[#CBDED2] hover:bg-[#FAF7EF]"
                   } ${editing ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
                   {m.label}
@@ -161,7 +161,7 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
               Type
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -180,8 +180,8 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   }}
                   className={`h-10 rounded-lg border text-[13px] font-medium transition-colors ${
                     form.form_type === t.key
-                      ? "border-[#B49042] bg-[#FDFBF7] text-[#7a5e26]"
-                      : "border-[#E5E7EB] bg-white text-[#525252] hover:border-[#B49042]"
+                      ? "border-[#214F3A] bg-[#EAF2ED] text-[#17382A] shadow-[0_1px_2px_rgba(23,56,42,0.08)]"
+                      : "border-[#E2E7E2] bg-[#FFFDF9] text-[#6F7772] hover:border-[#CBDED2] hover:bg-[#FAF7EF]"
                   } ${editing ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
                   {t.label}
@@ -194,24 +194,24 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
             <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
                     {editing ? "Current Weight (g)" : "Weight (g)"}
                   </label>
                   <WeightInput
                     required={!editing || canEdit}
-                    className={`input ${editing && !canEdit ? "bg-[#FAFAFA]" : ""}`}
+                    className={`input ${editing && !canEdit ? "bg-[#FAF7EF]" : ""}`}
                     value={editing && !canEdit ? formatWeight(existingStock) : form.weight_g}
                     onValueChange={(raw) => (!editing || canEdit) && set("weight_g", raw)}
                     readOnly={editing && !canEdit}
                     placeholder="100"
                     data-testid="pure-weight-input"
                   />
-                  <div className="mt-1 text-[11px] text-[#A3A3A3]">
+                  <div className="mt-1 text-[11px] text-[#89928C]">
                     {editing ? (canEdit ? "Stock on hand — editable" : "Stock on hand") : "Stock on hand in grams"}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
                     Threshold (g)
                   </label>
                     <WeightInput
@@ -221,12 +221,12 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                       placeholder="20"
                       data-testid="pure-threshold-input"
                     />
-                  <div className="mt-1 text-[11px] text-[#A3A3A3]">Low-stock alert weight</div>
+                  <div className="mt-1 text-[11px] text-[#89928C]">Low-stock alert weight</div>
                 </div>
               </div>
 
               {editing && (
-                <div className="rounded-lg border border-[#E5E7EB] bg-[#FAFAFA] p-3 space-y-2">
+                <div className="rounded-lg border border-[#E2E7E2] bg-[#FAF7EF] p-3 space-y-2">
                   {!addOpen ? (
                     <button
                       type="button"
@@ -239,12 +239,12 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   ) : (
                     <>
                       <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373]">
+                        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772]">
                           Add Weight (g)
                         </label>
                         <button
                           type="button"
-                          className="text-[11px] text-[#737373] hover:text-[#0A0A0A]"
+                          className="text-[11px] text-[#6F7772] hover:text-[#17201C]"
                           onClick={() => { setAddOpen(false); setAddAmount(""); }}
                         >
                           Cancel
@@ -260,9 +260,9 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                         data-testid="pure-add-weight-input"
                       />
                       {addValid && (
-                        <div className="text-[12px] text-[#525252]">
+                        <div className="text-[12px] text-[#4E5A53]">
                           {formatWeight(previewBase)} g + {formatWeight(addNum)} g ={" "}
-                          <span className="font-semibold text-[#0A0A0A]">{formatWeight(resultingStock)} g</span>
+                          <span className="font-semibold text-[#17201C]">{formatWeight(resultingStock)} g</span>
                         </div>
                       )}
                     </>
@@ -274,12 +274,12 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
             <div className="space-y-3">
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
                     Weight (g)
                   </label>
                   <WeightInput
                     required
-                    className={`input ${editing && !canEdit ? "bg-[#FAFAFA]" : ""}`}
+                    className={`input ${editing && !canEdit ? "bg-[#FAF7EF]" : ""}`}
                     value={form.weight_g}
                     onValueChange={(raw) => (!editing || canEdit) && set("weight_g", raw)}
                     readOnly={editing && !canEdit}
@@ -288,7 +288,7 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
                     {editing ? "Current Qty" : "Qty"}
                   </label>
                   <input
@@ -296,7 +296,7 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                     type="number"
                     step="1"
                     min="0"
-                    className={`input ${editing && !canEdit ? "bg-[#FAFAFA]" : ""}`}
+                    className={`input ${editing && !canEdit ? "bg-[#FAF7EF]" : ""}`}
                     value={editing && !canEdit ? String(existingStock) : form.stock_qty}
                     onChange={(e) => (!editing || canEdit) && set("stock_qty", e.target.value)}
                     readOnly={editing && !canEdit}
@@ -305,7 +305,7 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-1.5">
+                  <label className="block text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-1.5">
                     Threshold
                   </label>
                   <input
@@ -322,7 +322,7 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
               </div>
 
               {editing && (
-                <div className="rounded-lg border border-[#E5E7EB] bg-[#FAFAFA] p-3 space-y-2">
+                <div className="rounded-lg border border-[#E2E7E2] bg-[#FAF7EF] p-3 space-y-2">
                   {!addOpen ? (
                     <button
                       type="button"
@@ -335,12 +335,12 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                   ) : (
                     <>
                       <div className="flex items-center justify-between">
-                        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373]">
+                        <label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772]">
                           Add Qty
                         </label>
                         <button
                           type="button"
-                          className="text-[11px] text-[#737373] hover:text-[#0A0A0A]"
+                          className="text-[11px] text-[#6F7772] hover:text-[#17201C]"
                           onClick={() => { setAddOpen(false); setAddAmount(""); }}
                         >
                           Cancel
@@ -358,9 +358,9 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
                         data-testid="pure-add-qty-input"
                       />
                       {addValid && (
-                        <div className="text-[12px] text-[#525252]">
+                        <div className="text-[12px] text-[#4E5A53]">
                           {previewBase} + {addNum} ={" "}
-                          <span className="font-semibold text-[#0A0A0A]">{resultingStock}</span>
+                          <span className="font-semibold text-[#17201C]">{resultingStock}</span>
                         </div>
                       )}
                     </>
@@ -370,12 +370,12 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
             </div>
           )}
 
-          <div className="rounded-lg bg-[#FAFAFA] border border-[#E5E7EB] px-3 py-2 text-[12.5px] text-[#525252]">
-            Will save as: <span className="font-semibold text-[#0A0A0A]">{previewName}</span>
+          <div className="rounded-lg bg-[#FAF7EF] border border-[#E8D6A6] px-3 py-2 text-[12.5px] text-[#6F7772]">
+            Will save as: <span className="font-semibold text-[#17201C]">{previewName}</span>
           </div>
         </div>
 
-        <div className="p-5 border-t border-[#E5E7EB] flex justify-end gap-2">
+        <div className="p-5 border-t border-[#E2E7E2] flex justify-end gap-2">
           <button type="button" className="btn-secondary" onClick={onClose} disabled={busy}>
             Cancel
           </button>
@@ -391,15 +391,15 @@ function PureProductDialog({ initial, onClose, onSaved, canEdit = false }) {
 function MetalGroup({ title, items, canEdit, canDelete, onEdit, onDelete }) {
   if (!items.length) return null;
   return (
-    <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-[#E5E7EB] flex items-center gap-2">
-        <Scale size={16} className="text-[#B49042]" strokeWidth={1.5} />
-        <span className="font-semibold text-[15px] text-[#0A0A0A]">{title}</span>
-        <span className="text-[11px] text-[#737373] bg-[#F3F4F6] px-2 py-0.5 rounded-full">
+    <div className="bg-[#FFFDF9] border border-[#E2E7E2] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
+      <div className="px-5 py-4 border-b border-[#E2E7E2] bg-[#FAF7EF] flex items-center gap-2">
+        <Scale size={16} className="text-[#214F3A]" strokeWidth={1.5} />
+        <span className="font-semibold text-[15px] text-[#17201C]">{title}</span>
+        <span className="text-[11px] text-[#6F7772] bg-[#F1F4F0] border border-[#D3DCD5] px-2 py-0.5 rounded-full">
           {items.length} items
         </span>
       </div>
-      <div className="divide-y divide-[#F3F4F6]">
+      <div className="divide-y divide-[#E2E7E2]">
         {items.map((p) => {
           const bulk = isBulkPure(p.form_type);
           const stock = Number(p.stock_qty) || 0;
@@ -409,15 +409,15 @@ function MetalGroup({ title, items, canEdit, canDelete, onEdit, onDelete }) {
           return (
             <div
               key={p.id}
-              className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#FAFAFA]"
+              className="flex items-center gap-4 px-5 py-3.5 hover:bg-[#FBF9F4] transition-colors"
               data-testid={`pure-row-${p.id}`}
             >
-              <div className="h-9 w-9 rounded-lg bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center flex-shrink-0">
-                <Package size={15} className="text-[#B49042]" strokeWidth={1.5} />
+              <div className="h-9 w-9 rounded-lg bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center flex-shrink-0">
+                <Package size={15} className="text-[#79591F]" strokeWidth={1.5} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-[14px] text-[#0A0A0A]">{p.name}</div>
-                <div className="text-[12px] text-[#737373] mt-0.5">
+                <div className="font-medium text-[14px] text-[#17201C]">{p.name}</div>
+                <div className="text-[12px] text-[#6F7772] mt-0.5">
                   {bulk
                     ? "Bulk pure · tracked by grams"
                     : `${formatWeight(p.weight_g)} g · Coin`}
@@ -426,18 +426,18 @@ function MetalGroup({ title, items, canEdit, canDelete, onEdit, onDelete }) {
                 </div>
               </div>
               <div className="text-right">
-                <div className={`font-display text-[18px] font-semibold tabular-nums ${out ? "text-red-600" : "text-[#0A0A0A]"}`}>
+                <div className={`font-display text-[18px] font-semibold tabular-nums ${out ? "text-red-600" : "text-[#17201C]"}`}>
                   {bulk ? formatWeight(stock) : stock}
                 </div>
-                <div className="text-[10.5px] text-[#737373] uppercase tracking-wide">
+                <div className="text-[10.5px] text-[#6F7772] uppercase tracking-wide">
                   {bulk ? "Stock g" : "Qty"}
                 </div>
               </div>
               <div className="text-right w-16">
-                <div className="text-[13px] tabular-nums text-[#525252]">
+                <div className="text-[13px] tabular-nums text-[#4E5A53]">
                   {thr ? (bulk ? `${formatWeight(thr)} g` : thr) : "—"}
                 </div>
-                <div className="text-[10.5px] text-[#737373] uppercase tracking-wide">Alert</div>
+                <div className="text-[10.5px] text-[#6F7772] uppercase tracking-wide">Alert</div>
               </div>
               <div className="flex items-center gap-1.5">
                 {canEdit && (
@@ -565,16 +565,16 @@ export default function PureInventoryTab({ onAddClickRef }) {
           { label: "Total Weight (g)", val: formatWeight(stats.totalWeight) },
           { label: "Low Stock", val: stats.low, color: "text-amber-600" },
         ].map((s) => (
-          <div key={s.label} className="card !p-3 text-center">
-            <div className={`font-display text-[22px] font-bold tabular-nums ${s.color || "text-[#0A0A0A]"}`}>
+          <div key={s.label} className="card !p-3 text-center !rounded-xl !border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
+            <div className={`font-display text-[22px] font-bold tabular-nums ${s.color || "text-[#17201C]"}`}>
               {s.val}
             </div>
-            <div className="text-[11px] text-[#737373] mt-0.5">{s.label}</div>
+            <div className="text-[11px] text-[#6F7772] mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#737373] mb-2">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6F7772] mb-2">
         By Metal
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
@@ -584,12 +584,12 @@ export default function PureInventoryTab({ onAddClickRef }) {
           { label: "Silver Pure (g)", val: formatWeight(metalStats.silver.pureWeight) },
           { label: "Silver Coins (g)", val: formatWeight(metalStats.silver.coinWeight), sub: `${metalStats.silver.coinPcs} pcs` },
         ].map((s) => (
-          <div key={s.label} className="card !p-3 text-center">
-            <div className="font-display text-[22px] font-bold tabular-nums text-[#0A0A0A]">
+          <div key={s.label} className="card !p-3 text-center !rounded-xl !border-[#E2E7E2] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(23,56,42,0.04)]">
+            <div className="font-display text-[22px] font-bold tabular-nums text-[#17201C]">
               {s.val}
             </div>
-            <div className="text-[11px] text-[#737373] mt-0.5">{s.label}</div>
-            {s.sub && <div className="text-[10.5px] text-[#a3a3a3] mt-0.5">{s.sub}</div>}
+            <div className="text-[11px] text-[#6F7772] mt-0.5">{s.label}</div>
+            {s.sub && <div className="text-[10.5px] text-[#89928C] mt-0.5">{s.sub}</div>}
           </div>
         ))}
       </div>

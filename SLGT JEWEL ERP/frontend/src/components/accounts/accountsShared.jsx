@@ -117,14 +117,14 @@ export const DATE_PRESETS = [
 export function AccountsKpiCard({ label, value, sub, tone = "default" }) {
   const toneCls =
     tone === "good"
-      ? "border-emerald-200 bg-emerald-50/60"
+      ? "border-[#CBDAD0] bg-[#F1F6F2]"
       : tone === "warn"
-        ? "border-amber-200 bg-amber-50/60"
+        ? "border-[#E4D2A8] bg-[#FBF6E9]"
         : tone === "bad"
-          ? "border-red-200 bg-red-50/60"
-          : "border-[#EADFBF] bg-white";
+          ? "border-[#E6C5C5] bg-[#FBF0F0]"
+          : "border-[#D8D2C6] bg-[#FFFDF9]";
   return (
-    <div className={`rounded-xl border p-3.5 shadow-sm ${toneCls}`}>
+    <div className={`rounded-xl border p-3.5 shadow-[0_1px_2px_rgba(38,52,43,0.04)] ${toneCls}`}>
       <div className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">{label}</div>
       <div className="mt-1 text-lg font-semibold text-[#0A0A0A] tabular-nums">{value}</div>
       {sub ? <div className="mt-0.5 text-[11px] text-[#737373]">{sub}</div> : null}
@@ -165,7 +165,7 @@ export function AccountsFilterBar({
   };
 
   return (
-    <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] p-3">
+    <div className="mb-4 flex flex-wrap items-end gap-2 rounded-xl border border-[#D8D2C6] bg-[#FBF8F1] p-3 shadow-[0_1px_2px_rgba(38,52,43,0.04)]">
       <div className="flex flex-wrap gap-1">
         {DATE_PRESETS.map((p) => (
           <button
@@ -174,8 +174,8 @@ export function AccountsFilterBar({
             onClick={() => onPreset?.(p.id)}
             className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
               preset === p.id
-                ? "bg-[#B49042] text-white"
-                : "bg-white text-[#525252] border border-[#E5E7EB]"
+                ? "border border-[#315C4A] bg-[#315C4A] text-white"
+                : "border border-[#D8D2C6] bg-[#FFFDF9] text-[#59635D] hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
             }`}
           >
             {p.label}
@@ -188,7 +188,7 @@ export function AccountsFilterBar({
           type="date"
           value={from}
           onChange={(e) => onFrom?.(e.target.value)}
-          className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+          className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
         />
       </label>
       <label className="text-[11px] text-[#737373]">
@@ -197,14 +197,14 @@ export function AccountsFilterBar({
           type="date"
           value={to}
           onChange={(e) => onTo?.(e.target.value)}
-          className="ml-1 rounded border border-[#E5E7EB] bg-white px-2 py-1 text-xs"
+          className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]"
         />
       </label>
       {children}
       <button
         type="button"
         onClick={onRefresh}
-        className="inline-flex items-center gap-1 rounded-lg bg-[#0A0A0A] px-3 py-1.5 text-xs font-medium text-white"
+        className="inline-flex items-center gap-1 rounded-[9px] border border-[#315C4A] bg-[#315C4A] px-3 py-1.5 text-xs font-medium text-white transition hover:bg-[#244A3A]"
       >
         {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
         Refresh
@@ -216,7 +216,7 @@ export function AccountsFilterBar({
             onClick={() =>
               exportReportCsv({ title: exportTitle || "accounts", columns: cols, rows: exportRows })
             }
-            className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 text-xs"
+            className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 text-xs text-[#4F5953] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
           >
             <Download className="h-3.5 w-3.5" /> CSV
           </button>
@@ -225,14 +225,14 @@ export function AccountsFilterBar({
             onClick={() =>
               exportReportExcel({ title: exportTitle || "accounts", columns: cols, rows: exportRows })
             }
-            className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 text-xs"
+            className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 text-xs text-[#4F5953] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
           >
             <Download className="h-3.5 w-3.5" /> Excel
           </button>
           <button
             type="button"
             onClick={print}
-            className="inline-flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-white px-2.5 py-1.5 text-xs"
+            className="inline-flex items-center gap-1 rounded-[9px] border border-[#D2CCBF] bg-[#FFFDF9] px-2.5 py-1.5 text-xs text-[#4F5953] transition hover:border-[#9EB2A6] hover:bg-[#F1F5F1]"
           >
             <Printer className="h-3.5 w-3.5" /> Print
           </button>
@@ -246,15 +246,15 @@ export function AccountsTable({ columns, rows, empty = "No records" }) {
   const cols = useMemo(() => sanitizeReportColumns(columns || []), [columns]);
   if (!rows?.length) {
     return (
-      <div className="rounded-xl border border-dashed border-[#E5E7EB] bg-white p-8 text-center text-sm text-[#737373]">
+      <div className="rounded-xl border border-dashed border-[#D5CFC3] bg-[#FFFDF9] p-8 text-center text-sm text-[#737B76]">
         {empty}
       </div>
     );
   }
   return (
-    <div className="overflow-auto rounded-xl border border-[#E5E7EB] bg-white">
+    <div className="overflow-auto rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
       <table className="min-w-full text-left text-xs">
-        <thead className="bg-[#F9FAFB] text-[11px] uppercase tracking-wide text-[#737373]">
+        <thead className="bg-[#F1EEE7] text-[11px] uppercase tracking-[0.06em] text-[#68716B] shadow-[0_1px_0_#DDD7CA]">
           <tr>
             {cols.map((c) => (
               <th key={c.key} className="whitespace-nowrap px-3 py-2 font-medium">
@@ -265,7 +265,7 @@ export function AccountsTable({ columns, rows, empty = "No records" }) {
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={r.id || i} className="border-t border-[#F3F4F6] hover:bg-[#FDFBF7]">
+            <tr key={r.id || i} className="border-t border-[#E6E1D7] transition-colors hover:bg-[#F7F5EF]">
               {cols.map((c) => (
                 <td key={c.key} className="whitespace-nowrap px-3 py-2 text-[#0A0A0A] tabular-nums">
                   {c.render ? c.render(r) : renderReportCell(c, r)}

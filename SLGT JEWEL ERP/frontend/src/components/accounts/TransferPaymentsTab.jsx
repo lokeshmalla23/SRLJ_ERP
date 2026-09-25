@@ -26,24 +26,24 @@ const POCKETS = [
 
 const THEME = {
   emerald: {
-    wrap: "border-emerald-200 bg-emerald-50",
-    icon: "bg-emerald-100 text-emerald-700",
-    text: "text-emerald-800",
+    wrap: "border-[#CBDAD0] bg-[#F1F6F2]",
+    icon: "bg-[#DDE9E1] text-[#315C4A]",
+    text: "text-[#315C4A]",
   },
   sky: {
-    wrap: "border-sky-200 bg-sky-50",
-    icon: "bg-sky-100 text-sky-700",
-    text: "text-sky-800",
+    wrap: "border-[#D8D2C6] bg-[#F4F2ED]",
+    icon: "bg-[#E8E5DE] text-[#59635D]",
+    text: "text-[#59635D]",
   },
   violet: {
-    wrap: "border-violet-200 bg-violet-50",
-    icon: "bg-violet-100 text-violet-700",
-    text: "text-violet-800",
+    wrap: "border-[#D8C28C] bg-[#FBF6E9]",
+    icon: "bg-[#F1E6CA] text-[#765A20]",
+    text: "text-[#765A20]",
   },
   amber: {
-    wrap: "border-amber-200 bg-amber-50",
-    icon: "bg-amber-100 text-amber-800",
-    text: "text-amber-900",
+    wrap: "border-[#CDD2CF] bg-[#F1F3F2]",
+    icon: "bg-[#E1E5E3] text-[#5F6863]",
+    text: "text-[#5F6863]",
   },
 };
 
@@ -65,8 +65,8 @@ function PocketChoice({ pocket, selected, balance, onSelect, disabled }) {
       onClick={() => onSelect(pocket.id)}
       className={`flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition ${
         selected
-          ? `${theme.wrap} shadow-sm ring-2 ring-[#B49042]/25`
-          : "border-[#EADFBF] bg-white hover:border-[#D8C89F] hover:bg-[#FDFBF7]"
+          ? `${theme.wrap} shadow-sm ring-2 ring-[#315C4A]/20`
+          : "border-[#D8D2C6] bg-[#FFFDF9] hover:border-[#9EB2A6] hover:bg-[#F7F9F7]"
       } ${disabled ? "cursor-not-allowed opacity-40" : ""}`}
     >
       <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${theme.icon}`}>
@@ -87,15 +87,15 @@ function SideCard({ tone, title, pocketId, pockets, onPick, lockedId }) {
   const balance = Number(pockets?.[pocketId]) || 0;
   const frame =
     tone === "from"
-      ? "border-rose-200/80 bg-gradient-to-br from-rose-50/80 to-white"
-      : "border-emerald-200/80 bg-gradient-to-br from-emerald-50/80 to-white";
+      ? "border-[#E6C5C5] bg-[#FBF0F0]"
+      : "border-[#CBDAD0] bg-[#F1F6F2]";
 
   return (
     <div className={`flex-1 rounded-2xl border p-4 shadow-sm ${frame}`}>
       <div className="mb-3 flex items-center justify-between gap-2">
         <span
           className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ${
-            tone === "from" ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
+            tone === "from" ? "bg-[#F4DADA] text-[#8F3434]" : "bg-[#DDE9E1] text-[#315C4A]"
           }`}
         >
           {title}
@@ -251,16 +251,16 @@ export default function TransferPaymentsTab() {
 
       <form
         onSubmit={onSubmit}
-        className="overflow-hidden rounded-2xl border border-[#EADFBF] bg-white shadow-sm"
+        className="overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]"
       >
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#EADFBF] bg-[#FDFBF7] px-5 py-3.5">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#DDD7CA] bg-[#FBF8F1] px-5 py-3.5">
           <div>
             <h3 className="text-sm font-semibold text-[#171717]">Move money between pockets</h3>
             <p className="text-[11px] text-[#737373]">
               Moves normal billing money only. Hidden bills never go through this transfer.
             </p>
           </div>
-          <label className="flex items-center gap-2 rounded-xl border border-[#EADFBF] bg-white px-3 py-2">
+          <label className="flex items-center gap-2 rounded-[10px] border border-[#D8D2C6] bg-white px-3 py-2">
             <CalendarDays size={15} className="text-[#B49042]" />
             <span className="text-[11px] font-medium uppercase tracking-wide text-[#737373]">Date</span>
             <input
@@ -292,7 +292,7 @@ export default function TransferPaymentsTab() {
                 type="button"
                 onClick={swapSides}
                 title="Swap From and To"
-                className="flex h-12 w-12 items-center justify-center rounded-full border border-[#E9D293] bg-[#B49042] text-white shadow-md transition hover:bg-[#9A762E]"
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-[#315C4A] bg-[#315C4A] text-white shadow-[0_4px_12px_rgba(49,92,74,0.20)] transition hover:bg-[#244A3A]"
               >
                 <ArrowRight className="hidden lg:block" size={20} />
                 <ArrowLeftRight className="lg:hidden" size={18} />
@@ -319,7 +319,7 @@ export default function TransferPaymentsTab() {
                 value={afterFrom}
                 down
               />
-              <div className="flex items-center justify-center gap-2 rounded-xl border border-[#EADFBF] bg-[#FDFBF7] px-3 py-2 text-[12px] font-medium text-[#8A6A2D]">
+              <div className="flex items-center justify-center gap-2 rounded-[10px] border border-[#D8D2C6] bg-[#FBF8F1] px-3 py-2 text-[12px] font-medium text-[#59635D]">
                 <span>{fmtINR(amt)}</span>
                 <ArrowRight size={14} />
                 <span>
@@ -349,7 +349,7 @@ export default function TransferPaymentsTab() {
                   Use available {fmtINR(fromBal)}
                 </button>
               </div>
-              <div className="flex items-center gap-2 rounded-xl border border-[#E5E7EB] bg-white px-3 py-2 focus-within:border-[#B49042] focus-within:ring-2 focus-within:ring-[#B49042]/10">
+              <div className="flex items-center gap-2 rounded-[10px] border border-[#CFC8BB] bg-white px-3 py-2 focus-within:border-[#3D6B5B] focus-within:ring-2 focus-within:ring-[#DDE8E0]">
                 <span className="text-lg font-medium text-[#A3A3A3]">₹</span>
                 <MoneyInput
                   className="min-w-0 flex-1 border-0 bg-transparent p-0 text-lg font-semibold tabular-nums text-[#171717] outline-none"
@@ -386,7 +386,7 @@ export default function TransferPaymentsTab() {
             <button
               type="submit"
               disabled={!canSubmit}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#B49042] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#9A762E] disabled:cursor-not-allowed disabled:bg-[#D4D4D4]"
+              className="inline-flex items-center gap-2 rounded-[10px] border border-[#315C4A] bg-[#315C4A] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#244A3A] disabled:cursor-not-allowed disabled:border-[#C8C1B5] disabled:bg-[#DDD7CA] disabled:text-[#7B827D]"
             >
               {saving ? <Loader2 size={16} className="animate-spin" /> : <ArrowRight size={16} />}
               {saving
@@ -400,7 +400,7 @@ export default function TransferPaymentsTab() {
         </div>
       </form>
 
-      <div className="rounded-2xl border border-[#EADFBF] bg-white p-4 shadow-sm">
+      <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
         <div className="mb-3 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-[#171717]">Recent transfers</h3>
           {loading ? <Loader2 size={14} className="animate-spin text-[#B49042]" /> : null}
@@ -438,7 +438,7 @@ function fmtDay(ymd) {
 
 function PreviewChip({ label, value, down }) {
   return (
-    <div className="rounded-xl border border-[#EADFBF] bg-white px-3 py-2">
+    <div className="rounded-[10px] border border-[#D8D2C6] bg-[#FFFDF9] px-3 py-2">
       <div className="text-[10px] uppercase tracking-wide text-[#737373]">{label}</div>
       <div className={`text-sm font-semibold tabular-nums ${down ? "text-rose-700" : "text-emerald-700"}`}>
         {fmtINR(value)}

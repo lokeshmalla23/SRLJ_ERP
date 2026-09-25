@@ -86,10 +86,10 @@ export default function ConnectivityBanner() {
   // ── Host not found (client PC, discovery exhausted) ────────────────────────
   if (host === 'not_found' && !isHostPcLocal) {
     return (
-      <div className="border-b px-4 py-2 flex items-center gap-3 text-sm bg-red-50 border-red-200 text-red-900">
-        <span className="h-2 w-2 rounded-full flex-shrink-0 bg-red-500 animate-pulse" />
-        <span className="font-medium">{shopName} not found</span>
-        <span className="text-[12px] opacity-80">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#E7C8BC] bg-[#FBF0EC] px-4 py-2.5 text-sm text-[#713F35]">
+        <span className="h-2 w-2 flex-shrink-0 animate-pulse rounded-full bg-[#A4513F] shadow-[0_0_0_3px_rgba(164,81,63,0.12)]" />
+        <span className="min-w-0 font-semibold">{shopName} not found</span>
+        <span className="min-w-0 text-[12px] leading-5 text-[#7C5148] sm:flex-1">
           Cannot reach the main PC on the local network. Check that it is powered on and connected.
         </span>
       </div>
@@ -99,10 +99,10 @@ export default function ConnectivityBanner() {
   // ── Host reconnecting (client PC, keepalive lost) ───────────────────────────
   if (host && HOST_RECONNECTING.has(host) && !isHostPcLocal) {
     return (
-      <div className="border-b px-4 py-2 flex items-center gap-3 text-sm bg-amber-50 border-amber-200 text-amber-900">
-        <span className="h-2 w-2 rounded-full flex-shrink-0 bg-amber-400 animate-pulse" />
-        <span className="font-medium">Reconnecting to {shopName}…</span>
-        <span className="text-[12px] opacity-80">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#E4D3A7] bg-[#FBF5E8] px-4 py-2.5 text-sm text-[#5F512F]">
+        <span className="h-2 w-2 flex-shrink-0 animate-pulse rounded-full bg-[#B49042] shadow-[0_0_0_3px_rgba(180,144,66,0.14)]" />
+        <span className="min-w-0 font-semibold text-[#6F5729]">Reconnecting to {shopName}…</span>
+        <span className="min-w-0 text-[12px] leading-5 text-[#786B48] sm:flex-1">
           Searching for the main PC on the local network.
         </span>
       </div>
@@ -112,14 +112,14 @@ export default function ConnectivityBanner() {
   // ── Local service starting / authority lost ─────────────────────────────────
   if (authorityState === AUTHORITY_STATES.ISOLATED) {
     return (
-      <div className="border-b px-4 py-2 flex items-center gap-3 text-sm bg-amber-50 border-amber-200 text-amber-900">
-        <span className="h-2 w-2 rounded-full flex-shrink-0 bg-amber-400 animate-pulse" />
-        <span className="font-medium">Starting shop service…</span>
-        <span className="text-[12px] opacity-80">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#E4D3A7] bg-[#FBF5E8] px-4 py-2.5 text-sm text-[#5F512F]">
+        <span className="h-2 w-2 flex-shrink-0 animate-pulse rounded-full bg-[#B49042] shadow-[0_0_0_3px_rgba(180,144,66,0.14)]" />
+        <span className="min-w-0 font-semibold text-[#6F5729]">Starting shop service…</span>
+        <span className="min-w-0 text-[12px] leading-5 text-[#786B48] sm:flex-1">
           Local API not ready yet. Billing unlocks automatically when the service is up.
         </span>
         {pending > 0 && (
-          <span className="ml-auto text-[11px] opacity-70">
+          <span className="ml-auto rounded-full border border-[#DCCBAA] bg-[#FCFAF4]/65 px-2 py-0.5 text-[10.5px] font-medium text-[#6F5D35]">
             {pending} event{pending !== 1 ? "s" : ""} queued
           </span>
         )}
@@ -130,14 +130,14 @@ export default function ConnectivityBanner() {
   // ── Replica mode (client PC, following host) ────────────────────────────────
   if (authorityState === AUTHORITY_STATES.LAN_COORDINATED) {
     return (
-      <div className="border-b px-4 py-2 flex items-center gap-3 text-sm bg-amber-50 border-amber-200 text-amber-900">
-        <span className="h-2 w-2 rounded-full flex-shrink-0 bg-amber-400" />
-        <span className="font-medium">Following {shopName}</span>
-        <span className="text-[12px] opacity-80">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-[#C8DACA] bg-[#F1F6F1] px-4 py-2.5 text-sm text-[#355747]">
+        <span className="h-2 w-2 flex-shrink-0 rounded-full bg-[#3F6D58] shadow-[0_0_0_3px_rgba(63,109,88,0.12)]" />
+        <span className="min-w-0 font-semibold text-[#294F40]">Following {shopName}</span>
+        <span className="min-w-0 text-[12px] leading-5 text-[#53675B] sm:flex-1">
           This PC is a replica. All billing writes go to the main PC.
         </span>
         {pending > 0 && (
-          <span className="ml-auto text-[11px] opacity-70">
+          <span className="ml-auto rounded-full border border-[#C8DACA] bg-[#FCFAF4]/70 px-2 py-0.5 text-[10.5px] font-medium text-[#496556]">
             {pending} event{pending !== 1 ? "s" : ""} queued
           </span>
         )}

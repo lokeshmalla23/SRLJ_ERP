@@ -39,14 +39,14 @@ const TABS = Object.keys(KIND_META);
 export default function Catalog() {
   const [tab, setTab] = useState("categories");
   return (
-    <div className="max-w-[1400px]">
+    <div className="max-w-[1400px] [&>div:first-child]:mb-5">
       <PageHeader
         title="Catalog"
         subtitle="The master library of your showroom. Everything here powers Inventory, POS and Reports."
       />
 
       {/* ── Horizontal tab bar ───────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1 border-b border-[#E5E7EB] mb-6 overflow-x-auto">
+      <div className="flex items-center gap-1 border-b border-[#E2E7E2] mb-5 overflow-x-auto">
         {TABS.map((t) => {
           const meta = KIND_META[t];
           const Icon = meta.icon;
@@ -58,11 +58,11 @@ export default function Catalog() {
               onClick={() => setTab(t)}
               className={`flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-medium border-b-2 whitespace-nowrap transition-colors ${
                 active
-                  ? "border-[#B49042] text-[#0A0A0A]"
-                  : "border-transparent text-[#737373] hover:text-[#0A0A0A] hover:border-[#E5E7EB]"
+                  ? "border-[#214F3A] text-[#214F3A] bg-[#FAF7EF]"
+                  : "border-transparent text-[#6F7772] hover:text-[#214F3A] hover:bg-[#FAF7EF] hover:border-[#E2E7E2]"
               }`}
             >
-              <Icon size={13} strokeWidth={1.5} className={active ? "text-[#B49042]" : "text-[#a3a3a3]"} />
+              <Icon size={13} strokeWidth={1.5} className={active ? "text-[#214F3A]" : "text-[#89928C]"} />
               {meta.title}
             </button>
           );
@@ -122,7 +122,7 @@ function CategoriesPanel() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="section-title">Category Hierarchy</div>
-          <div className="text-[12px] text-[#737373] mt-0.5">
+          <div className="text-[12px] text-[#6F7772] mt-0.5">
             Build two-level categories exactly as your business is organised. Allocate each to a showcase counter.
           </div>
         </div>
@@ -148,12 +148,12 @@ function CategoriesPanel() {
             <div key={cat.id} className="card !p-0 overflow-hidden">
               <div className="flex items-center justify-between px-5 py-4">
                 <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-md bg-[#FDFBF7] border border-[#EADFBF] flex items-center justify-center">
-                    <Layers size={14} strokeWidth={1.5} className="text-[#B49042]" />
+                  <div className="h-8 w-8 rounded-md bg-[#F7E8BC] border border-[#E8D6A6] flex items-center justify-center">
+                    <Layers size={14} strokeWidth={1.5} className="text-[#79591F]" />
                   </div>
                   <div>
                     <div className="font-display text-[15px] font-medium">{cat.name}</div>
-                    <div className="text-[11.5px] text-[#737373]">
+                    <div className="text-[11.5px] text-[#6F7772]">
                       {cat.children.length} sub-categor{cat.children.length === 1 ? "y" : "ies"}
                       {(() => {
                         const cn = counters.find((c) => c.id === cat.counter_id)?.name;
@@ -166,26 +166,26 @@ function CategoriesPanel() {
                   <button className="btn-secondary !py-1 !text-[12px]" onClick={() => setOpenNew({ parent_id: cat.id })}>
                     <Plus size={12} strokeWidth={1.5} /> Sub-category
                   </button>
-                  <button className="p-1.5 text-[#737373] hover:text-[#0A0A0A]" onClick={() => setEditing(cat)}>
+                  <button className="p-1.5 text-[#6F7772] hover:text-[#214F3A]" onClick={() => setEditing(cat)}>
                     <Pencil size={13} strokeWidth={1.5} />
                   </button>
-                  <button className="p-1.5 text-[#737373] hover:text-[#991B1B]" onClick={() => remove(cat.id)}>
+                  <button className="p-1.5 text-[#6F7772] hover:text-[#991B1B]" onClick={() => remove(cat.id)}>
                     <Trash2 size={13} strokeWidth={1.5} />
                   </button>
                 </div>
               </div>
               {cat.children.length > 0 && (
-                <div className="border-t border-[#E5E7EB] bg-[#FAFAFA] px-5 py-3">
+                <div className="border-t border-[#E2E7E2] bg-[#FAF7EF] px-5 py-3">
                   <div className="flex flex-wrap gap-2">
                     {cat.children.map((sc) => (
                       <div
                         key={sc.id}
                         className={`group inline-flex items-center gap-2 bg-white border rounded-full pl-3 pr-1 py-1 text-[12.5px] ${
-                          sc.is_low_stock ? "border-amber-300 bg-amber-50" : "border-[#E5E7EB]"
+                          sc.is_low_stock ? "border-amber-300 bg-[#FBF4E3]" : "border-[#E2E7E2] bg-[#FFFDF9]"
                         }`}
                       >
                         <span>{sc.name}</span>
-                        <span className={`text-[10.5px] font-mono ${sc.is_low_stock ? "text-amber-700" : "text-[#a3a3a3]"}`}>
+                        <span className={`text-[10.5px] font-mono ${sc.is_low_stock ? "text-amber-700" : "text-[#89928C]"}`}>
                           {Number(sc.stock_qty) || 0} pcs
                           {sc.low_stock_threshold != null && Number(sc.low_stock_threshold) > 0
                             ? ` · ≤${sc.low_stock_threshold}`
@@ -193,13 +193,13 @@ function CategoriesPanel() {
                         </span>
                         <button
                           onClick={() => setEditing(sc)}
-                          className="p-1 rounded-full text-[#737373] hover:text-[#0A0A0A] opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="p-1 rounded-full text-[#6F7772] hover:text-[#214F3A] opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Pencil size={11} strokeWidth={1.5} />
                         </button>
                         <button
                           onClick={() => remove(sc.id)}
-                          className="p-1 rounded-full text-[#737373] hover:text-[#991B1B] opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="p-1 rounded-full text-[#6F7772] hover:text-[#991B1B] opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <Trash2 size={11} strokeWidth={1.5} />
                         </button>
@@ -314,7 +314,7 @@ function CountersPanel() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="section-title">Category Counters</div>
-          <div className="text-[12px] text-[#737373] mt-0.5">
+          <div className="text-[12px] text-[#6F7772] mt-0.5">
             Physical showcases in the shop. Assign a category (e.g. Rings) to a counter so its items sit there.
           </div>
         </div>
@@ -350,23 +350,23 @@ function CountersPanel() {
               {rows.map((r) => (
                 <tr key={r.id} className="table-row">
                   <td className="table-td font-medium">{r.name}</td>
-                  <td className="table-td font-mono text-[12px] text-[#525252]">{r.code || "—"}</td>
-                  <td className="table-td text-[12.5px] text-[#525252]">
+                  <td className="table-td font-mono text-[12px] text-[#4E5A53]">{r.code || "—"}</td>
+                  <td className="table-td text-[12.5px] text-[#4E5A53]">
                     {(() => {
                       const names = categories
                         .filter((c) => !c.parent_id && c.counter_id === r.id)
                         .map((c) => c.name);
-                      return names.length ? names.join(", ") : <span className="text-[#a3a3a3]">None allocated</span>;
+                      return names.length ? names.join(", ") : <span className="text-[#89928C]">None allocated</span>;
                     })()}
                   </td>
                   <td className="table-td">
-                    {r.is_default ? <span className="chip chip-gold">Default</span> : <span className="text-[#a3a3a3]">—</span>}
+                    {r.is_default ? <span className="chip chip-gold">Default</span> : <span className="text-[#89928C]">—</span>}
                   </td>
                   <td className="table-td text-right">
-                    <button className="p-1.5 text-[#737373] hover:text-[#0A0A0A]" onClick={() => setEditing(r)}>
+                    <button className="p-1.5 text-[#6F7772] hover:text-[#214F3A]" onClick={() => setEditing(r)}>
                       <Pencil size={13} strokeWidth={1.5} />
                     </button>
-                    <button className="p-1.5 text-[#737373] hover:text-[#991B1B]" onClick={() => remove(r.id)}>
+                    <button className="p-1.5 text-[#6F7772] hover:text-[#991B1B]" onClick={() => remove(r.id)}>
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
                   </td>
@@ -420,11 +420,11 @@ function CounterModal({ initial, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-md">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
           <div className="section-title">{editing ? "Edit category counter" : "New category counter"}</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#214F3A]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -448,17 +448,17 @@ function CounterModal({ initial, onClose, onSaved }) {
               maxLength={8}
             />
           </F>
-          <label className="flex items-center gap-2 text-[12.5px] text-[#525252]">
+          <label className="flex items-center gap-2 text-[12.5px] text-[#4E5A53]">
             <input
               type="checkbox"
               checked={form.is_default}
               onChange={(e) => set("is_default", e.target.checked)}
-              className="h-4 w-4 rounded border-[#d4d4d8] text-[#0A0A0A]"
+              className="h-4 w-4 rounded border-[#BFC8C1] accent-[#214F3A]"
             />
             Default showcase (used if a category has no counter)
           </label>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" data-testid="counter-save-btn" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Save"}
@@ -515,13 +515,13 @@ function CategoryModal({ initial, metalTypes = [], counters = [], onClose, onSav
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between shrink-0">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-md max-h-[90vh] flex flex-col">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between shrink-0">
           <div className="section-title">
             {editing ? "Edit" : form.parent_id ? "New sub-category" : "New category"}
           </div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#214F3A]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -593,9 +593,9 @@ function CategoryModal({ initial, metalTypes = [], counters = [], onClose, onSav
           )}
 
           {/* Default Charges section */}
-          <div className="border-t border-[#E5E7EB] pt-3 mt-3">
-            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-2.5">
-              Default Charges <span className="text-[#a3a3a3] font-normal normal-case tracking-normal">— auto-fill in Inventory</span>
+          <div className="border-t border-[#E2E7E2] pt-3 mt-3">
+            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-2.5">
+              Default Charges <span className="text-[#89928C] font-normal normal-case tracking-normal">— auto-fill in Inventory</span>
             </div>
             <div className="space-y-3">
               <F label="Default Wastage">
@@ -610,7 +610,7 @@ function CategoryModal({ initial, metalTypes = [], counters = [], onClose, onSav
                     onChange={(e) => set("default_wastage_pct", e.target.value === "" ? "" : Number(e.target.value))}
                     placeholder="e.g. 5"
                   />
-                  <span className="text-[12px] text-[#737373] font-medium shrink-0">%</span>
+                  <span className="text-[12px] text-[#6F7772] font-medium shrink-0">%</span>
                 </div>
               </F>
               <F label="Default Making Charge">
@@ -637,7 +637,7 @@ function CategoryModal({ initial, metalTypes = [], counters = [], onClose, onSav
             </div>
           </div>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2 shrink-0">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2 shrink-0">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" data-testid="category-save-btn" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Save"}
@@ -706,7 +706,7 @@ function AttributesPanel() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="section-title">Custom Attributes</div>
-          <div className="text-[12px] text-[#737373] mt-0.5">
+          <div className="text-[12px] text-[#6F7772] mt-0.5">
             Fields like Ring Size, Stone Type, Length — attach them to categories to make Product forms adaptive.
           </div>
         </div>
@@ -742,25 +742,25 @@ function AttributesPanel() {
               {attributes.map((a) => (
                 <tr key={a.id} className="table-row">
                   <td className="table-td font-medium">{a.name}</td>
-                  <td className="table-td font-mono text-[12px] text-[#525252]">{a.code}</td>
+                  <td className="table-td font-mono text-[12px] text-[#4E5A53]">{a.code}</td>
                   <td className="table-td">
                     <span className="chip chip-neutral capitalize">{a.field_type}</span>
                     {asArray(a.options).length > 0 && (
-                      <span className="ml-2 text-[11px] text-[#737373]">{asArray(a.options).length} option{asArray(a.options).length === 1 ? "" : "s"}</span>
+                      <span className="ml-2 text-[11px] text-[#6F7772]">{asArray(a.options).length} option{asArray(a.options).length === 1 ? "" : "s"}</span>
                     )}
                   </td>
-                  <td className="table-td text-[12.5px] text-[#525252]">
+                  <td className="table-td text-[12.5px] text-[#4E5A53]">
                     {a.category_ids && a.category_ids.length > 0 ? (
                       <span>{a.category_ids.map(catName).join(", ")}</span>
                     ) : (
-                      <span className="text-[#a3a3a3]">Global</span>
+                      <span className="text-[#89928C]">Global</span>
                     )}
                   </td>
                   <td className="table-td text-right">
-                    <button className="p-1.5 text-[#737373] hover:text-[#0A0A0A]" onClick={() => setEditing(a)}>
+                    <button className="p-1.5 text-[#6F7772] hover:text-[#214F3A]" onClick={() => setEditing(a)}>
                       <Pencil size={13} strokeWidth={1.5} />
                     </button>
-                    <button className="p-1.5 text-[#737373] hover:text-[#991B1B]" onClick={() => remove(a.id)}>
+                    <button className="p-1.5 text-[#6F7772] hover:text-[#991B1B]" onClick={() => remove(a.id)}>
                       <Trash2 size={13} strokeWidth={1.5} />
                     </button>
                   </td>
@@ -839,11 +839,11 @@ function AttributeModal({ initial, categories, onClose, onSaved }) {
   const hasOptions = ["dropdown", "multiselect"].includes(form.field_type);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between sticky top-0 bg-white">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between sticky top-0 bg-[#FFFDF9]">
           <div className="section-title">{editing ? "Edit attribute" : "New attribute"}</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#214F3A]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -867,12 +867,12 @@ function AttributeModal({ initial, categories, onClose, onSaved }) {
 
           {hasOptions && (
             <div>
-              <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">Options</div>
+              <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-1.5">Options</div>
               <div className="flex flex-wrap gap-2 mb-2">
                 {form.options.map((o, i) => (
                   <span key={i} className="chip chip-neutral">
                     {o}
-                    <button type="button" onClick={() => removeOption(i)} className="ml-1 text-[#a3a3a3] hover:text-[#991B1B]">
+                    <button type="button" onClick={() => removeOption(i)} className="ml-1 text-[#89928C] hover:text-[#991B1B]">
                       <X size={11} strokeWidth={1.5} />
                     </button>
                   </span>
@@ -893,10 +893,10 @@ function AttributeModal({ initial, categories, onClose, onSaved }) {
           )}
 
           <div>
-            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">
-              Applies to categories <span className="text-[#a3a3a3] font-normal normal-case tracking-normal">— leave empty for global</span>
+            <div className="text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-1.5">
+              Applies to categories <span className="text-[#89928C] font-normal normal-case tracking-normal">— leave empty for global</span>
             </div>
-            <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto border border-[#E5E7EB] rounded-md p-3">
+            <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto border border-[#E2E7E2] rounded-md p-3">
               {categories.filter((c) => !c.parent_id).map((c) => {
                 const on = form.category_ids.includes(c.id);
                 return (
@@ -904,7 +904,7 @@ function AttributeModal({ initial, categories, onClose, onSaved }) {
                     type="button"
                     key={c.id}
                     onClick={() => toggleCat(c.id)}
-                    className={`chip ${on ? "chip-gold" : "chip-neutral"} cursor-pointer`}
+                    className={`chip cursor-pointer ${on ? "border-[#CBDED2] bg-[#EAF2ED] text-[#214F3A]" : "chip-neutral"}`}
                   >
                     {c.name}
                   </button>
@@ -913,12 +913,12 @@ function AttributeModal({ initial, categories, onClose, onSaved }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-[12.5px] text-[#525252]">
-            <input type="checkbox" checked={form.required} onChange={(e) => set("required", e.target.checked)} className="h-4 w-4 rounded border-[#d4d4d8] text-[#0A0A0A]" />
+          <div className="flex items-center gap-2 text-[12.5px] text-[#4E5A53]">
+            <input type="checkbox" checked={form.required} onChange={(e) => set("required", e.target.checked)} className="h-4 w-4 rounded border-[#BFC8C1] accent-[#214F3A]" />
             Required in product form
           </div>
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2 sticky bottom-0 bg-white">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2 sticky bottom-0 bg-[#FFFDF9]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" data-testid="attribute-save-btn" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Save attribute"}
@@ -972,7 +972,7 @@ function LookupPanel({ kind, title }) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="section-title">{title}</div>
-          <div className="text-[12px] text-[#737373] mt-0.5">
+          <div className="text-[12px] text-[#6F7772] mt-0.5">
             Reusable master data referenced by products, invoices and reports.
           </div>
         </div>
@@ -1010,24 +1010,24 @@ function LookupPanel({ kind, title }) {
                   <td className="table-td font-medium">
                     <div className="flex items-center gap-2">
                       {r.color && (
-                        <span className="h-3 w-3 rounded-full border border-[#E5E7EB]" style={{ background: r.color }} />
+                        <span className="h-3 w-3 rounded-full border border-[#E2E7E2]" style={{ background: r.color }} />
                       )}
                       {r.name}
                     </div>
                   </td>
-                  <td className="table-td font-mono text-[12px] text-[#525252]">{r.code}</td>
+                  <td className="table-td font-mono text-[12px] text-[#4E5A53]">{r.code}</td>
                   {kind === "purities" && (
-                    <td className="table-td text-[12.5px] text-[#525252]">
+                    <td className="table-td text-[12.5px] text-[#4E5A53]">
                       {metalNameById[asObject(r.meta).metal_type_id] || "—"}
                     </td>
                   )}
-                  <td className="table-td text-[12.5px] text-[#525252]">{r.description || "—"}</td>
+                  <td className="table-td text-[12.5px] text-[#4E5A53]">{r.description || "—"}</td>
                   <td className="table-td text-right">
-                    <button className="p-1.5 text-[#737373] hover:text-[#0A0A0A]" onClick={() => setEditing(r)}>
+                    <button className="p-1.5 text-[#6F7772] hover:text-[#214F3A]" onClick={() => setEditing(r)}>
                       <Pencil size={13} strokeWidth={1.5} />
                     </button>
                     {!r.is_system && (
-                      <button className="p-1.5 text-[#737373] hover:text-[#991B1B]" onClick={() => remove(r.id)}>
+                      <button className="p-1.5 text-[#6F7772] hover:text-[#991B1B]" onClick={() => remove(r.id)}>
                         <Trash2 size={13} strokeWidth={1.5} />
                       </button>
                     )}
@@ -1100,11 +1100,11 @@ function LookupModal({ kind, title, metals, initial, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <form onSubmit={save} className="bg-white rounded-lg border border-[#E5E7EB] shadow-2xl w-full max-w-md">
-        <div className="p-5 border-b border-[#E5E7EB] flex items-center justify-between">
+    <div className="fixed inset-0 z-50 bg-[#17201C]/40 flex items-center justify-center p-4">
+      <form onSubmit={save} className="bg-[#FFFDF9] rounded-xl border border-[#E2E7E2] shadow-[0_18px_48px_rgba(23,56,42,0.12)] w-full max-w-md">
+        <div className="p-5 border-b border-[#E2E7E2] flex items-center justify-between">
           <div className="section-title">{editing ? `Edit ${title.slice(0, -1).toLowerCase()}` : `New ${title.slice(0, -1).toLowerCase()}`}</div>
-          <button type="button" onClick={onClose} className="text-[#a3a3a3] hover:text-[#0A0A0A]">
+          <button type="button" onClick={onClose} className="text-[#89928C] hover:text-[#214F3A]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
@@ -1128,7 +1128,7 @@ function LookupModal({ kind, title, metals, initial, onClose, onSaved }) {
               placeholder={kind === "purities" ? "e.g. 16 or 667" : undefined}
             />
             {kind === "purities" && !isSystem && (
-              <p className="mt-1 text-[11px] text-[#737373]">
+              <p className="mt-1 text-[11px] text-[#6F7772]">
                 Gold: enter karat 1–24 (16 for 16K) or fineness 25–1000 (667 or 916).
                 Silver: enter fineness out of 999 (925 sterling, 999 fine).
                 Built-in 24K / 22K / 18K / 14K / Silver already have a shop rate.
@@ -1149,13 +1149,13 @@ function LookupModal({ kind, title, metals, initial, onClose, onSaved }) {
           {(kind === "metal-types" || kind === "stone-types" || kind === "tags") && (
             <F label="Color (optional)">
               <div className="flex items-center gap-2">
-                <input type="color" value={form.color || "#B49042"} onChange={(e) => set("color", e.target.value)} className="h-9 w-14 border border-[#E5E7EB] rounded-md" />
+                <input type="color" value={form.color || "#B49042"} onChange={(e) => set("color", e.target.value)} className="h-9 w-14 border border-[#E2E7E2] rounded-lg" />
                 <input className="input font-mono" value={form.color || ""} onChange={(e) => set("color", e.target.value)} placeholder="#B49042" />
               </div>
             </F>
           )}
         </div>
-        <div className="p-4 border-t border-[#E5E7EB] flex items-center justify-end gap-2">
+        <div className="p-4 border-t border-[#E2E7E2] flex items-center justify-end gap-2">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
           <button type="submit" data-testid="lookup-save-btn" disabled={busy} className="btn-primary">
             {busy ? "Saving…" : "Save"}
@@ -1169,8 +1169,8 @@ function LookupModal({ kind, title, metals, initial, onClose, onSaved }) {
 function F({ label, hint, children }) {
   return (
     <label className="block">
-      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#737373] mb-1.5">{label}</span>
-      {hint && <span className="block text-[11px] text-[#a3a3a3] mb-1.5 -mt-1">{hint}</span>}
+      <span className="block text-[11px] uppercase tracking-[0.09em] font-semibold text-[#6F7772] mb-1.5">{label}</span>
+      {hint && <span className="block text-[11px] text-[#89928C] mb-1.5 -mt-1">{hint}</span>}
       {children}
     </label>
   );
