@@ -399,7 +399,7 @@ function WidgetProps({ id, layout, onChange, canWrite, letterheadOn = false, let
                   max={50}
                   disabled={disabled || !col.show}
                   value={col.width}
-                  className="h-1.5 flex-1 accent-[#315E48]"
+                  className="flex-1 accent-[#315E48]"
                   onChange={(e) => onChange(`items.columns.${col.id}.width`, Number(e.target.value))}
                 />
                 <span className="text-[11px] w-10 text-right tabular-nums">{col.width}%</span>

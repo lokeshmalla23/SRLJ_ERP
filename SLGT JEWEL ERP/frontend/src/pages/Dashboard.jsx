@@ -22,6 +22,8 @@ import { useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import { useDashboardHiddenUnlocked } from "@/lib/dashboardHiddenUnlock";
 import { useHiddenBillUnlockGate } from "@/hooks/useHiddenBillUnlockGate";
 import { hiddenUnlockBleedClass } from "@/lib/hiddenUnlockSurface";
+import { JewelleryHeroArt, BullionArt } from "@/components/dashboard/JewelleryArt";
+import { kpiTones } from "@/lib/theme";
 
 function parseND(raw) {
   if (!raw) return {};
@@ -36,32 +38,33 @@ function getDashboardDayLine(now = new Date()) {
   return `${day} · ${salutation}. A clear view of today’s showroom activity.`;
 }
 
-function DashboardAtmosphere() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden lg:block">
-      <div className="absolute right-9 top-1/2 h-52 w-52 -translate-y-1/2 rounded-full border border-[#B28B48]/20" />
-      <div className="absolute right-[74px] top-1/2 h-36 w-36 -translate-y-1/2 rounded-full border border-[#B28B48]/30" />
-      <div className="absolute right-[139px] top-[67%] h-5 w-5 rotate-45 border border-[#B28B48]/35 bg-[#F7F5F0]/60" />
-      <div className="absolute right-[141px] top-[34%] h-px w-14 rotate-90 bg-[#B28B48]/25" />
-      <div className="absolute bottom-[-58px] right-[29%] h-60 w-px rotate-[14deg] bg-[#476B60]/20" />
-      <div className="absolute right-[31%] top-[23%] h-16 w-9 -rotate-[28deg] rounded-[100%_0_100%_0] border border-[#527568]/20 bg-[#DDE6E0]/35" />
-      <div className="absolute right-[25%] top-[42%] h-14 w-8 rotate-[24deg] rounded-[0_100%_0_100%] border border-[#527568]/20 bg-[#DDE6E0]/30" />
-      <div className="absolute right-[38%] top-[57%] h-12 w-7 -rotate-[12deg] rounded-[100%_0_100%_0] border border-[#527568]/15 bg-[#DDE6E0]/25" />
-      <div className="absolute right-[17%] top-[16%] h-10 w-6 rotate-[42deg] rounded-[0_100%_0_100%] border border-[#527568]/15 bg-[#DDE6E0]/20" />
-    </div>
-  );
-}
-
+/**
+ * Greeting hero. The greeting, supporting line, title-click handler and lock
+ * button all stay exactly as they were — only the frame and the decorative
+ * jewellery artwork on the right are new.
+ */
 function DashboardHeader({ firstName, supportingLine, onTitleClick, titleHint, lockButton }) {
   return (
-    <section className="relative -mx-2 mb-5 overflow-hidden px-2 py-3 sm:px-4 sm:py-5">
-      <div className="relative z-10">
+    <section className="relative mb-5 overflow-hidden rounded-[20px] border border-[#EAE1CD] bg-[linear-gradient(118deg,#FDFBF6_0%,#FBF6EA_44%,#F4EAD8_100%)] px-5 py-9 shadow-[0_20px_48px_-34px_rgba(92,72,36,0.5)] sm:px-8 sm:py-11 lg:py-14">
+      {/* layered atmosphere: champagne bloom + faint vertical silk texture */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(105%_120%_at_100%_0%,rgba(226,196,131,0.32),transparent_58%)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-60 [background-image:repeating-linear-gradient(102deg,rgba(178,139,72,0.045)_0px,rgba(178,139,72,0.045)_1px,transparent_1px,transparent_9px)]" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 h-px w-full bg-[linear-gradient(90deg,rgba(178,139,72,0.28),rgba(178,139,72,0)_62%)]" />
+
+      {/* large premium jewellery visual, right side */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-[-1%] hidden w-[56%] lg:block xl:w-[52%]">
+        <JewelleryHeroArt className="h-full w-full" />
+      </div>
+
+      <div className="relative z-10 max-w-[100%] lg:max-w-[52%] xl:max-w-[48%] [&>div]:mb-0">
         <PageHeader
           title={(
             <span className="inline-flex flex-wrap items-baseline gap-x-2.5">
               <span className="font-sans text-[12px] font-semibold uppercase tracking-[0.24em] text-[#987A3A]">Namaste,</span>{" "}
-              <span className="text-[40px] font-normal leading-none tracking-[-0.025em] text-[#173C33] sm:text-[46px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{firstName}</span>
-              <span className="text-[30px] font-normal leading-none text-[#B28B48] sm:text-[34px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>.</span>
+              <span className="inline-flex items-baseline">
+                <span className="text-[40px] font-normal leading-none tracking-[-0.025em] text-[#173C33] sm:text-[46px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>{firstName}</span>
+                <span className="text-[30px] font-normal leading-none text-[#B28B48] sm:text-[34px]" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>.</span>
+              </span>
             </span>
           )}
           subtitle={supportingLine}
@@ -70,7 +73,6 @@ function DashboardHeader({ firstName, supportingLine, onTitleClick, titleHint, l
           actions={lockButton}
         />
       </div>
-      <DashboardAtmosphere />
     </section>
   );
 }
@@ -228,10 +230,10 @@ const RATE_FIELDS = [
 
 function RateItem({ label, value }) {
   return (
-    <div className="min-w-0 bg-[#173C33] px-2 py-2.5 text-center sm:px-3">
-      <div className="text-[9.5px] uppercase tracking-[0.16em] text-[#D7C18D] font-semibold mb-1.5 truncate">{label}</div>
-      <span className="font-display text-[17px] font-semibold text-[#FFF9EA] leading-none tabular-nums">{fmtINR(value)}</span>
-      <div className="text-[8.5px] text-[#D7C18D]/55 uppercase tracking-[0.14em] mt-1">per gram</div>
+    <div className="min-w-0 bg-white/[0.05] px-2 py-2.5 text-center transition-colors duration-200 hover:bg-white/[0.09] sm:px-3">
+      <div className="mb-1.5 truncate text-[9.5px] font-semibold uppercase tracking-[0.16em] text-[#DCC79A]">{label}</div>
+      <span className="font-display text-[17px] font-semibold leading-none tabular-nums text-[#FFF8E6]">{fmtINR(value)}</span>
+      <div className="mt-1 text-[8.5px] uppercase tracking-[0.14em] text-[#DCC79A]/50">per gram</div>
     </div>
   );
 }
@@ -311,23 +313,32 @@ function GoldRatesBar({ goldRate, onSave }) {
       <button
         type="button"
         onClick={() => setModalOpen(true)}
-        className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-[18px] border border-[#214B40] bg-[#173C33] px-4 py-4 text-left shadow-[0_12px_34px_-18px_rgba(23,60,51,0.48)] hover:bg-[#1B443A] hover:border-[#2C5C4E] transition-colors cursor-pointer md:flex md:gap-6 md:px-6"
+        className="group relative flex w-full cursor-pointer flex-col items-stretch overflow-hidden rounded-[18px] border border-[#1D4A3B] bg-[linear-gradient(116deg,#255744_0%,#1B4538_32%,#143528_62%,#0E2A22_100%)] px-4 py-4 text-left shadow-[0_20px_46px_-28px_rgba(11,38,30,0.8)] transition-[border-color,box-shadow] duration-200 hover:border-[#37695A] hover:shadow-[0_24px_54px_-28px_rgba(11,38,30,0.85)] md:flex-row md:items-center md:gap-6 md:px-6 md:py-5"
         data-testid={T.goldRateWidget}
       >
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="h-9 w-9 rounded-[11px] border border-[#D7BC7C]/25 bg-white/[0.06] flex items-center justify-center flex-shrink-0"><Coins size={16} strokeWidth={1.5} className="text-[#DCC589]" /></div>
-          <div>
-            <div className="text-[10.5px] uppercase tracking-[0.18em] text-[#F0DDAF] font-semibold">Live Gold Rates</div>
-            <div className="flex items-center gap-1.5 mt-1">
-              <span className="relative flex h-1.5 w-1.5"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8FB8A7] opacity-60" /><span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8FB8A7]" /></span>
-              <span className="text-[9.5px] text-[#D7C18D]/60">Today</span>
-            </div>
+        {/* layered depth: champagne bloom, silk texture, base vignette */}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[radial-gradient(115%_150%_at_8%_-10%,rgba(230,203,143,0.26),transparent_56%)]" />
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-70 [background-image:repeating-linear-gradient(114deg,rgba(255,255,255,0.032)_0px,rgba(255,255,255,0.032)_1px,transparent_1px,transparent_7px)]" />
+        <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,rgba(232,214,166,0.34),rgba(232,214,166,0)_78%)]" />
+
+        {/* gold bullion visual — left side */}
+        <span aria-hidden="true" className="pointer-events-none relative z-10 hidden h-[86px] w-[112px] flex-shrink-0 sm:block">
+          <BullionArt metal="gold" className="h-full w-full" />
+        </span>
+
+        <div className="relative z-10 order-1 min-w-0 md:order-none">
+          <div className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#F0DDAF]">Live Gold Rates</div>
+          <div aria-hidden="true" className="mt-1.5 h-px w-16 bg-[linear-gradient(90deg,#E4C98C,rgba(228,201,140,0))]" />
+          <div className="mt-1.5 flex items-center gap-1.5">
+            <span className="relative flex h-1.5 w-1.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#8FB8A7] opacity-60" /><span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#8FB8A7]" /></span>
+            <span className="text-[9.5px] text-[#DCC79A]/60">Today</span>
           </div>
         </div>
-        <div className="order-3 col-span-2 grid min-w-0 flex-1 grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-white/10 bg-white/10 sm:grid-cols-5 md:order-none">
+
+        <div className="order-2 col-span-2 grid min-w-0 flex-1 grid-cols-2 gap-px overflow-hidden rounded-[12px] border border-white/10 bg-white/10 sm:grid-cols-5 md:order-none">
           {RATE_FIELDS.map(({ label, field }) => <RateItem key={field} label={label} value={gr[field]} />)}
         </div>
-        <Edit2 size={12} strokeWidth={1.5} className="order-2 text-[#D7C18D]/60 group-hover:text-[#F0DDAF] flex-shrink-0 md:order-none" />
+        <Edit2 size={12} strokeWidth={1.5} className="order-3 flex-shrink-0 self-end text-[#DCC79A]/60 transition-colors group-hover:text-[#F0DDAF] md:order-none md:self-auto" />
       </button>
       <EditRatesModal open={modalOpen} goldRate={gr} onClose={() => setModalOpen(false)} onSave={onSave} />
     </>
@@ -338,49 +349,76 @@ function GoldRatesBar({ goldRate, onSave }) {
 function MetalCard({ metal, todayGross, todayNet, todayPieces, monthGross, monthNet, monthPieces }) {
   const isGold = metal === "gold";
   return (
-    <article className={`rounded-[18px] border p-5 shadow-[0_10px_30px_-22px_rgba(32,43,38,0.35)] ${isGold ? "border-[#E7D5AA] bg-[#FBF7ED]" : "border-[#D7E0E4] bg-[#F3F7F8]"}`}>
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className={`h-10 w-10 rounded-[12px] flex items-center justify-center border ${isGold ? "bg-[#C6A15B] border-[#B28B48] text-white" : "bg-[#718792] border-[#607681] text-white"}`}>
-          <span className="font-display text-[15px] font-semibold">{isGold ? "Au" : "Ag"}</span>
-        </div>
-        <div>
-          <div className={`font-display text-[16px] font-semibold ${isGold ? "text-[#6E5420]" : "text-[#314A54]"}`}>{isGold ? "Gold" : "Silver"} Sales</div>
-          <div className="text-[11px] text-[#747975]">Gross & net weight summary</div>
-        </div>
-      </div>
+    <article
+      className={`relative overflow-hidden rounded-[18px] border p-5 shadow-[0_14px_34px_-26px_rgba(32,43,38,0.45)] transition-[border-color,box-shadow] duration-200 ${
+        isGold
+          ? "border-[#E7D5AA] bg-[linear-gradient(148deg,#FEFBF4_0%,#FAF4E6_50%,#F3E7CF_100%)]"
+          : "border-[#D7E0E4] bg-[linear-gradient(148deg,#FBFDFE_0%,#F2F7F9_50%,#E7EFF3_100%)]"
+      }`}
+    >
+      {/* metal atmosphere + bar artwork on the right, blended into the surface */}
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 ${
+          isGold
+            ? "bg-[radial-gradient(85%_125%_at_100%_50%,rgba(214,168,74,0.22),transparent_62%)]"
+            : "bg-[radial-gradient(85%_125%_at_100%_50%,rgba(126,158,175,0.2),transparent_62%)]"
+        }`}
+      />
+      <span aria-hidden="true" className="pointer-events-none absolute -right-7 top-1/2 hidden h-[200%] w-[48%] -translate-y-1/2 sm:block">
+        <BullionArt metal={metal} className="h-full w-full" />
+      </span>
 
-      {/* Today / Month columns */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* Today */}
-        <div className={`rounded-[12px] border p-3.5 ${isGold ? "bg-white/55 border-[#E9DDBF]" : "bg-white/65 border-[#DCE4E7]"}`}>
-          <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#6F7671] mb-3">Today</div>
-          <div className="space-y-2.5">
-            <div>
-              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Gross Wt</div>
-              <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{todayGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
-            </div>
-            <div>
-              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Net Wt</div>
-              <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{todayNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
-            </div>
-            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{todayPieces} piece{todayPieces !== 1 ? "s" : ""}</div>
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="mb-5 flex items-center gap-3">
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-[12px] border text-white shadow-[0_8px_18px_-12px_rgba(32,43,38,0.6)] ${
+              isGold
+                ? "border-[#A87A29] bg-[linear-gradient(140deg,#E4C07C,#B28B48)]"
+                : "border-[#607681] bg-[linear-gradient(140deg,#93A5AE,#6E838E)]"
+            }`}
+          >
+            <span className="font-display text-[15px] font-semibold">{isGold ? "Au" : "Ag"}</span>
+          </div>
+          <div>
+            <div className={`font-display text-[16px] font-semibold ${isGold ? "text-[#6E5420]" : "text-[#314A54]"}`}>{isGold ? "Gold" : "Silver"} Sales</div>
+            <div className="text-[11px] text-[#747975]">Gross & net weight summary</div>
           </div>
         </div>
 
-        {/* This Month */}
-        <div className={`rounded-[12px] border p-3.5 ${isGold ? "bg-white/40 border-[#EEE3CB]" : "bg-white/45 border-[#E0E7E9]"}`}>
-          <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#6F7671] mb-3">This Month</div>
-          <div className="space-y-2.5">
-            <div>
-              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Gross Wt</div>
-              <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{monthGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
+        {/* Today / Month columns */}
+        <div className="grid grid-cols-2 gap-3">
+          {/* Today */}
+          <div className={`rounded-[12px] border p-3.5 backdrop-blur-[2px] ${isGold ? "border-[#E9DDBF] bg-white/70" : "border-[#DCE4E7] bg-white/75"}`}>
+            <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6F7671]">Today</div>
+            <div className="space-y-2.5">
+              <div>
+                <div className="text-[10px] uppercase tracking-wide text-[#969C97]">Gross Wt</div>
+                <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{todayGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
+              </div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wide text-[#969C97]">Net Wt</div>
+                <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{todayNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
+              </div>
+              <div className={`border-t pt-1 text-[11px] font-medium ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{todayPieces} piece{todayPieces !== 1 ? "s" : ""}</div>
             </div>
-            <div>
-              <div className="text-[10px] text-[#969C97] uppercase tracking-wide">Net Wt</div>
-              <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{monthNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
+          </div>
+
+          {/* This Month */}
+          <div className={`rounded-[12px] border p-3.5 backdrop-blur-[2px] ${isGold ? "border-[#EEE3CB] bg-white/55" : "border-[#E0E7E9] bg-white/60"}`}>
+            <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#6F7671]">This Month</div>
+            <div className="space-y-2.5">
+              <div>
+                <div className="text-[10px] uppercase tracking-wide text-[#969C97]">Gross Wt</div>
+                <div className={`font-display text-[21px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#76581D]" : "text-[#314A54]"}`}>{monthGross.toFixed(3)} <span className="font-sans text-[12px] font-normal text-[#7B817C]">g</span></div>
+              </div>
+              <div>
+                <div className="text-[10px] uppercase tracking-wide text-[#969C97]">Net Wt</div>
+                <div className={`font-display text-[17px] font-semibold leading-tight tabular-nums ${isGold ? "text-[#8A6722]" : "text-[#49636E]"}`}>{monthNet.toFixed(3)} <span className="font-sans text-[11px] font-normal text-[#7B817C]">g</span></div>
+              </div>
+              <div className={`border-t pt-1 text-[11px] font-medium ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{monthPieces} piece{monthPieces !== 1 ? "s" : ""}</div>
             </div>
-            <div className={`text-[11px] font-medium pt-1 border-t ${isGold ? "border-[#E7D7B2] text-[#806020]" : "border-[#D3DEE2] text-[#4B6671]"}`}>{monthPieces} piece{monthPieces !== 1 ? "s" : ""}</div>
           </div>
         </div>
       </div>
@@ -388,17 +426,23 @@ function MetalCard({ metal, todayGross, todayNet, todayPieces, monthGross, month
   );
 }
 
-function MetricCard({ icon: Icon, label, value, detail }) {
+function MetricCard({ icon: Icon, label, value, detail, tone }) {
+  const t = tone ? kpiTones[tone] : null;
   return (
-    <article className="rounded-[16px] border border-[#E5E2DA] bg-white p-5 shadow-[0_10px_30px_-24px_rgba(28,40,35,0.42)] transition-colors hover:border-[#D4D9D4]">
-      <div className="flex items-center gap-3">
-        <div className="h-9 w-9 rounded-[11px] border border-[#DCE4DF] bg-[#F3F7F4] flex items-center justify-center flex-shrink-0">
-          <Icon size={15} strokeWidth={1.6} className="text-[#315B4E]" />
+    <article
+      className={`relative min-w-0 overflow-hidden rounded-[16px] border p-5 shadow-[0_14px_32px_-26px_rgba(28,40,35,0.5)] transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5 ${
+        t ? t.surface : "border-[#E5E2DA] bg-white hover:border-[#D4D9D4]"
+      }`}
+    >
+      {t && <span aria-hidden="true" className={`pointer-events-none absolute inset-0 ${t.glow}`} />}
+      <div className="relative z-10 flex items-center gap-3">
+        <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-[11px] border ${t ? t.icon : "border-[#DCE4DF] bg-[#F3F7F4]"}`}>
+          <Icon size={15} strokeWidth={1.6} className={t ? t.iconFg : "text-[#315B4E]"} />
         </div>
-        <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-[#747A76]">{label}</div>
+        <div className={`text-[10px] font-semibold uppercase tracking-[0.16em] ${t ? t.label : "text-[#747A76]"}`}>{label}</div>
       </div>
-      <div className="font-display text-[24px] font-semibold text-[#18231F] mt-4 leading-tight tracking-[-0.02em] tabular-nums">{value}</div>
-      <div className="text-[11px] text-[#818681] mt-1.5">{detail}</div>
+      <div className={`relative z-10 mt-4 font-display text-[24px] font-semibold leading-tight tracking-[-0.02em] tabular-nums ${t ? t.value : "text-[#18231F]"}`}>{value}</div>
+      <div className={`relative z-10 mt-1.5 text-[11px] ${t ? t.detail : "text-[#818681]"}`}>{detail}</div>
     </article>
   );
 }
@@ -651,27 +695,31 @@ export default function Dashboard() {
       {/* Live Gold Rates */}
       <GoldRatesBar goldRate={gr} onSave={handleRateSave} />
 
-      {/* Revenue KPIs */}
+      {/* Revenue KPIs — four differentiated soft-gradient surfaces */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
+          tone="gold"
           icon={IndianRupee}
           label="Today Sales"
           value={fmtINR(kpis.today_sales ?? 0)}
           detail={`${kpis.today_invoices ?? 0} invoice${(kpis.today_invoices ?? 0) !== 1 ? "s" : ""}`}
         />
         <MetricCard
+          tone="green"
           icon={CalendarDays}
           label="This Month"
           value={fmtINR(kpis.month_sales ?? 0)}
           detail={`${kpis.month_invoices ?? 0} invoice${(kpis.month_invoices ?? 0) !== 1 ? "s" : ""}`}
         />
         <MetricCard
+          tone="blue"
           icon={Coins}
           label="Today Cash"
           value={fmtINR(kpis.today_cash ?? 0)}
           detail="Cash collections"
         />
         <MetricCard
+          tone="lavender"
           icon={TrendingUp}
           label="Avg Daily"
           value={fmtINR(kpis.avg_daily_sales ?? 0)}

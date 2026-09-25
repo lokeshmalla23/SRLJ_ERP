@@ -1112,7 +1112,7 @@ export default function Accounts() {
   };
 
   return (
-    <div className={`flex min-h-[calc(100vh-4rem)] flex-col ${hiddenUnlocked ? hiddenUnlockBleedClass(true) : "-m-5 bg-[#F4F1EA] px-5 py-5 2xl:-m-7 2xl:px-7 2xl:py-7 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.btn-secondary]:hover:!border-[#9EB2A6] [&_.btn-secondary]:hover:!bg-[#F1F5F1] [&_.card]:!rounded-xl [&_.card]:!border-[#D8D2C6] [&_.card]:!bg-[#FFFDF9] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]"}`}>
+    <div className={`flex min-h-[calc(100vh-4rem)] flex-col ${hiddenUnlocked ? hiddenUnlockBleedClass(true) : "-m-5 bg-[#F4F1EA] px-5 py-5 xl:-m-7 xl:px-7 xl:py-7 [&_.btn-primary]:!rounded-[9px] [&_.btn-primary]:!border-[#315C4A] [&_.btn-primary]:!bg-[#315C4A] [&_.btn-primary]:hover:!bg-[#244A3A] [&_.btn-secondary]:!rounded-[9px] [&_.btn-secondary]:!border-[#D2CCBF] [&_.btn-secondary]:!bg-[#FFFDF9] [&_.btn-secondary]:hover:!border-[#9EB2A6] [&_.btn-secondary]:hover:!bg-[#F1F5F1] [&_.card]:!rounded-xl [&_.card]:!border-[#D8D2C6] [&_.card]:!bg-[#FFFDF9] [&_.input]:!rounded-[9px] [&_.input]:!border-[#CFC8BB] [&_.input]:focus:!border-[#3D6B5B] [&_.input]:focus:!shadow-[0_0_0_3px_rgba(61,107,91,0.10)]"}`}>
       <div className="border-b border-[#D8D2C6] bg-[#FFFDF9]/95 px-4 py-4 shadow-[0_1px_2px_rgba(38,52,43,0.03)] backdrop-blur-sm md:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>

@@ -2971,8 +2971,8 @@ export default function POS() {
                     className="flex-shrink-0 px-3 py-1.5 rounded-[10px] text-[12px] font-semibold border transition-colors whitespace-nowrap flex items-center gap-1.5"
                     style={{
                       borderColor: FOREST,
-                      color: FOREST,
-                      background: schemePanelOpen || appliedScheme ? "#E9F0EC" : "transparent",
+                      color: appliedScheme ? "#FFFFFF" : FOREST,
+                      background: appliedScheme ? FOREST : schemePanelOpen ? "#E9F0EC" : "transparent",
                     }}
                     title="Apply customer scheme to this bill"
                   >

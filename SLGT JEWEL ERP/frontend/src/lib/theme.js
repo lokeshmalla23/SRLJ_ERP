@@ -68,6 +68,48 @@ export const breakpoints = {
   "2xl": "(min-width: 1536px)",
 };
 
+// ── KPI surface tones ─────────────────────────────────────────────────────────
+// Four differentiated but restrained soft-gradient treatments so metric rows read
+// as one system without every card looking identical. Presentation only.
+export const kpiTones = {
+  gold: {
+    surface: "border-[#EADFC4] bg-[linear-gradient(148deg,#FFFCF4_0%,#FBF4E3_54%,#F5E9D2_100%)]",
+    glow:    "bg-[radial-gradient(120%_130%_at_88%_6%,rgba(217,164,65,0.16),transparent_62%)]",
+    icon:    "border-[#E6D3A6] bg-[linear-gradient(140deg,#FAF0D6,#EFDDB2)]",
+    iconFg:  "text-[#9A6C25]",
+    label:   "text-[#9A855A]",
+    value:   "text-[#2C2A24]",
+    detail:  "text-[#8A8172]",
+  },
+  green: {
+    surface: "border-[#D8E7DA] bg-[linear-gradient(148deg,#F9FCF9_0%,#EFF6EF_54%,#E6F1E9_100%)]",
+    glow:    "bg-[radial-gradient(120%_130%_at_88%_6%,rgba(47,107,79,0.14),transparent_62%)]",
+    icon:    "border-[#CFE2D5] bg-[linear-gradient(140deg,#E9F3EB,#D6E8DC)]",
+    iconFg:  "text-[#2F6B4F]",
+    label:   "text-[#5E7A68]",
+    value:   "text-[#1E2A23]",
+    detail:  "text-[#75857B]",
+  },
+  blue: {
+    surface: "border-[#D6E2EB] bg-[linear-gradient(148deg,#F9FCFD_0%,#EFF5F9_54%,#E7EFF5_100%)]",
+    glow:    "bg-[radial-gradient(120%_130%_at_88%_6%,rgba(82,103,122,0.14),transparent_62%)]",
+    icon:    "border-[#CFDFEA] bg-[linear-gradient(140deg,#E8F0F7,#D6E4EE)]",
+    iconFg:  "text-[#3E6474]",
+    label:   "text-[#5D7787]",
+    value:   "text-[#1D262C]",
+    detail:  "text-[#74838D]",
+  },
+  lavender: {
+    surface: "border-[#DFD8EC] bg-[linear-gradient(148deg,#FBFAFD_0%,#F4F1FA_54%,#EDE8F6_100%)]",
+    glow:    "bg-[radial-gradient(120%_130%_at_88%_6%,rgba(107,85,122,0.13),transparent_62%)]",
+    icon:    "border-[#DCD2EE] bg-[linear-gradient(140deg,#EFEAF7,#E1D9F0)]",
+    iconFg:  "text-[#6B557A]",
+    label:   "text-[#7A6A8B]",
+    value:   "text-[#241E2B]",
+    detail:  "text-[#7E7488]",
+  },
+};
+
 // Responsive grid columns helper
 export const responsiveGrid = {
   cards:  "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",

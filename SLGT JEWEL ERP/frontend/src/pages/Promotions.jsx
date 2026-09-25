@@ -195,10 +195,10 @@ export default function Promotions() {
 
       {/* KPI Bar */}
       <div className="grid grid-cols-4 gap-4 mb-8">
-        <KpiCard label="Total Campaigns" value={totalCampaigns} icon={Megaphone} />
-        <KpiCard label="Customers Reached" value={customersReached.toLocaleString("en-IN")} icon={Users} accent />
-        <KpiCard label="Active Segments" value={uniqueSegments} icon={Star} />
-        <KpiCard label="This Month" value={thisMonth} icon={Calendar} />
+        <KpiCard tone="gold" label="Total Campaigns" value={totalCampaigns} icon={Megaphone} />
+        <KpiCard tone="green" label="Customers Reached" value={customersReached.toLocaleString("en-IN")} icon={Users} accent />
+        <KpiCard tone="blue" label="Active Segments" value={uniqueSegments} icon={Star} />
+        <KpiCard tone="lavender" label="This Month" value={thisMonth} icon={Calendar} />
       </div>
 
       {/* Campaign list */}
