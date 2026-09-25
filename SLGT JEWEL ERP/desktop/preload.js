@@ -17,6 +17,7 @@ const allowed = new Set([
   'print:html',
   'pdf:saveFromHtml',
   'pdf:generateFromHtml',
+  'invoice:copyImage',
   'dialog:pickFolder',
   'devices:getPrinters',
   'printers:getAssignments',
@@ -77,6 +78,8 @@ contextBridge.exposeInMainWorld('jewelleryCRM', {
   pickFolder: (opts) => invoke('dialog:pickFolder', opts || {}),
   /** Render HTML to a real PDF and return its bytes (base64) for an inline preview — no dialog, no external app */
   generatePdfFromHtml: (html) => invoke('pdf:generateFromHtml', html),
+  /** Render bill HTML to a high-res image on the clipboard (WhatsApp Ctrl+V share) */
+  copyInvoiceImage: (html) => invoke('invoice:copyImage', html),
   getPrinters: () => invoke('devices:getPrinters'),
   getPrinterAssignments: () => invoke('printers:getAssignments'),
   setPrinterAssignments: (a) => invoke('printers:setAssignments', a),

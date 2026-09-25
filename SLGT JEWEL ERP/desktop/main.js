@@ -2,7 +2,7 @@
  * Electron main process — Jewellery CRM desktop shell.
  * Security: contextIsolation=true, nodeIntegration=false, validated IPC only.
  */
-const { app, BrowserWindow, ipcMain, shell, dialog, Tray, Menu, nativeImage, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog, Tray, Menu, nativeImage, globalShortcut, clipboard } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -2901,6 +2901,115 @@ try {
   // dialog, no external app. Used for the inline "show the actual PDF, not a
   // raw HTML render" report preview, displayed via mainWindow's built-in PDF
   // viewer (see the `plugins: true` webPreference on mainWindow).
+  // WhatsApp share: render the bill to a high-resolution image and put it on
+  // the clipboard, so staff can Ctrl+V it straight into a WhatsApp chat.
+  ipcMain.handle('invoice:copyImage', (event, html) => {
+    assertIpcSender(event);
+    if (typeof html !== 'string' || html.length > 12_000_000) {
+      return { success: false, failureReason: 'Invalid HTML' };
+    }
+    return copyInvoiceImageHandler(html);
+  });
+
+  /** Long side of one bill page in the clipboard image ("4K" = 3840px). */
+  const CLIPBOARD_IMAGE_LONG_SIDE_PX = 3840;
+
+  /**
+   * Uses its own OFFSCREEN window rather than the shared print window: an
+   * offscreen renderer is built to paint without being on screen (the hidden
+   * print window often never repainted after zooming — see
+   * isStaleOversampleCapture), and it always renders at device scale 1, so
+   * Windows display scaling can't skew the capture size either.
+   */
+  async function copyInvoiceImageHandler(html) {
+    const os = require('os');
+    const metrics = parsePrintPageMetrics(html);
+    const baseW = Math.round((metrics.pageWidthIn || 5.83) * 96);
+    const baseH = Math.round((metrics.pageHeightIn || 8.27) * 96);
+    const tempHtmlPath = path.join(os.tmpdir(), `crm-invimg-${Date.now()}.html`);
+    const win = new BrowserWindow({
+      show: false,
+      width: baseW,
+      height: baseH,
+      frame: false,
+      skipTaskbar: true,
+      focusable: false,
+      webPreferences: {
+        sandbox: true,
+        contextIsolation: true,
+        nodeIntegration: false,
+        offscreen: true,
+        backgroundThrottling: false,
+      },
+    });
+    try {
+      try { win.webContents.setFrameRate(30); } catch { /* */ }
+      fs.writeFileSync(tempHtmlPath, html, 'utf8');
+      await win.loadFile(tempHtmlPath);
+      const pageCount = await win.webContents.executeJavaScript(`(async () => {
+        const imgs = Array.from(document.images || []);
+        await Promise.all(imgs.map((img) => (img.complete ? null : new Promise((resolve) => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        }))));
+        await Promise.all(imgs.map((img) => (img.decode ? img.decode().catch(() => {}) : null)));
+        return document.querySelectorAll('.page').length || 1;
+      })()`).catch(() => 1);
+      const pages = Math.max(1, Math.min(10, Number(pageCount) || 1));
+
+      // capturePage returns device pixels, i.e. DIPs × Windows display scale
+      // (tested: 125% scaling gave 4800px for a 3840px target) — divide it
+      // out. Chromium caps zoom at 5×; also keep the whole (stacked) canvas
+      // under the ~16k px texture limit for long multi-page bills.
+      let dsf = 1;
+      try { dsf = require('electron').screen.getPrimaryDisplay().scaleFactor || 1; } catch { /* */ }
+      const zoom = Math.min(
+        CLIPBOARD_IMAGE_LONG_SIDE_PX / (Math.max(baseW, baseH) * dsf),
+        5,
+        16000 / (baseH * pages * dsf),
+      );
+      const capW = Math.round(baseW * zoom);
+      const capH = Math.round(baseH * zoom) * pages;
+      win.setSize(capW, capH);
+      win.webContents.setZoomFactor(zoom);
+
+      // Wait for the zoomed layout (innerWidth back to one page's CSS width)…
+      const layoutDeadline = Date.now() + 1500;
+      while (Date.now() < layoutDeadline) {
+        const innerWidth = await win.webContents.executeJavaScript('window.innerWidth').catch(() => 0);
+        if (Math.abs(Number(innerWidth) - baseW) <= 2) break;
+        await new Promise((r) => setTimeout(r, 40));
+      }
+      // …then for real zoomed pixels, retrying while the frame is still stale.
+      const rect = { x: 0, y: 0, width: capW, height: capH };
+      let image = null;
+      const paintDeadline = Date.now() + 4000;
+      do {
+        await new Promise((resolve) => {
+          const timer = setTimeout(resolve, 400);
+          win.webContents.once('paint', () => { clearTimeout(timer); setTimeout(resolve, 60); });
+          try { win.webContents.invalidate(); } catch { /* */ }
+        });
+        image = await win.webContents.capturePage(rect);
+      } while (Date.now() < paintDeadline && (!image || image.isEmpty() || isStaleOversampleCapture(image, zoom)));
+
+      if (!image || image.isEmpty() || isStaleOversampleCapture(image, zoom)) {
+        return { success: false, failureReason: 'Could not render the bill image — please try again' };
+      }
+      clipboard.writeImage(image);
+      const size = image.getSize();
+      console.log('[whatsapp] bill image copied %dx%d pages=%d', size.width, size.height, pages);
+      return { success: true, width: size.width, height: size.height, pages };
+    } catch (err) {
+      console.warn('[whatsapp] copy bill image failed:', err.message);
+      return { success: false, failureReason: err.message || 'Could not copy the bill image' };
+    } finally {
+      try { fs.unlinkSync(tempHtmlPath); } catch { /* */ }
+      try { if (!win.isDestroyed()) win.destroy(); } catch { /* */ }
+      forceMainWindowFocus(null, { force: true });
+    }
+  }
+
   ipcMain.handle('pdf:generateFromHtml', (event, html) => {
     assertIpcSender(event);
     if (typeof html !== 'string' || html.length > 12_000_000) {

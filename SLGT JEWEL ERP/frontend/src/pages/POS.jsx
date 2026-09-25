@@ -4931,6 +4931,7 @@ function InvoiceSuccess({ invoice, onClose, company }) {
     try {
       const result = await sendPosInvoiceOnWhatsApp(invoice, company);
       if (!result.ok) toast.error(result.error);
+      else if (result.mode === "image") toast.success("Bill image copied — press Ctrl+V in the WhatsApp chat and send");
       else toast.success("PDF saved — attach it in the WhatsApp chat");
     } catch (err) {
       toast.error(err?.message || "Could not open WhatsApp");
@@ -5092,6 +5093,7 @@ function InvoiceViewModal({ invoice, loading, onClose, company }) {
     try {
       const result = await sendPosInvoiceOnWhatsApp(invoice, company);
       if (!result.ok) toast.error(result.error);
+      else if (result.mode === "image") toast.success("Bill image copied — press Ctrl+V in the WhatsApp chat and send");
       else toast.success("PDF saved — attach it in the WhatsApp chat");
     } catch (err) {
       toast.error(err?.message || "Could not open WhatsApp");
