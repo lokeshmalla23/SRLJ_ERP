@@ -91,6 +91,15 @@ export default function DayClosingReportTab({ includeHidden = false }) {
   const totals = payload?.totals || {};
   const dayClose = payload?.day_close || {};
   const metalRows = payload?.sales_by_metal || [];
+  const incomeExpense = payload?.income_expense || {};
+
+  const incomeExpenseRows = useMemo(
+    () => [
+      { type: "Income", ...incomeExpense.income },
+      { type: "Expense", ...incomeExpense.expense },
+    ],
+    [incomeExpense],
+  );
 
   const pocketRows = useMemo(
     () => [
@@ -157,8 +166,19 @@ export default function DayClosingReportTab({ includeHidden = false }) {
           }
           : null,
       },
+      {
+        title: "Today Expenses & Incomes",
+        columns: [
+          { key: "type", label: "Type" },
+          { key: "cash", label: "Cash", align: "right", format: "currency" },
+          { key: "bank", label: "Bank", align: "right", format: "currency" },
+          { key: "upi", label: "UPI", align: "right", format: "currency" },
+          { key: "cheque", label: "Cheque", align: "right", format: "currency" },
+        ],
+        rows: incomeExpenseRows,
+      },
     ],
-    [pocketRows, metalRows],
+    [pocketRows, metalRows, incomeExpenseRows],
   );
 
   const printTotals = {
@@ -328,6 +348,34 @@ export default function DayClosingReportTab({ includeHidden = false }) {
                     </tr>
                   </tfoot>
                 ) : null}
+              </table>
+            </div>
+
+            <div className="table-shell overflow-x-auto md:col-span-2">
+              <div className="border-b border-[#DDD7CA] bg-[#FBF8F1] px-3 py-2.5 text-[12px] font-semibold text-[#24332B]">
+                Today Expenses &amp; Incomes
+              </div>
+              <table className="w-full">
+                <thead>
+                  <tr className="table-head-row">
+                    <th className="table-th">Type</th>
+                    <th className="table-th text-right">Cash</th>
+                    <th className="table-th text-right">Bank</th>
+                    <th className="table-th text-right">UPI</th>
+                    <th className="table-th text-right">Cheque</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {incomeExpenseRows.map((r) => (
+                    <tr key={r.type} className="table-row">
+                      <td className="table-td">{r.type}</td>
+                      <td className="table-td text-right tabular-nums">{moneyCell(r.cash)}</td>
+                      <td className="table-td text-right tabular-nums">{moneyCell(r.bank)}</td>
+                      <td className="table-td text-right tabular-nums">{moneyCell(r.upi)}</td>
+                      <td className="table-td text-right tabular-nums">{moneyCell(r.cheque)}</td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
           </div>

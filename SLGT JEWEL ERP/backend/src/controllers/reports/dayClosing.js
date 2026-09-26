@@ -74,6 +74,20 @@ function pocketRow(finalCheck, type) {
   return { type, opening, closing };
 }
 
+// Income / expense totals per pocket. Card settles into the bank account, so
+// it is shown under Bank; a blank mode is treated as cash (same as the snapshot).
+function modeTotals(list) {
+  const out = { cash: 0, bank: 0, upi: 0, cheque: 0 };
+  for (const row of list || []) {
+    const amt = toMoneyNumber(row?.amount);
+    if (!(amt > 0)) continue;
+    let mode = normalizePayMode(row?.payment_mode || 'cash');
+    if (mode === 'card' || mode === 'credit_card' || mode === 'debit_card') mode = 'bank';
+    if (out[mode] != null) out[mode] = toMoneyNumber(out[mode] + amt);
+  }
+  return out;
+}
+
 // GET /api/reports/day-closing?date=YYYY-MM-DD
 export const getDayClosingReport = async (req, res, next) => {
   try {
@@ -187,6 +201,10 @@ export const getDayClosingReport = async (req, res, next) => {
         upi: pocketRow(fc, 'upi'),
         bank: pocketRow(fc, 'bank'),
         cheque: pocketRow(fc, 'cheque'),
+      },
+      income_expense: {
+        income: modeTotals(snapshot?.income_list),
+        expense: modeTotals(snapshot?.expense_list),
       },
       sales_by_metal: [...metalMap.values()].sort((a, b) => a.metal_type.localeCompare(b.metal_type)),
       invoice_count: invoices.length,
