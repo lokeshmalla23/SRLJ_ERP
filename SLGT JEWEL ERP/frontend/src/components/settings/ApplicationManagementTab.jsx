@@ -9,12 +9,14 @@ import { SettingsSection, SettingsTabFrame } from "@/components/settings/setting
 import { APPLICATION_FEATURES, APPLICATION_FEATURE_SECTIONS } from "@/config/applicationFeatures";
 import { notifyApplicationFeaturesUpdated } from "@/context/ApplicationFeatureContext";
 import { notifySectionVisibilityUpdated } from "@/context/SectionVisibilityContext";
+import { notifyBusinessDateChanged } from "@/context/BusinessDateContext";
+import useConfirm from "@/hooks/useConfirm";
 import { REPORT_CATEGORIES, reportsInCategory } from "@/pages/reports/reportCatalog";
 import { ACCOUNTS_NAV_GROUPS } from "@/components/accounts/accountsShared";
 
-function onOff(value) {
-  if (value === true || value === "true") return "ON";
-  if (value === false || value === "false") return "OFF";
+function onOff(value, invert = false) {
+  if (value === true || value === "true") return invert ? "OFF" : "ON";
+  if (value === false || value === "false") return invert ? "ON" : "OFF";
   return "—";
 }
 
@@ -45,7 +47,7 @@ const SECTION_MODULES = [
  * its audit log, and a toggle that rolls back on a failed save. Same GET/PUT
  * shape on the backend (adminFlagHandlers in controllers/settings.js).
  */
-function useAdminFlag({ endpoint, entityType, label, unlocked }) {
+function useAdminFlag({ endpoint, entityType, label, unlocked, toastText = null }) {
   const [enabled, setEnabled] = useState(null); // null until loaded
   const [saving, setSaving] = useState(false);
   const [events, setEvents] = useState([]);
@@ -76,18 +78,20 @@ function useAdminFlag({ endpoint, entityType, label, unlocked }) {
   }, [endpoint, loadEvents]);
 
   const toggle = async (next) => {
-    if (!unlocked) return;
+    if (!unlocked) return false;
     const prev = enabled;
     setEnabled(next);
     setSaving(true);
     try {
       const { data } = await api.put(endpoint, { enabled: next });
       setEnabled(data?.enabled === true);
-      toast.success(`${label} ${next ? "enabled" : "disabled"}`);
+      toast.success(toastText ? toastText(next) : `${label} ${next ? "enabled" : "disabled"}`);
       loadEvents();
+      return true;
     } catch (err) {
       setEnabled(prev);
       toast.error(formatApiError(err));
+      return false;
     } finally {
       setSaving(false);
     }
@@ -117,7 +121,7 @@ function AdminFlagSection({ flag, canWrite, unlocked, title, description, rowLab
   );
 }
 
-function AdminFlagLog({ flag, title }) {
+function AdminFlagLog({ flag, title, invert = false }) {
   const { events, eventsLoading, loadEvents } = flag;
   return (
     <SettingsSection
@@ -151,9 +155,11 @@ function AdminFlagLog({ flag, title }) {
                 <tr key={ev.id} className="table-row">
                   <td className="table-td text-[12px] text-[#737373]">{fmtDateTime(ev.created_at)}</td>
                   <td className="table-td font-mono text-[11.5px]">{ev.user_id || "—"}</td>
-                  <td className="table-td capitalize">{ev.action}</td>
-                  <td className="table-td text-[#737373]">{onOff(ev.old_value)}</td>
-                  <td className="table-td font-medium">{onOff(ev.new_value)}</td>
+                  <td className="table-td capitalize">
+                    {invert ? ({ enabled: "turned off", disabled: "turned on" }[ev.action] || ev.action) : ev.action}
+                  </td>
+                  <td className="table-td text-[#737373]">{onOff(ev.old_value, invert)}</td>
+                  <td className="table-td font-medium">{onOff(ev.new_value, invert)}</td>
                   <td className="table-td font-mono text-[11px] text-[#a3a3a3]">{ev.device_id || "—"}</td>
                 </tr>
               ))}
@@ -161,6 +167,57 @@ function AdminFlagLog({ flag, title }) {
           </table>
         </div>
       )}
+    </SettingsSection>
+  );
+}
+
+/**
+ * Close Day on/off. Stored inverted as auto_day_close { enabled }: Close Day
+ * OFF = auto_day_close ON — every transaction uses the real date, the
+ * Transaction date / Day Closing / Opening Setup screens are hidden and each
+ * day closes automatically after midnight. Meant as a one-time setup choice
+ * for small shops, so turning it off asks for confirmation.
+ */
+function CloseDaySection({ flag, canWrite, unlocked }) {
+  const [confirm, confirmModal] = useConfirm();
+  if (flag.enabled === null) return null;
+  const closeDayOn = !flag.enabled;
+
+  const onChange = async (nextCloseDayOn) => {
+    if (!nextCloseDayOn) {
+      const ok = await confirm(
+        "Every bill and transaction will use the real date and time. Days will close automatically after midnight — no checklist, cash count or Opening Setup. If Opening Setup is not done yet, the shop goes live today with zero opening balances and test-mode bills are cleared.",
+        { title: "Turn off Close Day?", confirmLabel: "Turn off Close Day", cancelLabel: "Cancel", danger: true },
+      );
+      if (!ok) return;
+    }
+    const saved = await flag.toggle(!nextCloseDayOn);
+    if (saved) notifyBusinessDateChanged();
+  };
+
+  return (
+    <SettingsSection
+      title="Close Day"
+      description="When ON (default), billing runs on the Transaction date and the day is closed manually from Accounts → Daily ops → Day Closing. When OFF, the real date and time are used everywhere and each day closes automatically after midnight — for small shops that do not need the Day Closing process."
+    >
+      <div className="overflow-hidden rounded-[9px] border border-[#DCE3D6]">
+        <div className="flex items-center justify-between gap-4 bg-white px-4 py-3 transition-colors hover:bg-[#F8F9F5]">
+          <div className="min-w-0">
+            <div className="text-[13px] font-medium text-[#294236]">Close Day Required</div>
+            <div className="text-[11.5px] text-[#737373]">
+              {closeDayOn
+                ? "ON — Transaction date and manual Day Closing are in use."
+                : "OFF — real date is used; days close automatically after midnight."}
+            </div>
+          </div>
+          <Switch
+            checked={closeDayOn}
+            onCheckedChange={onChange}
+            disabled={!canWrite || !unlocked || flag.saving}
+          />
+        </div>
+      </div>
+      {confirmModal}
     </SettingsSection>
   );
 }
@@ -198,6 +255,13 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
 
   const profitLoss = useAdminFlag({ endpoint: "/settings/profit-loss", entityType: "profit_loss", label: "Profit & Loss", unlocked });
   const calCode = useAdminFlag({ endpoint: "/settings/cal-code", entityType: "cal_code", label: "Cal Code", unlocked });
+  const autoDayClose = useAdminFlag({
+    endpoint: "/settings/auto-day-close",
+    entityType: "auto_day_close",
+    label: "Close Day",
+    unlocked,
+    toastText: (next) => (next ? "Close Day turned off — days now close automatically" : "Close Day turned on"),
+  });
 
   const loadFeatures = async () => {
     try {
@@ -350,6 +414,7 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
 
   return (
     <SettingsTabFrame>
+      <CloseDaySection flag={autoDayClose} canWrite={canWrite} unlocked={unlocked} />
       <SettingsSection
         title="Application Management"
         description="Control which ERP modules are available for this shop. Disabled modules are hidden from users and cannot be accessed directly. This is separate from employee permissions — a module can be fully licensed and still restricted per employee in the Permissions tab."
@@ -672,6 +737,7 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
 
       <AdminFlagLog flag={profitLoss} title="Profit & Loss Log" />
       <AdminFlagLog flag={calCode} title="Cal Code Log" />
+      <AdminFlagLog flag={autoDayClose} title="Close Day Log" invert />
     </SettingsTabFrame>
   );
 }

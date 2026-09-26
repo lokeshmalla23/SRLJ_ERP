@@ -15,6 +15,8 @@ import { appendAuditEvent } from '../services/auditTrailService.js';
 import { appendEventLog } from '../services/eventLogService.js';
 import { OLD_METAL_MANUAL_SETTING_KEY, resolveOldMetalManualMode } from '../services/oldMetalManualMode.js';
 import { PROFIT_LOSS_SETTING_KEY } from '../services/profitLossMode.js';
+import { AUTO_DAY_CLOSE_SETTING_KEY } from '../services/autoDayCloseMode.js';
+import { logger } from '../utils/logger.js';
 
 const DEFAULT_GOLD_RATE_SETTINGS = {
   gold_22k: 0,
@@ -956,7 +958,7 @@ export const updateOldMetalExchangeManualMode = async (req, res, next) => {
 // Same shape as the Old Metal manual-mode toggle above: stored as
 // { enabled: bool } under one settings key, GET for any authenticated user,
 // PUT for the ERP Administrator (super_admin) only, every change audited.
-function adminFlagHandlers({ key, entityType, entityId }) {
+function adminFlagHandlers({ key, entityType, entityId, afterChange = null }) {
   const resolve = (stored) => ({ enabled: asObject(stored).enabled === true });
 
   const get = async (req, res, next) => {
@@ -1018,9 +1020,16 @@ function adminFlagHandlers({ key, entityType, entityId }) {
       });
 
       await t.commit();
+      if (afterChange) {
+        try {
+          await afterChange(nextEnabled, req);
+        } catch (err) {
+          logger.warn('settings', `${key} after-change hook failed`, { error: err?.message });
+        }
+      }
       return res.json(resolve(value));
     } catch (err) {
-      await t.rollback();
+      if (!t.finished) await t.rollback();
       next(err);
     }
   };
@@ -1049,6 +1058,23 @@ const calCodeFlag = adminFlagHandlers({
 // GET/PUT /api/settings/cal-code
 export const getCalCodeSetting = calCodeFlag.get;
 export const updateCalCodeSetting = calCodeFlag.update;
+
+// Auto Day Close: when ON (i.e. "Close Day" switched OFF in the UI), every
+// transaction uses the real date and past days close automatically. Turning
+// it on runs the first catch-up (plus zero-balance go-live) right away.
+const autoDayCloseFlag = adminFlagHandlers({
+  key: AUTO_DAY_CLOSE_SETTING_KEY,
+  entityType: 'auto_day_close',
+  entityId: 'auto_day_close',
+  afterChange: async (enabled, req) => {
+    if (!enabled) return;
+    const { runAutoDayClose } = await import('../services/autoDayCloseService.js');
+    await runAutoDayClose({ userId: req.user?.id || null });
+  },
+});
+// GET/PUT /api/settings/auto-day-close
+export const getAutoDayCloseSetting = autoDayCloseFlag.get;
+export const updateAutoDayCloseSetting = autoDayCloseFlag.update;
 
 // POST /api/settings/print-settings/unlock — owner / settings.manage; unlocks one
 // Printers & Devices / Invoice Print / Barcode Tag / Estimation Print tab

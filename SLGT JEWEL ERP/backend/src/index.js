@@ -334,6 +334,14 @@ const start = async () => {
       runMetalRateAutoSyncTick().catch((e) => logger.warn('metal-rate-sync', 'auto sync tick failed', { error: e.message }));
     }, METAL_RATE_SYNC_INTERVAL_MS);
 
+    // Close Day turned OFF → close past business days automatically: once at
+    // startup (days missed while the PC was off) and every 5 minutes after.
+    const autoDayCloseTick = () => import('./services/autoDayCloseService.js')
+      .then(({ runAutoDayClose }) => runAutoDayClose())
+      .catch((e) => logger.warn('accounts', 'auto day close tick failed', { error: e?.message }));
+    autoDayCloseTick();
+    setInterval(autoDayCloseTick, 5 * 60 * 1000);
+
     if (isBranchMode()) {
       logger.info('boot', 'Branch Service ready — local SQLite / LAN only');
       startDiscoveryAdvertiser();

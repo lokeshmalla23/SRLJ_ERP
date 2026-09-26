@@ -39,6 +39,8 @@ import {
   updateOldMetalExchangeManualMode,
   getProfitLossSetting,
   updateProfitLossSetting,
+  getAutoDayCloseSetting,
+  updateAutoDayCloseSetting,
   getCalCodeSetting,
   updateCalCodeSetting,
 } from '../controllers/settings.js';
@@ -171,6 +173,10 @@ router.put('/profit-loss', authenticate, updateProfitLossSetting);
 // Cal Code (optional product field) — same shape.
 router.get('/cal-code', authenticate, getCalCodeSetting);
 router.put('/cal-code', authenticate, updateCalCodeSetting);
+
+// Close Day on/off (auto day close) — same shape.
+router.get('/auto-day-close', authenticate, getAutoDayCloseSetting);
+router.put('/auto-day-close', authenticate, updateAutoDayCloseSetting);
 
 router.post('/verify-manager-pin', authenticate, async (req, res, next) => {
   const { verifyManagerPin } = await import('../middleware/managerOverride.js');

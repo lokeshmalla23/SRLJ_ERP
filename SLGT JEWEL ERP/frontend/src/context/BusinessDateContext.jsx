@@ -10,19 +10,20 @@ const BusinessDateContext = createContext({
   daysStale: 0,
   isStale: false,
   dateMismatch: false,
+  autoDayClose: false,
   loading: true,
   refresh: async () => {},
 });
 
 export function BusinessDateProvider({ children }) {
   const { user } = useAuth();
-  const [state, setState] = useState({ date: null, realToday: null, daysStale: 0, isStale: false, dateMismatch: false });
+  const [state, setState] = useState({ date: null, realToday: null, daysStale: 0, isStale: false, dateMismatch: false, autoDayClose: false });
   const [loading, setLoading] = useState(true);
   const pollRef = useRef(null);
 
   const refresh = useCallback(async () => {
     if (!user) {
-      setState({ date: null, realToday: null, daysStale: 0, isStale: false, dateMismatch: false });
+      setState({ date: null, realToday: null, daysStale: 0, isStale: false, dateMismatch: false, autoDayClose: false });
       setLoading(false);
       return;
     }
@@ -34,6 +35,8 @@ export function BusinessDateProvider({ children }) {
         daysStale: Number(data?.days_stale) || 0,
         isStale: Boolean(data?.is_stale),
         dateMismatch: Boolean(data?.date_mismatch),
+        // Close Day turned OFF — date is always the real date; hide it from the UI.
+        autoDayClose: Boolean(data?.auto_day_close),
       });
     } catch {
       // keep last-known value on transient failure

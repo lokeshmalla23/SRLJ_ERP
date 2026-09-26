@@ -28,6 +28,7 @@ import {
 } from "./accountsShared";
 import useConfirm from "@/hooks/useConfirm";
 import { useSectionVisibility } from "@/context/SectionVisibilityContext";
+import { useBusinessDate } from "@/context/BusinessDateContext";
 import { invoiceOccurredAt, sortByInvoiceNoDesc } from "@/lib/occurredAt";
 import StatementsTab from "./StatementsTab";
 import DailyClosingTab from "./DailyClosingTab";
@@ -1173,10 +1174,17 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
     [isSectionVisible],
   );
 
-  const navGroups = useMemo(
-    () => filterAccountsNavGroups(ACCOUNTS_NAV_GROUPS, { includeHidden, isVisible: isAccountsSectionVisible }),
-    [includeHidden, isAccountsSectionVisible],
-  );
+  // Close Day turned OFF (Application Management) — days close automatically
+  // and go-live needs no Opening Setup, so both screens are hidden.
+  const { autoDayClose } = useBusinessDate();
+  const navGroups = useMemo(() => {
+    const groups = filterAccountsNavGroups(ACCOUNTS_NAV_GROUPS, { includeHidden, isVisible: isAccountsSectionVisible });
+    if (!autoDayClose) return groups;
+    const hiddenIds = new Set(["daily-closing", "opening-setup"]);
+    return groups
+      .map((g) => ({ ...g, items: g.items.filter((i) => !hiddenIds.has(i.id)) }))
+      .filter((g) => g.items.length > 0);
+  }, [includeHidden, isAccountsSectionVisible, autoDayClose]);
 
   useEffect(() => {
     if (!includeHidden && section === "hidden-data") setSection("dashboard");

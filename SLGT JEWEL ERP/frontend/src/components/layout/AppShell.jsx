@@ -511,7 +511,7 @@ function NotificationBell() {
 function Topbar() {
   const location = useLocation();
   const { displayName } = useCompany();
-  const { date: businessDate, isStale: isBusinessDateStale, daysStale: businessDaysStale } = useBusinessDate();
+  const { date: businessDate, isStale: isBusinessDateStale, daysStale: businessDaysStale, autoDayClose } = useBusinessDate();
   const { user } = useAuth();
   const isOwner = hasFullAccessRole(user?.role);
   const [dashHiddenUnlocked, setDashHiddenUnlocked] = useDashboardHiddenUnlocked();
@@ -581,7 +581,7 @@ function Topbar() {
         <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full border border-[#E0E2D8] bg-[#FCFCF8]/80 px-2.5 py-1 font-mono text-[9.5px] text-[#7D857E]">
           {fmtDateTime(now)}
         </span>
-        {businessDate && (
+        {businessDate && !autoDayClose && (
           <span
             className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-full border px-2.5 py-1 font-mono text-[9.5px] ${
               isBusinessDateStale

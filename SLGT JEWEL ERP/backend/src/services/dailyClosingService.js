@@ -40,6 +40,7 @@ import { hydrateInvoiceItems, invoiceItemsOf, invoicePaymentsOf, shopScope } fro
 import { getOpeningSetupStatus } from './openingSetupService.js';
 import { isPreAccountsRecord } from './financialMode.js';
 import { normalizeReceiptMetal } from '../utils/oldMetal.js';
+import { getAutoDayCloseMode } from './autoDayCloseMode.js';
 
 const CANCELLED = new Set(['cancelled', 'canceled', 'void', 'voided', 'returned']);
 const UNPAID = new Set(['pending', 'partial']);
@@ -282,10 +283,24 @@ function daysBetweenStr(fromStr, toStr) {
  * The active (open, unclosed) business/billing day. New transactions are
  * stamped with this date instead of the real wall-clock date; it only
  * advances when Day Close succeeds for it — see advanceActiveBillingDate.
+ *
+ * With Close Day turned OFF (auto_day_close), it is always the real calendar
+ * date: the stored day pointer is left for autoDayCloseService to catch up.
  */
 export async function getActiveBillingDate({ shopId, transaction } = {}) {
-  const resolvedShopId = shopId || (await getDefaultShopId({ transaction }));
   const realToday = localTodayStr();
+  const autoMode = await getAutoDayCloseMode(transaction);
+  if (autoMode.enabled) {
+    return {
+      date: realToday,
+      real_today: realToday,
+      days_stale: 0,
+      is_stale: false,
+      date_mismatch: false,
+      auto_day_close: true,
+    };
+  }
+  const resolvedShopId = shopId || (await getDefaultShopId({ transaction }));
   const row = await Setting.findOne({ where: { key: ACTIVE_BILLING_DATE_KEY }, transaction });
   let date = parseSettingValue(row?.value).date;
   if (!date) {
@@ -314,8 +329,20 @@ export async function getActiveBillingDate({ shopId, transaction } = {}) {
     days_stale: daysStale,
     is_stale: daysStale >= STALE_WARNING_DAYS,
     date_mismatch: daysStale >= 1,
+    auto_day_close: false,
   };
 }
+
+/**
+ * Raw stored day pointer (the oldest day not yet closed), ignoring auto mode —
+ * autoDayCloseService closes every day from here up to yesterday.
+ */
+export async function readStoredBillingDate({ transaction } = {}) {
+  const row = await Setting.findOne({ where: { key: ACTIVE_BILLING_DATE_KEY }, transaction });
+  return parseSettingValue(row?.value).date || null;
+}
+
+export { localTodayStr };
 
 /**
  * Called right after a successful Day Close — advances the active billing
@@ -1745,6 +1772,7 @@ export async function saveDailyClosing({
   userId = null,
   forceSystemTotals = true,
   includeHidden = false,
+  autoClose = false,
   transaction,
 }) {
   if (!transaction) throw new Error('saveDailyClosing requires a transaction');
@@ -1773,7 +1801,13 @@ export async function saveDailyClosing({
     ? checklist
     : (existing?.checklist_json || snapshot.checklist || {});
 
-  if (nextStatus === 'closed') {
+  if (nextStatus === 'closed' && !autoClose) {
+    if ((await getAutoDayCloseMode(transaction)).enabled) {
+      const err = new Error('Close Day is turned off — days are closed automatically after midnight.');
+      err.status = 409;
+      err.code = 'AUTO_DAY_CLOSE_ON';
+      throw err;
+    }
     await assertCanFinalize(snapshot, checklistJson, { shopId, transaction });
   }
 
@@ -1955,7 +1989,7 @@ export async function saveDailyClosing({
     await Notification.create({
       id: newId(),
       type: 'daily_closing',
-      title: `Day closed — ${date}`,
+      title: autoClose ? `Day auto-closed — ${date}` : `Day closed — ${date}`,
       message: `Sales ${formatINR(totals.sales)}, expenses ${formatINR(totals.expenses)}, cash variance ${formatINR(variance)}`,
       data: { date, closing_id: row.id, variance },
       is_read: false,

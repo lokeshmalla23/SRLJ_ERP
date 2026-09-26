@@ -400,3 +400,49 @@ export async function applyOpeningSetup({
   } catch { /* ws not available */ }
   return { ...out, status: after };
 }
+
+/**
+ * Close Day turned OFF (auto_day_close) — small shops skip Opening Setup:
+ * go live with zero opening balances from today, pinned the same way
+ * applyOpeningSetup does. No-op once setup is already complete.
+ */
+export async function goLiveForAutoDayClose({ shopId, today, userId = null } = {}) {
+  const resolvedShopId = shopId || await getDefaultShopId();
+  // Cheap check first — this runs on every auto-close tick.
+  if (await isAccountsSetupCompleted(resolvedShopId)) return { skipped: true };
+  const before = await getOpeningSetupStatus(resolvedShopId);
+  if (before.setup_complete) return { skipped: true, status: before };
+
+  if (!before.has_prior_closed_day) {
+    await setActiveBillingDate({ shopId: resolvedShopId, date: today });
+  }
+  await persistSetupComplete(resolvedShopId, {
+    cutover_date: today,
+    cash: 0,
+    bank: 0,
+    upi: 0,
+    card: 0,
+    reason: 'auto_day_close',
+    set_by: userId || null,
+  });
+
+  const out = { skipped: false };
+  // Same as applyOpeningSetup — practice (test-mode) bills drop out once live.
+  try {
+    const { purgePreAccountsPracticeData } = await import('./purgePreAccountsPracticeData.js');
+    out.practice_purge = await purgePreAccountsPracticeData(resolvedShopId);
+  } catch (err) {
+    out.practice_purge = { error: err?.message || String(err) };
+  }
+
+  const after = await getOpeningSetupStatus(resolvedShopId);
+  try {
+    broadcast({
+      type: 'accounts:opening_setup_complete',
+      setup_complete: Boolean(after.setup_complete),
+      financial_mode: after.financial_mode,
+      accounts_setup_status: after.accounts_setup_status,
+    });
+  } catch { /* ws not available */ }
+  return { ...out, status: after };
+}
