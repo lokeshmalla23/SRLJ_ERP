@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Loader2, Download, Printer } from "lucide-react";
+import api from "@/lib/api";
 import { exportReportCsv, exportReportExcel } from "@/lib/reportExport";
 import { buildReportPrintHTML } from "@/lib/reportPrint";
 import { renderReportCell, sanitizeReportColumns } from "@/lib/reportColumns";
@@ -113,6 +114,68 @@ export const DATE_PRESETS = [
   { id: "this_year", label: "This Year" },
   { id: "custom", label: "Custom" },
 ];
+
+// ─── Indian Financial Year (01 April YYYY → 31 March YYYY+1) ──────────────────
+/** The FY [start, end] for a given year (year = the starting calendar year). */
+export function financialYearRange(year) {
+  const y = Number(year);
+  if (!Number.isFinite(y)) return null;
+  return { from: `${y}-04-01`, to: `${y + 1}-03-31` };
+}
+
+/** The current FY based on a date (defaults to today). */
+export function currentFinancialYear(dateStr) {
+  const d = dateStr ? new Date(dateStr) : new Date();
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1; // 1-12
+  return m >= 4 ? y : y - 1;
+}
+
+/**
+ * Financial Year selector for accounting reports. Fetches the FY list from the
+ * backend and lets the user pick Current / Previous / a specific FY. Returns the
+ * selected FY's [from, to] range for the report query.
+ */
+export function FinancialYearSelector({ value, onChange, className = "" }) {
+  const [fys, setFys] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    api.get("/financial-years")
+      .then(({ data }) => {
+        if (!cancelled) {
+          setFys(Array.isArray(data) ? data : []);
+          setLoading(false);
+        }
+      })
+      .catch(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  // value: { from, to } | null
+  const selectValue = value ? `${value.from}_${value.to}` : "";
+
+  const handleChange = (e) => {
+    const v = e.target.value;
+    if (!v) { onChange(null); return; }
+    const [from, to] = v.split("_");
+    onChange({ from, to });
+  };
+
+  if (loading) return <select className={`input text-[13px] ${className}`} disabled><option>Loading FY…</option></select>;
+
+  return (
+    <select value={selectValue} onChange={handleChange} className={`input text-[13px] ${className}`}>
+      <option value="">Custom range</option>
+      {fys.map((fy) => (
+        <option key={fy.id} value={`${fy.start_date}_${fy.end_date}`}>
+          {fy.display_name || `FY ${fy.financial_year_code}`}{fy.is_current ? " (Current)" : ""}
+        </option>
+      ))}
+    </select>
+  );
+}
 
 export function AccountsKpiCard({ label, value, sub, tone = "default" }) {
   const toneCls =

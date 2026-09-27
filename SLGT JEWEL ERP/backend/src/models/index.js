@@ -52,6 +52,7 @@ export { PureProduct } from './PureProduct.js';
 export { BankAccount, BankReconciliationItem } from './BankAccount.js';
 export { BarcodeStockCheckSession } from './BarcodeStockCheckSession.js';
 export { BarcodeStockCheckScan } from './BarcodeStockCheckScan.js';
+export { FinancialYear } from './FinancialYear.js';
 
 import { User } from './User.js';
 import { Category } from './Category.js';
@@ -92,6 +93,7 @@ import { PureProduct } from './PureProduct.js';
 import { BankAccount, BankReconciliationItem } from './BankAccount.js';
 import { BarcodeStockCheckSession } from './BarcodeStockCheckSession.js';
 import { BarcodeStockCheckScan } from './BarcodeStockCheckScan.js';
+import { FinancialYear } from './FinancialYear.js';
 import { attachDefaultShopHooks } from '../services/defaultShop.js';
 
 /** Models that carry shop_id and should auto-fill on create. */
@@ -107,6 +109,7 @@ const SHOP_SCOPED_MODELS = [
   PureProduct,
   BankAccount, BankReconciliationItem,
   BarcodeStockCheckSession, BarcodeStockCheckScan,
+  FinancialYear,
 ];
 
 attachDefaultShopHooks(SHOP_SCOPED_MODELS);

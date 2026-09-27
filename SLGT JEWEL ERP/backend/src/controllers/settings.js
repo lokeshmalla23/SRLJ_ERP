@@ -518,6 +518,56 @@ export const updateEstimationPrintSettings = async (req, res, next) => {
   }
 };
 
+// ─── Scheme print settings (Creation Receipt / Statement / Closure Certificate) ─
+// Three independent print-setting sections under Settings → Scheme. Each is a
+// JSON object of boolean field-visibility flags, stored under its own key and
+// merged on update (same upsertSetting shape as barcode_tag / estimation_print).
+const SCHEME_PRINT_SETTING_KEYS = [
+  'scheme_creation_print_settings',
+  'scheme_statement_print_settings',
+  'scheme_closure_print_settings',
+];
+
+// GET /api/settings/scheme-print — all three sections in one call.
+export const getSchemePrintSettings = async (req, res, next) => {
+  try {
+    const rows = await Setting.findAll({
+      where: { key: SCHEME_PRINT_SETTING_KEYS },
+    });
+    const byKey = Object.fromEntries(rows.map((r) => [r.key, asObject(r.value)]));
+    return res.json({
+      scheme_creation_print_settings: byKey.scheme_creation_print_settings || {},
+      scheme_statement_print_settings: byKey.scheme_statement_print_settings || {},
+      scheme_closure_print_settings: byKey.scheme_closure_print_settings || {},
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// PUT /api/settings/scheme-print — body: { scheme_creation_print_settings?: {...}, ... }
+export const updateSchemePrintSettings = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const shopId = req.user?.shop_id || null;
+    const body = req.body || {};
+    const out = {};
+    for (const key of SCHEME_PRINT_SETTING_KEYS) {
+      if (body[key] != null && typeof body[key] === 'object' && !Array.isArray(body[key])) {
+        out[key] = await upsertSetting(key, body[key], shopId, t);
+      } else {
+        const existing = await Setting.findOne({ where: { key }, transaction: t });
+        out[key] = asObject(existing?.value);
+      }
+    }
+    await t.commit();
+    return res.json(out);
+  } catch (err) {
+    await t.rollback();
+    next(err);
+  }
+};
+
 // GET /api/settings/counters
 export const listCounters = async (req, res, next) => {
   try {

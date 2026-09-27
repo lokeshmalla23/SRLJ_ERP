@@ -29,6 +29,14 @@ import { invoiceOccurredAt } from "@/lib/occurredAt";
 import { T } from "@/constants/testIds";
 import { useAuth } from "@/context/AuthContext";
 import { useBusinessDate } from "@/context/BusinessDateContext";
+import { useCompany } from "@/context/CompanyContext";
+import { printHtml } from "@/lib/printHtml";
+import {
+  generateSchemeCreationReceipt,
+  generateSchemeStatement,
+  generateSchemeClosureCertificate,
+  isSchemeClosable,
+} from "@/lib/schemePrint";
 import DuplicateCustomerDialog, { dupInfo } from "@/components/customers/DuplicateCustomerDialog";
 
 // Presentation-only scheme canvas and control treatment.
@@ -125,200 +133,20 @@ function enrich(s) {
   };
 }
 
-// ─── Certificate print HTML ────────────────────────────────────────────────────
-
-function generateCertificateHTML(scheme, shopName) {
-  const maturityValue = scheme.monthly_amount * (scheme.duration_months + (scheme.bonus_months || 0));
-  const issuedDate = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
-  const startDate = scheme.start_date ? new Date(scheme.start_date).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" }) : "—";
-  const maturityDate = scheme.maturity_date ? new Date(scheme.maturity_date).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" }) : "—";
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Certificate — ${scheme.customer_name}</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Georgia, "Times New Roman", serif; color: #111; }
-@page { size: A4 landscape; margin: 0; }
-.frame { width: 100%; min-height: 210mm; border: 14px solid #B49042; outline: 2px solid #111; outline-offset: -22px; padding: 48px 64px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-.shop-name { font-size: 22pt; font-weight: bold; letter-spacing: 0.04em; }
-.shop-sub { font-size: 10pt; color: #737373; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; }
-.title { font-size: 30pt; color: #B49042; font-weight: bold; margin-top: 34px; letter-spacing: 0.05em; }
-.subtitle { font-size: 11pt; color: #555; margin-top: 6px; }
-.body-text { font-size: 13pt; margin-top: 34px; line-height: 1.8; max-width: 640px; }
-.cust-name { font-size: 20pt; font-weight: bold; color: #0A0A0A; margin: 6px 0; }
-.details { margin-top: 30px; display: flex; gap: 40px; justify-content: center; }
-.details div { font-size: 10.5pt; color: #555; }
-.details b { display: block; font-size: 13pt; color: #111; margin-top: 3px; }
-.amount { margin-top: 28px; font-size: 15pt; color: #B49042; font-weight: bold; }
-.sign { margin-top: auto; padding-top: 60px; width: 100%; display: flex; justify-content: space-between; font-size: 10.5pt; }
-.sign div { width: 220px; border-top: 1px solid #999; padding-top: 6px; }
-.issued { margin-top: 24px; font-size: 9.5pt; color: #888; }
-</style>
-</head>
-<body>
-<div class="frame">
-  <div class="shop-name">${shopName}</div>
-  <div class="shop-sub">Jewellery ERP</div>
-
-  <div class="title">Certificate of Completion</div>
-  <div class="subtitle">Gold Saving Scheme</div>
-
-  <div class="body-text">
-    This is to certify that
-    <div class="cust-name">${scheme.customer_name}</div>
-    ${scheme.customer_mobile ? `(${scheme.customer_mobile})` : ""}
-    has successfully completed all monthly commitments under the
-    <b>${scheme.plan_name}</b> gold saving scheme.
-  </div>
-
-  <div class="details">
-    <div>START DATE<b>${startDate}</b></div>
-    <div>MATURITY DATE<b>${maturityDate}</b></div>
-    <div>MONTHS PAID<b>${scheme.months_paid} of ${scheme.duration_months}</b></div>
-  </div>
-
-  <div class="amount">Total Paid: ${fmtINR(scheme.total_paid || 0)} &nbsp;·&nbsp; Maturity Value: ${fmtINR(maturityValue)}</div>
-
-  <div class="sign">
-    <div>Customer Signature</div>
-    <div>For ${shopName}</div>
-  </div>
-
-  <div class="issued">Issued on ${issuedDate}</div>
-</div>
-</body>
-</html>`;
-}
-
-// ─── Swarnakala Maturity Certificate HTML ─────────────────────────────────────
-
-function generateSwarnakalaHTML(scheme, shopName, currentGoldRate) {
-  const issuedDate = new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" });
-  const startDate = scheme.start_date
-    ? new Date(scheme.start_date).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" })
-    : "—";
-
-  const totalGrams = asArray(scheme.payments).reduce((sum, p) => sum + (p.grams_credited || 0), 0);
-  const totalAmountPaid = asArray(scheme.payments).reduce((sum, p) => sum + (p.amount || 0), 0);
-  const currentValue = currentGoldRate ? totalGrams * currentGoldRate : null;
-
-  const paymentRows = asArray(scheme.payments).map((p, i) => {
-    const occurredAt = invoiceOccurredAt(p);
-    const date = occurredAt ? occurredAt.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
-    return `<tr>
-      <td style="padding:6px 10px;border-bottom:1px solid #f0e9d8;text-align:center;">${i + 1}</td>
-      <td style="padding:6px 10px;border-bottom:1px solid #f0e9d8;">${date}</td>
-      <td style="padding:6px 10px;border-bottom:1px solid #f0e9d8;text-align:right;">${fmtINR(p.amount || 0)}</td>
-      <td style="padding:6px 10px;border-bottom:1px solid #f0e9d8;text-align:right;">${p.gold_rate_at_payment ? fmtINR(p.gold_rate_at_payment, { decimals: 0 }) : "—"}</td>
-      <td style="padding:6px 10px;border-bottom:1px solid #f0e9d8;text-align:right;">${p.grams_credited ? Number(p.grams_credited).toFixed(3) + "g" : "—"}</td>
-    </tr>`;
-  }).join("");
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head><meta charset="utf-8"><title>Swarnakala Certificate — ${scheme.customer_name}</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Georgia, "Times New Roman", serif; color: #111; background: #fff; }
-@page { size: A4; margin: 0; }
-.frame { width: 100%; min-height: 297mm; border: 14px solid #B49042; outline: 2px solid #111; outline-offset: -22px; padding: 44px 56px; display: flex; flex-direction: column; align-items: center; }
-.shop-name { font-size: 20pt; font-weight: bold; letter-spacing: 0.04em; text-align:center; }
-.shop-sub { font-size: 9.5pt; color: #737373; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 4px; text-align:center; }
-.title { font-size: 22pt; color: #B49042; font-weight: bold; margin-top: 28px; letter-spacing: 0.05em; text-align:center; }
-.subtitle { font-size: 10pt; color: #555; margin-top: 4px; text-align:center; }
-.cust-block { margin-top: 22px; text-align:center; }
-.cust-name { font-size: 17pt; font-weight: bold; color: #0A0A0A; }
-.cust-mobile { font-size: 10pt; color: #737373; margin-top: 2px; }
-.section-label { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.12em; font-weight: bold; color: #B49042; margin: 22px 0 8px; width:100%; }
-table.pay-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
-table.pay-table th { background: #FDFBF7; border-bottom: 2px solid #EADFBF; padding: 7px 10px; text-align:left; color: #8A6D2F; font-size: 9pt; }
-table.pay-table tfoot td { padding: 8px 10px; font-weight: bold; background: #FDFBF7; border-top: 2px solid #EADFBF; }
-.summary-grid { display:flex; gap:32px; margin-top:20px; justify-content:center; }
-.summary-grid div { text-align:center; }
-.summary-grid .val { font-size:15pt; font-weight:bold; color:#0A0A0A; margin-top:3px; }
-.summary-grid .lbl { font-size:8.5pt; text-transform:uppercase; letter-spacing:0.1em; color:#737373; }
-.current-value { margin-top:16px; font-size:13pt; color:#B49042; font-weight:bold; text-align:center; }
-.congrats { margin-top:18px; font-size:11pt; color:#555; font-style:italic; text-align:center; }
-.sign { margin-top:40px; width:100%; display:flex; justify-content:space-between; font-size:9.5pt; }
-.sign div { width:200px; border-top:1px solid #999; padding-top:5px; }
-.issued { margin-top:18px; font-size:9pt; color:#888; text-align:center; }
-</style>
-</head>
-<body>
-<div class="frame">
-  <div class="shop-name">${shopName}</div>
-  <div class="shop-sub">Gold Saving Scheme</div>
-
-  <div class="title">SWARNAKALA MATURITY CERTIFICATE</div>
-  <div class="subtitle">Gold Gram Accumulation Scheme</div>
-
-  <div class="cust-block">
-    <div class="cust-name">${scheme.customer_name}</div>
-    ${scheme.customer_mobile ? `<div class="cust-mobile">${scheme.customer_mobile}</div>` : ""}
-    <div style="font-size:9.5pt;color:#737373;margin-top:6px;">Scheme Start Date: <b>${startDate}</b></div>
-  </div>
-
-  <div class="section-label">Payment Summary</div>
-  <table class="pay-table">
-    <thead>
-      <tr>
-        <th style="text-align:center;">Month</th>
-        <th>Date</th>
-        <th style="text-align:right;">Amount Paid</th>
-        <th style="text-align:right;">Gold Rate (₹/g)</th>
-        <th style="text-align:right;">Grams Credited</th>
-      </tr>
-    </thead>
-    <tbody>${paymentRows}</tbody>
-    <tfoot>
-      <tr>
-        <td colspan="2" style="text-align:right;color:#555;">Total</td>
-        <td style="text-align:right;">${fmtINR(totalAmountPaid)}</td>
-        <td></td>
-        <td style="text-align:right;">${totalGrams.toFixed(3)}g</td>
-      </tr>
-    </tfoot>
-  </table>
-
-  <div class="summary-grid">
-    <div>
-      <div class="lbl">Total Amount Paid</div>
-      <div class="val">${fmtINR(totalAmountPaid)}</div>
-    </div>
-    <div>
-      <div class="lbl">Total Grams Accumulated</div>
-      <div class="val">${totalGrams.toFixed(3)}g</div>
-    </div>
-    ${currentGoldRate ? `<div>
-      <div class="lbl">Current Gold Rate</div>
-      <div class="val">${fmtRatePerGram(currentGoldRate)}</div>
-    </div>` : ""}
-  </div>
-
-  ${currentValue !== null ? `<div class="current-value">Current Value: ${fmtINR(currentValue, { decimals: 0 })}</div>` : ""}
-
-  <div class="congrats">Congratulations! Your gold savings are ready to redeem.</div>
-
-  <div class="sign">
-    <div>Customer Signature</div>
-    <div>For ${shopName}<br><span style="font-size:8.5pt;color:#737373;">Proprietor</span></div>
-  </div>
-
-  <div class="issued">Issued on ${issuedDate}</div>
-</div>
-</body>
-</html>`;
-}
-
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function GoldSchemes() {
   const { can } = useAuth();
+  const { company } = useCompany();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [schemePlans, setSchemePlans] = useState([]);
   const [currentGoldRate, setCurrentGoldRate] = useState(null);
+  const [printSettings, setPrintSettings] = useState({
+    scheme_creation_print_settings: {},
+    scheme_statement_print_settings: {},
+    scheme_closure_print_settings: {},
+  });
 
   // Modals
   const [openNew, setOpenNew] = useState(false);
@@ -346,7 +174,26 @@ export default function GoldSchemes() {
     api.get("/settings/gold-rate").then(({ data }) => {
       if (data?.rate) setCurrentGoldRate(Number(data.rate));
     }).catch(() => {});
+    api.get("/settings/scheme-print").then(({ data }) => {
+      if (data) setPrintSettings(data);
+    }).catch(() => {});
   }, []);
+
+  // ── Print handlers (settings-driven field visibility) ───────────────────────
+  const printCreationReceipt = async (scheme) => {
+    const html = generateSchemeCreationReceipt(scheme, company, printSettings.scheme_creation_print_settings);
+    await printHtml(html);
+  };
+
+  const printStatement = async (scheme, paperSize = "A4") => {
+    const html = generateSchemeStatement(scheme, company, printSettings.scheme_statement_print_settings, paperSize);
+    await printHtml(html);
+  };
+
+  const printClosureCertificate = async (scheme) => {
+    const html = generateSchemeClosureCertificate(scheme, company, printSettings.scheme_closure_print_settings);
+    await printHtml(html);
+  };
 
   const redeemScheme = async (scheme) => {
     try {
@@ -644,6 +491,7 @@ export default function GoldSchemes() {
           onCreated={() => {
             load();
           }}
+          onSaveAndPrint={printCreationReceipt}
         />
       )}
       {activePay && (
@@ -666,6 +514,9 @@ export default function GoldSchemes() {
           onRedeem={() => redeemScheme(detailRow)}
           canCreate={can("gold_schemes", "create")}
           currentGoldRate={currentGoldRate}
+          onPrintReceipt={() => printCreationReceipt(detailRow)}
+          onPrintStatement={(size) => printStatement(detailRow, size)}
+          onPrintClosure={() => printClosureCertificate(detailRow)}
         />
       )}
     </div>
@@ -792,7 +643,7 @@ function SchemeRow({ scheme: s, onDetail, onPay, canCreate }) {
 
 // ─── Detail Panel (side drawer style modal) ───────────────────────────────────
 
-function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGoldRate }) {
+function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGoldRate, onPrintReceipt, onPrintStatement, onPrintClosure }) {
   const pct = s.duration_months > 0 ? Math.min((s.months_paid / s.duration_months) * 100, 100) : 0;
   const maturityValue = s.monthly_amount * (s.duration_months + (s.bonus_months || 0));
   const isGold = s.scheme_type === "swarnakala" || s.plan_type === "weight";
@@ -829,6 +680,21 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
               <button onClick={onRedeem} className="btn-primary !py-1.5 !text-[12px] inline-flex items-center gap-1">
                 <Gift size={12} strokeWidth={1.5} /> Mark as Redeemed
               </button>
+            )}
+            {canCreate && (
+              <div className="relative group">
+                <button className="btn-secondary !py-1.5 !text-[12px] inline-flex items-center gap-1">
+                  <Download size={12} strokeWidth={1.5} /> Print
+                </button>
+                <div className="absolute right-0 top-full mt-1 hidden group-hover:block z-30 bg-white border border-[#DCE3D6] rounded-[9px] shadow-[0_8px_24px_rgba(35,58,43,0.12)] py-1 min-w-[160px]">
+                  <button onClick={() => onPrintReceipt(s)} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Creation Receipt (A5)</button>
+                  <button onClick={() => onPrintStatement(s, "A4")} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Statement (A4)</button>
+                  <button onClick={() => onPrintStatement(s, "A5")} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Statement (A5)</button>
+                  {isSchemeClosable(s) && (
+                    <button onClick={() => onPrintClosure(s)} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED] text-[#B49042] font-medium">Closure Certificate</button>
+                  )}
+                </div>
+              </div>
             )}
             <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
               <X size={16} strokeWidth={1.5} />
@@ -992,7 +858,7 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
 
 // ─── New Scheme Modal ─────────────────────────────────────────────────────────
 
-function NewSchemeModal({ schemePlans, onClose, onCreated }) {
+function NewSchemeModal({ schemePlans, onClose, onCreated, onSaveAndPrint }) {
   const { date: activeBillingDate } = useBusinessDate();
   const [customerMode, setCustomerMode] = useState("existing"); // "existing" | "walkin"
   const [selectedPlanId, setSelectedPlanId] = useState("");
@@ -1107,7 +973,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
 
   const maturityValue = parseMoneyInput(form.monthly_amount) * (Number(form.duration_months || 0) + Number(form.bonus_months || 0));
 
-  const save = async (e, { force = false } = {}) => {
+  const save = async (e, { force = false, andPrint = false } = {}) => {
     if (e) e.preventDefault();
     if (!selectedEmployee?.id) return toast.error("Select the employee who registered this scheme");
     if (!selectedPlanId || !form.plan_name) return toast.error("Select a scheme type");
@@ -1129,7 +995,7 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
 
     setBusy(true);
     try {
-      await api.post("/schemes", {
+      const { data: created } = await api.post("/schemes", {
         customer_id: customerId,
         customer_name: customerName,
         customer_mobile: customerMobile,
@@ -1152,6 +1018,9 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
       );
       onCreated();
       onClose();
+      if (andPrint && created && onSaveAndPrint) {
+        onSaveAndPrint(created);
+      }
     } catch (err) {
       const info = dupInfo(err);
       if (info) setDupCustomer(info);
@@ -1438,6 +1307,16 @@ function NewSchemeModal({ schemePlans, onClose, onCreated }) {
 
         <div className="p-4 border-t border-[#DCE3D6] flex items-center justify-end gap-2 sticky bottom-0 bg-[#FFFDF8]">
           <button type="button" onClick={onClose} className="btn-secondary">Cancel</button>
+          {onSaveAndPrint && (
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => save(null, { andPrint: true })}
+              className="btn-secondary inline-flex items-center gap-1.5"
+            >
+              <Download size={13} strokeWidth={1.5} /> Save &amp; Print
+            </button>
+          )}
           <button type="submit" disabled={busy} className="btn-primary">
             {busy ? "Creating…" : "Create Scheme"}
           </button>

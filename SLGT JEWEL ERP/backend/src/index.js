@@ -291,6 +291,14 @@ const start = async () => {
     } catch (err) {
       logger.warn('accounts', 'transaction stamp backfill skipped', { error: err?.message });
     }
+    // Ensure the current Indian Financial Year exists for the active business date.
+    try {
+      const { ensureCurrentFinancialYear } = await import('./services/financialYearService.js');
+      const fy = await ensureCurrentFinancialYear();
+      if (fy) logger.info('accounts', 'current financial year', { code: fy.financial_year_code, shop_id: fy.shop_id });
+    } catch (err) {
+      logger.warn('accounts', 'financial year ensure skipped', { error: err?.message });
+    }
     try {
       const shopId = await getDefaultShopId();
       const { resolveFinancialMode, FINANCIAL_MODE } = await import('./services/financialMode.js');

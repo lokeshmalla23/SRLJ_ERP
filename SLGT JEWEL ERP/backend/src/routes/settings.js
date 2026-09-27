@@ -19,6 +19,8 @@ import {
   updateBarcodeTagSettings,
   getEstimationPrintSettings,
   updateEstimationPrintSettings,
+  getSchemePrintSettings,
+  updateSchemePrintSettings,
   getOfflineSettings,
   updateOfflineSettings,
   listCounters,
@@ -129,6 +131,10 @@ router.put('/barcode-tag', authenticate, requirePermission('settings', 'manage')
 
 router.get('/estimation-print', authenticate, getEstimationPrintSettings);
 router.put('/estimation-print', authenticate, requirePermission('settings', 'manage'), updateEstimationPrintSettings);
+
+// Scheme print settings (Creation Receipt / Statement / Closure Certificate).
+router.get('/scheme-print', authenticate, getSchemePrintSettings);
+router.put('/scheme-print', authenticate, requirePermission('settings', 'manage'), updateSchemePrintSettings);
 
 router.get('/offline', authenticate, getOfflineSettings);
 router.put('/offline', authenticate, requirePermission('settings', 'manage'), updateOfflineSettings);

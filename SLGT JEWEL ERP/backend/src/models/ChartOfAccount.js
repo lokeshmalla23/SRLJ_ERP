@@ -36,6 +36,8 @@ export const JournalEntry = sequelize.define('JournalEntry', {
   voucher_no: { type: DataTypes.STRING, allowNull: true },
   /** Opening-balance / cutover voucher — included in BS, excluded from period P&L by default */
   is_opening: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+  /** The Indian Financial Year this entry belongs to (resolved from entry_date). */
+  financial_year_id: { type: DataTypes.STRING, allowNull: true },
   ...financialModeField,
   ...shopAuditFields,
 }, {
@@ -46,6 +48,7 @@ export const JournalEntry = sequelize.define('JournalEntry', {
     { fields: ['shop_id', 'entry_date'] },
     { fields: ['source_type', 'source_id'] },
     { fields: ['request_id'] },
+    { fields: ['shop_id', 'financial_year_id'] },
   ],
 });
 

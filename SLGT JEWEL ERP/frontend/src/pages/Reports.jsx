@@ -38,6 +38,7 @@ import { hasFullAccessRole } from "@/lib/roleLabel";
 import HiddenBillPasswordDialog from "@/components/pos/HiddenBillPasswordDialog";
 import { hiddenUnlockBleedClass } from "@/lib/hiddenUnlockSurface";
 import PageHeader from "@/components/common/PageHeader";
+import { FinancialYearSelector } from "@/components/accounts/accountsShared";
 import { fmtINR, fmtDate, fmtDateTime, fmtWeight, fmtCustomerCode } from "@/lib/format";
 import { weightContribution } from "@/lib/trayWeight";
 import { asArray } from "@/lib/jsonFields";
@@ -465,7 +466,7 @@ function BillDetailsModal({ invoice, onClose }) {
 
 // ─── Date Range Picker ───────────────────────────────────────────────────────
 
-function DateRangePicker({ from, to, setFrom, setTo, presets = "sales" }) {
+function DateRangePicker({ from, to, setFrom, setTo, presets = "sales", showFinancialYear = false }) {
   const salesPresets = [
     { label: "Today", action: () => { setFrom(todayStr()); setTo(todayStr()); } },
     { label: "This Week", action: () => { setFrom(daysAgo(6)); setTo(todayStr()); } },
@@ -490,6 +491,7 @@ function DateRangePicker({ from, to, setFrom, setTo, presets = "sales" }) {
           <Filter size={13} strokeWidth={1.5} />
           <span className="text-[12.5px] font-medium">Date range</span>
         </div>
+        {showFinancialYear && <FinancialYearSelector value={{ from, to }} onChange={(r) => { if (r) { setFrom(r.from); setTo(r.to); } }} />}
         <input
           type="date"
           className="input max-w-[170px]"

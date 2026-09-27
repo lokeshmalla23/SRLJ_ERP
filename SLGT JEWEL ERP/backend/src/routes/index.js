@@ -35,6 +35,7 @@ import dbBrowserRoutes from './dbBrowser.js';
 import pureProductRoutes from './pureProducts.js';
 import barcodeStockCheckRoutes from './barcodeStockCheck.js';
 import { requireApplicationFeature } from '../middleware/requireApplicationFeature.js';
+import financialYearRoutes from './financialYear.js';
 
 export function registerRoutes(app) {
   app.use('/api/auth', authRoutes);
@@ -79,6 +80,7 @@ export function registerRoutes(app) {
   app.use('/api/authority', authorityRoutes);
   app.use('/api/cluster', clusterRoutes);
   app.use('/api/advances', advancesRoutes);
+  app.use('/api/financial-years', financialYearRoutes);
   app.use('/api/masters', mastersExtraRoutes);
   app.use('/api/draft-sales', draftSalesRoutes);
   app.use('/api/barcode-stock-check', requireApplicationFeature('barcode_stock_check'), barcodeStockCheckRoutes);

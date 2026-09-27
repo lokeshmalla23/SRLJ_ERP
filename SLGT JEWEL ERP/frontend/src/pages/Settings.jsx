@@ -38,6 +38,7 @@ import InvoiceLayoutEditor from "@/components/settings/InvoiceLayoutEditor";
 import InvoiceLetterheadSection from "@/components/settings/InvoiceLetterheadSection";
 import BarcodeLayoutEditor from "@/components/settings/BarcodeLayoutEditor";
 import EstimationLayoutEditor from "@/components/settings/EstimationLayoutEditor";
+import SchemePrintSettingsTab from "@/components/settings/SchemePrintSettingsTab";
 
 /** Settings tabs with RBAC — view gates visibility; write gates Save / destructive actions. */
 const TABS = [
@@ -51,6 +52,7 @@ const TABS = [
   { id: "invoice-print", label: "Invoice Print", icon: FileText, tid: "settings-tab-invoice-print", module: "settings", view: "view", write: "manage" },
   { id: "barcode-tag", label: "Barcode Tag", icon: Tag, tid: "settings-tab-barcode-tag", module: "settings", view: "view", write: "manage" },
   { id: "estimation-print", label: "Estimation Print", icon: ClipboardList, tid: "settings-tab-estimation-print", module: "settings", view: "view", write: "manage" },
+  { id: "scheme-print", label: "Scheme Print", icon: Coins, tid: "settings-tab-scheme-print", module: "settings", view: "view", write: "manage" },
   { id: "network", label: "Shop Network", icon: Wifi, tid: "settings-tab-network", module: "settings", view: "view", write: "manage" },
   { id: "system", label: "System Health", icon: Activity, tid: "settings-tab-system", module: "settings", view: "view", write: null },
   { id: "audit", label: "Audit", icon: ScrollText, tid: "settings-tab-audit", module: "settings", view: "view", write: null },
@@ -64,6 +66,7 @@ const PRINT_SETTINGS_TABS = {
   "invoice-print": { label: "Invoice Print" },
   "barcode-tag": { label: "Barcode Tag" },
   "estimation-print": { label: "Estimation Print" },
+  "scheme-print": { label: "Scheme Print" },
 };
 
 function emptyClickState() {
@@ -110,6 +113,7 @@ export default function SettingsPage() {
     "invoice-print": emptyClickState(),
     "barcode-tag": emptyClickState(),
     "estimation-print": emptyClickState(),
+    "scheme-print": emptyClickState(),
   });
   const [companyUnlocked, setCompanyUnlocked] = useState(false);
   const [companyUnlockOpen, setCompanyUnlockOpen] = useState(false);
@@ -126,6 +130,7 @@ export default function SettingsPage() {
     "invoice-print": false,
     "barcode-tag": false,
     "estimation-print": false,
+    "scheme-print": false,
   });
   const [printUnlockTab, setPrintUnlockTab] = useState(null);
   const [printSettingsUnlockBusy, setPrintSettingsUnlockBusy] = useState(false);
@@ -419,6 +424,13 @@ export default function SettingsPage() {
           canWrite={canWrite}
           unlocked={printTabUnlocked["estimation-print"]}
           onLocked={() => lockPrintTab("estimation-print")}
+        />
+      )}
+      {tab === "scheme-print" && (
+        <SchemePrintSettingsTab
+          canWrite={canWrite}
+          unlocked={printTabUnlocked["scheme-print"]}
+          onLocked={() => lockPrintTab("scheme-print")}
         />
       )}
       {tab === "network" && <ShopNetworkTab canWrite={canWrite} />}

@@ -364,6 +364,14 @@ export async function advanceActiveBillingDate({ shopId, closedDate, transaction
       value: { date: nextDate },
     }, { transaction });
   }
+  // Re-flag the current Indian Financial Year for the advanced business date.
+  // Non-fatal: a failure here must never block Day Close.
+  try {
+    const { ensureCurrentFinancialYear } = await import('./financialYearService.js');
+    await ensureCurrentFinancialYear(resolvedShopId, { transaction });
+  } catch {
+    /* never block day close */
+  }
   return nextDate;
 }
 

@@ -12,6 +12,7 @@ import {
 } from "@/lib/reportColumns";
 import ReportViewModal from "./ReportViewModal";
 import { sortByInvoiceNoDesc } from "@/lib/occurredAt";
+import { FinancialYearSelector } from "@/components/accounts/accountsShared";
 
 const today = () => {
   const d = new Date();
@@ -583,6 +584,13 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
   const printOrientation = parsed.defaultOrientation || "portrait";
   const isOccasionReport = String(report?.endpoint || "").includes("/customers/birthday")
     || String(report?.endpoint || "").includes("/customers/anniversary");
+  // Financial Year selector for accounting/financial reports (P&L, Balance
+  // Sheet, Trial Balance, GST, etc.) — replaces calendar-year "This Year".
+  const showFinancialYear = report?.source === "accounts"
+    && !isOccasionReport
+    && !String(report?.endpoint || "").includes("/customers/")
+    && !String(report?.endpoint || "").includes("/purchases/")
+    && !String(report?.endpoint || "").includes("/suppliers/");
   const occasionDateKey = String(report?.endpoint || "").includes("anniversary") ? "anniversary" : "dob";
   const todayRows = (raw?.today || parsed.rows.filter((r) => r.is_today));
 
@@ -615,6 +623,9 @@ export default function UnifiedReportView({ report, onBack, embedded = false, in
         <div className="flex flex-wrap items-end gap-2">
           {!isOccasionReport ? (
             <>
+              {showFinancialYear && (
+                <FinancialYearSelector value={{ from, to }} onChange={(r) => { if (r) { setFrom(r.from); setTo(r.to); } }} />
+              )}
               <label className="text-[10.5px] font-medium uppercase tracking-[0.05em] text-[#707973]">
                 From
                 <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="ml-1 rounded-[9px] border border-[#CFC8BB] bg-white px-2.5 py-1.5 text-xs text-[#24332B] outline-none focus:border-[#3D6B5B] focus:ring-2 focus:ring-[#DDE8E0]" />
