@@ -13,6 +13,7 @@ import { notifyBusinessDateChanged } from "@/context/BusinessDateContext";
 import useConfirm from "@/hooks/useConfirm";
 import { REPORT_CATEGORIES, reportsInCategory } from "@/pages/reports/reportCatalog";
 import { ACCOUNTS_NAV_GROUPS } from "@/components/accounts/accountsShared";
+import { notifyProfitLossUpdated } from "@/context/ProfitLossContext";
 
 function onOff(value, invert = false) {
   if (value === true || value === "true") return invert ? "OFF" : "ON";
@@ -47,7 +48,7 @@ const SECTION_MODULES = [
  * its audit log, and a toggle that rolls back on a failed save. Same GET/PUT
  * shape on the backend (adminFlagHandlers in controllers/settings.js).
  */
-function useAdminFlag({ endpoint, entityType, label, unlocked, toastText = null }) {
+function useAdminFlag({ endpoint, entityType, label, unlocked, toastText = null, onChanged = null }) {
   const [enabled, setEnabled] = useState(null); // null until loaded
   const [saving, setSaving] = useState(false);
   const [events, setEvents] = useState([]);
@@ -86,6 +87,7 @@ function useAdminFlag({ endpoint, entityType, label, unlocked, toastText = null 
       const { data } = await api.put(endpoint, { enabled: next });
       setEnabled(data?.enabled === true);
       toast.success(toastText ? toastText(next) : `${label} ${next ? "enabled" : "disabled"}`);
+      onChanged?.();
       loadEvents();
       return true;
     } catch (err) {
@@ -253,7 +255,13 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
   const [oldMetalEvents, setOldMetalEvents] = useState([]);
   const [oldMetalEventsLoading, setOldMetalEventsLoading] = useState(true);
 
-  const profitLoss = useAdminFlag({ endpoint: "/settings/profit-loss", entityType: "profit_loss", label: "Profit & Loss", unlocked });
+  const profitLoss = useAdminFlag({
+    endpoint: "/settings/profit-loss",
+    entityType: "profit_loss",
+    label: "Profit & Loss",
+    unlocked,
+    onChanged: notifyProfitLossUpdated,
+  });
   const calCode = useAdminFlag({ endpoint: "/settings/cal-code", entityType: "cal_code", label: "Cal Code", unlocked });
   const autoDayClose = useAdminFlag({
     endpoint: "/settings/auto-day-close",
@@ -509,10 +517,10 @@ export default function ApplicationManagementTab({ canWrite = false, unlocked = 
         canWrite={canWrite}
         unlocked={unlocked}
         title="Profit & Loss"
-        description="When ON, Inventory → Add Product shows a mandatory Purchase Price field (beside Purchase Date) so profit & loss valuations are exact. When OFF (default), the Purchase Price field is hidden."
+        description="Master switch for all profitability figures. When ON, Accounts and Reports show P&L, Balance Sheet, gross/net profit and margins, and Inventory → Add Product requires a Purchase Price so valuations are exact. When OFF (default), no profit figure is calculated or shown anywhere and the Purchase Price field is hidden."
         rowLabel="Profit & Loss Required"
-        onText="On — Purchase Price is mandatory when creating a product."
-        offText="Off — Purchase Price field is hidden in Inventory."
+        onText="On — P&L, Balance Sheet and profit KPIs are available; Purchase Price is mandatory."
+        offText="Off — no profit figures are calculated or shown; Purchase Price field is hidden."
       />
 
       <AdminFlagSection

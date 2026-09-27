@@ -9,6 +9,7 @@ import { BusinessDateProvider } from "@/context/BusinessDateContext";
 import { DisplayPrefsProvider } from "@/context/DisplayPrefsContext";
 import { ApplicationFeatureProvider, useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import { SectionVisibilityProvider } from "@/context/SectionVisibilityContext";
+import { ProfitLossProvider } from "@/context/ProfitLossContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import RouteErrorBoundary from "@/components/RouteErrorBoundary";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -295,6 +296,7 @@ function App() {
             <DisplayPrefsProvider>
             <ApplicationFeatureProvider>
             <SectionVisibilityProvider>
+            <ProfitLossProvider>
             <BrowserRouter>
               <Toaster
                 position="top-right"
@@ -354,6 +356,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </BrowserRouter>
+            </ProfitLossProvider>
             </SectionVisibilityProvider>
             </ApplicationFeatureProvider>
             </DisplayPrefsProvider>

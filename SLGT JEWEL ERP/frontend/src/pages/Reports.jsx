@@ -59,7 +59,9 @@ import {
   categoryForReport,
   visibleReportCategories,
   visibleReportsInCategory,
+  isReportAllowedByProfitLoss,
 } from "@/pages/reports/reportCatalog";
+import { useProfitLoss } from "@/context/ProfitLossContext";
 import { useSectionVisibility } from "@/context/SectionVisibilityContext";
 import StockDetailsReport from "@/pages/reports/quickReports/StockDetailsReport";
 import CategoryStockReport from "@/pages/reports/quickReports/CategoryStockReport";
@@ -2388,12 +2390,20 @@ export default function Reports() {
   const [to, setTo] = useState(todayStr());
 
   const { sections: sectionVisibility, isSectionVisible } = useSectionVisibility();
+  const { enabled: profitLossEnabled } = useProfitLoss();
+  // P&L-gated reports vanish (even with hidden bills unlocked) while the
+  // Application Management Profit & Loss toggle is OFF.
+  const plAllowed = useCallback(
+    (r) => isReportAllowedByProfitLoss(r, profitLossEnabled),
+    [profitLossEnabled],
+  );
   const isReportSectionVisible = useCallback(
-    (level, id) => isSectionVisible("reports", level, id),
-    [isSectionVisible],
+    (level, id) => (level !== "item" || plAllowed(findReport(id))) && isSectionVisible("reports", level, id),
+    [isSectionVisible, plAllowed],
   );
 
-  const report = findReport(reportId) || defaultReportForCategory("sales");
+  const requested = findReport(reportId);
+  const report = (requested && plAllowed(requested) ? requested : null) || defaultReportForCategory("sales");
   const categoryId = report?.category || categoryForReport(reportId);
   const visibleCategories = useMemo(
     () => (hiddenUnlocked
@@ -2403,9 +2413,9 @@ export default function Reports() {
   );
   const categoryReports = useMemo(
     () => (hiddenUnlocked
-      ? reportsInCategory(categoryId)
+      ? reportsInCategory(categoryId).filter(plAllowed)
       : visibleReportsInCategory(categoryId, isReportSectionVisible)),
-    [categoryId, hiddenUnlocked, isReportSectionVisible],
+    [categoryId, hiddenUnlocked, isReportSectionVisible, plAllowed],
   );
   const categoryMeta = REPORT_CATEGORIES.find((c) => c.id === categoryId);
 
@@ -2420,6 +2430,11 @@ export default function Reports() {
   // whatever category/report the user is currently looking at — fall back to
   // the first still-visible one instead of showing a blank/stale panel.
   useEffect(() => {
+    if (!plAllowed(findReport(reportId))) {
+      const next = defaultReportForCategory(categoryId, isReportSectionVisible) || defaultReportForCategory("sales");
+      if (next) setReportId(next.id);
+      return;
+    }
     if (hiddenUnlocked || categoryId === "hidden-data") return;
     if (!visibleCategories.some((c) => c.id === categoryId)) {
       const nextCat = visibleCategories[0];
@@ -2433,7 +2448,7 @@ export default function Reports() {
       const next = defaultReportForCategory(categoryId, isReportSectionVisible);
       if (next) setReportId(next.id);
     }
-  }, [sectionVisibility, hiddenUnlocked, categoryId, reportId, visibleCategories, isReportSectionVisible]);
+  }, [sectionVisibility, hiddenUnlocked, categoryId, reportId, visibleCategories, isReportSectionVisible, plAllowed]);
 
   useEffect(() => {
     try {
@@ -2444,7 +2459,7 @@ export default function Reports() {
   }, [report?.id]);
 
   const selectCategory = (catId) => {
-    const next = defaultReportForCategory(catId, hiddenUnlocked ? undefined : isReportSectionVisible);
+    const next = defaultReportForCategory(catId, hiddenUnlocked ? (level, id) => plAllowed(findReport(id)) : isReportSectionVisible);
     if (next) setReportId(next.id);
   };
 

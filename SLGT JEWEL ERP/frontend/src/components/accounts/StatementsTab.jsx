@@ -6,6 +6,7 @@ import { SimpleBarChart, SimplePieChart } from "@/components/charts/SimpleCharts
 import MoneyInput from "@/components/ui/MoneyInput";
 import { PageLoadingBadge } from "@/components/ui/Skeletons";
 import { fmtINR, parseMoneyInput } from "@/lib/format";
+import { useProfitLoss } from "@/context/ProfitLossContext";
 
 const today = () => {
   const d = new Date();
@@ -27,6 +28,7 @@ function downloadCsv(filename, rows) {
 }
 
 export default function StatementsTab() {
+  const { enabled: profitLossEnabled } = useProfitLoss();
   const [from, setFrom] = useState(daysAgo(30));
   const [to, setTo] = useState(today());
   const [view, setView] = useState("tb"); // tb | pnl | bs | voucher
@@ -49,10 +51,12 @@ export default function StatementsTab() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
+      // P&L and Balance Sheet are requested only when the P&L gate is ON —
+      // the backend refuses them otherwise, and no profit figure is computed.
       const [tbRes, pnlRes, bsRes, coaRes, jRes] = await Promise.all([
         api.get("/accounts/trial-balance", { params: { from, to } }),
-        api.get("/accounts/pnl", { params: { from, to } }),
-        api.get("/accounts/balance-sheet", { params: { to } }),
+        profitLossEnabled ? api.get("/accounts/pnl", { params: { from, to } }) : Promise.resolve({ data: null }),
+        profitLossEnabled ? api.get("/accounts/balance-sheet", { params: { to } }) : Promise.resolve({ data: null }),
         api.get("/masters/coa"),
         api.get("/masters/journals", { params: { limit: 30 } }),
       ]);
@@ -66,11 +70,19 @@ export default function StatementsTab() {
     } finally {
       setLoading(false);
     }
-  }, [from, to]);
+  }, [from, to, profitLossEnabled]);
 
   useEffect(() => {
     load();
   }, [load]);
+
+  // Toggle turned OFF while this tab is open: drop any P&L already on screen.
+  useEffect(() => {
+    if (profitLossEnabled) return;
+    setPnl(null);
+    setBs(null);
+    setView((v) => (v === "pnl" || v === "bs" ? "tb" : v));
+  }, [profitLossEnabled]);
 
   const pnlBars = useMemo(
     () => [
@@ -122,8 +134,7 @@ export default function StatementsTab() {
         <input type="date" className="input w-40" value={to} onChange={(e) => setTo(e.target.value)} />
         {[
           ["tb", "Trial Balance"],
-          ["pnl", "P&L"],
-          ["bs", "Balance Sheet"],
+          ...(profitLossEnabled ? [["pnl", "P&L"], ["bs", "Balance Sheet"]] : []),
           ["voucher", "Vouchers"],
         ].map(([id, label]) => (
           <button
@@ -185,7 +196,7 @@ export default function StatementsTab() {
         </div>
       )}
 
-      {view === "pnl" && (
+      {view === "pnl" && profitLossEnabled && (
         <div className="grid md:grid-cols-2 gap-4">
           <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
             <SimpleBarChart data={pnlBars} bars={[{ key: "value", name: "Amount", color: "#3D6B5B" }]} />
@@ -214,7 +225,7 @@ export default function StatementsTab() {
         </div>
       )}
 
-      {view === "bs" && (
+      {view === "bs" && profitLossEnabled && (
         <div className="grid md:grid-cols-2 gap-4">
           <div className="rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)] p-4" style={{ borderColor: "#D8D2C6" }}>
             <SimplePieChart data={bsPie} />

@@ -28,6 +28,7 @@ import {
 } from '../models/index.js';
 import { getDefaultShopId } from './defaultShop.js';
 import { accountNetBalance, ensureDefaultAccounts } from './ledgerService.js';
+import { getProfitLossMode } from './profitLossMode.js';
 import { generalLedger } from './accountingControlsService.js';
 import { toMoneyNumber } from '../utils/money.js';
 import { salesRegisterPaymentSplit, sumSalesRegisterTotals } from '../utils/salesRegisterPayments.js';
@@ -228,12 +229,20 @@ export async function getAccountsDashboard(query = {}) {
   const ap = await accountNetBalance(shopId, '2200', { to });
   const gstPay = await accountNetBalance(shopId, '2100', { to, excludeInvoiceIds: hiddenGlExclude });
   const salesGl = await accountNetBalance(shopId, '4000', { to, excludeInvoiceIds: hiddenGlExclude });
-  const cogsGl = await accountNetBalance(shopId, '5000', { to, excludeInvoiceIds: hiddenGlExclude });
   const expGl = await accountNetBalance(shopId, '5100', { to, excludeInvoiceIds: hiddenGlExclude });
   const otherIncomeGl = await accountNetBalance(shopId, '4200', { to, excludeInvoiceIds: hiddenGlExclude });
-  // income accounts are credit-nature — accountNetBalance already flips
-  const grossProfit = toMoneyNumber(salesGl - cogsGl);
-  const netProfit = toMoneyNumber(salesGl + otherIncomeGl - cogsGl - expGl);
+  // Profitability KPIs only when the Application Management P&L toggle is ON —
+  // when OFF the COGS lookup and profit maths are skipped entirely.
+  const { enabled: profitLossEnabled } = await getProfitLossMode();
+  let profitKpis = {};
+  if (profitLossEnabled) {
+    const cogsGl = await accountNetBalance(shopId, '5000', { to, excludeInvoiceIds: hiddenGlExclude });
+    // income accounts are credit-nature — accountNetBalance already flips
+    profitKpis = {
+      gross_profit: toMoneyNumber(salesGl - cogsGl),
+      net_profit: toMoneyNumber(salesGl + otherIncomeGl - cogsGl - expGl),
+    };
+  }
 
   const pendingArWhereBase = liveFinancial({
     ...shopScope(shopId),
@@ -333,10 +342,9 @@ export async function getAccountsDashboard(query = {}) {
       gst_payable: toMoneyNumber(gstPay),
       gold_purchase_value: toMoneyNumber(purchaseTotal),
       exchange_value: toMoneyNumber(exchange),
-      gross_profit: grossProfit,
       total_expenses: toMoneyNumber(Math.max(expenseTotal, expGl)),
       total_income: toMoneyNumber(Math.max(incomeTotal, otherIncomeGl)),
-      net_profit: netProfit,
+      ...profitKpis,
       output_gst_period: toMoneyNumber(gstOut),
       input_gst_period: toMoneyNumber(gstIn),
     },

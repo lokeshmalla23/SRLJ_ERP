@@ -95,7 +95,8 @@ function flattenResponse(data, endpoint) {
       rows,
       kpis: [
         { label: "Sales", value: fmtINR(data.kpis.total_sales) },
-        { label: "Net Profit", value: fmtINR(data.kpis.net_profit) },
+        // net_profit is present only while the P&L toggle is ON (backend omits it).
+        ...(data.kpis.net_profit != null ? [{ label: "Net Profit", value: fmtINR(data.kpis.net_profit) }] : []),
         { label: "Cash", value: fmtINR(data.kpis.cash_in_hand) },
         { label: "Receivables", value: fmtINR(data.kpis.customer_receivables) },
       ],

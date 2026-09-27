@@ -72,6 +72,7 @@ import {
   getReconciliation,
   upsertReconciliationMark,
 } from '../controllers/bankAccounts.js';
+import { requireProfitLossEnabled } from '../middleware/requireProfitLoss.js';
 
 const router = Router();
 
@@ -89,8 +90,9 @@ router.post('/cashbook', authenticate, requirePermission('accounts', 'create'), 
 router.delete('/cashbook/:id', authenticate, requirePermission('accounts', 'delete'), deleteCashbookEntry);
 
 router.get('/trial-balance', authenticate, requirePermission('accounts', 'view'), getTrialBalance);
-router.get('/pnl', authenticate, requirePermission('accounts', 'view'), getProfitAndLoss);
-router.get('/balance-sheet', authenticate, requirePermission('accounts', 'view'), getBalanceSheet);
+router.get('/pnl', authenticate, requireProfitLossEnabled, requirePermission('accounts', 'view'), getProfitAndLoss);
+// Balance Sheet carries retained earnings (profit by another name) — same gate.
+router.get('/balance-sheet', authenticate, requireProfitLossEnabled, requirePermission('accounts', 'view'), getBalanceSheet);
 router.post('/vouchers', authenticate, requirePermission('accounts', 'create'), createManualVoucher);
 router.get('/transfers', authenticate, requirePermission('accounts', 'view'), listPaymentTransfers);
 router.post('/transfers', authenticate, requirePermission('accounts', 'create'), createPaymentTransfer);

@@ -19,18 +19,20 @@ export const REPORT_CATEGORIES = [
 ];
 
 /**
+ * requiresProfitLoss: report exists only while Application Management →
+ *   Profit & Loss is ON (backend refuses the endpoint otherwise).
  * type: 'api' | 'tab' | 'quick' | 'component'
  * source: 'accounts' (journals) | 'reports' (ops) | 'ui'
  */
 export const REPORT_CATALOG = [
   // Executive
   { id: "exec-overview", category: "executive", name: "Business Overview", source: "accounts", type: "api", endpoint: "/accounts/dashboard", description: "KPIs from live accounts + sales" },
-  { id: "exec-pnl", category: "executive", name: "Profitability (P&L)", source: "accounts", type: "api", endpoint: "/accounts/pnl", description: "Journal-based profit & loss" },
+  { id: "exec-pnl", category: "executive", name: "Profitability (P&L)", source: "accounts", type: "api", endpoint: "/accounts/pnl", description: "Journal-based profit & loss", requiresProfitLoss: true },
   { id: "exec-cash", category: "executive", name: "Cash Position", source: "accounts", type: "api", endpoint: "/accounts/cash-book", description: "Cash book from GL 1000" },
 
   // Financial
-  { id: "fin-pnl", category: "financial", name: "Profit & Loss", source: "accounts", type: "api", endpoint: "/accounts/pnl" },
-  { id: "fin-bs", category: "financial", name: "Balance Sheet", source: "accounts", type: "api", endpoint: "/accounts/balance-sheet" },
+  { id: "fin-pnl", category: "financial", name: "Profit & Loss", source: "accounts", type: "api", endpoint: "/accounts/pnl", requiresProfitLoss: true },
+  { id: "fin-bs", category: "financial", name: "Balance Sheet", source: "accounts", type: "api", endpoint: "/accounts/balance-sheet", requiresProfitLoss: true },
   { id: "fin-tb", category: "financial", name: "Trial Balance", source: "accounts", type: "api", endpoint: "/accounts/trial-balance" },
   { id: "fin-day-book", category: "financial", name: "Day Book", source: "accounts", type: "api", endpoint: "/accounts/day-book" },
   { id: "fin-cash-book", category: "financial", name: "Cash Book", source: "accounts", type: "api", endpoint: "/accounts/cash-book" },
@@ -110,7 +112,7 @@ export const REPORT_CATALOG = [
 
   // Expenses
   { id: "exp-register", category: "expenses", name: "Expense Register", source: "accounts", type: "api", endpoint: "/accounts/expenses", description: "All expenses in range (CRUD remains in Accounts)" },
-  { id: "exp-pnl", category: "expenses", name: "Expenses in P&L", source: "accounts", type: "api", endpoint: "/accounts/pnl", description: "Expense lines from journal P&L" },
+  { id: "exp-pnl", category: "expenses", name: "Expenses in P&L", source: "accounts", type: "api", endpoint: "/accounts/pnl", description: "Expense lines from journal P&L", requiresProfitLoss: true },
 
   // Schemes
   { id: "sch-workspace", category: "schemes", name: "Schemes Workspace", source: "ui", type: "tab", tab: "schemes" },
@@ -165,4 +167,9 @@ export function visibleReportsInCategory(categoryId, isVisible) {
 export function categoryForReport(reportId) {
   const r = findReport(reportId);
   return r?.category || REPORT_CATEGORIES[0]?.id || "executive";
+}
+
+/** False for P&L-gated reports while the Profit & Loss toggle is OFF. */
+export function isReportAllowedByProfitLoss(report, profitLossEnabled) {
+  return Boolean(profitLossEnabled) || !report?.requiresProfitLoss;
 }

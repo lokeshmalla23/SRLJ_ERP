@@ -32,6 +32,7 @@
     "test:remediation": "node tests/remediationP0P1.test.js",
     "test:oldgold": "node tests/oldGoldNonCash.test.js",
     "test:accrual": "node tests/accrualPhase1.test.js",
+    "test:profit-loss": "node tests/profitLossGate.test.js",
     "test:booking": "node tests/quotationBooking.test.js",
     "test:sync": "node tests/syncService.test.js",
     "test:acceptance": "node tests/acceptanceSimulation.test.js",

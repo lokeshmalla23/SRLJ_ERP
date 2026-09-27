@@ -28,6 +28,7 @@ import {
 } from "./accountsShared";
 import useConfirm from "@/hooks/useConfirm";
 import { useSectionVisibility } from "@/context/SectionVisibilityContext";
+import { useProfitLoss } from "@/context/ProfitLossContext";
 import { useBusinessDate } from "@/context/BusinessDateContext";
 import { invoiceOccurredAt, sortByInvoiceNoDesc } from "@/lib/occurredAt";
 import StatementsTab from "./StatementsTab";
@@ -1177,14 +1178,22 @@ export default function AccountsModule({ expensesNode = null, includeHidden = fa
   // Close Day turned OFF (Application Management) — days close automatically
   // and go-live needs no Opening Setup, so both screens are hidden.
   const { autoDayClose } = useBusinessDate();
+  const { enabled: profitLossEnabled } = useProfitLoss();
   const navGroups = useMemo(() => {
-    const groups = filterAccountsNavGroups(ACCOUNTS_NAV_GROUPS, { includeHidden, isVisible: isAccountsSectionVisible });
+    let groups = filterAccountsNavGroups(ACCOUNTS_NAV_GROUPS, { includeHidden, isVisible: isAccountsSectionVisible });
+    // P&L toggle OFF: the statements screen only offers TB + vouchers.
+    if (!profitLossEnabled) {
+      groups = groups.map((g) => ({
+        ...g,
+        items: g.items.map((i) => (i.id === "statements" ? { ...i, label: "Trial Balance / Vouchers" } : i)),
+      }));
+    }
     if (!autoDayClose) return groups;
     const hiddenIds = new Set(["daily-closing", "opening-setup"]);
     return groups
       .map((g) => ({ ...g, items: g.items.filter((i) => !hiddenIds.has(i.id)) }))
       .filter((g) => g.items.length > 0);
-  }, [includeHidden, isAccountsSectionVisible, autoDayClose]);
+  }, [includeHidden, isAccountsSectionVisible, autoDayClose, profitLossEnabled]);
 
   useEffect(() => {
     if (!includeHidden && section === "hidden-data") setSection("dashboard");
