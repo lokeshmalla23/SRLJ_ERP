@@ -208,6 +208,7 @@ export function AccountsFilterBar({
   exportRows,
   exportColumns,
   exportTitle,
+  closingTables = [],
 }) {
   const cols = exportColumns || [];
   const print = () => {
@@ -217,6 +218,7 @@ export function AccountsFilterBar({
       columns: cols,
       rows: exportRows,
       filtersSummary: from && to ? `${from} → ${to}` : "",
+      closingTables,
     });
     const w = window.open("", "_blank");
     if (w) {

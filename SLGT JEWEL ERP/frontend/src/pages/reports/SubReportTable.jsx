@@ -4,6 +4,7 @@ import { FileText } from "lucide-react";
 import api from "@/lib/api";
 import DataTable from "./DataTable";
 import ReportViewModal from "./ReportViewModal";
+import MetalSummaryTables from "./MetalSummaryTables";
 import { sanitizeReportColumns, currencyParticulars } from "@/lib/reportColumns";
 
 /**
@@ -28,6 +29,19 @@ export default function SubReportTable({ title, description, endpoint, params = 
   const rows = query.data?.data || [];
   const totals = query.data?.totals || null;
   const extraNode = typeof extra === "function" ? extra(rows, query.data) : extra;
+  const metalSummary = query.data?.metal_summary;
+  const metalClosingTables = (Array.isArray(metalSummary) ? metalSummary : [])
+    .filter((m) => m.metal === "Gold" || m.metal === "Silver")
+    .map((m) => ({
+      title: m.metal,
+      columns: [
+        { key: "purity", label: "Purity" },
+        { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
+        { key: "net_weight", label: "N.W", align: "right", format: "weight" },
+      ],
+      rows: m.rows || [],
+      totals: { purity: "Total", gross_weight: m.total_gross_weight, net_weight: m.total_net_weight },
+    }));
 
   return (
     <div className="mb-8">
@@ -51,6 +65,9 @@ export default function SubReportTable({ title, description, endpoint, params = 
         emptyMessage={emptyMessage || "No data for this period."}
         rowClassName={rowClassName}
       />
+      {metalSummary ? (
+        <MetalSummaryTables metals={metalSummary} from={params?.from} to={params?.to} />
+      ) : null}
       <ReportViewModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -60,6 +77,7 @@ export default function SubReportTable({ title, description, endpoint, params = 
         totals={totals}
         filtersSummary={Object.entries(params).filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")}
         summaryParticulars={currencyParticulars(visibleColumns, totals)}
+        closingTables={metalClosingTables}
       />
     </div>
   );

@@ -1,10 +1,11 @@
 import { Op, fn, col } from 'sequelize';
 import { Invoice, InvoiceItem, Employee, ShopCounter, Customer, Quotation } from '../../models/index.js';
-import { toMoneyNumber, sumMoney } from '../../utils/money.js';
+import { toMoneyNumber, toWeightNumber, sumMoney } from '../../utils/money.js';
 import { hydrateInvoiceItems, invoiceItemsOf, invoicePaymentsOf, invoiceOccurredAt, parseOccurredAt } from '../../utils/invoiceRead.js';
 import { parsePagination, parseDateRange, invoiceDateRangeWhere, paginatedResult, newestInvoiceFirstOrder } from '../../utils/reportQuery.js';
 import { NOT_VOID_OR_RETURNED, wantsHiddenBills, withNotHiddenInvoiceItems } from '../../utils/invoiceVisibility.js';
 import { excludePreAccountsWhere } from '../../services/financialMode.js';
+import { buildProductLookup, metalPurityBreakdown } from '../../services/metalClassify.js';
 
 const NOT_CANCELLED = NOT_VOID_OR_RETURNED;
 
@@ -82,13 +83,33 @@ function sumTotals(invoices) {
   };
 }
 
+/**
+ * Purity-wise gold/silver sold-weight summary for a Sales report, using the
+ * same shared classifier as the Dashboard gold cards and purity pie so every
+ * screen agrees on the numbers. Returns the `metals` array from
+ * metalPurityBreakdown: [{ metal, rows: [{purity, gross_weight, net_weight}],
+ * total_gross_weight, total_net_weight }] — only metals actually sold appear.
+ */
+export async function computeMetalSummary(query, role) {
+  const where = await buildBaseWhere({ ...query, _role: role });
+  const { category_id, metal_type, payment_mode } = query;
+  const invoices = await Invoice.findAll({ where });
+  await hydrateInvoiceItems(invoices);
+  const filtered = invoices.filter((inv) =>
+    lineFiltersMatch(inv, { category_id, metal_type }) && paymentModeMatches(inv, payment_mode));
+  const productLookup = await buildProductLookup(filtered);
+  const breakdown = metalPurityBreakdown(filtered, productLookup);
+  return breakdown.metals;
+}
+
 // GET /api/reports/sales/list — paginated, filterable invoice list (Sales tab main table)
 export const listSalesInvoices = async (req, res, next) => {
   try {
-    const where = buildBaseWhere({ ...req.query, _role: req.user?.role });
+    const where = await buildBaseWhere({ ...req.query, _role: req.user?.role });
     const { category_id, metal_type, payment_mode } = req.query;
     const { limit, offset } = parsePagination(req.query);
     const needsLineFilter = Boolean(category_id || metal_type || payment_mode);
+    const metalSummary = await computeMetalSummary(req.query, req.user?.role);
 
     if (!needsLineFilter) {
       const [{ count, rows }, aggregate] = await Promise.all([
@@ -123,6 +144,7 @@ export const listSalesInvoices = async (req, res, next) => {
           gst_amount: toMoneyNumber(aggregate?.gst_amount),
           grand_total: toMoneyNumber(aggregate?.grand_total),
         },
+        metal_summary: metalSummary,
       });
     }
 
@@ -142,7 +164,7 @@ export const listSalesInvoices = async (req, res, next) => {
       json.created_at = (invoiceOccurredAt(i) || parseOccurredAt(json.created_at || json.createdAt))?.toISOString?.() || json.created_at;
       return json;
     });
-    return res.json({ ...paginatedResult(filtered.length, page), totals: sumTotals(filtered) });
+    return res.json({ ...paginatedResult(filtered.length, page), totals: sumTotals(filtered), metal_summary: metalSummary });
   } catch (err) {
     next(err);
   }
@@ -150,7 +172,7 @@ export const listSalesInvoices = async (req, res, next) => {
 
 async function groupInvoicesBy(field, req, res, next) {
   try {
-    const where = buildBaseWhere({ ...req.query, _role: req.user?.role });
+    const where = await buildBaseWhere({ ...req.query, _role: req.user?.role });
     const { category_id, metal_type, payment_mode } = req.query;
 
     if (needsLineFilter(req.query)) {
@@ -185,13 +207,113 @@ async function groupInvoicesBy(field, req, res, next) {
   }
 }
 
+/** Highest net-weight seller for one metal. Ties break on higher grand_total,
+ *  then stable employee/name order. Returns null when nobody sold that metal —
+ *  never an arbitrary 0-weight employee. */
+function pickTopSeller(rows, weightKey) {
+  let best = null;
+  for (const r of rows) {
+    const w = Number(r[weightKey]) || 0;
+    if (w <= 0) continue;
+    if (!best) { best = r; continue; }
+    const bestW = Number(best[weightKey]) || 0;
+    if (w > bestW) { best = r; continue; }
+    if (w !== bestW) continue;
+    const gt = Number(r.grand_total) || 0;
+    const bestGt = Number(best.grand_total) || 0;
+    if (gt > bestGt) { best = r; continue; }
+    if (gt === bestGt
+      && String(r.salesperson_name || '').localeCompare(String(best.salesperson_name || '')) < 0) {
+      best = r;
+    }
+  }
+  if (!best) return null;
+  return {
+    salesperson_id: best.salesperson_id,
+    salesperson_name: best.salesperson_name,
+    net_weight: toWeightNumber(best[weightKey]),
+  };
+}
+
 // GET /api/reports/sales/by-employee
 export const salesByEmployee = async (req, res, next) => {
-  const rows = await groupInvoicesBy('salesperson_id', req, res, next);
-  if (!rows) return;
-  const employees = await Employee.findAll({ where: { id: { [Op.in]: rows.map((r) => r.id) } } });
-  const names = new Map(employees.map((e) => [e.id, e.name]));
-  return res.json({ data: rows.map((r) => ({ ...r, salesperson_id: r.id, salesperson_name: names.get(r.id) || 'Unassigned' })) });
+  try {
+    const where = await buildBaseWhere({ ...req.query, _role: req.user?.role });
+    const { category_id, metal_type, payment_mode } = req.query;
+
+    // Load every invoice (with its hydrated lines) inside the report's
+    // transaction-date range and visibility rules, then attribute each bill's
+    // gold/silver sold weights to its salesperson. We always walk the line
+    // items — not just when a line filter is active — because the four weight
+    // columns need per-line metal classification. metalPurityBreakdown is the
+    // same shared classifier the Dashboard gold cards and purity pie use, so
+    // every screen agrees on the numbers; its byInvoice map is exactly the
+    // per-bill attribution we need here.
+    const invoices = await Invoice.findAll({
+      where: { ...where, salesperson_id: { [Op.ne]: null } },
+    });
+    await hydrateInvoiceItems(invoices);
+    const filtered = invoices.filter((inv) =>
+      lineFiltersMatch(inv, { category_id, metal_type }) && paymentModeMatches(inv, payment_mode));
+
+    // Resolve metal/category from the product catalog for legacy lines whose
+    // snapshot is missing those fields (same lookup the Dashboard uses).
+    const productLookup = await buildProductLookup(filtered);
+    const breakdown = metalPurityBreakdown(filtered, productLookup);
+
+    const buckets = new Map();
+    for (const inv of filtered) {
+      const key = inv.salesperson_id;
+      if (!key) continue;
+      const bucket = buckets.get(key) || {
+        id: key,
+        invoice_count: 0,
+        grand_total: 0,
+        gold_gross_weight: 0,
+        gold_net_weight: 0,
+        silver_gross_weight: 0,
+        silver_net_weight: 0,
+      };
+      bucket.invoice_count += 1;
+      bucket.grand_total += Number(inv.grand_total) || 0;
+      const per = breakdown.byInvoice.get(inv.id);
+      if (per) {
+        bucket.gold_gross_weight += per.gold.gross;
+        bucket.gold_net_weight += per.gold.net;
+        bucket.silver_gross_weight += per.silver.gross;
+        bucket.silver_net_weight += per.silver.net;
+      }
+      buckets.set(key, bucket);
+    }
+
+    const rows = [...buckets.values()]
+      .map((b) => ({
+        ...b,
+        grand_total: toMoneyNumber(b.grand_total),
+        gold_gross_weight: toWeightNumber(b.gold_gross_weight),
+        gold_net_weight: toWeightNumber(b.gold_net_weight),
+        silver_gross_weight: toWeightNumber(b.silver_gross_weight),
+        silver_net_weight: toWeightNumber(b.silver_net_weight),
+      }))
+      .sort((a, b) => b.grand_total - a.grand_total);
+
+    const employees = await Employee.findAll({ where: { id: { [Op.in]: rows.map((r) => r.id) } } });
+    const names = new Map(employees.map((e) => [e.id, e.name]));
+    const data = rows.map((r) => ({
+      ...r,
+      salesperson_id: r.id,
+      salesperson_name: names.get(r.id) || 'Unassigned',
+    }));
+
+    return res.json({
+      data,
+      top_gold_seller: pickTopSeller(data, 'gold_net_weight'),
+      top_silver_seller: pickTopSeller(data, 'silver_net_weight'),
+      metal_summary: await computeMetalSummary(req.query, req.user?.role),
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 // GET /api/reports/sales/by-counter
@@ -200,14 +322,14 @@ export const salesByCounter = async (req, res, next) => {
   if (!rows) return;
   const counters = await ShopCounter.findAll({ where: { id: { [Op.in]: rows.map((r) => r.id) } } });
   const names = new Map(counters.map((c) => [c.id, c.name]));
-  return res.json({ data: rows.map((r) => ({ ...r, counter_id: r.id, counter_name: names.get(r.id) || 'Unassigned' })) });
+  return res.json({ data: rows.map((r) => ({ ...r, counter_id: r.id, counter_name: names.get(r.id) || 'Unassigned' })), metal_summary: await computeMetalSummary(req.query, req.user?.role) });
 };
 
 // GET /api/reports/sales/top-customers
 export const topCustomers = async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100);
-    const where = { ...buildBaseWhere({ ...req.query, _role: req.user?.role }), customer_id: { [Op.ne]: null } };
+    const where = { ...(await buildBaseWhere({ ...req.query, _role: req.user?.role })), customer_id: { [Op.ne]: null } };
     const { category_id, metal_type, payment_mode } = req.query;
 
     let grouped;
@@ -246,6 +368,7 @@ export const topCustomers = async (req, res, next) => {
         invoice_count: r.invoice_count,
         grand_total: r.grand_total,
       })),
+      metal_summary: await computeMetalSummary(req.query, req.user?.role),
     });
   } catch (err) {
     next(err);
@@ -292,6 +415,7 @@ export const topSellingProducts = async (req, res, next) => {
           avg_selling_price: qty > 0 ? toMoneyNumber(revenue / qty) : 0,
         };
       }),
+      metal_summary: await computeMetalSummary(req.query, req.user?.role),
     });
   } catch (err) {
     next(err);
@@ -373,7 +497,7 @@ export const estimationsToSale = async (req, res, next) => {
 // GET /api/reports/sales/trend — daily totals over the requested range
 export const salesTrend = async (req, res, next) => {
   try {
-    const where = buildBaseWhere({ ...req.query, _role: req.user?.role });
+    const where = await buildBaseWhere({ ...req.query, _role: req.user?.role });
     const invoices = await Invoice.findAll({
       where,
       attributes: ['created_at', 'business_date', 'grand_total', 'gst_amount'],
@@ -394,8 +518,9 @@ export const salesTrend = async (req, res, next) => {
 
     return res.json({
       data: [...byDay.values()]
-        .sort((a, b) => a.date.localeCompare(b.date))
+        .sort((a, b) => b.date.localeCompare(a.date))
         .map((d) => ({ ...d, grand_total: toMoneyNumber(d.grand_total), gst_amount: toMoneyNumber(d.gst_amount) })),
+      metal_summary: await computeMetalSummary(req.query, req.user?.role),
     });
   } catch (err) {
     next(err);

@@ -62,6 +62,7 @@ import { getActiveBillingDate } from './dailyClosingService.js';
 import { getHiddenLiquidPockets } from './paymentTransferService.js';
 import { buildHiddenOldGoldSummary } from './hiddenOldGoldSummary.js';
 import { stockCostValue } from './productCost.js';
+import { buildProductLookup, metalPurityBreakdown, round3 } from './metalClassify.js';
 
 function ymd(d = new Date()) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -559,6 +560,40 @@ export async function listSalesAccounts(query = {}) {
     limit: Math.min(Number(query.limit) || 200, 500),
   });
 
+  // Purity-wise gold/silver sold weights + pure-metal + metal-type summary,
+  // using the same shared classifier as the Dashboard and Sales reports.
+  await hydrateInvoiceItems(rows);
+  const productLookup = await buildProductLookup(rows);
+  const breakdown = metalPurityBreakdown(rows, productLookup);
+
+  // Pure-metal lines (is_pure_metal / line_type 'pure_metal') broken down by purity.
+  const pureMetalMap = new Map();
+  const metalTypeMap = new Map();
+  for (const inv of rows) {
+    for (const item of invoiceItemsOf(inv)) {
+      const gw = Number(item.gross_weight) || 0;
+      const nw = Number(item.net_weight) || 0;
+      if (item.is_pure_metal || item.line_type === 'pure_metal') {
+        const purity = item.purity || 'Pure Metal';
+        if (!pureMetalMap.has(purity)) pureMetalMap.set(purity, { purity, gross_weight: 0, net_weight: 0 });
+        const pm = pureMetalMap.get(purity);
+        pm.gross_weight += gw;
+        pm.net_weight += nw;
+      }
+      const metalType = item.metal_name || item.metal || item.metal_type || 'Other';
+      if (!metalTypeMap.has(metalType)) metalTypeMap.set(metalType, { metal_type: metalType, gross_weight: 0, net_weight: 0 });
+      const mt = metalTypeMap.get(metalType);
+      mt.gross_weight += gw;
+      mt.net_weight += nw;
+    }
+  }
+  const pure_metal = [...pureMetalMap.values()]
+    .map((r) => ({ ...r, gross_weight: round3(r.gross_weight), net_weight: round3(r.net_weight) }))
+    .sort((a, b) => b.gross_weight - a.gross_weight);
+  const metal_types = [...metalTypeMap.values()]
+    .map((r) => ({ ...r, gross_weight: round3(r.gross_weight), net_weight: round3(r.net_weight) }))
+    .sort((a, b) => b.gross_weight - a.gross_weight);
+
   const mapped = rows.map((inv) => {
     const invPayments = invoicePaymentsOf(inv);
     const paySplit = salesRegisterPaymentSplit({
@@ -619,6 +654,11 @@ export async function listSalesAccounts(query = {}) {
     to,
     rows: sortRowsByInvoiceNoDesc(mapped),
     totals: sumSalesRegisterTotals(mapped),
+    metal_summary: {
+      metals: breakdown.metals,
+      pure_metal,
+      metal_types,
+    },
   };
 }
 

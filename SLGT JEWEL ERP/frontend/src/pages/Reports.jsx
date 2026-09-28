@@ -47,6 +47,7 @@ import QuickReportsGrid from "@/pages/reports/QuickReportsGrid";
 import { useFilterOptions } from "@/pages/reports/useFilterOptions";
 import { FilterBar, FilterSelect, FilterMultiSelect, FilterField } from "@/pages/reports/FilterBar";
 import SubReportTable from "@/pages/reports/SubReportTable";
+import MetalSummaryTables from "@/pages/reports/MetalSummaryTables";
 import OccasionReportTable from "@/pages/reports/OccasionReportTable";
 import ReportViewModal from "@/pages/reports/ReportViewModal";
 import UnifiedReportView from "@/pages/reports/UnifiedReportView";
@@ -158,6 +159,21 @@ const downloadCsv = (rows, filename) => {
   URL.revokeObjectURL(a.href);
 };
 
+/** Convert a Sales endpoint's metal_summary into print closing-tables
+ *  (gold + silver purity tables shown at the end of the printed report). */
+const metalClosingTables = (metalSummary) => (Array.isArray(metalSummary) ? metalSummary : [])
+  .filter((m) => m.metal === "Gold" || m.metal === "Silver")
+  .map((m) => ({
+    title: m.metal,
+    columns: [
+      { key: "purity", label: "Purity" },
+      { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
+      { key: "net_weight", label: "N.W", align: "right", format: "weight" },
+    ],
+    rows: m.rows || [],
+    totals: { purity: "Total", gross_weight: m.total_gross_weight, net_weight: m.total_net_weight },
+  }));
+
 // ─── Shared UI primitives ───────────────────────────────────────────────────
 
 function StatCard({ label, value, accent = false, icon: Icon, sub }) {
@@ -189,6 +205,35 @@ function StatCard({ label, value, accent = false, icon: Icon, sub }) {
         {value}
       </div>
       {sub && <div className="mt-1.5 text-[11.5px] text-[#a3a3a3]">{sub}</div>}
+    </div>
+  );
+}
+
+/** Top Gold / Top Silver seller card for the Sales → By Employee report.
+ *  Driven entirely by the endpoint's top_gold_seller / top_silver_seller, so it
+ *  refreshes with the table whenever the date range or filters change. */
+function TopSellerCard({ title, accent, seller, emptyText, from, to }) {
+  return (
+    <div className="card relative overflow-hidden !rounded-xl !border-[#D8D2C6] !bg-[#FFFDF9] p-4 shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
+      <div className="absolute inset-x-0 top-0 h-0.5" style={{ background: accent }} />
+      <div className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-[#6F7772]">
+        {title}
+      </div>
+      {seller ? (
+        <>
+          <div className="mt-3 font-display text-[20px] font-semibold tracking-tight text-[#24332B]">
+            {seller.salesperson_name}
+          </div>
+          <div className="mt-1 text-[13px] font-medium" style={{ color: accent }}>
+            {fmtWeight(seller.net_weight)} Net Weight
+          </div>
+        </>
+      ) : (
+        <div className="mt-3 text-[13px] text-[#747B76]">{emptyText}</div>
+      )}
+      <div className="mt-3 text-[11.5px] text-[#a3a3a3]">
+        {fmtDate(from)} – {fmtDate(to)}
+      </div>
     </div>
   );
 }
@@ -770,6 +815,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
               <SimplePieChart data={metalData} height={260} innerRadius={52} />
             </div>
           </div>
+          <MetalSummaryTables metals={data?.metal_summary} from={from} to={to} />
         </>
       )}
 
@@ -806,6 +852,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
                   { particular: "GST", total: invoices.reduce((s, i) => s + (Number(i.gst_amount) || 0), 0) },
                   { particular: "Grand Total", total: invoices.reduce((s, i) => s + (Number(i.grand_total) || 0), 0) },
                 ]}
+                closingTables={metalClosingTables(data?.metal_summary)}
               />
               <button className="btn-secondary" onClick={exportCsv}>
                 <Download size={13} strokeWidth={1.5} /> Export CSV
@@ -861,6 +908,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
               </tr>
             ))}
           </TableShell>
+          <MetalSummaryTables metals={data?.metal_summary} from={from} to={to} />
         </>
       )}
 
@@ -881,11 +929,34 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
           endpoint="/reports/sales/by-employee"
           params={insightsParams}
           columns={[
-            { key: "salesperson_name", label: "Salesperson" },
+            { key: "salesperson_name", label: "Employee" },
             { key: "invoice_count", label: "Invoices", align: "right" },
-            { key: "grand_total", label: "Total Sales", align: "right", format: "currency", render: (r) => fmtINR(r.grand_total) },
-            { key: "gst_amount", label: "GST", align: "right", format: "currency", render: (r) => fmtINR(r.gst_amount) },
+            { key: "grand_total", label: "Grand Total", align: "right", format: "currency", render: (r) => fmtINR(r.grand_total) },
+            { key: "gold_gross_weight", label: "Gold G.W", align: "right", format: "weight", render: (r) => fmtWeight(r.gold_gross_weight) },
+            { key: "gold_net_weight", label: "Gold N.W", align: "right", format: "weight", render: (r) => fmtWeight(r.gold_net_weight) },
+            { key: "silver_gross_weight", label: "Silver G.W", align: "right", format: "weight", render: (r) => fmtWeight(r.silver_gross_weight) },
+            { key: "silver_net_weight", label: "Silver N.W", align: "right", format: "weight", render: (r) => fmtWeight(r.silver_net_weight) },
           ]}
+          extra={(_rows, reportData) => (
+            <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <TopSellerCard
+                title="Top Gold Seller"
+                accent="#B08A3A"
+                seller={reportData?.top_gold_seller}
+                emptyText="No Gold sales"
+                from={from}
+                to={to}
+              />
+              <TopSellerCard
+                title="Top Silver Seller"
+                accent="#7D8882"
+                seller={reportData?.top_silver_seller}
+                emptyText="No Silver sales"
+                from={from}
+                to={to}
+              />
+            </div>
+          )}
           chart={(rows) => (
             <SimpleBarChart
               data={rows.slice(0, 10).map((r) => ({
@@ -1004,6 +1075,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
         ]}
         totals={null}
         filtersSummary={`${from} to ${to}`}
+        closingTables={metalClosingTables(data?.metal_summary)}
       />
     </div>
   );

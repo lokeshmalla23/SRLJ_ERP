@@ -10,6 +10,7 @@ import { excludePreAccountsWhere } from '../services/financialMode.js';
 import { getHiddenReportsData } from '../services/hiddenReportsService.js';
 import { stockCostValue } from '../services/productCost.js';
 import { getDefaultShopId } from '../services/defaultShop.js';
+import { computeMetalSummary } from './reports/sales.js';
 
 // GET /api/reports/sales
 export const getSalesReport = async (req, res, next) => {
@@ -57,7 +58,7 @@ export const getSalesReport = async (req, res, next) => {
       grand_total: grandTotal,
     };
 
-    return res.json({ invoices: invoiceList, totals });
+    return res.json({ invoices: invoiceList, totals, metal_summary: await computeMetalSummary(req.query, req.user?.role) });
   } catch (err) {
     next(err);
   }

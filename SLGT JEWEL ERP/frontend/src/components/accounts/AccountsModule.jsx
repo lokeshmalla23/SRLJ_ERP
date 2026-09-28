@@ -37,6 +37,7 @@ import OpeningSetupTab from "./OpeningSetupTab";
 import EmployeeSalesTab from "./EmployeeSalesTab";
 import IncomeTab from "./IncomeTab";
 import ErpStatementTab from "./ErpStatementTab";
+import MetalSummaryTables from "@/pages/reports/MetalSummaryTables";
 import InfoTab from "./InfoTab";
 import TransferPaymentsTab from "./TransferPaymentsTab";
 import HiddenDataTab from "./HiddenDataTab";
@@ -206,6 +207,64 @@ function DashboardPanel({ includeHidden = false }) {
   );
 }
 
+/** Convert a metal_summary (array for Sales reports, object for Accounts
+ *  → Sales Accounts) into print closing-tables: gold/silver purity tables,
+ *  plus the pure-metal and metal-types tables when present. */
+function metalClosingTables(metalSummary) {
+  if (!metalSummary) return [];
+  const isObject = !Array.isArray(metalSummary);
+  const metals = isObject ? (metalSummary.metals || []) : metalSummary;
+  const pureMetal = isObject ? (metalSummary.pure_metal || []) : [];
+  const metalTypes = isObject ? (metalSummary.metal_types || []) : [];
+  const tables = [];
+  for (const m of metals) {
+    if (m.metal !== "Gold" && m.metal !== "Silver") continue;
+    tables.push({
+      title: m.metal,
+      columns: [
+        { key: "purity", label: "Purity" },
+        { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
+        { key: "net_weight", label: "N.W", align: "right", format: "weight" },
+      ],
+      rows: m.rows || [],
+      totals: { purity: "Total", gross_weight: m.total_gross_weight, net_weight: m.total_net_weight },
+    });
+  }
+  if (pureMetal.length) {
+    tables.push({
+      title: "Pure Metal",
+      columns: [
+        { key: "purity", label: "Purity" },
+        { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
+        { key: "net_weight", label: "N.W", align: "right", format: "weight" },
+      ],
+      rows: pureMetal,
+      totals: {
+        purity: "Total",
+        gross_weight: pureMetal.reduce((s, r) => s + (Number(r.gross_weight) || 0), 0),
+        net_weight: pureMetal.reduce((s, r) => s + (Number(r.net_weight) || 0), 0),
+      },
+    });
+  }
+  if (metalTypes.length) {
+    tables.push({
+      title: "Metal Types Sold",
+      columns: [
+        { key: "metal_type", label: "Metal Type" },
+        { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
+        { key: "net_weight", label: "N.W", align: "right", format: "weight" },
+      ],
+      rows: metalTypes,
+      totals: {
+        metal_type: "Total",
+        gross_weight: metalTypes.reduce((s, r) => s + (Number(r.gross_weight) || 0), 0),
+        net_weight: metalTypes.reduce((s, r) => s + (Number(r.net_weight) || 0), 0),
+      },
+    });
+  }
+  return tables;
+}
+
 function RegisterPanel({
   endpoint,
   title,
@@ -276,6 +335,7 @@ function RegisterPanel({
         exportTitle={title}
         exportRows={rows}
         exportColumns={exportCols}
+        closingTables={endpoint === "/accounts/sales" ? metalClosingTables(extra?.metal_summary) : []}
       >
         {asOfOnly ? (
           <span className="text-[11px] text-[#737373]">As of date (ageing)</span>
@@ -312,6 +372,9 @@ function RegisterPanel({
         </div>
       ) : null}
       <AccountsTable columns={columns} rows={rows} />
+      {endpoint === "/accounts/sales" && extra?.metal_summary ? (
+        <MetalSummaryTables metals={extra.metal_summary} from={range.from} to={range.to} />
+      ) : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, FileText, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import api, { formatApiError } from "@/lib/api";
-import { fmtINR, fmtSummaryKpi, fmtDate, fmtCustomerCode } from "@/lib/format";
+import { fmtINR, fmtSummaryKpi, fmtDate, fmtCustomerCode, fmtWeight } from "@/lib/format";
 import {
   inferColumnsFromRow,
   renderReportCell,
@@ -267,9 +267,12 @@ function flattenResponse(data, endpoint) {
       ],
       columns: [
         { key: "salesperson_name", label: "Employee" },
-        { key: "invoice_count", label: "Invoices" },
-        { key: "grand_total", label: "Grand Total", format: "currency" },
-        { key: "gst_amount", label: "GST Amount", format: "currency" },
+        { key: "invoice_count", label: "Invoices", align: "right" },
+        { key: "grand_total", label: "Grand Total", align: "right", format: "currency" },
+        { key: "gold_gross_weight", label: "Gold G.W", align: "right", format: "weight", exportValue: (r) => fmtWeight(r.gold_gross_weight) },
+        { key: "gold_net_weight", label: "Gold N.W", align: "right", format: "weight", exportValue: (r) => fmtWeight(r.gold_net_weight) },
+        { key: "silver_gross_weight", label: "Silver G.W", align: "right", format: "weight", exportValue: (r) => fmtWeight(r.silver_gross_weight) },
+        { key: "silver_net_weight", label: "Silver N.W", align: "right", format: "weight", exportValue: (r) => fmtWeight(r.silver_net_weight) },
       ],
     };
   }
