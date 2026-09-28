@@ -19,10 +19,11 @@ assert.strictEqual(isHiddenBill({ invoice_no: 'SSJ-1/0001', is_hidden: 1 }), tru
 assert.strictEqual(isHiddenBill({ invoice_no: 'SSJ-1/0001', is_hidden: false }), false);
 assert.strictEqual(isHiddenBill({ invoice_no: 'SSJ-1/0001', isHidden: true }), true);
 
-assert.strictEqual(wantsHiddenBills({ include_hidden: 1, _role: 'shop_owner' }), true);
-assert.strictEqual(wantsHiddenBills({ include_hidden: 1, _role: 'cashier' }), false);
-assert.strictEqual(wantsHiddenBills({ include_hidden: 0, _role: 'shop_owner' }), false);
-assert.strictEqual(wantsHiddenBills({ _role: 'shop_owner' }), false);
+// wantsHiddenBills is now async — test with await
+assert.strictEqual(await wantsHiddenBills({ include_hidden: 1, _role: 'shop_owner' }, null), true);
+assert.strictEqual(await wantsHiddenBills({ include_hidden: 1, _role: 'cashier' }, null), false);
+assert.strictEqual(await wantsHiddenBills({ include_hidden: 0, _role: 'shop_owner' }, null), false);
+assert.strictEqual(await wantsHiddenBills({ _role: 'shop_owner' }, null), false);
 
 const stamped = stampOnTransactionDate('2026-09-14', new Date('2026-09-16T16:09:00'));
 assert.strictEqual(stamped.getFullYear(), 2026);

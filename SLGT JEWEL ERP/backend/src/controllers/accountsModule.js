@@ -49,7 +49,7 @@ export const erpStatement = wrap(getErpStatement);
 export const hiddenAccountsData = async (req, res, next) => {
   try {
     const query = { ...req.query, _shop_id: req.user?.shop_id, _role: req.user?.role };
-    if (!wantsHiddenBills(query)) {
+    if (!(await wantsHiddenBills(query, req.user?.shop_id))) {
       return res.status(404).json({ detail: 'Not found' });
     }
     return res.json(await getHiddenAccountsData(query));

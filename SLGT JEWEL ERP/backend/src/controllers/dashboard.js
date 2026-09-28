@@ -95,7 +95,7 @@ export const getDashboardSummary = async (req, res, next) => {
     const trendStart = new Date(businessDay); trendStart.setDate(trendStart.getDate() - 6);
 
     const shopWhere = shopScope(req.user?.shop_id);
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const activeInvoice = activeInvoiceWhere(includeHidden);
 
     const [

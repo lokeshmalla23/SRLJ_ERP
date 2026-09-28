@@ -149,7 +149,7 @@ export const listOldGoldBuybook = async (req, res, next) => {
     if (req.query.status) where.status = req.query.status;
     if (req.query.customer_id) where.customer_id = req.query.customer_id;
     const rows = await OldGoldReceipt.findAll({ where, order: [['created_at', 'DESC']], limit: 200 });
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     let visible = rows;
     if (!includeHidden) {
       const shopId = await getDefaultShopId();
@@ -209,7 +209,7 @@ export const listOldGoldExchange = async (req, res, next) => {
         attributes: ['id', 'invoice_no', 'customer_name', 'customer_mobile', 'cancelled_at', 'created_at', 'business_date', 'is_hidden'],
       })
       : [];
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const invoiceById = new Map(invoices.map((i) => [i.id, i]));
     const visibleReceipts = includeHidden
       ? receipts
@@ -427,7 +427,7 @@ export const listAvailableOldGoldForSale = async (req, res, next) => {
     };
     if (req.query.purity) where.purity = req.query.purity;
     let rows = await OldGoldReceipt.findAll({ where, order: [['created_at', 'DESC']], limit: 500 });
-    if (!wantsHiddenBills({ ...req.query, _role: req.user?.role })) {
+    if (!(await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id))) {
       const hiddenIds = await loadHiddenInvoiceIds(shopId);
       rows = rows.filter((r) => !r.invoice_id || !hiddenIds.has(r.invoice_id));
     }
@@ -449,7 +449,7 @@ export const listOldGoldSales = async (req, res, next) => {
       if (req.query.to) where.business_date[Op.lte] = req.query.to;
     }
     const rows = await OldGoldSale.findAll({ where, order: [['created_at', 'DESC']], limit: 200 });
-    if (!wantsHiddenBills({ ...req.query, _role: req.user?.role })) {
+    if (!(await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id))) {
       const hiddenIds = await loadHiddenInvoiceIds(shopId);
       const receiptIdList = [];
       for (const s of rows) {
@@ -546,7 +546,7 @@ export const createOldGoldSale = async (req, res, next) => {
       receipts.push(receipt);
     }
 
-    if (!wantsHiddenBills({ ...req.query, ...req.body, _role: req.user?.role })) {
+    if (!(await wantsHiddenBills({ ...req.query, ...req.body, _role: req.user?.role }, req.user?.shop_id))) {
       const hiddenIds = await loadHiddenInvoiceIds(shopId, { transaction: t });
       const hiddenReceipt = receipts.find((r) => r.invoice_id && hiddenIds.has(r.invoice_id));
       if (hiddenReceipt) {

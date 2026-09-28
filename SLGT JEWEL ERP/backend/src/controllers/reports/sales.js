@@ -8,7 +8,7 @@ import { excludePreAccountsWhere } from '../../services/financialMode.js';
 
 const NOT_CANCELLED = NOT_VOID_OR_RETURNED;
 
-function buildBaseWhere(query) {
+async function buildBaseWhere(query) {
   // Filter by the invoice's active business day (Transaction date), not its
   // real created_at timestamp — see invoiceDateRangeWhere. Combined via
   // Op.and (as separate clauses) rather than spread, since the date-range
@@ -19,7 +19,7 @@ function buildBaseWhere(query) {
     { status: query.status || NOT_CANCELLED },
     excludePreAccountsWhere(),
   ];
-  if (!wantsHiddenBills(query)) {
+  if (!(await wantsHiddenBills(query, null))) {
     and.push({ [Op.or]: [{ is_hidden: false }, { is_hidden: null }] });
   }
   if (query.salesperson_id) and.push({ salesperson_id: query.salesperson_id });

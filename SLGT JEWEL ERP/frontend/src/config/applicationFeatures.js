@@ -28,6 +28,7 @@ export const APPLICATION_FEATURES = [
   { key: "accounts", label: "Accounts", description: "Accounting, daily closing and financial statements.", section: "Finance" },
   { key: "employees", label: "Employees", description: "Staff records and department management.", section: "Finance" },
   { key: "reports", label: "Reports", description: "Reports and analytics across all modules.", section: "Insights" },
+  { key: "hidden_bills", label: "Hidden Bills", description: "Owner-only hidden bill mode in POS with PIN unlock for reports and accounts.", section: "Commerce" },
 ];
 
 export const APPLICATION_FEATURE_SECTIONS = [

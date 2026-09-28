@@ -81,7 +81,7 @@ function itemQty(item) {
 }
 
 export async function getHiddenReportsData(query = {}) {
-  if (!wantsHiddenBills(query)) {
+  if (!(await wantsHiddenBills(query, null))) {
     throw Object.assign(new Error('Not found'), { status: 404 });
   }
 

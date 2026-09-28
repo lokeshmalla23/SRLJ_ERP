@@ -29,8 +29,8 @@ function localDateKey(value) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function includeHiddenFromReq(req) {
-  return wantsHiddenBills({ ...req.query, ...req.body, _role: req.user?.role });
+async function includeHiddenFromReq(req) {
+  return await wantsHiddenBills({ ...req.query, ...req.body, _role: req.user?.role }, req.user?.shop_id);
 }
 
 // GET /api/accounts/daily-closings
@@ -97,7 +97,7 @@ export const previewDailyClosing = async (req, res, next) => {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
       return res.status(400).json({ detail: 'date must be YYYY-MM-DD' });
     }
-    const snapshot = await buildDaySnapshot(date, { includeHidden: includeHiddenFromReq(req) });
+    const snapshot = await buildDaySnapshot(date, { includeHidden: await includeHiddenFromReq(req) });
     return res.json(snapshot);
   } catch (err) {
     next(err);
@@ -155,7 +155,7 @@ export const createDailyClosing = async (req, res, next) => {
       status,
       userId: req.user?.id || null,
       forceSystemTotals: use_system_totals !== false,
-      includeHidden: includeHiddenFromReq(req),
+      includeHidden: await includeHiddenFromReq(req),
       transaction: t,
     });
 
@@ -234,7 +234,7 @@ export const updateDailyClosing = async (req, res, next) => {
       status: status || existing.status,
       userId: req.user?.id || null,
       forceSystemTotals: use_system_totals !== false,
-      includeHidden: includeHiddenFromReq(req),
+      includeHidden: await includeHiddenFromReq(req),
       transaction: t,
     });
 
@@ -277,7 +277,7 @@ export const closeDailyClosing = async (req, res, next) => {
       status: 'closed',
       userId: req.user?.id || null,
       forceSystemTotals: use_system_totals !== false,
-      includeHidden: includeHiddenFromReq(req),
+      includeHidden: await includeHiddenFromReq(req),
       transaction: t,
     });
 
@@ -862,7 +862,7 @@ export const getLedger = async (req, res, next) => {
           // Business day (Transaction date), not the real created_at timestamp —
           // see invoiceDateRangeWhere.
           invoiceDateRangeWhere({ from, to }),
-          ...(includeHiddenFromReq(req)
+          ...((await includeHiddenFromReq(req))
             ? []
             : [{ [Op.or]: [{ is_hidden: false }, { is_hidden: null }] }]),
           excludePreAccountsWhere(),
@@ -957,7 +957,7 @@ export const getLedger = async (req, res, next) => {
 export const getAccountsSummary = async (req, res, next) => {
   try {
     const dateStr = req.query.date || new Date().toISOString().split('T')[0];
-    const snapshot = await buildDaySnapshot(dateStr, { includeHidden: includeHiddenFromReq(req) });
+    const snapshot = await buildDaySnapshot(dateStr, { includeHidden: await includeHiddenFromReq(req) });
     return res.json({
       date: snapshot.date,
       total_sales: snapshot.totals.sales,

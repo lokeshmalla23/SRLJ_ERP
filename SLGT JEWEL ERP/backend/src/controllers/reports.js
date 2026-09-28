@@ -9,6 +9,7 @@ import { NOT_IN_STOCK_STATUSES } from '../constants/inventory.js';
 import { excludePreAccountsWhere } from '../services/financialMode.js';
 import { getHiddenReportsData } from '../services/hiddenReportsService.js';
 import { stockCostValue } from '../services/productCost.js';
+import { getDefaultShopId } from '../services/defaultShop.js';
 
 // GET /api/reports/sales
 export const getSalesReport = async (req, res, next) => {
@@ -22,7 +23,8 @@ export const getSalesReport = async (req, res, next) => {
       status: NOT_VOID_OR_RETURNED,
       ...excludePreAccountsWhere(),
     };
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const shopId = req.user?.shop_id || await getDefaultShopId();
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, shopId);
 
     const invoices = await Invoice.findAll({
       where: includeHidden ? where : withNotHidden(where),
@@ -67,7 +69,8 @@ export const getGstReport = async (req, res, next) => {
     // See getSalesReport above — filter by the invoice's business day, not its
     // real created_at timestamp.
     const where = { ...invoiceDateRangeWhere(req.query), status: NOT_VOID_OR_RETURNED };
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const shopId = req.user?.shop_id || await getDefaultShopId();
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, shopId);
     const invoices = await Invoice.findAll({ where: includeHidden ? where : withNotHidden(where) });
     await hydrateInvoiceItems(invoices);
     const byHsn = {};

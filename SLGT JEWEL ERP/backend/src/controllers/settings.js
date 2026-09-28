@@ -645,6 +645,10 @@ export const saveCounters = async (req, res, next) => {
 // GET /api/settings/hidden-bill — owner only; never returns the raw password
 export const getHiddenBillSettings = async (req, res, next) => {
   try {
+    const { isHiddenBillsFeatureEnabled } = await import('../utils/invoiceVisibility.js');
+    if (!await isHiddenBillsFeatureEnabled(req.user?.shop_id)) {
+      return res.status(403).json({ detail: 'Hidden Bills feature is disabled' });
+    }
     const role = String(req.user?.role || '');
     if (role !== 'shop_owner' && role !== 'owner' && role !== 'super_admin') {
       return res.status(403).json({ detail: 'Owner only' });
@@ -666,6 +670,10 @@ export const getHiddenBillSettings = async (req, res, next) => {
 // administrator login can, for support recovery calls.
 export const revealHiddenBillPassword = async (req, res, next) => {
   try {
+    const { isHiddenBillsFeatureEnabled } = await import('../utils/invoiceVisibility.js');
+    if (!await isHiddenBillsFeatureEnabled(req.user?.shop_id)) {
+      return res.status(403).json({ detail: 'Hidden Bills feature is disabled' });
+    }
     const role = String(req.user?.role || '');
     if (role !== 'super_admin') {
       return res.status(403).json({ detail: 'ERP Administrator only' });
@@ -686,6 +694,11 @@ export const revealHiddenBillPassword = async (req, res, next) => {
 export const updateHiddenBillSettings = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
+    const { isHiddenBillsFeatureEnabled } = await import('../utils/invoiceVisibility.js');
+    if (!await isHiddenBillsFeatureEnabled(req.user?.shop_id)) {
+      await t.rollback();
+      return res.status(403).json({ detail: 'Hidden Bills feature is disabled' });
+    }
     const role = String(req.user?.role || '');
     if (role !== 'shop_owner' && role !== 'owner' && role !== 'super_admin') {
       await t.rollback();
@@ -722,6 +735,10 @@ export const updateHiddenBillSettings = async (req, res, next) => {
 // POST /api/settings/verify-hidden-bill-password — any authenticated POS user
 export const verifyHiddenBillPassword = async (req, res, next) => {
   try {
+    const { isHiddenBillsFeatureEnabled } = await import('../utils/invoiceVisibility.js');
+    if (!await isHiddenBillsFeatureEnabled(req.user?.shop_id)) {
+      return res.status(403).json({ detail: 'Hidden Bills feature is disabled' });
+    }
     const password = String(req.body?.password ?? '').trim();
     const setting = await Setting.findOne({ where: { key: 'hidden_bill' } });
     const value = asObject(setting?.value);

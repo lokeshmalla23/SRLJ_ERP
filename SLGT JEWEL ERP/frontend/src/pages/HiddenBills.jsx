@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Navigate } from "react-router-dom";
 import api, { formatApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import { fmtINR, fmtDate, getShowTransactionTime } from "@/lib/format";
 import { asArray } from "@/lib/jsonFields";
 import { PageLoadingBadge } from "@/components/ui/Skeletons";
@@ -80,6 +81,8 @@ function KindBadge({ kind }) {
 
 export default function HiddenBills() {
   const { user } = useAuth();
+  const { isEnabled: isFeatureEnabled } = useApplicationFeatures();
+  const hiddenBillsEnabled = isFeatureEnabled("hidden_bills");
   const [rows, setRows] = useState([]);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -116,7 +119,7 @@ export default function HiddenBills() {
     return rows.filter((inv) => billKind(inv) === kindFilter);
   }, [rows, kindFilter]);
 
-  if (!isOwnerRole(user?.role)) {
+  if (!isOwnerRole(user?.role) || !hiddenBillsEnabled) {
     return <Navigate to="/" replace />;
   }
 

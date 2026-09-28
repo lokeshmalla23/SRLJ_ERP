@@ -457,7 +457,7 @@ export const employeeSales = async (req, res, next) => {
         },
         { status: { [Op.notIn]: ['cancelled', 'canceled', 'void', 'returned'] } },
         { salesperson_id: { [Op.ne]: null } },
-        ...(wantsHiddenBills({ ...req.query, _role: req.user?.role })
+        ...((await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id))
           ? []
           : [{ [Op.or]: [{ is_hidden: false }, { is_hidden: null }] }]),
       ],

@@ -132,7 +132,7 @@ export async function getAccountsDashboard(query = {}) {
   // The shop's active transaction date, not the real calendar day — "today's
   // sales" must mean today-per-the-shop, same anchor as everything else.
   const { date: today } = await getActiveBillingDate({ shopId });
-  const includeHidden = wantsHiddenBills(query);
+  const includeHidden = await wantsHiddenBills(query, null);
 
   await ensureDefaultAccounts(shopId);
 
@@ -423,7 +423,7 @@ function hiddenTenderSplit(payments = []) {
  * Callers must already have passed wantsHiddenBills.
  */
 export async function getHiddenAccountsData(query = {}) {
-  if (!wantsHiddenBills(query)) {
+  if (!(await wantsHiddenBills(query, null))) {
     throw Object.assign(new Error('Not found'), { status: 404 });
   }
   const shopId = await resolveShopId(query);
@@ -552,7 +552,7 @@ export async function listSalesAccounts(query = {}) {
   if (query.salesperson_id) where.salesperson_id = query.salesperson_id;
   if (query.counter_id) where.counter_id = query.counter_id;
 
-  const includeHidden = wantsHiddenBills(query);
+  const includeHidden = await wantsHiddenBills(query, null);
   const rows = await Invoice.findAll({
     where: includeHidden ? where : withNotHidden(where),
     order: newestInvoiceFirstOrder(),
@@ -690,7 +690,7 @@ export async function listPurchaseAccounts(query = {}) {
 export async function listReceivables(query = {}) {
   const shopId = await resolveShopId(query);
   const asOf = query.to || ymd();
-  const includeHidden = wantsHiddenBills(query);
+  const includeHidden = await wantsHiddenBills(query, null);
   const receivablesWhereBase = liveFinancial({
     ...shopScope(shopId),
     balance_due: { [Op.gt]: 0 },
@@ -847,7 +847,7 @@ export async function listPayables(query = {}) {
 export async function getCashBookGl(query = {}) {
   const shopId = await resolveShopId(query);
   const { from, to } = parseRange(query);
-  const excludeSourceIds = await hiddenSourceExclude(shopId, wantsHiddenBills(query));
+  const excludeSourceIds = await hiddenSourceExclude(shopId, await wantsHiddenBills(query, null));
   const gl = await generalLedger({ shopId, accountCode: '1000', from, to, limit: 1000, excludeSourceIds });
   let opening = 0;
   // Approximate opening: balance before from
@@ -899,7 +899,7 @@ export async function getBankBookGl(query = {}) {
   const code = query.account || '1010';
   const allowed = new Set(['1010', '1020', '1030']);
   const acct = allowed.has(code) ? code : '1010';
-  const excludeSourceIds = await hiddenSourceExclude(shopId, wantsHiddenBills(query));
+  const excludeSourceIds = await hiddenSourceExclude(shopId, await wantsHiddenBills(query, null));
   const gl = await generalLedger({ shopId, accountCode: acct, from, to, limit: 1000, excludeSourceIds });
   let opening = 0;
   if (from) {
@@ -942,7 +942,7 @@ export async function getBankBookGl(query = {}) {
 export async function getDayBook(query = {}) {
   const shopId = await resolveShopId(query);
   const { from, to } = parseRange(query);
-  const hiddenExclude = await hiddenSourceExclude(shopId, wantsHiddenBills(query));
+  const hiddenExclude = await hiddenSourceExclude(shopId, await wantsHiddenBills(query, null));
   const skipIds = hiddenExclude ? new Set(hiddenExclude) : null;
   const allEntries = await JournalEntry.findAll({
     where: liveJournal({
@@ -1004,7 +1004,7 @@ export async function getDayBook(query = {}) {
 export async function listReceipts(query = {}) {
   const shopId = await resolveShopId(query);
   const { from, to } = parseRange(query);
-  const includeHidden = wantsHiddenBills(query);
+  const includeHidden = await wantsHiddenBills(query, null);
   const hiddenIds = includeHidden ? new Set() : await loadHiddenInvoiceIds(shopId);
   const payments = await Payment.findAll({
     where: liveFinancial({
@@ -1277,7 +1277,7 @@ export async function getGstAccounts(query = {}) {
 
 export async function getMetalAccounts(query = {}) {
   const shopId = await resolveShopId(query);
-  const includeHidden = wantsHiddenBills(query);
+  const includeHidden = await wantsHiddenBills(query, null);
   const hiddenIds = includeHidden ? new Set() : await loadHiddenInvoiceIds(shopId);
   const hiddenGlExclude = includeHidden || !hiddenIds.size
     ? null
@@ -1841,7 +1841,7 @@ export async function getErpStatement(query = {}) {
     },
   };
 
-  const wantsHidden = wantsHiddenBills(query);
+  const wantsHidden = await wantsHiddenBills(query, null);
   const shopHiddenIds = wantsHidden ? new Set() : await loadHiddenInvoiceIds(shopId);
   let hiddenGlExclude = null;
   if (!wantsHidden && shopHiddenIds.size) {

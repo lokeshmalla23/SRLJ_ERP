@@ -72,7 +72,7 @@ const NAV = [
   { to: "/vendors", label: "Vendors", icon: Truck, tid: "nav-vendors", module: "vendors", feature: "vendors", section: "Purchase" },
   { to: "/purchases", label: "Purchases", icon: ShoppingCart, tid: "nav-purchases", module: "purchases", feature: "purchases", section: "Purchase" },
   { to: "/accounts", label: "Accounts", icon: Wallet, tid: "nav-accounts", module: "accounts", feature: "accounts", section: "Finance" },
-  { to: "/hidden-bills", label: "Hidden Bills", icon: Crown, tid: "nav-hidden-bills", module: "accounts", section: "Finance", ownerOnly: true, requiresPin: true },
+  { to: "/hidden-bills", label: "Hidden Bills", icon: Crown, tid: "nav-hidden-bills", module: "accounts", feature: "hidden_bills", section: "Finance", ownerOnly: true, requiresPin: true },
   { to: "/employees", label: "Employees", icon: UserCog, tid: "nav-employees", module: "employees", feature: "employees", section: "Finance" },
   { to: "/reports", label: "Reports", icon: LineChart, tid: T.navReports, module: "reports", feature: "reports", section: "Insights" },
   { to: "/settings", label: "Settings", icon: Settings, tid: T.navSettings, module: "settings", section: "Configure" },

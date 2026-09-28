@@ -2,15 +2,20 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 import api, { formatApiError } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
+import { useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import { hasFullAccessRole } from "@/lib/roleLabel";
 import HiddenBillPasswordDialog from "@/components/pos/HiddenBillPasswordDialog";
 
 /**
  * Triple-click title + PIN dialog + lock badge — same flow as Accounts / Reports.
+ * When the Hidden Bills application feature is disabled, the triple-click unlock
+ * gesture is completely inert — no dialog, no hint, no lock button.
  */
 export function useHiddenBillUnlockGate(unlocked, setUnlocked) {
   const { user } = useAuth();
-  const isOwner = hasFullAccessRole(user?.role);
+  const { isEnabled: isFeatureEnabled } = useApplicationFeatures();
+  const hiddenBillsEnabled = isFeatureEnabled("hidden_bills");
+  const isOwner = hasFullAccessRole(user?.role) && hiddenBillsEnabled;
   const titleClicksRef = useRef({ count: 0, timer: null });
   const [hiddenPwOpen, setHiddenPwOpen] = useState(false);
   const [hiddenPwBusy, setHiddenPwBusy] = useState(false);

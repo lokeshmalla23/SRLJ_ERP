@@ -199,7 +199,7 @@ export const customerLedger = async (req, res, next) => {
     if (!customer) return res.status(404).json({ detail: 'Customer not found' });
 
     const customerId = req.params.id;
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const invWhere = includeHidden
       ? { customer_id: customerId }
       : withNotHidden({ customer_id: customerId });
@@ -367,7 +367,7 @@ export const customerMetalSummary = async (req, res, next) => {
     if (!customer) return res.status(404).json({ detail: 'Customer not found' });
 
     const customerId = req.params.id;
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const invWhere = includeHidden
       ? { customer_id: customerId, status: NOT_VOID_OR_RETURNED }
       : withNotHidden({ customer_id: customerId, status: NOT_VOID_OR_RETURNED });

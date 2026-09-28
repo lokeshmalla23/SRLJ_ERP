@@ -8,13 +8,13 @@ import { hydrateInvoiceItems, invoiceItemsOf, invoiceOccurredAt } from '../../ut
 
 const NOT_CANCELLED = NOT_VOID_OR_RETURNED;
 
-function baseWhere(query) {
+async function baseWhere(query) {
   const where = {
     ...invoiceDateRangeWhere(query),
     status: NOT_CANCELLED,
     ...excludePreAccountsWhere(),
   };
-  if (!wantsHiddenBills(query)) {
+  if (!(await wantsHiddenBills(query, null))) {
     where[Op.or] = [{ is_hidden: false }, { is_hidden: null }];
   }
   return where;
@@ -113,7 +113,7 @@ export const listGstInvoices = async (req, res, next) => {
 // GET /api/reports/gst/hsn-summary
 export const hsnSummary = async (req, res, next) => {
   try {
-    const rows = await computeHsnBuckets(invoiceDateRangeWhere(req.query), wantsHiddenBills({ ...req.query, _role: req.user?.role }));
+    const rows = await computeHsnBuckets(invoiceDateRangeWhere(req.query), await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id));
     return res.json({
       data: rows,
       totals: {

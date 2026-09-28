@@ -744,7 +744,7 @@ async function buildProductLedger(productId, { hiddenInvoiceIds = null } = {}) {
 // GET /api/reports/inventory/tag-history
 export const tagHistory = async (req, res, next) => {
   try {
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const hiddenInvoiceIds = includeHidden ? null : await loadHiddenInvoiceIds(req.user?.shop_id);
     const product = await resolveProductByTag(req.query);
 
@@ -904,7 +904,7 @@ export const itemMovement = async (req, res, next) => {
       return res.status(400).json({ detail: 'tag_number or barcode is required to trace item movement' });
     }
 
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const hiddenInvoiceIds = includeHidden ? null : await loadHiddenInvoiceIds(req.user?.shop_id);
     const { events, lastVisibleStatus } = await buildProductLedger(product.id, { hiddenInvoiceIds });
     const stages = events.map((e) => ({

@@ -75,15 +75,44 @@ export function isHiddenBill(inv) {
 
 const HIDDEN_BILL_ACCESS_ROLES = new Set(['shop_owner', 'owner', 'super_admin']);
 
+// Cache for the hidden_bills feature flag — refreshed every 30s so a toggle
+// in Application Management takes effect without restarting the server.
+let _featureCache = { ts: 0, enabled: true };
+const FEATURE_CACHE_TTL_MS = 30_000;
+
+/**
+ * Check if the hidden bills application feature is enabled for the given shop.
+ * Reads the `application_features` setting and checks the `hidden_bills` key.
+ * Defaults to enabled when no setting exists (legacy installs).
+ * Uses a short-lived in-memory cache to avoid a DB hit on every request.
+ */
+export async function isHiddenBillsFeatureEnabled(shopId = null) {
+  const now = Date.now();
+  if (now - _featureCache.ts < FEATURE_CACHE_TTL_MS) return _featureCache.enabled;
+  const { Setting } = await import('../models/index.js');
+  const setting = await Setting.findOne({ where: { key: 'application_features' } });
+  let enabled = true;
+  if (setting) {
+    const value = setting.value;
+    if (value && typeof value === 'object') {
+      enabled = value.hidden_bills !== false;
+    }
+  }
+  _featureCache = { ts: now, enabled };
+  return enabled;
+}
+
 /**
  * True only when the caller's role may see hidden bills AND explicitly asked to
  * include them (via `include_hidden` on the query, plus `_role` carrying the
  * authenticated user's role — callers must set both before trusting this).
+ * Also requires the hidden_bills application feature to be enabled for the shop.
  */
-export function wantsHiddenBills(query = {}) {
+export async function wantsHiddenBills(query = {}, shopId = null) {
   const role = String(query._role || '').toLowerCase();
   const wants = ['1', 1, true, 'true'].includes(query.include_hidden);
-  return wants && HIDDEN_BILL_ACCESS_ROLES.has(role);
+  if (!wants || !HIDDEN_BILL_ACCESS_ROLES.has(role)) return false;
+  return isHiddenBillsFeatureEnabled(shopId);
 }
 
 /** Invoice ids marked hidden for this shop — used to hide linked old-gold receipts/sales. */
@@ -116,7 +145,11 @@ export async function loadUncountableInvoiceIds(shopId, { includeHidden = false,
     { financial_mode: FINANCIAL_MODE.PRE_ACCOUNTS },
     { invoice_no: { [Op.like]: 'TEST-%' } },
   ];
-  if (!includeHidden) or.push(HIDDEN_INVOICE);
+  // When the hidden_bills feature is disabled, hidden bills must ALWAYS be
+  // treated as uncountable (excluded from sales / GST / inventory counts) —
+  // even if a stale `includeHidden` flag somehow slips through.
+  const featureEnabled = includeHidden ? await isHiddenBillsFeatureEnabled(shopId) : false;
+  if (!featureEnabled) or.push(HIDDEN_INVOICE);
   const rows = await Invoice.findAll({
     where: {
       [Op.and]: [
@@ -138,7 +171,7 @@ export async function loadUncountableInvoiceIds(shopId, { includeHidden = false,
 export async function withNotHiddenInvoiceItems(query = {}, extra = {}, { shopId, transaction } = {}) {
   const base = extra && typeof extra === 'object' ? extra : {};
   const excluded = await loadUncountableInvoiceIds(shopId, {
-    includeHidden: wantsHiddenBills(query),
+    includeHidden: await wantsHiddenBills(query, shopId),
     transaction,
   });
   if (!excluded.size) return base;

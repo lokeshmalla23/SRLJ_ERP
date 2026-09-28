@@ -96,7 +96,7 @@ export const getDayClosingReport = async (req, res, next) => {
       return res.status(400).json({ detail: 'date must be YYYY-MM-DD' });
     }
 
-    const includeHidden = wantsHiddenBills({ ...req.query, _role: req.user?.role });
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
     const dateWhere = invoiceDateRangeWhere({ from: dateStr, to: dateStr });
     const and = [
       dateWhere,

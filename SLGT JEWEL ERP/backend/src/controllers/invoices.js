@@ -32,10 +32,11 @@ export const listInvoices = async (req, res, next) => {
     const role = String(req.user?.role || '');
     const isOwner = role === 'shop_owner' || role === 'owner' || role === 'super_admin';
 
+    const shopId = req.user?.shop_id || await getDefaultShopId();
     if (hidden_only === '1' || hidden_only === 'true') {
       if (!isOwner) return res.status(403).json({ detail: 'Owner only' });
       and.push(HIDDEN_INVOICE);
-    } else if (!wantsHiddenBills({ include_hidden, _role: role })) {
+    } else if (!await wantsHiddenBills({ include_hidden, _role: role }, shopId)) {
       and.push(withNotHidden({}));
     } else if (!isOwner) {
       return res.status(403).json({ detail: 'Owner only' });
@@ -60,7 +61,6 @@ export const listInvoices = async (req, res, next) => {
     }
 
     const where = and.length ? { [Op.and]: and } : {};
-    const shopId = req.user?.shop_id || await getDefaultShopId();
     const liveWhere = await withLiveFinancialRecords(shopId, where);
     const findOpts = { where: liveWhere, order: newestInvoiceFirstOrder() };
     if (limit != null && limit !== '') {
@@ -69,7 +69,7 @@ export const listInvoices = async (req, res, next) => {
     }
     const invoices = await Invoice.findAll(findOpts);
     const rows = invoices.map((i) => invoiceJson(i));
-    const includeHidden = wantsHiddenBills({ include_hidden, _role: role });
+    const includeHidden = await wantsHiddenBills({ include_hidden, _role: role }, shopId);
     if (hidden_only === '1' || hidden_only === 'true') {
       return res.json(rows.filter((r) => isHiddenBill(r)));
     }
@@ -87,7 +87,8 @@ export const getInvoice = async (req, res, next) => {
     const invoice = await Invoice.findByPk(req.params.id);
     if (!invoice) return res.status(404).json({ detail: 'Invoice not found' });
     const json = invoiceJson(invoice);
-    if (isHiddenBill(json) && !wantsHiddenBills({ include_hidden: req.query.include_hidden, _role: req.user?.role })) {
+    const shopId = req.user?.shop_id || await getDefaultShopId();
+    if (isHiddenBill(json) && !await wantsHiddenBills({ include_hidden: req.query.include_hidden, _role: req.user?.role }, shopId)) {
       return res.status(404).json({ detail: 'Invoice not found' });
     }
     return res.json(json);
@@ -223,7 +224,9 @@ export const collectPayment = async (req, res, next) => {
 // GET /customers/:customerId/outstanding — invoices with balance_due > 0
 export const customerOutstanding = async (req, res, next) => {
   try {
-    const invWhere = wantsHiddenBills({ ...req.query, _role: req.user?.role })
+    const shopId = req.user?.shop_id || await getDefaultShopId();
+    const includeHidden = await wantsHiddenBills({ ...req.query, _role: req.user?.role }, shopId);
+    const invWhere = includeHidden
       ? {
         customer_id: req.params.customerId,
         balance_due: { [Op.gt]: 0 },

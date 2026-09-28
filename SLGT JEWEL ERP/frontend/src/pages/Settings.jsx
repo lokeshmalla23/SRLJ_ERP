@@ -34,6 +34,7 @@ import {
   PrintSettingsLockBanner,
 } from "@/components/settings/settingsLayout";
 import ApplicationManagementTab from "@/components/settings/ApplicationManagementTab";
+import { useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import InvoiceLayoutEditor from "@/components/settings/InvoiceLayoutEditor";
 import InvoiceLetterheadSection from "@/components/settings/InvoiceLetterheadSection";
 import BarcodeLayoutEditor from "@/components/settings/BarcodeLayoutEditor";
@@ -90,12 +91,16 @@ export default function SettingsPage() {
   // Application Management is the ERP Administrator's own tool (licensing modules
   // for a shop) — deliberately narrower than "owner", so a shop_owner never sees it.
   const isSuperAdmin = isSuperAdminRole(user?.role);
+  const { isEnabled: isFeatureEnabled } = useApplicationFeatures();
+  const hiddenBillsEnabled = isFeatureEnabled("hidden_bills");
   const [hiddenBillTabUnlocked, setHiddenBillTabUnlocked] = useState(false);
   const [appManagementRevealed, setAppManagementRevealed] = useState(false);
   const visibleTabs = TABS.filter((t) => {
     if (t.ownerOnly && !isOwner) return false;
     if (t.superAdminOnly && !isSuperAdmin) return false;
     if (t.secret && !hiddenBillTabUnlocked) return false;
+    // Hidden Bill tab is completely inaccessible when the feature is disabled in Application Management
+    if (t.id === "hidden" && !hiddenBillsEnabled) return false;
     // Application Management stays undiscoverable until the ERP Administrator
     // clicks the Settings page header 5× (see the onClick on <PageHeader> below) —
     // like Hidden Bill's reveal-via-Billing-tab gesture, but its own trigger.
@@ -184,7 +189,7 @@ export default function SettingsPage() {
     } else {
       resetClickCounter(companyClicksRef);
     }
-    if (id === "billing" && isOwner) {
+    if (id === "billing" && isOwner && hiddenBillsEnabled) {
       bumpClickCounter(billingClicksRef, () => {
         setHiddenBillTabUnlocked(true);
         setTab("hidden");

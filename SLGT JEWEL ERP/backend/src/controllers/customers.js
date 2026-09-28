@@ -11,12 +11,12 @@ import { wantsHiddenBills, withNotHidden, isVoidOrFullyReturnedStatus } from '..
 import { toMoneyNumber } from '../utils/money.js';
 import { newestTransactionFirstOrder } from '../utils/reportQuery.js';
 
-function includeHiddenFromReq(req) {
-  return wantsHiddenBills({ ...req.query, _role: req.user?.role });
+async function includeHiddenFromReq(req) {
+  return await wantsHiddenBills({ ...req.query, _role: req.user?.role }, req.user?.shop_id);
 }
 
-function customerInvoiceWhere(req, extra = {}) {
-  return includeHiddenFromReq(req) ? extra : withNotHidden(extra);
+async function customerInvoiceWhere(req, extra = {}) {
+  return (await includeHiddenFromReq(req)) ? extra : withNotHidden(extra);
 }
 
 // Invoice.toJSON() returns the Sequelize attribute name `createdAt` (the
@@ -52,7 +52,7 @@ export const listCustomers = async (req, res, next) => {
     // Batch-fetch all invoices for these customers, aggregate metal weights in JS
     const allInvoices = customerIds.length > 0
       ? await Invoice.findAll({
-        where: customerInvoiceWhere(req, { customer_id: { [Op.in]: customerIds } }),
+        where: await customerInvoiceWhere(req, { customer_id: { [Op.in]: customerIds } }),
         attributes: ['customer_id', 'items'],
       })
       : [];
@@ -96,7 +96,7 @@ export const getCustomer = async (req, res, next) => {
 
     const [invoices, schemes] = await Promise.all([
       Invoice.findAll({
-        where: customerInvoiceWhere(req, { customer_id: req.params.id }),
+        where: await customerInvoiceWhere(req, { customer_id: req.params.id }),
         order: newestTransactionFirstOrder(),
       }),
       Scheme.findAll({ where: { customer_id: req.params.id }, order: [['created_at', 'DESC']] }),
@@ -123,8 +123,8 @@ export const getCustomer360 = async (req, res, next) => {
     const customer = await Customer.findByPk(req.params.id);
     if (!customer || customer.deleted_at) return res.status(404).json({ detail: 'Customer not found' });
     const id = req.params.id;
-    const includeHidden = includeHiddenFromReq(req);
-    const invWhere = customerInvoiceWhere(req, { customer_id: id });
+    const includeHidden = await includeHiddenFromReq(req);
+    const invWhere = await customerInvoiceWhere(req, { customer_id: id });
     const [
       invoices,
       schemes,

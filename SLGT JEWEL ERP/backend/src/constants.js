@@ -198,6 +198,7 @@ export const APPLICATION_FEATURES = [
   { key: 'accounts', label: 'Accounts', section: 'Finance' },
   { key: 'employees', label: 'Employees', section: 'Finance' },
   { key: 'reports', label: 'Reports', section: 'Insights' },
+  { key: 'hidden_bills', label: 'Hidden Bills', section: 'Commerce' },
 ];
 
 export const APPLICATION_FEATURE_KEYS = APPLICATION_FEATURES.map((f) => f.key);

@@ -27,6 +27,7 @@ import { T } from "@/constants/testIds";
 import { useAuth } from "@/context/AuthContext";
 import { useCompany } from "@/context/CompanyContext";
 import { useBusinessDate } from "@/context/BusinessDateContext";
+import { useApplicationFeatures } from "@/context/ApplicationFeatureContext";
 import useConfirm from "@/hooks/useConfirm";
 import { useAuthority, AUTHORITY_STATES } from "@/context/AuthorityContext";
 import { formatRoleLabel, hasFullAccessRole } from "@/lib/roleLabel";
@@ -461,6 +462,8 @@ export default function POS() {
   const [pendingSalesOpen, setPendingSalesOpen] = useState(false);
 
   // ── Invoice / UI state ─────────────────────────────────────────────────────
+  const { isEnabled: isFeatureEnabled } = useApplicationFeatures();
+  const hiddenBillsEnabled = isFeatureEnabled("hidden_bills");
   const [hiddenBillMode, setHiddenBillMode] = useState(false);
   const [hiddenPwOpen, setHiddenPwOpen] = useState(false);
   const [hiddenPwBusy, setHiddenPwBusy] = useState(false);
@@ -2452,6 +2455,7 @@ export default function POS() {
                 type="button"
                 className="flex items-center gap-2 select-none"
                 onClick={() => {
+                  if (!hiddenBillsEnabled) return;
                   const ref = hiddenTapRef.current;
                   ref.count += 1;
                   if (ref.timer) clearTimeout(ref.timer);
