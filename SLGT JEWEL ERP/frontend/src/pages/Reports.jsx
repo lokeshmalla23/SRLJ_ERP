@@ -928,6 +928,7 @@ function SalesTab({ from, to, setFrom, setTo, includeHidden = false }) {
           title="Sales by Employee"
           endpoint="/reports/sales/by-employee"
           params={insightsParams}
+          showMetalSummary={false}
           columns={[
             { key: "salesperson_name", label: "Employee" },
             { key: "invoice_count", label: "Invoices", align: "right" },

@@ -209,13 +209,15 @@ function DashboardPanel({ includeHidden = false }) {
 
 /** Convert a metal_summary (array for Sales reports, object for Accounts
  *  → Sales Accounts) into print closing-tables: gold/silver purity tables,
- *  plus the pure-metal and metal-types tables when present. */
+ *  plus a metal-types table for non-gold/silver types (diamond, platinum, …).
+ *  Pure-metal lines are NOT broken out separately — a 24K pure-gold line
+ *  already appears in the Gold purity table. */
 function metalClosingTables(metalSummary) {
   if (!metalSummary) return [];
   const isObject = !Array.isArray(metalSummary);
   const metals = isObject ? (metalSummary.metals || []) : metalSummary;
-  const pureMetal = isObject ? (metalSummary.pure_metal || []) : [];
-  const metalTypes = isObject ? (metalSummary.metal_types || []) : [];
+  const metalTypes = (isObject ? (metalSummary.metal_types || []) : [])
+    .filter((m) => m.metal_type !== "Gold" && m.metal_type !== "Silver");
   const tables = [];
   for (const m of metals) {
     if (m.metal !== "Gold" && m.metal !== "Silver") continue;
@@ -230,25 +232,9 @@ function metalClosingTables(metalSummary) {
       totals: { purity: "Total", gross_weight: m.total_gross_weight, net_weight: m.total_net_weight },
     });
   }
-  if (pureMetal.length) {
-    tables.push({
-      title: "Pure Metal",
-      columns: [
-        { key: "purity", label: "Purity" },
-        { key: "gross_weight", label: "G.W", align: "right", format: "weight" },
-        { key: "net_weight", label: "N.W", align: "right", format: "weight" },
-      ],
-      rows: pureMetal,
-      totals: {
-        purity: "Total",
-        gross_weight: pureMetal.reduce((s, r) => s + (Number(r.gross_weight) || 0), 0),
-        net_weight: pureMetal.reduce((s, r) => s + (Number(r.net_weight) || 0), 0),
-      },
-    });
-  }
   if (metalTypes.length) {
     tables.push({
-      title: "Metal Types Sold",
+      title: "Other Metal Types Sold",
       columns: [
         { key: "metal_type", label: "Metal Type" },
         { key: "gross_weight", label: "G.W", align: "right", format: "weight" },

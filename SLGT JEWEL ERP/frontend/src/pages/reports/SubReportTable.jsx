@@ -15,7 +15,7 @@ import { sanitizeReportColumns, currencyParticulars } from "@/lib/reportColumns"
  * on-screen pagination is needed; "View Report" still opens the full
  * print/export modal against the same rows.
  */
-export default function SubReportTable({ title, description, endpoint, params = {}, columns, emptyMessage, extra, chart, rowClassName }) {
+export default function SubReportTable({ title, description, endpoint, params = {}, columns, emptyMessage, extra, chart, rowClassName, showMetalSummary = true }) {
   const [modalOpen, setModalOpen] = useState(false);
   const visibleColumns = sanitizeReportColumns(columns);
   const query = useQuery({
@@ -29,7 +29,7 @@ export default function SubReportTable({ title, description, endpoint, params = 
   const rows = query.data?.data || [];
   const totals = query.data?.totals || null;
   const extraNode = typeof extra === "function" ? extra(rows, query.data) : extra;
-  const metalSummary = query.data?.metal_summary;
+  const metalSummary = showMetalSummary ? query.data?.metal_summary : null;
   const metalClosingTables = (Array.isArray(metalSummary) ? metalSummary : [])
     .filter((m) => m.metal === "Gold" || m.metal === "Silver")
     .map((m) => ({

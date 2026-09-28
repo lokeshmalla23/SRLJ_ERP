@@ -7,17 +7,21 @@ import { fmtDate, fmtWeight } from "@/lib/format";
  * Dashboard gold cards use).
  *
  * `metals` may be a plain array (Sales reports — gold/silver only) or an object
- * `{ metals, pure_metal, metal_types }` (Accounts → Sales Accounts, which also
- * breaks pure-metal lines out separately and lists every metal type sold).
+ * `{ metals, metal_types }` (Accounts → Sales Accounts, which also lists every
+ * non-gold/silver metal type sold — diamond, platinum, etc.). Pure-metal lines
+ * are intentionally NOT broken out separately: a 24K pure-gold line already
+ * appears in the Gold purity table, so a separate tab would just repeat it.
  */
 export default function MetalSummaryTables({ metals, from, to }) {
   const isObject = Boolean(metals) && !Array.isArray(metals);
   const list = isObject ? (metals.metals || []) : (Array.isArray(metals) ? metals : []);
-  const pureMetal = isObject ? (metals.pure_metal || []) : [];
-  const metalTypes = isObject ? (metals.metal_types || []) : [];
+  // Metal-types table shows only types NOT already covered by the gold/silver
+  // purity tables (e.g. diamond, platinum, stone).
+  const metalTypes = (isObject ? (metals.metal_types || []) : [])
+    .filter((m) => m.metal_type !== "Gold" && m.metal_type !== "Silver");
   const gold = list.find((m) => m.metal === "Gold");
   const silver = list.find((m) => m.metal === "Silver");
-  const hasAny = Boolean(gold || silver || pureMetal.length || metalTypes.length);
+  const hasAny = Boolean(gold || silver || metalTypes.length);
 
   return (
     <div className="mt-6">
@@ -34,11 +38,6 @@ export default function MetalSummaryTables({ metals, from, to }) {
             <PurityTable title="Gold" accent="#B08A3A" metal={gold} emptyText="No gold sold" />
             <PurityTable title="Silver" accent="#7D8882" metal={silver} emptyText="No silver sold" />
           </div>
-          {pureMetal.length > 0 ? (
-            <div className="mt-4">
-              <PurityTable title="Pure Metal" accent="#3D6B5B" rows={pureMetal} emptyText="" />
-            </div>
-          ) : null}
           {metalTypes.length > 0 ? (
             <div className="mt-4">
               <MetalTypesTable rows={metalTypes} />
@@ -50,8 +49,8 @@ export default function MetalSummaryTables({ metals, from, to }) {
   );
 }
 
-function PurityTable({ title, accent, metal, rows: rowsProp, emptyText }) {
-  const rows = rowsProp || metal?.rows || [];
+function PurityTable({ title, accent, metal, emptyText }) {
+  const rows = metal?.rows || [];
   return (
     <div className="overflow-hidden rounded-xl border border-[#D8D2C6] bg-[#FFFDF9] shadow-[0_1px_2px_rgba(38,52,43,0.04),0_8px_22px_rgba(38,52,43,0.035)]">
       <div
@@ -93,10 +92,10 @@ function PurityTable({ title, accent, metal, rows: rowsProp, emptyText }) {
           <tr className="border-t border-[#E6E1D7] bg-[#FAFAFA]">
             <td className="px-3 py-1.5 font-semibold text-[#737373]">Total</td>
             <td className="px-3 py-1.5 text-right font-semibold tabular-nums text-[#525252]">
-              {fmtWeight(metal ? metal.total_gross_weight : rows.reduce((s, r) => s + (Number(r.gross_weight) || 0), 0))}
+              {fmtWeight(metal?.total_gross_weight)}
             </td>
             <td className="px-3 py-1.5 text-right font-semibold tabular-nums text-[#0A0A0A]">
-              {fmtWeight(metal ? metal.total_net_weight : rows.reduce((s, r) => s + (Number(r.net_weight) || 0), 0))}
+              {fmtWeight(metal?.total_net_weight)}
             </td>
           </tr>
         </tfoot>
@@ -112,7 +111,7 @@ function MetalTypesTable({ rows }) {
         className="border-b border-[#E6E1D7] px-4 py-2.5 text-[12px] font-semibold text-[#24332B]"
         style={{ borderTop: "2px solid #315C4A" }}
       >
-        Metal Types Sold
+        Other Metal Types Sold
       </div>
       <table className="w-full text-[11.5px]">
         <thead>
