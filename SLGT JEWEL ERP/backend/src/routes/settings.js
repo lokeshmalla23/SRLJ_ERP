@@ -19,8 +19,6 @@ import {
   updateBarcodeTagSettings,
   getEstimationPrintSettings,
   updateEstimationPrintSettings,
-  getSchemePrintSettings,
-  updateSchemePrintSettings,
   getOfflineSettings,
   updateOfflineSettings,
   listCounters,
@@ -46,6 +44,10 @@ import {
   getCalCodeSetting,
   updateCalCodeSetting,
 } from '../controllers/settings.js';
+import {
+  getSchemePrintSettings,
+  updateSchemePrintSettings,
+} from '../controllers/schemePrintSettings.js';
 
 const router = Router();
 

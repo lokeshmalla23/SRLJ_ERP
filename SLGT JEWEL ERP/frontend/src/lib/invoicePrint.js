@@ -106,7 +106,7 @@ function fmtMoney(n, digits = 2) {
   return fmtINRPlain(n, { decimals: digits === 0 ? 0 : 2 });
 }
 
-function resolveStationery(company = {}) {
+export function resolveStationery(company = {}) {
   return {
     name:      company.name        || "Jewellery Shop",
     gstin:     company.gst_number  || company.gstin || "",

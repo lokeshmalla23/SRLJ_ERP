@@ -5,6 +5,7 @@ import {
   getPaymentsDue,
   listSchemes,
   getScheme,
+  getSchemePrint,
   createScheme,
   addSchemePayment,
   redeemScheme,
@@ -25,6 +26,9 @@ router.get('/', authenticate, goldSchemesEnabled, requirePermission('gold_scheme
 
 // GET /api/schemes/:id
 router.get('/:id', authenticate, goldSchemesEnabled, requirePermission('gold_schemes', 'view'), getScheme);
+
+// GET /api/schemes/:id/print-data — creation print / statement / closure certificate
+router.get('/:id/print-data', authenticate, goldSchemesEnabled, requirePermission('gold_schemes', 'view'), getSchemePrint);
 
 // POST /api/schemes
 router.post('/', authenticate, goldSchemesEnabled, requirePermission('gold_schemes', 'create'), createScheme);

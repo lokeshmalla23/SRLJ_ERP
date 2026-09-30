@@ -53,7 +53,7 @@ const TABS = [
   { id: "invoice-print", label: "Invoice Print", icon: FileText, tid: "settings-tab-invoice-print", module: "settings", view: "view", write: "manage" },
   { id: "barcode-tag", label: "Barcode Tag", icon: Tag, tid: "settings-tab-barcode-tag", module: "settings", view: "view", write: "manage" },
   { id: "estimation-print", label: "Estimation Print", icon: ClipboardList, tid: "settings-tab-estimation-print", module: "settings", view: "view", write: "manage" },
-  { id: "scheme-print", label: "Scheme Print", icon: Coins, tid: "settings-tab-scheme-print", module: "settings", view: "view", write: "manage" },
+  { id: "scheme-print", label: "Scheme", icon: Coins, tid: "settings-tab-scheme", module: "settings", view: "view", write: "manage" },
   { id: "network", label: "Shop Network", icon: Wifi, tid: "settings-tab-network", module: "settings", view: "view", write: "manage" },
   { id: "system", label: "System Health", icon: Activity, tid: "settings-tab-system", module: "settings", view: "view", write: null },
   { id: "audit", label: "Audit", icon: ScrollText, tid: "settings-tab-audit", module: "settings", view: "view", write: null },
@@ -432,11 +432,7 @@ export default function SettingsPage() {
         />
       )}
       {tab === "scheme-print" && (
-        <SchemePrintSettingsTab
-          canWrite={canWrite}
-          unlocked={printTabUnlocked["scheme-print"]}
-          onLocked={() => lockPrintTab("scheme-print")}
-        />
+        <SchemePrintSettingsTab canWrite={canWrite} />
       )}
       {tab === "network" && <ShopNetworkTab canWrite={canWrite} />}
       {tab === "system" && <SystemHealthTab />}

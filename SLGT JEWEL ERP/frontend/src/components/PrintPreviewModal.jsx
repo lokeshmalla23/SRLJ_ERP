@@ -1,5 +1,8 @@
-import { useEffect, useMemo } from "react";
-import { X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { X, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
+import { openWhatsAppChat } from "@/lib/whatsapp.js";
+import { normalizeIndianMobile } from "@/lib/phone.js";
 
 /** Read the designed page width off the generator's own @page size (same source the desktop print pipeline reads) — avoids a scroll-measurement guess that can drift from the real page. */
 function pageWidthPx(html) {
@@ -25,8 +28,9 @@ function pageWidthPx(html) {
  * (POS, Estimation, ...) gets the same confirm-before-print step instead of
  * printing immediately.
  */
-export default function PrintPreviewModal({ html, title = "Print Preview", subtitle, onPrint, onClose, printing }) {
+export default function PrintPreviewModal({ html, title = "Print Preview", subtitle, onPrint, onClose, printing, customerMobile }) {
   const frameWidth = useMemo(() => pageWidthPx(html), [html]);
+  const [waBusy, setWaBusy] = useState(false);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -36,28 +40,52 @@ export default function PrintPreviewModal({ html, title = "Print Preview", subti
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
+  const handleWhatsApp = async () => {
+    setWaBusy(true);
+    try {
+      if (window.jewelleryCRM?.copyInvoiceImage) {
+        const copied = await window.jewelleryCRM.copyInvoiceImage(html);
+        if (copied?.success) {
+          const mobile = customerMobile || "";
+          if (normalizeIndianMobile(mobile)) {
+            const chat = openWhatsAppChat(mobile, "Scheme document");
+            if (!chat.ok) {
+              toast.error("Could not open WhatsApp chat");
+            } else {
+              toast.success("Image copied — paste in WhatsApp (Ctrl+V)");
+            }
+          } else {
+            toast.success("Image copied to clipboard — paste anywhere (Ctrl+V)");
+          }
+          return;
+        }
+      }
+      toast.error("Could not copy image to clipboard");
+    } catch {
+      toast.error("Could not copy image to clipboard");
+    } finally {
+      setWaBusy(false);
+    }
+  };
+
   return (
-    <div className="dialog-overlay fixed inset-0 z-[60] flex items-center justify-center p-4 backdrop-blur-[2px]">
-      <div className="flex max-h-[92vh] w-full max-w-[920px] flex-col overflow-hidden rounded-2xl border border-[#E2E7E2] bg-[#FFFDF9] shadow-float">
-        <div className="flex shrink-0 items-center justify-between border-b border-[#E2E7E2] bg-[#FAF7EF] px-5 py-3.5">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4">
+      <div className="bg-white rounded-xl shadow-2xl flex flex-col w-full max-w-[920px] max-h-[92vh]">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#E5E7EB]">
           <div>
-            <p className="font-display text-[15px] font-semibold tracking-[-0.01em] text-[#17201C]">{title}</p>
-            <p className="mt-0.5 text-[11.5px] leading-4 text-[#6F7772]">
+            <p className="text-[14px] font-semibold">{title}</p>
+            <p className="text-[11px] text-[#737373]">
               {printing ? "Sending to printer…" : (subtitle || "Check before sending to printer")}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-[#6F7772] transition-colors hover:border-[#D3DCD5] hover:bg-[#FFFDF9] hover:text-[#214F3A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#214F3A]/25"
-          >
+          <button type="button" onClick={onClose} className="p-1.5 text-[#737373]">
             <X size={16} strokeWidth={1.5} />
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-auto bg-[#EAE6DC] p-5">
+        <div className="flex-1 min-h-0 overflow-auto bg-[#D9D9D9] p-5">
           <div
-            className="mx-auto bg-white shadow-[0_12px_30px_rgba(74,64,46,0.18),0_0_0_1px_rgba(123,111,88,0.16)]"
+            className="mx-auto bg-white shadow-md"
             style={{ width: `${frameWidth}px` }}
           >
             <iframe
@@ -91,22 +119,24 @@ export default function PrintPreviewModal({ html, title = "Print Preview", subti
           </div>
         </div>
 
-        <div className="flex shrink-0 justify-end gap-2 border-t border-[#E2E7E2] bg-[#F7F9F6] px-5 py-3.5">
+        <div className="px-5 py-3.5 border-t border-[#E5E7EB] flex justify-between items-center gap-2">
           <button
             type="button"
-            onClick={onClose}
-            className="btn-secondary min-h-9 text-[13px] focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
+            onClick={handleWhatsApp}
+            disabled={waBusy || printing}
+            className="btn-secondary text-[13px] inline-flex items-center gap-1.5"
           >
-            {printing ? "Close" : "Cancel"}
+            <MessageCircle size={14} strokeWidth={1.5} />
+            {waBusy ? "Copying…" : "WhatsApp"}
           </button>
-          <button
-            type="button"
-            onClick={onPrint}
-            className="btn-primary min-h-9 text-[13px] focus-visible:ring-2 focus-visible:ring-[#214F3A]/25 focus-visible:ring-offset-2"
-            disabled={printing}
-          >
-            {printing ? "Printing…" : "Print"}
-          </button>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onClose} className="btn-secondary text-[13px]">
+              {printing ? "Close" : "Cancel"}
+            </button>
+            <button type="button" onClick={onPrint} className="btn-primary text-[13px]" disabled={printing}>
+              {printing ? "Printing…" : "Print"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

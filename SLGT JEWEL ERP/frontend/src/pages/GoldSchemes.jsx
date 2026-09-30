@@ -28,15 +28,11 @@ import { asArray } from "@/lib/jsonFields";
 import { invoiceOccurredAt } from "@/lib/occurredAt";
 import { T } from "@/constants/testIds";
 import { useAuth } from "@/context/AuthContext";
+import useSchemePrint from "@/components/schemes/useSchemePrint";
+import { SCHEME_DOCS, canPrintClosureCertificate, generateSchemePaymentReceiptHTML } from "@/lib/schemePrint";
+import PrintPreviewModal from "@/components/PrintPreviewModal";
 import { useBusinessDate } from "@/context/BusinessDateContext";
 import { useCompany } from "@/context/CompanyContext";
-import { printHtml } from "@/lib/printHtml";
-import {
-  generateSchemeCreationReceipt,
-  generateSchemeStatement,
-  generateSchemeClosureCertificate,
-  isSchemeClosable,
-} from "@/lib/schemePrint";
 import DuplicateCustomerDialog, { dupInfo } from "@/components/customers/DuplicateCustomerDialog";
 
 // Presentation-only scheme canvas and control treatment.
@@ -142,15 +138,11 @@ export default function GoldSchemes() {
   const [loading, setLoading] = useState(true);
   const [schemePlans, setSchemePlans] = useState([]);
   const [currentGoldRate, setCurrentGoldRate] = useState(null);
-  const [printSettings, setPrintSettings] = useState({
-    scheme_creation_print_settings: {},
-    scheme_statement_print_settings: {},
-    scheme_closure_print_settings: {},
-  });
 
   // Modals
   const [openNew, setOpenNew] = useState(false);
   const [activePay, setActivePay] = useState(null);   // scheme for payment
+  const [paySuccess, setPaySuccess] = useState(null); // { scheme, installments }
   const [detailRow, setDetailRow] = useState(null);   // scheme for detail panel
 
   // Filters
@@ -174,25 +166,21 @@ export default function GoldSchemes() {
     api.get("/settings/gold-rate").then(({ data }) => {
       if (data?.rate) setCurrentGoldRate(Number(data.rate));
     }).catch(() => {});
-    api.get("/settings/scheme-print").then(({ data }) => {
-      if (data) setPrintSettings(data);
-    }).catch(() => {});
   }, []);
 
   // ── Print handlers (settings-driven field visibility) ───────────────────────
-  const printCreationReceipt = async (scheme) => {
-    const html = generateSchemeCreationReceipt(scheme, company, printSettings.scheme_creation_print_settings);
-    await printHtml(html);
+  const { openSchemeDoc, schemePrintModal, schemePrintLoading } = useSchemePrint();
+
+  const printCreationReceipt = (scheme) => {
+    openSchemeDoc(scheme.id, SCHEME_DOCS.CREATION);
   };
 
-  const printStatement = async (scheme, paperSize = "A4") => {
-    const html = generateSchemeStatement(scheme, company, printSettings.scheme_statement_print_settings, paperSize);
-    await printHtml(html);
+  const printStatement = (scheme, paperSize = "A4") => {
+    openSchemeDoc(scheme.id, SCHEME_DOCS.STATEMENT, { paper: paperSize });
   };
 
-  const printClosureCertificate = async (scheme) => {
-    const html = generateSchemeClosureCertificate(scheme, company, printSettings.scheme_closure_print_settings);
-    await printHtml(html);
+  const printClosureCertificate = (scheme) => {
+    openSchemeDoc(scheme.id, SCHEME_DOCS.CLOSURE);
   };
 
   const redeemScheme = async (scheme) => {
@@ -502,6 +490,20 @@ export default function GoldSchemes() {
             load();
             setDetailRow(null);
           }}
+          onPaymentSuccess={(updatedScheme) => {
+            setPaySuccess({
+              scheme: updatedScheme,
+              installments: updatedScheme.payments || updatedScheme.installments || [],
+            });
+          }}
+        />
+      )}
+      {paySuccess && (
+        <PaymentSuccessModal
+          scheme={paySuccess.scheme}
+          installments={paySuccess.installments}
+          onClose={() => setPaySuccess(null)}
+          company={company}
         />
       )}
       {detailRow && (
@@ -519,6 +521,7 @@ export default function GoldSchemes() {
           onPrintClosure={() => printClosureCertificate(detailRow)}
         />
       )}
+      {schemePrintModal}
     </div>
   );
 }
@@ -658,48 +661,50 @@ function DetailPanel({ scheme: s, onClose, onPay, onRedeem, canCreate, currentGo
       {/* Panel */}
       <div className="relative z-10 bg-[#FFFDF8] w-full max-w-xl h-full overflow-y-auto shadow-[0_18px_50px_rgba(35,58,43,0.18)] flex flex-col border-l border-[#DCE3D6]">
         {/* Header */}
-        <div className="p-5 border-b border-[#DCE3D6] flex items-start justify-between sticky top-0 bg-[#FFFDF8] z-10">
-          <div>
-            <div className="font-display text-[17px] font-semibold text-[#2F3A32]">
-              {s.customer_name}
-              {s.serial_no != null && (
-                <span className="ml-2 font-mono text-[12px] font-normal text-[#8D998F]">
-                  #{s.serial_no}
-                </span>
+        <div className="p-5 border-b border-[#DCE3D6] sticky top-0 bg-[#FFFDF8] z-10 space-y-3">
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="font-display text-[17px] font-semibold text-[#2F3A32]">
+                {s.customer_name}
+                {s.serial_no != null && (
+                  <span className="ml-2 font-mono text-[12px] font-normal text-[#8D998F]">
+                    #{s.serial_no}
+                  </span>
+                )}
+              </div>
+              <div className="font-mono text-[12px] text-[#8D998F] mt-0.5">{s.customer_mobile}</div>
+            </div>
+            <div className="flex items-center gap-2">
+              {s.status === "active" && canCreate && (
+                <button onClick={onPay} className="btn-primary !py-1.5 !text-[12px]">
+                  <Plus size={12} strokeWidth={1.5} /> Add Payment
+                </button>
+              )}
+              {s.status === "matured" && canCreate && (
+                <button onClick={onRedeem} className="btn-primary !py-1.5 !text-[12px] inline-flex items-center gap-1">
+                  <Gift size={12} strokeWidth={1.5} /> Mark as Redeemed
+                </button>
+              )}
+              <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
+                <X size={16} strokeWidth={1.5} />
+              </button>
+            </div>
+          </div>
+
+          {/* Print options */}
+          {canCreate && (
+            <div className="space-y-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#8D998F] mr-0.5">Print</span>
+                <button onClick={() => onPrintReceipt(s)} className="px-2.5 py-1 text-[11.5px] font-medium text-[#2F3A32] bg-white border border-[#DCE3D6] rounded-md hover:bg-[#F1F4ED] hover:border-[#B8CBB9] transition-colors">Scheme Slip (A5)</button>
+                <button onClick={() => onPrintStatement(s, "A4")} className="px-2.5 py-1 text-[11.5px] font-medium text-[#2F3A32] bg-white border border-[#DCE3D6] rounded-md hover:bg-[#F1F4ED] hover:border-[#B8CBB9] transition-colors">Statement A4</button>
+                <button onClick={() => onPrintStatement(s, "A5")} className="px-2.5 py-1 text-[11.5px] font-medium text-[#2F3A32] bg-white border border-[#DCE3D6] rounded-md hover:bg-[#F1F4ED] hover:border-[#B8CBB9] transition-colors">Statement A5</button>
+              </div>
+              {canPrintClosureCertificate(s) && (
+                <button onClick={() => onPrintClosure(s)} className="px-2.5 py-1 text-[11.5px] font-medium text-[#B49042] bg-white border border-[#E3D3AE] rounded-md hover:bg-[#FDF8EC] transition-colors">Closure Certificate</button>
               )}
             </div>
-            <div className="font-mono text-[12px] text-[#8D998F] mt-0.5">{s.customer_mobile}</div>
-          </div>
-          <div className="flex items-center gap-2">
-            {s.status === "active" && canCreate && (
-              <button onClick={onPay} className="btn-primary !py-1.5 !text-[12px]">
-                <Plus size={12} strokeWidth={1.5} /> Add Payment
-              </button>
-            )}
-            {s.status === "matured" && canCreate && (
-              <button onClick={onRedeem} className="btn-primary !py-1.5 !text-[12px] inline-flex items-center gap-1">
-                <Gift size={12} strokeWidth={1.5} /> Mark as Redeemed
-              </button>
-            )}
-            {canCreate && (
-              <div className="relative group">
-                <button className="btn-secondary !py-1.5 !text-[12px] inline-flex items-center gap-1">
-                  <Download size={12} strokeWidth={1.5} /> Print
-                </button>
-                <div className="absolute right-0 top-full mt-1 hidden group-hover:block z-30 bg-white border border-[#DCE3D6] rounded-[9px] shadow-[0_8px_24px_rgba(35,58,43,0.12)] py-1 min-w-[160px]">
-                  <button onClick={() => onPrintReceipt(s)} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Creation Receipt (A5)</button>
-                  <button onClick={() => onPrintStatement(s, "A4")} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Statement (A4)</button>
-                  <button onClick={() => onPrintStatement(s, "A5")} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED]">Statement (A5)</button>
-                  {isSchemeClosable(s) && (
-                    <button onClick={() => onPrintClosure(s)} className="w-full text-left px-3 py-1.5 text-[12px] hover:bg-[#F1F4ED] text-[#B49042] font-medium">Closure Certificate</button>
-                  )}
-                </div>
-              </div>
-            )}
-            <button onClick={onClose} className="text-[#8D998F] hover:text-[#244B39] p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B8CBB9]">
-              <X size={16} strokeWidth={1.5} />
-            </button>
-          </div>
+          )}
         </div>
 
         {/* Scheme summary */}
@@ -1341,7 +1346,7 @@ function isGoldScheme(scheme) {
   return type === "swarnakala" || planType === "weight";
 }
 
-function PayModal({ scheme, onClose, onDone }) {
+function PayModal({ scheme, onClose, onDone, onPaymentSuccess }) {
   const { date: activeBillingDate } = useBusinessDate();
   const goldMode = isGoldScheme(scheme);
   const nextMonth = scheme.months_paid + 1;
@@ -1392,14 +1397,18 @@ function PayModal({ scheme, onClose, onDone }) {
             }
           : {}),
       };
-      await api.post(`/schemes/${scheme.id}/payments`, payload);
+      const { data: updatedScheme } = await api.post(`/schemes/${scheme.id}/payments`, payload);
       toast.success(
         goldMode
           ? `Payment recorded — ${gramsPreview || "?"}g gold stored`
           : `Payment recorded — ${fmtINR(parseMoneyInput(form.amount))}`,
       );
-      onDone();
       onClose();
+      if (onPaymentSuccess && updatedScheme) {
+        onPaymentSuccess(updatedScheme);
+      } else {
+        onDone();
+      }
     } catch (err) {
       toast.error(formatApiError(err));
     } finally {
@@ -1530,6 +1539,71 @@ function PayModal({ scheme, onClose, onDone }) {
         </div>
       </form>
     </div>
+  );
+}
+
+// ─── Payment Success Modal ────────────────────────────────────────────────────
+
+function PaymentSuccessModal({ scheme, installments, onClose, company }) {
+  const [printing, setPrinting] = useState(false);
+  const [settings, setSettings] = useState(null);
+  const [printData, setPrintData] = useState(null);
+  const payments = asArray(installments).map((p, i) => ({
+    installment_no: i + 1,
+    payment_date: p.paid_at || p.payment_date || p.business_date,
+    amount: p.amount,
+    mode: p.mode,
+    gold_rate: p.gold_rate_at_payment || p.gold_rate,
+    grams: p.grams_credited ?? p.grams,
+    status: p.status || "Paid",
+  }));
+
+  useEffect(() => {
+    api.get("/settings/scheme-print").then(({ data }) => {
+      setSettings(data?.settings?.payment_receipt || null);
+    }).catch(() => {});
+    api.get(`/schemes/${scheme.id}/print-data`).then(({ data }) => {
+      setPrintData(data);
+    }).catch(() => {});
+  }, [scheme.id]);
+
+  const receiptData = {
+    scheme: {
+      ...scheme,
+      is_gold_scheme: isGoldScheme(scheme),
+    },
+    customer: {
+      name: scheme.customer_name,
+      mobile: scheme.customer_mobile,
+      serial_no: printData?.customer?.serial_no ?? scheme.customer_serial_no ?? null,
+    },
+    enrolled_by: printData?.enrolled_by ?? { name: scheme.enrolled_by_name, mobile: scheme.enrolled_by_mobile },
+    installments: payments,
+  };
+  const html = useMemo(() => generateSchemePaymentReceiptHTML(receiptData, company || {}, settings), [scheme, installments, company, settings, printData]);
+
+  const handlePrint = async () => {
+    setPrinting(true);
+    try {
+      const { printHtml } = await import("@/lib/printHtml");
+      await printHtml(html, { printerType: "invoice" });
+    } catch {
+      // printHtml already surfaced the error toast
+    } finally {
+      setPrinting(false);
+    }
+  };
+
+  return (
+    <PrintPreviewModal
+      html={html}
+      title="Payment Recorded"
+      subtitle={`${scheme.customer_name} · ${scheme.plan_name}`}
+      onPrint={handlePrint}
+      onClose={onClose}
+      printing={printing}
+      customerMobile={scheme.customer_mobile}
+    />
   );
 }
 

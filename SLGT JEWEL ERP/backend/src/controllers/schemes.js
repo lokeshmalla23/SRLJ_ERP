@@ -4,6 +4,7 @@ import { Scheme, Setting, Customer } from '../models/index.js';
 import { newId, nowIso, normalizeJsonFields, parseJsonField, nextShopSerial } from '../utils.js';
 import branchConfig from '../config/branchConfig.js';
 import { computeSchemeDueInfo, computeSchemeRedeemableValue, isGoldGramScheme, schemeStatusAfterRedemption } from '../services/schemeDueService.js';
+import { getSchemePrintData } from '../services/schemePrintService.js';
 import { broadcast } from '../services/wsServer.js';
 import { formatINR } from '../utils/formatMoney.js';
 
@@ -107,6 +108,24 @@ export const getScheme = async (req, res, next) => {
     if (!scheme) return res.status(404).json({ detail: 'Scheme not found' });
     const goldRate = await resolveSchemeGoldRate(req.query.gold_rate);
     return res.json(schemeJson(scheme, goldRate));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/schemes/:id/print-data — everything the Scheme Creation Print,
+// Scheme Statement and Scheme Closure Certificate need, from stored data only.
+export const getSchemePrint = async (req, res, next) => {
+  try {
+    const goldRate = await resolveSchemeGoldRate(req.query.gold_rate);
+    let businessDate = null;
+    try {
+      const { getActiveBillingDate } = await import('../services/dailyClosingService.js');
+      businessDate = (await getActiveBillingDate({})).date;
+    } catch { /* fall back to calendar today */ }
+    const data = await getSchemePrintData(req.params.id, { goldRate, businessDate });
+    if (!data) return res.status(404).json({ detail: 'Scheme not found' });
+    return res.json(data);
   } catch (err) {
     next(err);
   }

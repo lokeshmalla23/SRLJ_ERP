@@ -1,0 +1,49 @@
+{"ts":"2026-09-29T16:18:02.197Z","level":"info","scope":"sqlite","message":"opening database","meta":{"storage":"C:/Users/Lokesh Malla/AppData/Roaming/jewellery-crm-desktop/data/jewellery-crm.sqlite","electron":true}}
+{"ts":"2026-09-29T16:18:02.847Z","level":"info","scope":"boot","message":"starting branch service","meta":{"app_mode":"branch","schema_version":14,"sqlite":true,"log_dir":"E:\\SRLJ ERP\\SRLJ_ERP\\SLGT JEWEL ERP\\backend\\logs"}}
+{"ts":"2026-09-29T16:18:02.848Z","level":"info","scope":"boot","message":"branch identity","meta":{"device":"cd70f896-48e5-4457-97e6-b54399cb27c5","role":"active_host"}}
+{"ts":"2026-09-29T16:18:02.849Z","level":"info","scope":"sqlite","message":"authenticating connection"}
+{"ts":"2026-09-29T16:18:02.864Z","level":"info","scope":"boot","message":"API listening","meta":{"url":"http://0.0.0.0:8080","mode":"starting","mtls":false,"log_dir":"E:\\SRLJ ERP\\SRLJ_ERP\\SLGT JEWEL ERP\\backend\\logs"}}
+{"ts":"2026-09-29T16:18:02.871Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT 1+1 AS result"}}
+{"ts":"2026-09-29T16:18:02.900Z","level":"info","scope":"sqlite","message":"database connected ok"}
+{"ts":"2026-09-29T16:18:02.909Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'audit_events'"}}
+{"ts":"2026-09-29T16:18:02.911Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"audit_events\")"}}
+{"ts":"2026-09-29T16:18:02.913Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'event_log'"}}
+{"ts":"2026-09-29T16:18:02.915Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"event_log\")"}}
+{"ts":"2026-09-29T16:18:02.917Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'cluster_state'"}}
+{"ts":"2026-09-29T16:18:02.919Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"cluster_state\")"}}
+{"ts":"2026-09-29T16:18:02.924Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'replica_acks'"}}
+{"ts":"2026-09-29T16:18:02.926Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"replica_acks\")"}}
+{"ts":"2026-09-29T16:18:02.928Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'operation_ledger'"}}
+{"ts":"2026-09-29T16:18:02.929Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"operation_ledger\")"}}
+{"ts":"2026-09-29T16:18:02.933Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'attributes'"}}
+{"ts":"2026-09-29T16:18:02.934Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"attributes\")"}}
+{"ts":"2026-09-29T16:18:02.939Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'audit_events'"}}
+{"ts":"2026-09-29T16:18:02.941Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"audit_events\")"}}
+{"ts":"2026-09-29T16:18:02.942Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'bank_accounts'"}}
+{"ts":"2026-09-29T16:18:02.943Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"bank_accounts\")"}}
+{"ts":"2026-09-29T16:18:02.944Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'bank_reconciliation_items'"}}
+{"ts":"2026-09-29T16:18:02.945Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"bank_reconciliation_items\")"}}
+{"ts":"2026-09-29T16:18:02.947Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'barcode_sequences'"}}
+{"ts":"2026-09-29T16:18:02.948Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"barcode_sequences\")"}}
+{"ts":"2026-09-29T16:18:02.949Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'barcode_stock_check_scans'"}}
+{"ts":"2026-09-29T16:18:02.950Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"barcode_stock_check_scans\")"}}
+{"ts":"2026-09-29T16:18:02.951Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'barcode_stock_check_sessions'"}}
+{"ts":"2026-09-29T16:18:02.953Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"barcode_stock_check_sessions\")"}}
+{"ts":"2026-09-29T16:18:02.955Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'barcode_templates'"}}
+{"ts":"2026-09-29T16:18:02.957Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"barcode_templates\")"}}
+{"ts":"2026-09-29T16:18:02.958Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'billing_rate_events'"}}
+{"ts":"2026-09-29T16:18:02.960Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"billing_rate_events\")"}}
+{"ts":"2026-09-29T16:18:02.961Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'campaigns'"}}
+{"ts":"2026-09-29T16:18:02.962Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"campaigns\")"}}
+{"ts":"2026-09-29T16:18:02.963Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'campaign_messages'"}}
+{"ts":"2026-09-29T16:18:02.964Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"campaign_messages\")"}}
+{"ts":"2026-09-29T16:18:02.965Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'cashbook_entries'"}}
+{"ts":"2026-09-29T16:18:02.967Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"cashbook_entries\")"}}
+{"ts":"2026-09-29T16:18:02.968Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'catalog_items'"}}
+{"ts":"2026-09-29T16:18:02.970Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"catalog_items\")"}}
+{"ts":"2026-09-29T16:18:02.973Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'categories'"}}
+{"ts":"2026-09-29T16:18:02.975Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"categories\")"}}
+{"ts":"2026-09-29T16:18:02.976Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'chart_of_accounts'"}}
+{"ts":"2026-09-29T16:18:02.977Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"chart_of_accounts\")"}}
+{"ts":"2026-09-29T16:18:02.979Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): SELECT name FROM sqlite_master WHERE type='table' AND name = 'cluster_state'"}}
+{"ts":"2026-09-29T16:18:02.980Z","level":"debug","scope":"sqlite","message":"query","meta":{"sql":"Executing (default): PRAGMA table_info(\"cluster_state\")"}}
